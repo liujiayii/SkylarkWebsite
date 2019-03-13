@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1,user-scalable=no">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/layui.css" media="all">
+    <link rel="stylesheet" href="css/login.css" media="all">
+    <title>登录注册</title>
+</head>
+
+<body>
+    <div class="main flex">
+        <div class="left">
+        	<div class="text">
+        		<h1>让生活更简单</h1>
+        		<p>Make the design simpler</p>
+        	</div>
+            <!--<img src="image/public/logobg.png" alt="">-->
+            <a href="" class="goback"><img src="image/public/goback.png" alt=""> 返回首页</a>
+        </div>
+        <div class="right">
+            <div class="right-box">
+                <div class="navBox flex">
+                    <span class="nav active">账号登录</span>
+                    <span class="nav">账号注册</span>
+                </div>
+                <div class="loginbox">
+                    <div class="box">
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" required lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item flex">
+                                <div class="layui-input-inline">
+                                    <input type="password" name="Verification " required lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input Verification">
+                                </div>
+                                <div class="layui-form-mid layui-input"></div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formDemo">登录</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="box">
+                        <form class="layui-form" action="">
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title1" required lay-verify="required" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item flex">
+                                <div class="layui-input-inline">
+                                    <input type="password" name="twVerification " required lay-verify="required" placeholder="请输入图文验证码" autocomplete="off" class="layui-input Verification">
+                                </div>
+                                <div class="layui-form-mid layui-input"></div>
+                            </div>
+                            <div class="layui-form-item flex">
+                                <div class="layui-input-inline">
+                                    <input type="password" name="dxVerification " required lay-verify="required" placeholder="请输入短信验证码" autocomplete="off" class="layui-input Verification">
+                                </div>
+                                <div class="layui-form-mid layui-input"><button class="layui-btnyzm">获取短信验证码</button></div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input type="password" name="password1" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" lay-submit lay-filter="formDemo1">注册</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <p class="Agreement">登录即同意 <a href="">《云阙网网络服务协议》</a></p>
+        </div>
+    </div>
+    <script src="js/jquery-3.1.1.min.js"></script>
+    <script src="js/layui.js"></script>
+    <script src="js/form.js"></script>
+    <script>
+        $(function() {
+            $(".right-box .navBox .nav").click(function() {
+                $(this).toggleClass("active").siblings(".navBox .nav").removeClass("active");
+                $(".loginbox .box").eq($(this).index()).css("display", "block").siblings().css("display", "none");
+            });
+
+        });
+    </script>
+    <script>
+       // layui.use('form', function() {
+           // var form = layui.form;
+            //监听提交
+            layui.use([ 'form', 'jquery', 'layer', 'laydate'], function(){
+					var form = layui.form, jquery = layui.jquery;
+					var layer = layui.layer,laydate = layui.laydate;
+            form.on('submit(formDemo)', function(data) {
+                layer.msg(JSON.stringify(data.field));
+                console.log(data.field)
+                return false;
+            });
+        });
+    </script>
+</body>
+
+</html>
