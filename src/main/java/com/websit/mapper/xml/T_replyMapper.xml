@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_replyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_reply">
+        <id column="id" property="id" />
+        <result column="comment_id" property="comment_id" />
+        <result column="user_id" property="user_id" />
+        <result column="users_id" property="users_id" />
+        <result column="create_time" property="create_time" />
+    </resultMap>
+
+</mapper>
