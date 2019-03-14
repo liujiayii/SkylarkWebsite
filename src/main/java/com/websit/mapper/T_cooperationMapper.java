@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface T_cooperationMapper extends BaseMapper<T_cooperation> {
 
+	public T_cooperation selectThink(T_cooperation cooperation);
+	public T_cooperation selectThinkTwo(T_cooperation cooperation);
 }

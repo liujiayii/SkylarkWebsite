@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1,user-scalable=no">
+  <link rel="stylesheet" href="/assets/css/reset.css">
+  <link rel="stylesheet" href="/assets/css/login.css" media="all">
+  <script src="//lib.baomitu.com/vue/2.6.8/vue.js"></script>
+  <script src="//lib.baomitu.com/jquery/3.3.1/jquery.js"></script>
+  <script src="//lib.baomitu.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
+  <link href="//lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+  <title>登录注册</title>
+</head>
+
+<body>
+<h1 th:text="${info}"/>
+<div id="app">
+  <form action="imgvrifyControllerDefaultKaptcha">
+    <input type="text" name="vrifyCode"/>
+    <input type="submit" value="提交"></input>
+  </form>
+  <div class="main flex">
+    <div class="left">
+      <div class="text">
+        <h1>让生活更简单</h1>
+        <p>Make the design simpler</p>
+      </div>
+      <a href="/views/home/index.html" class="goback"><img src="/assets/image/public/goback.png" alt=""> 返回首页</a>
+    </div>
+    <div class="right">
+      <div class="right-box">
+        <div class="navBox flex">
+          <span class="nav" :class="{ active: type=='login' }" @click="toggleType('login')">账号登录</span>
+          <span class="nav" :class="{ active: type=='reg' }" @click="toggleType('reg')">账号注册</span>
+        </div>
+        <div class="loginBox">
+          <form action="">
+            <div class="form-group">
+              <input v-model="form.phone" class="form-control" type="text" placeholder="请输入手机号"
+                     name="phone" required>
+              <div class="invalid-feedback">{{errorMsg.phone}}</div>
+            </div>
+            <div v-if="type=='reg'" class="input-group form-group">
+              <input type="text" v-model="form.msg_code" class="form-control" name="msg_code" required
+                     placeholder="请输入短信验证码">
+              <div class="invalid-feedback">{{errorMsg.msg_code}}</div>
+              <div class="input-group-append">
+                <button v-show="msgError=='60'" class="btn btn-primary" type="button" @click="getMsgCode">获取短信验证码
+                </button>
+                <button v-show="msgError!='60'" class="btn btn-primary" type="button" disabled>请在{{msgError}}秒后重新获取
+                </button>
+              </div>
+            </div>
+            <div class="input-group form-group">
+              <input type="text" v-model="form.code" class="form-control" name="code" required
+                     placeholder="请输入图文验证码">
+              <div class="invalid-feedback">{{errorMsg.code}}</div>
+              <div class="input-group-append">
+                <img alt="验证码" id="code" style="height: 100%;cursor: pointer" src="/createValicode" @click="getCode"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <input v-model="form.password" type="password" name="password" class="form-control"
+                     placeholder="请输入密码">
+              <div class="invalid-feedback">{{errorMsg.code}}</div>
+            </div>
+            <div class="form-group">
+              <button v-show="type=='reg'" type="button" class="btn btn-primary btn-block" @click="reg">注册</button>
+              <button v-show="type=='login'" type="button" class="btn btn-primary btn-block" @click="login">登录</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <p class="Agreement">登录即同意 <a href="">《云阙网络服务协议》</a></p>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">提示</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          错误...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  let vm = new Vue({
+    el: '#app',
+    data() {
+      return {
+        type: 'login',
+        msgError: 60,
+        form: {
+          phone: '',
+          code: '',
+          msg_code: '',
+          password: ''
+        },
+        errorMsg: {
+          phone: '',
+          code: '',
+          msg_code: '',
+          password: ''
+        }
+      }
+    },
+    methods: {
+      /*获取短信验证码*/
+      getMsgCode() {
+        let timer = setInterval(() => {
+          this.msgError = this.msgError - 1
+          if (this.msgError == 0) {
+            clearInterval(timer)
+            this.msgError = 60
+          }
+        }, 1000)
+        $.ajax({
+          type: "post",
+          url: "/getmsg",
+          data: {phone: this.form.phone},
+          dataType: "json",
+          success: (res) => {
+            console.log(res)
+          }
+        });
+      },
+      /*注册*/
+      reg() {
+        $.ajax({
+          type: "post",
+          url: "/register",
+          data: JSON.stringify(this.form),
+          contentType: 'application/json',
+          dataType: "json",
+          success: (res) => {
+            console.log(res)
+          }
+        });
+      },
+      /*登录*/
+      login() {
+        $.ajax({
+          type: "post",
+          url: "/login",
+          data: JSON.stringify(this.form),
+          contentType: 'application/json',
+          dataType: "json",
+          success: (res) => {
+            console.log(res)
+          }
+        });
+      },
+      /*获取图文验证码*/
+      getCode() {
+        document.getElementById('code').src = '/createValicode? ? t=' + new Date().getTime()
+      },
+      /*切换登录、注册*/
+      toggleType(type) {
+        this.type = type
+      }
+    },
+    mounted() {
+      $('#myModal').modal('show')
+    }
+  })
+</script>
+<script>
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_postingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_posting">
+        <id column="id" property="id" />
+        <result column="user_id" property="user_id" />
+        <result column="context" property="context" />
+        <result column="title" property="title" />
+        <result column="introduce" property="introduce" />
+        <result column="create_time" property="create_time" />
+        <result column="plate_id" property="plate_id" />
+    </resultMap>
+    
+    <!-- 查询热门帖子（回帖最多） -->
+    <select id="selectHotPotings" resultMap="BaseResultMap">
+    	SELECT p.title 
+    	FROM t_posting p,t_comment c 
+    	WHERE p.id=c.posting_id 
+    	GROUP BY c.posting_id 
+    	ORDER BY COUNT(c.posting_id) desc limit #{row}
+    </select>
+    
+    <!-- 查询最新帖子  -->
+    <select id="selectNewestPotings" resultMap="BaseResultMap">
+    	select * 
+    	from t_posting 
+    	ORDER BY create_time DESC limit #{row}
+    </select>
+	<!-- 查询版主下的话题列表   -->
+	<select id="selecAllSome" resultType="com.websit.entityvo.T_postingVo">
+		SELECT
+			p.context context,
+			p.title title,
+			p.introduce introduce,
+			p.create_time create_time,
+			u.nickname nickname,
+			u.avatar avatar
+		FROM
+			t_posting p,t_user u
+		WHERE
+			p.user_id=u.id
+		AND
+			p.plate_id=#{plate_id}
+	</select>
+</mapper>

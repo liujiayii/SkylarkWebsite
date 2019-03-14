@@ -40,8 +40,21 @@ public class T_reply extends Model<T_reply> {
      * 创建时间
      */
     private Date create_time;
+    /**
+     * 回复内容
+     * @return
+     */
+    private String response;
 
-    public Long getId() {
+    public String getResponse() {
+		return response;
+	}
+
+	public void setResponse(String response) {
+		this.response = response;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -83,13 +96,8 @@ public class T_reply extends Model<T_reply> {
     }
 
     @Override
-    public String toString() {
-        return "T_reply{" +
-        "id=" + id +
-        ", comment_id=" + comment_id +
-        ", user_id=" + user_id +
-        ", users_id=" + users_id +
-        ", create_time=" + create_time +
-        "}";
-    }
+	public String toString() {
+		return "T_reply [id=" + id + ", comment_id=" + comment_id + ", user_id=" + user_id + ", users_id=" + users_id
+				+ ", create_time=" + create_time + ", response=" + response + "]";
+	}
 }

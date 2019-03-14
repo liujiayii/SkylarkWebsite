@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_userMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_user">
+        <id column="id" property="id" />
+        <result column="phone" property="phone" />
+        <result column="password" property="password" />
+        <result column="number" property="number" />
+        <result column="create_time" property="create_time" />
+        <result column="nickname" property="nickname" />
+        <result column="sex" property="sex" />
+        <result column="email" property="email" />
+        <result column="lastdate" property="lastdate" />
+        <result column="online" property="online" />
+        <result column="fanscount" property="fanscount" />
+        <result column="followcount" property="followcount" />
+        <result column="avatar" property="avatar" />
+        <result column="address" property="address" />
+    </resultMap>
+    
+    <insert id="aaa">
+    insert into  t_user values(null,123456,4564,456,null,456,1,1354,null,null,null,null,null,null)
+    </insert>
+
+  <!-- 根据id查看个人详情资料 -->
+<select id="selectUserById" resultType="com.websit.entityvo.Personal">
+			 SELECT
+				u.id id,
+				u.number traffic,
+				u.create_time userCreate_time,
+				u.nickname nickName,
+				u.sex sex,
+				u.email email,
+				u.fanscount fansCount,
+				u.followcount followCount,
+				u.avatar avatar,
+				u.address address,
+				pl. NAME plateName,
+				pl.introduce plateIntroduce,
+				po.context postingContext,
+				po.title postingTitle,
+				po.introduce postingIntroduce,
+				po.create_time postingCreate_time
+			FROM
+				t_user u,
+				t_plate pl,
+				t_posting po
+			WHERE
+				u.id = po.user_id
+			AND pl.id = po.plate_id
+			        group by u.id
+    </select>
+
+</mapper>

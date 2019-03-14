@@ -26,14 +26,29 @@ public class T_plate extends Model<T_plate> {
     private Long company_id;
 
     /**
-     * 公司名称
-     */
-    private String name;
-
-    /**
      * 板块介绍
      */
     private String introduce;
+
+    /**
+     * 板块图标
+     */
+    private String image;
+
+    /**
+     * 这个板块今日贴子总数
+     */
+    private Long number;
+
+    /**
+     * 这个板块的总贴子数
+     */
+    private Long numbers;
+
+    /**
+     * 版主
+     */
+    private String name;
 
     public Long getId() {
         return id;
@@ -49,19 +64,40 @@ public class T_plate extends Model<T_plate> {
     public void setCompany_id(Long company_id) {
         this.company_id = company_id;
     }
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
     public String getIntroduce() {
         return introduce;
     }
 
     public void setIntroduce(String introduce) {
         this.introduce = introduce;
+    }
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
+    public Long getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(Long numbers) {
+        this.numbers = numbers;
+    }
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -74,8 +110,11 @@ public class T_plate extends Model<T_plate> {
         return "T_plate{" +
         "id=" + id +
         ", company_id=" + company_id +
-        ", name=" + name +
         ", introduce=" + introduce +
+        ", image=" + image +
+        ", number=" + number +
+        ", numbers=" + numbers +
+        ", name=" + name +
         "}";
     }
 }

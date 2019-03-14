@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_accessMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_access">
+        <id column="id" property="id" />
+        <result column="Count" property="Count" />
+        <result column="number" property="number" />
+        <result column="create_time" property="create_time" />
+    </resultMap>
+
+</mapper>

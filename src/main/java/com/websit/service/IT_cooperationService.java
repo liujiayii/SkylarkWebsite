@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface IT_cooperationService extends IService<T_cooperation> {
 
+	public T_cooperation selectThink(T_cooperation cooperation);
+	public T_cooperation selectThinkTwo(T_cooperation cooperation);
 }
