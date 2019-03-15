@@ -1,0 +1,316 @@
+.cont {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+/*论坛首页*/
+.bbsIndex .banner {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 335px;
+    padding: 5px;
+    box-sizing: border-box;
+    background: #f1f1f1;
+}
+
+.bbsIndex .banner .slide {
+    width: 525px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.bbsIndex .banner .hot {
+    width: 635px;
+    height: 100%;
+}
+
+.bbsIndex .banner .hot .tab-pane {
+    height: 100%;
+    background: #fff;
+}
+
+.bbsIndex .banner .hot li {
+    height: 35px;
+    width: 100%;
+    padding: 0 10px;
+    line-height: 35px;
+    font-size: 14px;
+    color: #666;
+    border-bottom: 1px dashed #f1f1f1;
+}
+
+.bbsIndex .banner .hot li a {
+    color: #666;
+}
+
+.bbsIndex .banner .hot li .module {
+    padding: 0 6px;
+}
+
+.bbsIndex .banner .hot li .module:hover {
+    text-decoration: none;
+    color: #ff8600;
+}
+
+.bbsIndex .banner .hot li .date {
+    color: #999;
+    float: right;
+}
+
+.bbsIndex .visit {
+    font-size: 12px;
+    color: #999;
+    height: 38px;
+    line-height: 38px;
+}
+
+.bbsIndex .visit .num {
+    color: #333;
+}
+
+.bbsIndex .visit .line {
+    color: #333;
+    margin: 0 10px;
+}
+
+.bbsIndex .visit .new {
+    color: #ff8600;
+}
+
+.bbsIndex .module {
+    width: 100%;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #f1f1f1;
+}
+
+.bbsIndex .module .titleBox {
+    display: flex;
+    font-size: 18px;
+    color: #333;
+    height: 46px;
+    align-items: center;
+}
+
+.bbsIndex .module .titleBox .em {
+    color: #ff8600;
+    font-weight: bold;
+}
+
+.bbsIndex .titleBox img {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+}
+
+.bbsIndex .module .moduleCont {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    background: #f1f1f1;
+    width: 100%;
+    padding: 5px;
+}
+
+.bbsIndex .module .moduleCont a {
+    text-decoration: none;
+    color: #666;
+}
+
+.bbsIndex .module .moduleCont .moduleBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 392px;
+    height: 100px;
+    padding: 10px;
+    background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    border-left: 6px solid #91D5D6;
+}
+
+.bbsIndex .module .moduleCont .moduleBox img {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+.bbsIndex .module .moduleCont .moduleBox .moduleBoxInfo {
+    width: 100%;
+    height: 100%;
+}
+
+.bbsIndex .module .moduleCont .moduleBox .moduleBoxInfo .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    color: #333333;
+    height: 40px;
+    width: 100%;
+}
+
+.bbsIndex .module .moduleCont .moduleBox .moduleBoxInfo .moduleVisit {
+    font-size: 12px;
+    color: #999;
+}
+
+.bbsIndex .module .moduleCont .moduleBox .moduleBoxInfo .tags {
+    height: 34px;
+    width: 100%;
+    overflow: hidden;
+}
+
+/*论坛帖子列表*/
+.bbsList {
+    width: 1010px;
+    margin: 0 auto;
+    border: 5px solid #f1f1f1;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.bbsList .listTitle {
+    height: 50px;
+    line-height: 50px;
+    color: #707070;
+    font-size: 18px;
+}
+
+.bbsList .postBox {
+    display: flex;
+    align-items: center;
+    width: 980px;
+    height: 80px;
+}
+
+.bbsList .postBox:hover {
+    background: #f1f1f1;
+}
+
+.bbsList .postBox .head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 54px;
+    height: 54px;
+    border: 1px solid #ccc;
+}
+
+.bbsList .postList {
+    border-bottom: 1px dashed #cccccc;
+}
+
+.bbsList .postList .hot a {
+    color: #ff8600;
+}
+
+.bbsList .postBox .head img {
+    width: 48px;
+    height: 48px;
+}
+
+.bbsList .postBox .postInfo {
+    padding-left: 20px;
+    width: 920px;
+    height: 54px;
+}
+
+.bbsList .postBox .postInfo .title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bbsList .postBox .postInfo .title a {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 30px;
+    width: 80%;
+}
+
+.bbsList .postBox .postInfo .author {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bbsList .postBox .postInfo .author a {
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.bbsList .postBox .postInfo .count {
+    width: 120px;
+    line-height: 30px;
+}
+
+.bbsList .postBox .postInfo .author .date {
+    color: #707070;
+    margin-left: 20px;
+}
+
+/*帖子详情*/
+.bbsPost {
+    width: 980px;
+    margin: 0 auto;
+    border: 1px solid #e5e5e5;
+    color: #333;
+}
+
+.bbsPost .caption {
+    padding-left: 20px;
+    height: 56px;
+    line-height: 56px;
+    font-size: 16px;
+    border-bottom: 1px solid #BBBDBF;
+}
+
+.bbsPost .postMain {
+    display: flex;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.bbsPost .postMain .author {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 130px;
+    background: #FAFBFC;
+    overflow: hidden;
+}
+
+.bbsPost .postMain .author .head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 88px;
+    height: 88px;
+    border: 1px solid #ccc;
+    margin: 20px auto;
+}
+
+.bbsPost .postMain .author .head img {
+    height: 80px;
+    width: 80px;
+}
+
+.bbsPost .postMain .reply {
+    position: relative;
+    width: 82%;
+}
+
+.bbsPost .postMain .reply .replyMain {
+    padding: 20px 20px 100px 20px;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+.bbsPost .postMain .reply .replyInfo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 30px;
+    width: auto;
+    line-height: 30px;
+    color: #999;
+}

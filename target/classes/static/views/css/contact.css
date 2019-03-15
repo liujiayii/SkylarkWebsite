@@ -1,0 +1,50 @@
+#container {
+            height: 750px;
+            width: 100%;
+            margin-top: 65px;
+        }
+
+        .amap-icon img {
+            width: 25px;
+            height: 34px;
+        }
+
+        .amap-marker-label{
+            border: 0;
+            background-color: transparent;
+        }
+
+        .info{
+            position: relative;
+            top: 0;
+            right: 0;
+            min-width: 0;
+        }
+        
+        .titleAll{margin: 70px 0 52px 0;}
+        .titleAll .titleen{color: #999;margin-top: 30px;display: block;}
+.sestion .input{width:calc(50% - 30px);border-radius:4px;display:block;border: 1px solid #333; height:50px;padding:15px;box-sizing: border-box;color: #000;margin-bottom: 50px;}
+.textarea{border-radius:4px;display: inline-block;padding:15px;width: 100%;box-sizing: border-box;border: 1px solid #333;}
+.sestion .submit{font-size:32px;width: 590px;height: 65px; background-color: #E50012;color: #fff;border-radius:4px;display: block;margin: 50px auto;cursor: pointer;  background: -webkit-linear-gradient(right, #46b2fe , #05dffe); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #46b2fe, #05dffe); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #46b2fe, #05dffe); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #46b2fe , #05dffe); /* 标准的语法（必须放在最后） */}
+.ty{position: relative;top: -30px;left: 72%;}
+.title2 .title2-h{font-size: 26px}
+
+
+.section1{margin-top: 135px;}
+.section1 .list{width: 350px;box-shadow:-5px 8px 35px 0 rgba(81, 91, 96, 0.3);text-align: center;position: relative;padding: 98px 52px 78px 52px;}
+.section1 .list>img{position: absolute;top: -70px;left: 50%;margin-left: -76px;}
+.section1 .list .block p{text-align: center;line-height: 45px;font-size: 20px;color: #888888;}
+.section1 .list .block h1{text-align: center;margin-bottom: 20px;font-size: 24px;color: #666666;}
+.section1 .list .block .btns{width: 150px;height: 50px;margin: 0 auto;margin-top: 45px;line-height: 50px;font-size: 18px;background-color: #f3646e;color: #fff;border-radius:4px;display: block;cursor: pointer; }
+.section1 .list .block .btns.btn1{background-color: #E50012; background: -webkit-linear-gradient(right, #46b2fe , #05dffe); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #46b2fe, #05dffe); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #46b2fe, #05dffe); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #46b2fe , #05dffe); /* 标准的语法（必须放在最后） */}
+.section1 .list .block .btns.btn2{background-color: #E50012;color: #fff; background: -webkit-linear-gradient(right, #46b2fe , #44ffc7); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #46b2fe, #44ffc7); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #46b2fe, #44ffc7); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #46b2fe , #44ffc7); /* 标准的语法（必须放在最后） */}
+

@@ -1,0 +1,28 @@
+﻿
+.wrap{width: 1400px;margin: 0 auto;overflow: hidden;position: relative;}
+.advantages{background: url(../image/about/advantagesBg.png) no-repeat;background-size: cover;padding: 90px 0 225px 0;}
+.advantages .titleAll .titlec{color: #fff;}
+.advantages .titleAll .titleen{color: #fff;}
+.advantages .list{margin-top:105px;width: 225px; color: #fff;text-align: center;padding: 30px 30px 30px 30px;border: 1px solid #fff;box-sizing: border-box;transition: all .6s;cursor: pointer;opacity: 0;}
+.advantages .icon{width: 90px;height: 90px;border-radius: 100%;display: flex;justify-content: center;margin: 0 auto;align-items: center;transition: all .6s;}
+.advantages .name{margin: 30px 0 15px 0;font-size: 20px;}
+.advantages .cont{font-size: 14px;line-height: 1.6;}
+.advantages .list:hover{background-color: #fff;color: #074195;}
+.advantages .list:hover .icon{background-color:#074195 ;}
+@keyframes advantagesList { from { opacity: 0; }
+  to { opacity:1; } }
+.advantages .list.active:nth-child(1){animation: advantagesList 1s linear 0s 1 normal;animation-fill-mode:forwards}
+.advantages .list.active:nth-child(2){animation: advantagesList 1s linear 0.5s 1 normal;animation-fill-mode:forwards}
+.advantages .list.active:nth-child(3){animation: advantagesList 1s linear 1s 1 normal;animation-fill-mode:forwards}
+.advantages .list.active:nth-child(4){animation: advantagesList 1s linear 1.5s 1 normal;animation-fill-mode:forwards}
+.advantages .list.active:nth-child(5){animation: advantagesList 1s linear 2s 1 normal;animation-fill-mode:forwards}
+
+
+.about{background: url(../image/about/aboutBg.png)no-repeat;background-size: 100%;padding: 88px 0 165px 0;}
+.about-cont {margin-top: 100px;transition: all .8s;}
+.about-cont .left{width: 560px; transition: all .8s;position: relative;float:left;}
+.about-cont .right{width:calc(100% - 560px);padding: 45px 45px 0 83px;box-sizing: border-box;font-size:22px;line-height: 2;position: relative;float:right;transition: all .8s;}
+
+
+
+

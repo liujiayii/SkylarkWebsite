@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 
 public class T_indesController {
-	@RequestMapping("/")
+	/*@RequestMapping("/")
 	public String toIndex(){
 		System.out.println("999999999999");
 		
@@ -15,6 +15,18 @@ public class T_indesController {
 		
 		mv.setViewName("index.html");
 		return "redirect:views/home/index.html";
-	}
+	}*/
 
+	/*@RequestMapping("/")
+	public String index() {
+        return "redirect:/views/home/index.html";
+    }*/
+	/*@RequestMapping("/")
+	public ModelAndView index() {
+		ModelAndView mv=new ModelAndView();
+		
+		mv.setViewName("/index.html");
+		
+        return mv;
+    }*/
 }

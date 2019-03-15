@@ -29,9 +29,17 @@ public class T_comment extends Model<T_comment> {
     /**
      * 评论图片id
      */
-    private Long image_id;
+    private String context;
 
-    /**
+    public String getContext() {
+		return context;
+	}
+
+	public void setContext(String context) {
+		this.context = context;
+	}
+
+	/**
      * 创建时间
      */
     private Date create_time;
@@ -40,8 +48,33 @@ public class T_comment extends Model<T_comment> {
      * 帖子id
      */
     private Long posting_id;
+	/**
+     * 回复人id
+     */
+    private String  user_id;
+    /**
+     * 是否为版主
+     * @return
+     */
+    private String banzhu;
 
-    public Long getId() {
+    public String getBanzhu() {
+		return banzhu;
+	}
+
+	public void setBanzhu(String banzhu) {
+		this.banzhu = banzhu;
+	}
+
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -55,13 +88,13 @@ public class T_comment extends Model<T_comment> {
     public void setComment(String comment) {
         this.comment = comment;
     }
-    public Long getImage_id() {
-        return image_id;
-    }
-
-    public void setImage_id(Long image_id) {
-        this.image_id = image_id;
-    }
+//    public Long getImage_id() {
+//        return image_id;
+//    }
+//
+//    public void setImage_id(Long image_id) {
+//        this.image_id = image_id;
+//    }
     public Date getCreate_time() {
         return create_time;
     }
@@ -83,13 +116,8 @@ public class T_comment extends Model<T_comment> {
     }
 
     @Override
-    public String toString() {
-        return "T_comment{" +
-        "id=" + id +
-        ", comment=" + comment +
-        ", image_id=" + image_id +
-        ", create_time=" + create_time +
-        ", posting_id=" + posting_id +
-        "}";
-    }
+	public String toString() {
+		return "T_comment [id=" + id + ", comment=" + comment + ", context=" + context + ", create_time=" + create_time
+				+ ", posting_id=" + posting_id + ", user_id=" + user_id + "]";
+	}
 }

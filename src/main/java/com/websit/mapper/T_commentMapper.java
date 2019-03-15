@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @since 2019-03-13
  */
 public interface T_commentMapper extends BaseMapper<T_comment> {
-
+	public int  update(String id);
 }

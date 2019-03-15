@@ -50,8 +50,55 @@ public class T_posting extends Model<T_posting> {
      * 板块id
      */
     private Long plate_id;
+    
+    /**
+     * 是否精华帖（0.否，1.是）
+     */
+    private Integer is_good;
+    
+    /**
+     * 设置精华帖时间
+     */
+    private Date toGood_time;
+    /**
+     * 访问次数
+     */
+    private int number;
+    /*/*
+     * 最新回复时间
+     */
+    private Date new_time;
+    /*/*
+     * 是否置顶
+     */
+    private int is_top;
+    
 
-    public Long getId() {
+    public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public Date getNew_time() {
+		return new_time;
+	}
+
+	public void setNew_time(Date new_time) {
+		this.new_time = new_time;
+	}
+
+	public int getIs_top() {
+		return is_top;
+	}
+
+	public void setIs_top(int is_top) {
+		this.is_top = is_top;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -101,21 +148,35 @@ public class T_posting extends Model<T_posting> {
         this.plate_id = plate_id;
     }
 
-    @Override
+    public Integer getIs_good() {
+		return is_good;
+	}
+
+	public void setIs_good(Integer is_good) {
+		this.is_good = is_good;
+	}
+
+	public Date getToGood_time() {
+		return toGood_time;
+	}
+
+	public void setToGood_time(Date toGood_time) {
+		this.toGood_time = toGood_time;
+	}
+
+	@Override
     protected Serializable pkVal() {
         return this.id;
     }
 
-    @Override
-    public String toString() {
-        return "T_posting{" +
-        "id=" + id +
-        ", user_id=" + user_id +
-        ", context=" + context +
-        ", title=" + title +
-        ", introduce=" + introduce +
-        ", create_time=" + create_time +
-        ", plate_id=" + plate_id +
-        "}";
-    }
+	@Override
+	public String toString() {
+		return "T_posting [id=" + id + ", user_id=" + user_id + ", context=" + context + ", title=" + title
+				+ ", introduce=" + introduce + ", create_time=" + create_time + ", plate_id=" + plate_id + ", is_good="
+				+ is_good + ", toGood_time=" + toGood_time + ", number=" + number + ", new_time=" + new_time
+				+ ", is_top=" + is_top + "]";
+	}
+
+	
+	
 }

@@ -3,6 +3,7 @@ package com.websit.mapper;
 import com.websit.entity.T_user;
 import com.websit.entityvo.Personal;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -27,4 +28,19 @@ public interface T_userMapper extends BaseMapper<T_user> {
 	 * @createDate 2019年3月13日 下午2:00
 	 */
 	public List<Personal> selectUserById(Personal personal);
+	
+	/**
+	 * 根据用户id查询会员天数
+	 * @author pangchong
+	 * @createDate 2019年3月15日 下午2:00
+	 */
+	public String selectUserDayById(Personal personal);
+	
+	/**
+	 * 根据用户id查询注册时间
+	 * @author pangchong
+	 * @createDate 2019年3月15日 下午2:00
+	 */
+	public Date selectUserCreateTimeById(Personal personal);
+	
 }

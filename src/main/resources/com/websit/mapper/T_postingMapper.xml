@@ -11,11 +11,16 @@
         <result column="introduce" property="introduce" />
         <result column="create_time" property="create_time" />
         <result column="plate_id" property="plate_id" />
+        <result column="is_good" property="is_good" />
+        <result column="toGood_time" property="toGood_time" />
+        <result column="number" property="number" />
+        <result column="new_time" property="new_time" />
+        <result column="is_top" property="is_top" />
     </resultMap>
     
     <!-- 查询热门帖子（回帖最多） -->
     <select id="selectHotPotings" resultMap="BaseResultMap">
-    	SELECT p.title 
+    	SELECT p.* 
     	FROM t_posting p,t_comment c 
     	WHERE p.id=c.posting_id 
     	GROUP BY c.posting_id 
@@ -43,5 +48,22 @@
 			p.user_id=u.id
 		AND
 			p.plate_id=#{plate_id}
+	</select>
+	
+	<!-- 查询用户发帖数量 -->
+	<select id="selectPostingCount" resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM
+		(
+		select
+		po.id id
+		from
+		t_posting po
+		<where>
+			<if test="user_id != null and user_id != ''">
+				po.user_id  =#{user_id}
+			</if>
+		</where>
+		)as tb
 	</select>
 </mapper>

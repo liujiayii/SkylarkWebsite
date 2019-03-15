@@ -8,6 +8,7 @@ import com.websit.entity.T_opinion;
 import com.websit.service.IT_opinionService;
 import com.websit.until.JsonUtil;
 
+import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class T_opinionController {
 		t_opinion.setPhone("13514515865");
 		t_opinion.setAddress("石家庄市");
 		t_opinion.setEmaill("2547813597@qq.com");
-		t_opinion.setCreate_time(null);
+		t_opinion.setCreate_time(new Date());
 		boolean result = opinionService.insert(t_opinion);
 		if (result) {
 			return JsonUtil.getResponseJson(1, "添加成功", null, null);

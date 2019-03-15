@@ -9,6 +9,10 @@
         <result column="image_id" property="image_id" />
         <result column="create_time" property="create_time" />
         <result column="posting_id" property="posting_id" />
+        <result column="user_id"  property="user_id"/>
     </resultMap>
-
+ <update id="update">
+ update t_posting set  new_time=now()  where id=#{id}
+    
+    </update>
 </mapper>

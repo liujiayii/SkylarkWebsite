@@ -74,14 +74,26 @@ public class T_userController {
 		List<Personal> result = userService.selectUserById(personal);
 		
 		if (result.size() >=1) {
-			return JsonUtil.getResponseJson(1, "查看成功", null, null);
+			return JsonUtil.getResponseJson(1, "查看成功", null, result);
 		} else {
-			return JsonUtil.getResponseJson(1, "查看失败", null, null);
+			return JsonUtil.getResponseJson(1, "无数据", null, null);
 		}
 	} catch (Exception e) {
 		e.printStackTrace();
 		return JsonUtil.getResponseJson(-1, "程序异常", null, null);
+	}
+	}
+
+		/**
+		 * 根据用户id查询会员天数
+		 * @author pangchong
+		 * @createDate 2019年3月15日 下午2:00
+		 */
+	@RequestMapping(value = "/selectUserDayById", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String selectUserDayById(Personal personal ) {
+		
+		return  userService.selectUserDayById(personal);
 	
-	}
-	}
+	}	
 }

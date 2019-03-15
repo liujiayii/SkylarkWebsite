@@ -12,5 +12,9 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2019-03-13
  */
 public interface IT_commentService extends IService<T_comment> {
+	/**
+	 * 更新回复发帖的时间
+	 */
+	public int  update(String id);
 
 }

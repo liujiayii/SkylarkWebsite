@@ -49,6 +49,7 @@ public class T_plate extends Model<T_plate> {
      * 版主
      */
     private String name;
+    
 
     public Long getId() {
         return id;

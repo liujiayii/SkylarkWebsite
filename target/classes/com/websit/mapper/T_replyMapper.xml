@@ -10,5 +10,16 @@
         <result column="users_id" property="users_id" />
         <result column="create_time" property="create_time" />
     </resultMap>
+    <select id="postinglist" resultType="com.websit.entityvo.postinglist" >
+    SELECT    u.id,u.nickname,u.avatar,c.comment, c.posting_id as posting_id FROM t_comment  c join   t_user  U on c.user_id=u.id
+    where c.posting_id=#{posting_id}
+    </select>
+     <select id="t_commentlist" resultType="com.websit.entityvo.postinglist">
+    select    u.id,u.nickname,u.avatar,p.context as comment,p.id  from     t_posting  p join   t_user  U on p.user_id=u.id
+    where p.id=#{posting_id}
+    </select>
+      <select id="tret" resultType="com.websit.entityvo.T_plateputing">
+      SELECT    *,t_posting.title   from  t_plate  JOIN t_posting on t_posting.plate_id=t_plate.id where  t_posting.id=#{posting_id}
+    </select>
 
 </mapper>

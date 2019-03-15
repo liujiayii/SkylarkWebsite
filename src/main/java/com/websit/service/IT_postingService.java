@@ -62,4 +62,46 @@ public interface IT_postingService extends IService<T_posting> {
 	 */
 	String showNewestPotings(Integer row);
 	
+	/**
+	 * 查询精华帖子
+	 *
+	 * @Title: showGoodPosting
+	
+	 * @description 
+	 *
+	 * @param row 查询精华帖子数量
+	 * @return 
+	   
+	 * String
+	 *
+	 * @author lujinpeng
+	 * @createDate 2019年3月15日-上午9:48:44
+	 */
+	String showGoodPostings(Integer row);
+	
+	/**
+	 * 发帖计数
+	 *
+	 * @Title: postCount
+	
+	 * @description 
+	 *
+	 * @return 
+	   
+	 * String
+	 *
+	 * @author lujinpeng
+	 * @createDate 2019年3月15日-上午11:01:38
+	 */
+	String selectPostCounts();
+	
+	/**
+	 * @Title: selectPostingCount
+	 * @description 查询个人贴子数量
+	 * @return List<T_postingVo> 
+	 * @author pangchong
+	 * @createDate 2019年03月15日
+	 */
+	public Integer selectPostingCount(T_postingVo postingVo);
+
 }

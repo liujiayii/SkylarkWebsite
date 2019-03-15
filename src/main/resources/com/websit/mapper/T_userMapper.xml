@@ -52,5 +52,13 @@
 			AND pl.id = po.plate_id
 			        group by u.id
     </select>
-
+<!-- 根据用户id查询用户注册时间 -->
+<select id="selectUserCreateTimeById" resultType="java.util.Date">
+			 SELECT
+				u.create_time userCreate_time
+			FROM
+				t_user u
+			WHERE
+				u.id =1
+    </select>
 </mapper>
