@@ -1,83 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta name="referrer" content="no-referrer">
 <head>
-  <meta charset="UTF-8">
-  <title>关于我们</title>
-  <link rel="stylesheet" href="/assets/css/reset.css">
-  <link rel="stylesheet" href="/assets/css/index.css">
-  <script src="//lib.baomitu.com/vue/2.6.8/vue.js"></script>
-  <script src="//lib.baomitu.com/jquery/3.3.1/jquery.js"></script>
-  <script src="//lib.baomitu.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
-  <link href="//lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=2"/>
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1,user-scalable=no">
+  <div th:replace="/home/common :: commonHeader(关于我们)"></div>
+  <link rel="stylesheet" href="/assets/css/home.css">
 </head>
 <body>
-<div class="banner">
-  <div class="navbigbox flex">
-    <div class="logo"><img src="/assets/image/public/logo.png" alt=""></div>
-    <div class="navbox flex">
-      <div class="navbox-left flex">
-        <a href="/views/home/index.html" class="nav active">主页<span>home</span></a>
-        <a href="/views/home/about.html" class="nav">关于我们<span>About</span></a>
-        <a href="/views/home/contact.html" class="nav">联系我们<span>contact</span></a>
-        <a href="" class="nav">论坛<span>forum</span></a>
-        <a href="" class="nav">商城<span>Shop</span></a>
-      </div>
-      <div class="navbox-right">
-        <a href="/views/home/login.html" class="link link-login"><img src="/assets/image/public/user.png" alt="">登录</a>
-        <a href="/views/home/login.html" class="link link-regist">注册</a>
-      </div>
-    </div>
+<div id="app" class="abouts" v-cloak>
+  <div class="banner">
+    <div th:replace="/home/common :: commonNav"></div>
+    <img src="/assets/image/about/banner.png" alt="">
   </div>
-  <img src="/assets/image/index/banner.png" alt="">
-</div>
-
-
-
-<div class="footer">
-  <div class="foot-top">
-    <div class="wrap">
-      <p>合作链接</p>
-      <div class="aList">
-        <a href="">百度一下</a>
-        <a href="">系统之家</a>
-        <a href="">比克尔软件</a>
-        <a href="">JZ5U绿色下载</a>
-        <a href="">华彩软件</a>
-        <a href="">ZOL软件</a>
-        <a href="">9553下载</a>
-        <a href="">绿色资源</a>
-        <a href="">极速下载</a>
-        <a href="">飘荡软件</a>
-        <a href="">红软下载</a>
-        <a href="">多多软件站</a>
-        <a href="">久友下载站</a>
-        <a href="">天极网站</a>
-      </div>
+  <div class="advantages">
+    <div class="titleAll">
+      <p class="titlec">我们的优势</p>
+      <span class="titleen">our advantages</span>
     </div>
-  </div>
-  <div class="foot-bot">
     <div class="wrap flex">
-      <div class="left">
-        <p>关于我们</p>
-        <p>法律声明</p>
-      </div>
-      <div class="center">
-        <span class="left"></span>
-        <div class="cen">
-          <p>固定电话电话：0000-0000000</p>
-          <p>电子邮箱：000000000000</p>
-          <p>公司地址：000000000000000000000000000</p>
-        </div>
-        <span class="right"></span>
-        <div class="clear"></div>
-      </div>
-      <div class="right">
-        <img src="" alt=""/>
-        <p>扫一扫关注</p>
+      <div v-for="(item,index) in advantageList" class="list">
+        <p class="icon"><img :src="'/assets/image/about/icon'+(index+1)+'.png'" alt=""/></p>
+        <p class="name">{{item.title}}</p>
+        <p class="cont">{{item.content}}</p>
       </div>
     </div>
   </div>
+  <div class="about">
+    <div class="titleAll">
+      <p class="titlec">关于我们</p>
+      <span class="titleen">About Us</span>
+    </div>
+    <div class="about-cont wrap flex">
+      <div class="left" id="left">
+        <img src="/assets/image/about/aboutUs.png" alt=""/>
+      </div>
+      <div class="right" id="right">
+        <p>
+          云阙将打造一个综合型的集团化公司，树立“顶层”思维，不仅专业，更要卓越！不断完善公司旗下各大产业，融合资源，建设完整商业链，打造良好的商业生态，与此同时，我们将持续关注公益产业，体现企业的社会价值，做受人尊敬的正能量企业！</p>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div th:replace="/home/common :: commonFooter"></div>
 </div>
+<script>
+  const mixin = {
+    data() {
+      return {
+        advantageList: []
+      }
+    },
+    methods: {
+      getAdvantage() {
+        $.ajax({
+          type: "post",
+          url: "/selectAllOurAdvantagesList",
+          dataType: "json",
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              this.advantageList = res.data
+            }
+          }
+        });
+      }
+    },
+    mounted() {
+      this.getAdvantage()
+    }
+  }
 
+  function scroll() {
+    if (window.pageYOffset !== null) {
+      return {
+        top: window.pageYOffset,
+        left: window.pageXOffset
+      }
+    } else if (document.compatMode === "CSS1Compat") {
+      return {
+        top: document.documentElement.scrollTop,
+        left: document.documentElement.scrollLeft
+      }
+    }
+    return {
+      top: document.body.scrollTop,
+      left: document.body.scrollLeft
+    }
+  }
+
+  let num = 1
+  window.onscroll = function () {
+    console.log(scroll().top)
+
+    let list = document.querySelectorAll(".list")
+    if (scroll().top > 700 && num == 1) {
+
+      for (let i = 0; i < list.length; i++) {
+        list[i].classList.add("active");
+      }
+      num++
+      return false
+    }
+  }
+</script>
+<div th:replace="/home/common :: commonFooterjs"></div>
 </body>
 </html>

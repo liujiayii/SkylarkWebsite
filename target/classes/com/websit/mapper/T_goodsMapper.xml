@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_goodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_goods">
+        <id column="goods_id" property="goods_id" />
+        <result column="goods_name" property="goods_name" />
+        <result column="goods_tel" property="goods_tel" />
+        <result column="goods_sheng" property="goods_sheng" />
+        <result column="goods_shi" property="goods_shi" />
+        <result column="goods_xian" property="goods_xian" />
+        <result column="goods_address" property="goods_address" />
+        <result column="goods_ster" property="goods_ster" />
+        
+    </resultMap>
+    
+    <select id="selectGoods" resultType="com.websit.entity.T_goods">
+      select goods_id,goods_name,goods_tel,goods_sheng,goods_shi,goods_xian,goods_address 
+      from t_goods where user_id=#{user_id}
+    </select>
+    
+    
+
+</mapper>

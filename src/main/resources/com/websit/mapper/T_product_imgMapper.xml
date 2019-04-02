@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_product_imgMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_product_img">
+        <id column="id" property="id" />
+        <result column="product_id" property="product_id" />
+        <result column="img" property="img" />
+    </resultMap>
+    
+     <!-- 根据商品id删除商品图片 -->
+    <delete id="deleteProductImageByProductId" parameterType="BigInteger">
+		delete
+		   from
+		t_product_img
+		   where product_id=#{product_id}
+		
+	</delete>
+    <!-- 根据商品id查询商品图片 -->
+    <select id="selectProductImageByProductId" resultType="com.websit.entity.T_product_img">
+       SELECT DISTINCT
+                    id,
+                   product_id,
+                   img
+                FROM
+                    t_product_img
+                    WHERE product_id=#{productId}
+    </select>
+</mapper>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.InventoryMapper">
+
+    <!--  通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.Inventory">
+        <id column="id" property="id" />
+        <result column="number" property="number" />
+        <result column="create_time" property="create_time" />
+         <result column="productName" property="productName" />
+          <result column="products_id" property="products_id" />
+    </resultMap>
+
+<!-- 查询库存 分页 -->
+    <select id="listAllInventoryById" resultType="com.websit.entity.Inventory">
+       SELECT DISTINCT
+                    ti.id id,
+                    ti.number number,
+                    ti.create_time create_time,
+                    ti.product_id products_id,
+                    tp.name productName
+                FROM
+                    t_inventory ti,t_product tp
+                WHERE
+                ti.product_id = tp.id
+               
+			<if test="productName != null and productName != ''">
+				and tp.name like "%"#{productName}"%"
+			</if>
+		
+                 group by ti.id
+         DESC
+                limit #{page},#{limit} 
+    </select>
+    
+    <!-- 查询库存 不分页 -->
+    <!-- <select id="selectZoneNoPage" resultType="com.websit.entity.Inventory">
+       SELECT DISTINCT
+                    ti.id id,
+                    ti.number number,
+                    ti.create_time create_time,
+                    ti.product_id products_id,
+                    tp.name productName
+                FROM
+                    t_inventory ti,t_product tp
+                WHERE
+                ti.product_id = tp.id
+    </select> -->
+
+    <!-- 增加库存-->
+	<insert id="saveInventoryById" parameterType="com.websit.entity.Inventory">
+		insert into
+		t_inventory(number,create_time,product_id)
+		values
+		(#{number},now(),#{products_id})
+	</insert>
+	
+	<!-- 修改商品 -->
+	<update id="updateInventory" parameterType="com.websit.entity.Inventory">
+		update t_inventory
+		<set>
+			<if test="number != null and number != ''">
+				number = #{number},
+			</if>
+			 <if test="create_time != null and create_time != ''">
+				create_time = #{create_time},
+			</if> 
+			<if test="products_id != null and products_id != ''">
+				product_id = #{products_id}
+			</if>
+		</set>
+		where id= #{id}
+	</update>
+	
+    
+    <!-- 查询商品类型数量 -->
+	<select id="findInventoryCount" resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM
+		(
+		select
+		id
+		from
+		t_inventory
+		<where>
+			<if test="productName != null and productName != ''">
+				and name like "%"#{productName}"%"
+			</if>
+		</where>
+		)as tb
+	</select>
+	<!-- 根据商品一级分类id删除一级分类 -->
+    <delete id="deleteInventoryById" parameterType="BigInteger">
+		delete
+		   from
+		t_inventory
+		   where id=#{id}
+		
+	</delete>
+</mapper>

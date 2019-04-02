@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <div th:replace="/mall/common  :: commonHeader(物流详情)"></div>
+  <style>
+    .nav-span {
+      display: none
+    }
+
+    .navli {
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container" id="app">
+  <div th:replace="mall/common :: commonNav"></div>
+  <div class="detailCont">
+    <p><a href="/mall">首页</a>-<a href=" #" onclick="javascript :history.back(-1)">返回</a>-物流详情</p>
+    <div class="logisticsDom">
+      <p>包裹信息</p>
+      <div class="imgDom">
+        <div class="imgImgs"><img src="/assets/image/mall/imgTree.png"></div>
+        <div class="imgImgs"><img src="/assets/image/mall/imgOne.png"></div>
+        <div class="imgImgs"><img src="/assets/image/mall/imgTwo.png"></div>
+        <div class="imgImgs"><img src="/assets/image/mall/imgFour.png"></div>
+      </div>
+      <div class="logistics">
+        <h3>{{issigns}}</h3>
+        <hr>
+        <ul v-for="(gather,subscript) in issignsData">
+          <li>{{gather.status}}</li>
+        </ul>
+      </div>
+      <div class="ints">
+        <p>运单编号：<span>{{logisticsData.expressDetail[0].number}}</span> 物流公司：<span>{{logisticsData.expName}}</span>
+          客服电话：<span>{{logisticsData.expPhone}}</span> 物流官网：<span>{{logisticsData.expSite}}</span></p>
+        <p>发货地址：<span>52656666</span></p>
+      </div>
+    </div>
+  </div>
+  <div th:replace="mall/common :: commonFooter"></div>
+</div>
+</body>
+<script>
+  window.onload = function () {
+    nav();
+  }
+</script>
+<script type="text/javascript">
+  function navHref(ids) {
+    alert(ids)
+  }
+
+  const mixin = {
+    data() {
+      return {
+        classData: [],
+        goodsData: [],
+        logisticsData: [],
+        issigns: "",
+        issignsData: []
+      }
+    },
+    methods: {
+      getClass() {
+        $.ajax({
+          type: "post",
+          url: "/selectAllproductation",
+          dataType: "json",
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              this.classData = res.data
+              console.log(this.classData);
+            }
+          }
+        });
+      },
+      getLogistics() {
+        $.ajax({
+          type: "post",
+          url: " /t_express/getExpressInfo",
+          dataType: "json",
+          data: {number: this.getHrefParam('log')},
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              this.logisticsData = res.data
+              console.log(this.logisticsData)
+              this.issignsData = res.data.expressDetail
+              if (res.data.issign == 0) {
+                this.issigns = "未签收";
+              } else if (res.data.issign == 1) {
+                this.issigns = "已签收"
+              }
+            }
+          }
+        });
+      }
+    },
+    mounted() {
+      this.getClass()
+      this.getLogistics()
+    }
+  }
+
+</script>
+<div th:replace="mall/common :: commonFooterjs"></div>
+
+</html>

@@ -46,6 +46,10 @@ public class Personal implements Serializable{
 	private String postingIntroduce;
 	//贴子发布时间
 	private Date postingCreate_time;
+	//用户签名
+	private String userSignature;
+	//用户生日
+	private Date userBirthday;
 	public BigInteger getId() {
 		return id;
 	}
@@ -142,6 +146,18 @@ public class Personal implements Serializable{
 	public void setPostingCreate_time(Date postingCreate_time) {
 		this.postingCreate_time = postingCreate_time;
 	}
+	public String getUserSignature() {
+		return userSignature;
+	}
+	public void setUserSignature(String userSignature) {
+		this.userSignature = userSignature;
+	}
+	public Date getUserBirthday() {
+		return userBirthday;
+	}
+	public void setUserBirthday(Date userBirthday) {
+		this.userBirthday = userBirthday;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -164,7 +180,9 @@ public class Personal implements Serializable{
 		result = prime * result + ((postingTitle == null) ? 0 : postingTitle.hashCode());
 		result = prime * result + ((sex == null) ? 0 : sex.hashCode());
 		result = prime * result + ((traffic == null) ? 0 : traffic.hashCode());
+		result = prime * result + ((userBirthday == null) ? 0 : userBirthday.hashCode());
 		result = prime * result + ((userCreate_time == null) ? 0 : userCreate_time.hashCode());
+		result = prime * result + ((userSignature == null) ? 0 : userSignature.hashCode());
 		return result;
 	}
 	@Override
@@ -245,10 +263,20 @@ public class Personal implements Serializable{
 				return false;
 		} else if (!traffic.equals(other.traffic))
 			return false;
+		if (userBirthday == null) {
+			if (other.userBirthday != null)
+				return false;
+		} else if (!userBirthday.equals(other.userBirthday))
+			return false;
 		if (userCreate_time == null) {
 			if (other.userCreate_time != null)
 				return false;
 		} else if (!userCreate_time.equals(other.userCreate_time))
+			return false;
+		if (userSignature == null) {
+			if (other.userSignature != null)
+				return false;
+		} else if (!userSignature.equals(other.userSignature))
 			return false;
 		return true;
 	}
@@ -262,8 +290,10 @@ public class Personal implements Serializable{
 				.append(", plateName=").append(plateName).append(", plateIntroduce=").append(plateIntroduce)
 				.append(", postingContext=").append(postingContext).append(", postingTitle=").append(postingTitle)
 				.append(", postingIntroduce=").append(postingIntroduce).append(", postingCreate_time=")
-				.append(postingCreate_time).append("]");
+				.append(postingCreate_time).append(", userSignature=").append(userSignature).append(", userBirthday=")
+				.append(userBirthday).append("]");
 		return builder.toString();
 	}
+	
 	
 }

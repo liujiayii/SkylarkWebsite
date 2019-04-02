@@ -16,40 +16,159 @@
         <result column="number" property="number" />
         <result column="new_time" property="new_time" />
         <result column="is_top" property="is_top" />
+        <result column="is_dele" property="is_dele" />
     </resultMap>
     
     <!-- 查询热门帖子（回帖最多） -->
-    <select id="selectHotPotings" resultMap="BaseResultMap">
-    	SELECT p.* 
-    	FROM t_posting p,t_comment c 
-    	WHERE p.id=c.posting_id 
+    <resultMap id="selectHotPotings" type="com.websit.entityvo.PostingPlateVo" extends="BaseResultMap">
+        <result column="commentCount" property="commentCount" />
+        <association property="t_plate" javaType="com.websit.entity.T_plate">
+        	<id column="pl_id" property="id" />
+	        <result column="plate_name" property="plate_name" />
+        </association>
+    </resultMap>
+    
+    <select id="selectHotPotings" resultMap="selectHotPotings">
+    	SELECT p.id, p.title, p.context, p.create_time, p.number, pl.id pl_id, pl.plate_name,
+    		(select COUNT(*) from t_comment where posting_id=p.id) commentCount 
+    	FROM t_posting p,t_comment c,t_plate pl 
+    	WHERE p.id=c.posting_id and p.plate_id=pl.id
     	GROUP BY c.posting_id 
-    	ORDER BY COUNT(c.posting_id) desc limit #{row}
+    	ORDER BY COUNT(c.posting_id) desc
+    	<if test="page != null and row != null">
+    		limit #{page},#{row}
+    	</if>
+    </select>
+    <!-- 查询 热门帖子总条数 -->
+    <select id="selectHotCounts" resultType="int">
+    	SELECT COUNT(*)
+    	FROM (
+	    	SELECT p.id
+	    	FROM t_posting p,t_comment c,t_plate pl 
+	    	WHERE p.id=c.posting_id and p.plate_id=pl.id
+	    	GROUP BY c.posting_id 
+	    	<if test="page != null and row != null">
+    			limit #{page},#{row}
+    		</if>
+    	) a
+    	
     </select>
     
     <!-- 查询最新帖子  -->
-    <select id="selectNewestPotings" resultMap="BaseResultMap">
-    	select * 
-    	from t_posting 
-    	ORDER BY create_time DESC limit #{row}
+    <resultMap id="selectNewestPotings" type="com.websit.entityvo.PostingPlateVo" extends="BaseResultMap">
+        <result column="commentCount" property="commentCount" />
+        <association property="t_plate" javaType="com.websit.entity.T_plate">
+        	<id column="pl_id" property="id" />
+	        <result column="plate_name" property="plate_name" />
+        </association>
+    </resultMap>
+    
+    <select id="selectNewestPotings" resultMap="selectNewestPotings">
+    	select p.id, p.title, p.create_time, pl.id pl_id, pl.plate_name,
+    		(select COUNT(*) from t_comment where posting_id=p.id) commentCount 
+    	from t_posting p, t_plate pl
+		where p.plate_id = pl.id
+		<if test="plate_id != null and plate_id != ''">
+			and p.plate_id = #{plate_id}
+		</if>
+    	ORDER BY create_time DESC
+    	<if test="row != null and row != ''">
+    		limit #{row,javaType=INTEGER}
+    	</if>
     </select>
-	<!-- 查询版主下的话题列表   -->
-	<select id="selecAllSome" resultType="com.websit.entityvo.T_postingVo">
+    
+    <!-- 查询精华帖子  -->
+    <resultMap id="selectGoodPostings" type="com.websit.entityvo.PostingPlateVo" extends="BaseResultMap">
+        <association property="t_plate" javaType="com.websit.entity.T_plate">
+        	<id column="pl_id" property="id" />
+	        <result column="plate_name" property="plate_name" />
+        </association>
+    </resultMap>
+    
+    <select id="selectGoodPostings" resultMap="selectGoodPostings">
+    	select p.id, p.title, p.is_good ,p.create_time, pl.id pl_id, pl.plate_name 
+    	from t_posting p, t_plate pl
+		where p.plate_id = pl.id and p.is_good = #{isGood,javaType=INTEGER}
+    	ORDER BY p.toGood_time DESC
+    	<if test="row != null and row != ''">
+    		limit #{row,javaType=INTEGER}
+    	</if>
+    </select>
+    
+    <!-- 查询版主下的话题列表置顶   -->
+	<select id="selecAllSomeTop" resultType="com.websit.entityvo.T_postingVo">
 		SELECT
+			p.id id,
+			p.user_id user_id,
 			p.context context,
 			p.title title,
 			p.introduce introduce,
 			p.create_time create_time,
+			p.number number,
 			u.nickname nickname,
-			u.avatar avatar
+			u.avatar avatar,
+			p.new_time new_time,
+			p.is_top is_top
+		FROM
+			t_posting p JOIN t_user u ON p.user_id = u.id
+		<where>
+			p.plate_id=#{plate_id}
+		AND
+			p.is_dele=1
+			and
+			p.is_top=1
+			<if test="title != null and title != ''">
+				and p.title like "%"#{title}"%"
+			</if>
+			ORDER by p.new_time DESC
+		</where>
+	</select>
+	<!-- 查询版主下的普通话题列表   -->
+	<select id="selecAllSome" resultType="com.websit.entityvo.T_postingVo">
+		SELECT
+			p.id id,
+			p.user_id user_id,
+			p.context context,
+			p.title title,
+			p.introduce introduce,
+			p.create_time create_time,
+			p.number number,
+			u.nickname nickname,
+			u.avatar avatar,
+			p.new_time new_time,
+			p.is_top is_top
+		FROM
+			t_posting p JOIN t_user u ON p.user_id = u.id
+		<where>
+			p.plate_id=#{plate_id}
+		AND
+			p.is_dele=1
+			and
+			p.is_top=0
+			<if test="title != null and title != ''">
+				and p.title like "%"#{title}"%"
+			</if>
+			ORDER by p.new_time DESC
+			limit #{page},#{limit}
+		</where>
+	</select>
+	<!-- 查询版主下的普通话题列表数量  -->
+	<select id="selectCountTwo" resultType="com.websit.entityvo.T_postingVo">
+		SELECT
+			COUNT(DISTINCT p.id) count
 		FROM
 			t_posting p,t_user u
-		WHERE
-			p.user_id=u.id
-		AND
+		<where>
 			p.plate_id=#{plate_id}
+			AND
+			p.is_dele=1
+			and
+			p.is_top=0
+			<if test="title != null and title != ''">
+				and p.title like "%"#{title}"%"
+			</if>
+		</where>
 	</select>
-	
 	<!-- 查询用户发帖数量 -->
 	<select id="selectPostingCount" resultType="Integer">
 		SELECT COUNT(DISTINCT tb.id) count
@@ -60,9 +179,9 @@
 		from
 		t_posting po
 		<where>
-			<if test="user_id != null and user_id != ''">
+		
 				po.user_id  =#{user_id}
-			</if>
+			
 		</where>
 		)as tb
 	</select>

@@ -1,0 +1,324 @@
+/*商城首页*/
+.mallIndex {
+    width: 1200px;
+    margin: 20px auto;
+}
+
+.mallIndex .top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 94px;
+}
+
+.mallIndex .top .logo {
+    width: 100px;
+    height: 100px;
+}
+
+.mallIndex .top .logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.mallIndex .top .search {
+    width: 555px;
+}
+
+.mallIndex .top .search input {
+    height: 40px;
+    border: 2px solid #e60012;
+}
+
+.mallIndex .top .search .ivu-input-group-append {
+    background: #e60012;
+    border: none;
+    color: #fff;
+}
+
+.mallBanner .title {
+    width: 100%;
+    height: 38px;
+    background: #f00;
+}
+
+.mallIndex .goodsCont {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 46px;
+}
+
+.mallIndex .goodsCont .goodsBox {
+    width: 288px;
+}
+
+.mallIndex .goodsCont .goodsBox .img {
+    width: 100%;
+    height: 190px;
+}
+
+.mallIndex .goodsCont .goodsBox .img img {
+    width: 100%;
+    height: 100%;
+}
+
+.mallIndex .goodsCont .goodsBox .info {
+    width: 100%;
+    font-size: 14px;
+    color: #333;
+    line-height: 30px;
+}
+
+.mallIndex .goodsCont .goodsBox .rob {
+    position: relative;
+    margin-top: 26px;
+    width: 240px;
+    height: 50px;
+    background: #f20347;
+    font-size: 26px;
+    line-height: 50px;
+    text-align: center;
+    color: #fff;
+}
+
+.mallIndex .goodsCont .goodsBox .rob .robNow {
+    position: absolute;
+    right: -44px;
+    top: -9px;
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: #ffec65;
+    border: 1px solid #f20347;
+    color: #f20347;
+    font-size: 16px;
+    box-sizing: border-box;
+    padding: 16px;
+    line-height: 1;
+}
+
+.mallIndex .module {
+}
+
+.mallIndex .module .title {
+    font-size: 20px;
+    color: #000;
+    line-height: 40px;
+}
+
+.mallIndex .module .line {
+    height: 1px;
+    width: 100%;
+    background: #666666;
+    margin: 4px auto 10px;
+}
+
+.mallIndex .module .moduleCont {
+    display: flex;
+    padding: 20px 0 40px;
+}
+
+.mallIndex .module .moduleCont .aside {
+    width: 346px;
+    height: 548px;
+    margin-right: 30px;
+}
+
+.mallIndex .module .moduleCont .aside img {
+    width: 100%;
+    height: 100%;
+}
+
+.mallIndex .module .moduleCont .main {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 880px;
+}
+
+.mallIndex .module .moduleCont .main .mainBox {
+    width: 255px;
+    height: 264px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.mallIndex .module .moduleCont .main .mainBox .img {
+    width: 100%;
+    height: 210px;
+}
+
+.mallIndex .module .moduleCont .main .mainBox .img img {
+    width: 100%;
+    height: 100%;
+}
+
+.mallIndex .module .moduleCont .main .mainBox .info {
+    font-size: 16px;
+    color: #000;
+    text-align: center;
+    line-height: 40px;
+}
+
+.mallIndex .module .moduleCont .main .mainBox .info .price {
+    color: #eb0f0f;
+    padding: 0 10px;
+}
+
+.mallIndex .module .moduleCont .main .mainBox:hover .intro {
+    margin-top: -42px;
+}
+
+.mallIndex .module .moduleCont .main .mainBox .intro {
+    position: relative;
+    margin-top: 14px;
+    background: #f1335f;
+    width: 100%;
+    height: 56px;
+    line-height: 56px;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    transition: all .3s;
+    z-index: 2;
+}
+
+/*商品详情图*/
+.mallDetail .main {
+    display: flex;
+}
+
+.mallDetail .bannerShow {
+    width: 390px;
+    height: 516px;
+    margin-right: 26px;
+}
+
+.mallDetail .bannerShow img {
+    width: 100%;
+    height: 100%;
+}
+
+.mallDetail .bannerBox {
+    display: flex;
+    margin-top: 10px;
+}
+
+.mallDetail .bannerBox .bannerImg {
+    width: 70px;
+    height: 76px;
+    border: 1px solid #b2b2b2;
+}
+
+.mallDetail .bannerBox .bannerImgBorder {
+    border: 1px solid #f20347;
+}
+
+.mallDetail .bannerImg img {
+    width: 100%;
+    height: 100%;
+}
+
+.mallDetail .main .detail {
+    width: 526px;
+}
+
+.mallDetail .main .detail .title {
+    font-size: 16px;
+    color: #010000;
+}
+
+.mallDetail .main .detail .priceBox {
+    width: 526px;
+    height: 110px;
+    background: #f5ede3;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.mallDetail .main .detail .priceBox .oldPrice {
+    font-size: 12px;
+    line-height: 40px;
+}
+
+.mallDetail .main .detail .priceBox .nowPrice {
+    font-size: 12px;
+}
+
+.mallDetail .main .detail .priceBox .nowPrice .price {
+    color: #d5232f;
+    font-size: 18px;
+}
+
+.mallDetail .main .detail .sales {
+    display: flex;
+    justify-content: space-around;
+    width: 526px;
+    height: 31px;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    font-size: 12px;
+    color: #000;
+    line-height: 31px;
+    margin-top: 20px;
+}
+
+.mallDetail .main .detail .sales .count {
+    font-size: 14px;
+    color: #d5232f;
+    padding: 0 4px;
+}
+
+.mallDetail .main .detail .typeBox {
+    display: flex;
+    margin: 20px auto;
+}
+
+.mallDetail .main .detail .typeBox .ivu-radio-wrapper {
+    margin-bottom: 8px;
+}
+
+.mallDetail .main .detail .typeBox .type {
+    font-size: 12px;
+    min-width: 74px;
+    text-align: center;
+    line-height: 32px;
+}
+
+.mallDetail .main .detail .buyBox {
+    display: flex;
+    justify-content: center;
+    margin: 40px auto;
+}
+
+.mallDetail .main .detail .buyBox button {
+    height: 38px;
+    padding: 0 50px;
+    margin-right: 10px;
+}
+
+.mallDetail .tabs {
+    margin-top: 33px;
+}
+
+.mallDetail .tabs > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
+    border-radius: 0;
+    background: #fff;
+}
+
+.mallDetail .tabs > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
+    border-top: 1px solid #3399ff;
+}
+
+.mallDetail .tabs > .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: #3399ff;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+

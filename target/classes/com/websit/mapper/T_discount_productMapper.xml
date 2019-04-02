@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_discount_productMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_discount_product">
+        <id column="id" property="id" />
+        <result column="product_id" property="product_id" />
+        <result column="discount_id" property="discount_id" />
+    </resultMap>
+ <!-- 根据商品id查询商品及每个商品下所有的满减金额(app) -->
+    <select id="listDiscountByProductId" resultMap="DiscountAndProduct">
+       SELECT DISTINCT
+                 td.price price,
+                  td.money money,
+                  p.name productName,
+                  p.id productId
+                FROM
+                 t_discount td,
+                 t_discount_product tdp,
+                  t_product p
+         where
+                tdp.product_id = p.id
+                and tdp.discount_id = td.id
+                and p.id = #{productId}
+    </select>
+     <resultMap type="com.websit.entityvo.DiscountVo" id="DiscountAndProduct">
+       <id column="productId" property="productId"/>
+       <result column="productName" property="productName"/>
+       <collection property="discountList" ofType="com.websit.entity.T_discount">
+           <id column="id" property="id"/>
+           <result column="price" property="price"/>
+           <result column="money" property="money"/>
+       </collection>
+    </resultMap> 
+    
+	  <!-- 增加商品专区 -->
+	<insert id="saveDiscountById" parameterType="com.websit.entityvo.Discount">
+		insert into
+		 t_discount_product(product_id,discount_id)
+		values
+		(#{productid},#{id})
+	</insert>
+	
+	<!-- 修改商品专区 -->
+	<update id="updateZone" parameterType="com.websit.entity.Zone">
+		update  t_zone
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name}
+			</if>
+			<if test="image != null and image != ''">
+				image = #{image}
+			</if>
+			<if test="create_time != null and create_time != ''">
+				create_time = #{create_time}
+			</if>
+		</set>
+		where id= #{id}
+	</update>
+	 <!-- 根据专区id删除商品专区 -->
+    <delete id="deleteZoneById" parameterType="BigInteger">
+		delete
+		   from
+		 t_zone
+		   where id=#{id}
+		
+	</delete>
+	<!-- 根据商品id查询商品满减金额 -->
+    <select id="selectDiscountListByProductId" resultType="com.websit.entityvo.Discount">
+       SELECT DISTINCT
+                 td.price price,
+                  td.money money,
+                tdp.discount_id discountid,
+                  tdp.product_id productid
+                FROM
+                 t_discount td,
+                 t_discount_product tdp
+         where
+                 tdp.discount_id = td.id
+                and  tdp.product_id = #{productid}
+    </select>
+</mapper>

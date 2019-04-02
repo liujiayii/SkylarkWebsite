@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_trolleyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_trolley">
+        <id column="trolley_id" property="trolley_id" />
+        <result column="user_id" property="user_id" />
+        <result column="product_id" property="product_id" />
+        <result column="number" property="number" />
+        <result column="times" property="times" />
+    </resultMap>
+    <select id="lt_trolleylst" resultType="com.websit.entityvo.lt_trolleylst" >
+    		SELECT   s.*,t.number,t.trolley_id  from  t_trolley t  JOIN  T_product s ON  t.product_id=s.id  where t.user_id=#{user_id}
+    
+    </select>
+    
+     <select id="shppingnum"   resultType="Integer">
+    		SELECT   COUNT(*) as ter from t_trolley  where product_id=#{product_id} and user_id=#{user_id}
+    
+    </select>
+       <update id="updatemnum">
+    		update    t_trolley set number=Number+#{num}  where product_id=#{product_id} and user_id=#{user_id}
+    
+    </update>
+      <select id="number"   resultType="Integer">
+    		SELECT   count(*) from t_trolley  where product_id=#{product_id}
+    
+    </select>
+          <update id="updatemnum2">
+    		update    t_trolley set number=#{num} where product_id=#{id} and user_id=#{user_id}
+    
+          </update>
+              <select id="T_produc"   resultType="com.websit.entity.T_product">
+    		SELECT id,`name`,product_type_id,image,price,color,`state`,create_time,brand,specifications,zone_id FROM t_product where id=#{T_product_id}
+    
+    </select>
+    <select id="querproductname"  resultType="String">
+    SELECT  t_product.`name`  FROM  t_product  where id=#{productId}
+    
+    
+    </select>
+
+</mapper>

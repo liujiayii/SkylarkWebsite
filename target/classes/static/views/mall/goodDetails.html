@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <div th:replace="/mall/common  :: commonHeader(商品详情)"></div>
+  <link rel="stylesheet" href="/assets/css/goods.css">
+  <style>
+    .nav-span {
+      display: none
+    }
+
+    .navli {
+      cursor: pointer;
+    }
+
+    .goodsForm {
+      float: right
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+  <div class="container">
+    <div th:replace="mall/common :: commonNav"></div>
+    <hr class="contHr"/>
+    <div class="detailCont" v-for="(goods,index) in goodsData">
+      <div class="goodsMall">
+        <div class="goodsImage">
+          <div class="goodsImage-big"><img :src="goods.productImage[indexs].img"></div>
+          <div class="goodsImage-imgs">
+            <template v-for="(goodsImg,index_c) in goods.productImage" v-if="index_c<5">
+              <div class="imgsDom" @click="imgChange(index_c)" :class="{bannerImgBorder: (indexs == index_c)}">
+                <img :src="goodsImg.img" class="clickImg">
+              </div>
+            </template>
+          </div>
+        </div>
+        <div class="goodsState">
+          <p>{{goods.productName}}</p>
+          <div class="price">
+            <p>专柜价：<span>￥{{goods.price}}</span></p>
+          </div>
+          <div class="goodsForm">
+            <div class="titleArea">
+              <ul class="titleUl">
+                <li><a href="">
+                  <!-- 月销量 --></a><span></span></li>
+                <li><a href="">累计评论</a><span>{{countSum}}</span></li>
+                <li><a href="">
+                  <!-- 关注 --></a><span></span></li>
+              </ul>
+            </div>
+            <div class="contArea">
+              <dl>
+                <dt>规格</dt>
+                <dd>
+                  <ul class="sizeUl">
+                    <li><a>{{goods.specifications}}</a></li>
+                  </ul>
+                </dd>
+              </dl>
+              <dl>
+                <dt>颜色</dt>
+                <dd class="imgDd">
+                  <span :title="goods.color">{{goods.color}}</span>
+                </dd>
+              </dl>
+              <dl>
+                <dt>数量</dt>
+                <dd style="overflow: hidden;">
+                  <div class="number" v-html="num[0]" id="num">1</div>
+                  <div class="calculate">
+                    <a href="javascript:;" id="adds" @click="add(0)">+</a>
+                    <a href="javascript:;" @click="min(0)">-</a>
+                  </div>
+                  <div class="unit">件</div>
+                  <div class="unit">库存{{inventory}}件</div>
+                </dd>
+              </dl>
+              <dl>
+                <dt>服务承诺</dt>
+                <dd>正品保证</dd>
+              </dl>
+            </div>
+            <div class="form-btn">
+              <!-- <input type="button" value="立即购买" />
+                <input type="button" value="加入购物车" /> -->
+              <a @click="orderOk(goods.productId)">立即购买</a>
+              <a @click="orderCart(goods.productId)">加入购物车</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="goodsDeails">
+        <div class="goodsDel">
+          <h2>
+            <span class="contP" :class="{ active: type=='detail' }" @click="toggleType('detail')">商品详情</span>
+            <span class="contP" :class="{ active: type=='tesk' }" @click="toggleType('tesk')">累计评价 <a
+                    href="javascript:;">{{countSum}}</a></span>
+          </h2>
+          <div class="detailsDiv" v-if="type === 'detail'">
+            <div class="detailsDiv-top">
+              <p>品牌名称 ： <span>{{goods.brand}}</span></p>
+              <p><span>商品描述：{{goods.describion}}</span></p>
+            </div>
+            <div class="detailsDiv-last">
+              <p>模特展示</p>
+              <div class="detailImgs" v-for="(goodsImg,indexs) in goods.productImage">
+                <img :src="goodsImg.img"/>
+              </div>
+            </div>
+          </div>
+          <div class="detailsDiv" v-if="type === 'tesk'">
+            <div class="detailReview" v-for="(item,index) in classDatas">
+              <dl>
+                <dt><img :src="item.avatar">
+                  <p>{{item.nickname}}</p>
+                </dt>
+                <dd>{{item.review_content}}</dd>
+                <dd>
+                  <img :src="itemSrc.picture" v-for="(itemSrc,num) in item.picture_video"></dd>
+                <dd class="times">{{formatData(item.review_time)}}</dd>
+                <!-- 商家回复<dd>{{item.reply}}</dd>  -->
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="mall/common :: commonFooter"></div>
+</div>
+</div>
+
+</body>
+
+<script>
+  const mixin = {
+    data() {
+      return {
+        indexs: 0,
+        type: 'detail',
+        classData: [],
+        classDatas: [],
+        goodsData: [],
+        countSum: 0,
+        num: [1],
+        inventory: 0
+      }
+    },
+    methods: {
+      orderOk(productId) {
+        if (this.userInfo.name != null) {
+          var nums = this.num[0];
+          window.location.href = "/OrderOk?id=" + productId + "&num=" + nums;
+        } else {
+          this.$Message.info('请先登录');
+          setTimeout("window.location.href = '/toLogin?type=login'", 1500)
+        }
+      },
+      //加入购物车
+      orderCart(productId) {
+        if (this.userInfo.name != null) {
+          //window.location.href = "/ShoppingCart?id=" + productId + "&num=" + nums;
+          $.ajax({
+            type: "post",
+            url: "/t_trolley/addt_trolley",
+            dataType: "json",
+            data: {
+              product_id: productId,
+              user_id: this.userInfo.id,
+              number: this.num[0]
+            },
+            success: (res) => {
+              if (res.code == 1) {
+                this.$Message.info(res.msg)
+              } else {
+                this.$Message.info(res.msg)
+              }
+            }
+          });
+        } else {
+          this.$Message.info('请先登录');
+          setTimeout("window.location.href = '/toLogin?type=login?type=login'", 1500)
+        }
+      },
+      imgChange(index) {
+        this.indexs = index
+      },
+      add(nums) {
+        var xnum = this.num * 1 + 1
+        Vue.set(this.num, nums, xnum);
+      },
+      min(nums) {
+        if (this.num * 1 > 0) {
+          var xnum2 = this.num - 1
+          Vue.set(this.num, nums, xnum2);
+        }
+
+      },
+
+      getClass() {
+        $.ajax({
+          type: "post",
+          url: "/selectAllproductation",
+          dataType: "json",
+          success: (res) => {
+            if (res.code == 1) {
+              this.classData = res.data
+            }
+          }
+        });
+      },
+      //根据id查询商品信息
+      getGoods() {
+        $.ajax({
+          type: "post",
+          url: "/listProductByProductId",
+          dataType: "json",
+          data: {productId: this.getHrefParam("id")},
+          success: (res) => {
+            if (res.code == 1) {
+              this.goodsData = res.data
+            } else {
+              this.$Message.info(res.msg)
+            }
+          }
+        });
+      },
+      //评价
+      getClases() {
+        $.ajax({
+          type: "post",
+          url: "/t_review/selectAllSome",
+          dataType: "json",
+          data: {"product_id": this.getHrefParam("id")},
+          success: (res) => {
+            if (res.code == 1) {
+              this.countSum = res.count
+              this.classDatas = res.data
+            } else {
+             // this.$Message.info(res.msg)
+            }
+          }
+        });
+      },
+      //库存
+      getInventory() {
+        $.ajax({
+          type: "post",
+          url: "/t_order/qerkuc",
+          dataType: "json",
+          data: {id: this.getHrefParam("id")},
+          success: (res) => {
+            if (res.code == 1) {
+              this.inventory = res.data
+            } else {
+              this.$Message.info(res.msg)
+            }
+          }
+        });
+      },
+      /*切换评论商品详情*/
+      toggleType(type) {
+        this.type = type
+      }
+    },
+    mounted() {
+      this.getClases()
+      this.getGoods()
+      this.getClass()
+      this.getInventory()
+    }
+  }
+</script>
+<div th:replace="mall/common :: commonFooterjs"></div>
+
+</html>

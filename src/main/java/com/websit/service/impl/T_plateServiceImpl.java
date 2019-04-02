@@ -2,7 +2,10 @@ package com.websit.service.impl;
 
 import com.websit.constant.ReturnCode;
 import com.websit.entity.T_plate;
+import com.websit.entity.T_tag;
+import com.websit.entityvo.PlateCompanyVo;
 import com.websit.mapper.T_plateMapper;
+import com.websit.mapper.T_tagMapper;
 import com.websit.service.IT_plateService;
 import com.websit.until.JsonUtil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -25,22 +28,49 @@ public class T_plateServiceImpl extends ServiceImpl<T_plateMapper, T_plate> impl
 	
 	@Autowired
 	private T_plateMapper t_plateMapper;
-	
+	/** 标签表  */
+	@Autowired
+	private T_tagMapper t_tagMapper;
+
 	/**
-	 * 查询版块信息
+	 * 查询所有论坛分类以及对应版块信息
+	 *
+	 * @Title: selectAllPlates
+	 * @description 
+	 * @return  
+	 * String   
+	 * @author lujinpeng
+	 * @createDate 2019年3月18日-上午11:23:48
 	 */
 	@Override
-	public String selectPlateInfo() {
-		List<T_plate> plateList = null;
+	public String selectAllPlates() {
+		List<PlateCompanyVo> selectAllPlates = null;
 		
 		try {
-			plateList = t_plateMapper.selectList(null);
+			selectAllPlates = t_plateMapper.selectAllPlates();
+			
+			for (PlateCompanyVo pcv : selectAllPlates) {
+				for (T_plate tp : pcv.getT_plate()) {
+					//tp.setCommentCount(t_plateMapper.selectPlateCommentCount(tp.getId()));
+				//	tp.setTagList(t_tagMapper.selectTags(new T_tag(null, null, tp.getId(), pcv.getId())));
+				}
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, ReturnCode.EXCEPTION_MSG, null, null);
 		}
 		
-		return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, plateList.size(), plateList);
+		return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, selectAllPlates.size(), selectAllPlates);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.websit.service.IT_plateService#selectFindId(long)
+	 */
+	@Override
+	public T_plate selectFindId(long id) {
+		// TODO Auto-generated method stub
+		return t_plateMapper.selectFindId(id);
 	}
 
 	

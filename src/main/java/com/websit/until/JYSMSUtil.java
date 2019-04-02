@@ -48,7 +48,7 @@ public class JYSMSUtil {
 		map.put("tpl_id", tpl_id);
 		map.put("tpl_value", JYSMSUtil.createTpl_value(tpl_value));
 		
-		String result = JYSMSUtil.sendPost(map, "http://121.201.72.233:8081/sms.php");
+		String result = JYSMSUtil.sendPost(map, "http://121.201.72.14:8881/sms.php");
 		System.out.println(result);
 		JSONObject jsonStr = JSONObject.fromObject(result);
 		String code = jsonStr.getString("code");

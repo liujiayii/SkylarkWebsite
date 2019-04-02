@@ -2,63 +2,139 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.websit.mapper.T_userMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.websit.entity.T_user">
-        <id column="id" property="id" />
-        <result column="phone" property="phone" />
-        <result column="password" property="password" />
-        <result column="number" property="number" />
-        <result column="create_time" property="create_time" />
-        <result column="nickname" property="nickname" />
-        <result column="sex" property="sex" />
-        <result column="email" property="email" />
-        <result column="lastdate" property="lastdate" />
-        <result column="online" property="online" />
-        <result column="fanscount" property="fanscount" />
-        <result column="followcount" property="followcount" />
-        <result column="avatar" property="avatar" />
-        <result column="address" property="address" />
-    </resultMap>
-    
-    <insert id="aaa">
-    insert into  t_user values(null,123456,4564,456,null,456,1,1354,null,null,null,null,null,null)
-    </insert>
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.websit.entity.T_user">
+		<id column="id" property="id" />
+		<result column="phone" property="phone" />
+		<result column="password" property="password" />
+		<result column="number" property="number" />
+		<result column="create_time" property="create_time" />
+		<result column="nickname" property="nickname" />
+		<result column="sex" property="sex" />
+		<result column="email" property="email" />
+		<result column="lastdate" property="lastdate" />
+		<result column="online" property="online" />
+		<result column="fanscount" property="fanscount" />
+		<result column="followcount" property="followcount" />
+		<result column="avatar" property="avatar" />
+		<result column="address" property="address" />
+		<result column="phid" property="phid" />
+	</resultMap>
 
-  <!-- 根据id查看个人详情资料 -->
-<select id="selectUserById" resultType="com.websit.entityvo.Personal">
-			 SELECT
-				u.id id,
-				u.number traffic,
-				u.create_time userCreate_time,
-				u.nickname nickName,
-				u.sex sex,
-				u.email email,
-				u.fanscount fansCount,
-				u.followcount followCount,
-				u.avatar avatar,
-				u.address address,
-				pl. NAME plateName,
-				pl.introduce plateIntroduce,
-				po.context postingContext,
-				po.title postingTitle,
-				po.introduce postingIntroduce,
-				po.create_time postingCreate_time
-			FROM
-				t_user u,
-				t_plate pl,
-				t_posting po
-			WHERE
-				u.id = po.user_id
-			AND pl.id = po.plate_id
-			        group by u.id
-    </select>
-<!-- 根据用户id查询用户注册时间 -->
-<select id="selectUserCreateTimeById" resultType="java.util.Date">
-			 SELECT
-				u.create_time userCreate_time
-			FROM
-				t_user u
-			WHERE
-				u.id =1
-    </select>
+	<insert id="aaa">
+		insert into t_user
+		values(null,123456,4564,456,null,456,1,1354,null,null,null,null,null,null)
+	</insert>
+
+	<insert id="insertWithPh" parameterType="com.websit.entity.T_user">
+		insert into
+		t_user(phone,password,number,create_time,nickname,sex,email,lastdate,online,
+		fanscount,followcount,avatar,address,phid
+		)
+		values(#{phone},#{password},#{number},#{create_time},#{nickname},#{sex},#{email},#{lastdate},#{online},
+		#{fanscount},#{followcount},#{avatar},#{address},#{phid})
+	</insert>
+
+
+
+	<!-- 根据id查看个人详情资料 -->
+	<select id="selectUserById" resultType="com.websit.entityvo.Personal">
+		SELECT
+		u.id id,
+		u.number traffic,
+		u.create_time userCreate_time,
+		u.nickname nickName,
+		u.sex sex,
+		u.email email,
+		u.avatar avatar,
+		u.address address,
+		u.signature userSignature,
+		u.birthday userBirthday
+		FROM
+		t_user u
+		WHERE
+		u.id = #{id}
+		group by u.id
+	</select>
+	<!-- 根据用户id查询用户注册时间 -->
+	<select id="selectUserCreateTimeById" resultType="java.util.Date">
+		SELECT
+		u.create_time userCreate_time
+		FROM
+		t_user u
+		WHERE
+		u.id =#{id}
+	</select>
+
+	<!-- 查询用户回帖数量 -->
+	<select id="selectUserReplyCountByUserId" resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM
+		(
+		select
+		re.id id
+		from
+		t_reply re
+		<where>
+
+			re.users_id = #{users_id}
+
+		</where>
+		)as tb
+	</select>
+
+
+	<!-- 查询用户量 -->
+
+	<select id="slectCount" resultType="java.lang.Long">
+		select count(id) from t_user u
+	</select>
+
+
+
+	<!-- 根据id查看用户发布过的贴子 -->
+	<select id="selectT_postingByUserId" resultType="com.websit.entityvo.Personal">
+		SELECT
+		u.id id,
+		po.context postingContext,
+		po.title postingTitle,
+		po.introduce postingIntroduce,
+		po.create_time postingCreate_time,
+		pl.plate_name plateName
+		FROM
+		t_user u,t_posting po,t_plate pl
+		WHERE
+		u.id = po.user_id
+		and pl.id = po.plate_id
+		and po.user_id = #{id}
+		 limit #{page},#{limit}
+	</select>
+	<!-- 查询用户发帖数量 -->
+	<!--<select id="selectPostingCount" resultType="Integer"> SELECT COUNT(DISTINCT 
+		tb.id) count FROM ( select po.id id from t_posting po <where> po.user_id 
+		=4 </where> )as tb </select> -->
+	<update id="updateUserVoById" parameterType="com.websit.entity.UserUpdateVo">
+		update t_user
+		<set>
+			<if test="nickname != null || nickname != '' " >
+				nickname = #{nickname},
+			</if>
+			<if test="sex != null || sex != '' ">
+				sex = #{sex},
+			</if>
+			<if test="email != null || email != ''">
+				email = #{email},
+			</if>
+			<if test="avatar != null || avatar != ''">
+				avatar = #{avatar},
+			</if>
+			<if test="birthday != null || birthday != ''">
+				birthday = #{birthday},
+			</if>
+			<if test="signature != null || signature != ''">
+				signature = #{signature},
+			</if>        
+		</set>
+		where id = #{id}
+	</update>
 </mapper>

@@ -2,70 +2,296 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>云阙论坛</title>
-  <link rel="stylesheet" href="/assets/css/reset.css">
   <link rel="stylesheet" href="/assets/css/bbs.css">
-  <script src="//lib.baomitu.com/vue/2.6.8/vue.js"></script>
-  <script src="//lib.baomitu.com/jquery/3.3.1/jquery.js"></script>
-  <script src="//lib.baomitu.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
-  <link href="//lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+  <div th:replace="/home/common :: commonHeader(云阙论坛)"></div>
+  <script src="//lib.baomitu.com/wangEditor/latest/wangEditor.min.js"></script>
 </head>
 <body>
-
-<div id="app">
+<div id="app" v-cloak>
+  <div class="banner">
+    <div th:replace="/home/common :: commonNav"></div>
+    <img src="/assets/image/bbs/banner.png" alt="">
+  </div>
   <div class="bbsPost">
-    <div class="caption">这得什么样的家庭条件啊？？？</div>
+    <div class="home">
+      <a :href="'/forum?id='+post.id+'&page=1'" class="head"><img :src="post.image" alt=""></a>
+      <a :href="'/forum?id='+post.id+'&page=1'">{{post.plate_name}}</a>
+    </div>
+    <div class="caption">{{post.title}}</div>
     <div class="postMain">
       <div class="author">
-        <a href="" class="head"><img src="http://tb.himg.baidu.com/sys/portrait/item/9853e78699e699b4e5b7b2e696ad69ac"
-                                     alt=""></a>
-        <a href="" class="name">麻花藤</a>
+        <a href="" class="head"><img :src="post.avatar" alt=""></a>
+        <a href="" class="name">{{post.nickname}}</a>
       </div>
       <div class="reply">
-        <div class="replyMain">
-          说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥
-        </div>
-        <div class="replyInfo">1楼 2019-03-08 09:12 <a href="">回复</a></div>
+        <div class="replyMain" v-html="post.context"></div>
+        <div class="replyInfo"><span>1楼 {{post.create_time}}</span></div>
       </div>
     </div>
-    <div class="postMain">
-      <div class="author">
-        <a href="" class="head"><img src="http://tb.himg.baidu.com/sys/portrait/item/9853e78699e699b4e5b7b2e696ad69ac"
-                                     alt=""></a>
-        <a href="" class="name">麻花藤</a>
-      </div>
-      <div class="reply">
-        <div class="replyMain">
-          说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥
+    <template v-for="(item,index) in post.map">
+      <div class="postMain">
+        <div class="author">
+          <a :href="'/space?id='+item.user_id" class="head"><img :src="item.avatar" alt=""></a>
+          <a :href="'/space?id='+item.user_id" class="name">{{item.nickname}}</a>
         </div>
-        <div class="replyInfo">2楼 2019-03-08 09:12 <a href="">回复</a></div>
+        <div class="reply">
+          <div class="replyMain" v-html="item.comment"></div>
+          <div class="replyInfo"><a @click.prevent="replyShow(index)" style="margin: 0 10px"><span v-show="item.show_c">展开</span>回复({{post.map[index].num2}})</a><span>{{index+2}}楼 {{item.create_time}}</span>
+          </div>
+          <div class="replyToReplyList" :class="{replyToReplyHide : item.show_c}">
+            <div class="inner">
+              <div class="replyToReplyBox" v-for="(item_c,index_c) in item.t_replylist">
+                <div class="replyToReplyHead">
+                  <img :src="item_c.avatar" alt="">
+                </div>
+                <div class="replyToReplyInfo">
+                  <a :href="index_c">{{item_c.nickname}}:</a>{{item_c.response}}
+                </div>
+              </div>
+              <div class="pageBox" v-show="post.map[index].t_replylist.length!=0">
+                <page :total="post.map[index].num2" size="small" show-total @on-change="replyPage(index,$event)"
+                      :page-size="5"/>
+              </div>
+              <i-form ref="form" :model="form">
+                <form-item prop="response">
+                  <i-input v-model="form.response" type="textarea" :autosize="{minRows: 2,maxRows: 5}"
+                           placeholder="..." :maxlength="50"></i-input>
+                </form-item>
+                <form-item>
+                  <i-button v-if="userInfo.name===null" class="sub" type="primary" disabled>请先登录</i-button>
+                  <i-button v-else type="primary" @click="replyToReply('form',item.user_id,post.map[index].id)">回复</i-button>
+                </form-item>
+              </i-form>
+            </div>
+          </div>
+        </div>
       </div>
+    </template>
+    <div class="pageBox">
+      <Page :total="post.map.length" show-elevator size="small" prev-text="上一页" next-text="下一页"/>
     </div>
-    <div class="postMain">
-      <div class="author">
-        <a href="" class="head"><img src="http://tb.himg.baidu.com/sys/portrait/item/9853e78699e699b4e5b7b2e696ad69ac"
-                                     alt=""></a>
-        <a href="" class="name">麻花藤</a>
-      </div>
-      <div class="reply">
-        <div class="replyMain">
-          说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥说啥你就信啥
-        </div>
-        <div class="replyInfo">3楼 2019-03-08 09:12 <a href="">回复</a></div>
-      </div>
+    <div class="editor">
+      <p class="info">发表回复</p>
+      <div ref="editor" style="text-align:left" id="qingkong"></div>
+      <i-button v-if="userInfo.name===null" class="sub" type="primary" disabled>请先登录</i-button>
+      <i-button v-else class="sub" type="primary" @click="getContent">提交</i-button>
     </div>
   </div>
+  <div th:replace="/home/common :: commonFooter"></div>
 </div>
+
 <script>
-  let vm = new Vue({
-    el: '#app',
+  const mixin = {
     data() {
-      return {}
+      return {
+        show: false,
+        post: [],
+        editorContent: '',
+        form: {}
+      }
     },
-    methods: {},
+    methods: {
+      replyShow(index) {
+        this.post.map[index].show_c = !this.post.map[index].show_c
+        console.log(index)
+      },
+      /*楼中楼分页*/
+      replyPage(index, page) {
+        console.log(page)
+        console.log(index)
+        $.ajax({
+          type: "post",
+          url: "/t_reply/t_replylist",
+          dataType: "json",
+          data: {
+            comment_id: this.post.map[index].id,
+            page: page * 5 - 5,
+            limit: page * 5
+          },
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              this.post.map[index].t_replylist = res.data
+            } else {
+              this.error(res.msg)
+            }
+          }
+        });
+      },
+      /*楼中楼回复*/
+      replyToReply(form, users_id, comment_id,) {
+        if (this.form.response != '') {
+          $.ajax({
+            type: "post",
+            url: "/t_reply/addT_reply",
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify({
+              response: this.form.response,
+              users_id,
+              comment_id,
+              user_id: this.userInfo.id
+            }),
+            success: (res) => {
+              console.log(res)
+              if (res.code == 1) {
+                this.form = {}
+                this.success(res.msg)
+              } else {
+                this.error(res.msg)
+              }
+            }
+          });
+        } else {
+          this.error('请输入内容')
+        }
+      },
+      /* 获取帖子*/
+      getPost() {
+        $.ajax({
+          type: "post",
+          url: "/t_reply/querylist",
+          dataType: "json",
+          data: {
+            id: this.getHrefParam('id'),
+            page: 1,
+            limit: 10
+          },
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              res.data[0].create_time = this.timeFormat(res.data[0].create_time)
+              for (let i = 0; i < res.data[0].map.length; i++) {
+                res.data[0].map[i].create_time = this.timeFormat(res.data[0].map[i].create_time)
+                res.data[0].map[i].show_c = true
+              }
+              this.post = res.data[0];
+            }
+          }
+        });
+      },
+      /*提交回复*/
+      getContent() {
+        $.ajax({
+          type: "post",
+          url: "/t_comment/addt_comment",
+          dataType: "json",
+          contentType: 'application/json',
+          data: JSON.stringify({
+            comment: this.editorContent,
+            posting_id: this.getHrefParam('id'),
+            user_id: 21
+          }),
+          success: (res) => {
+        	  
+            console.log(res)
+            if(res.code == 1){
+            	
+            		 var socket = new SockJS('/endpointSang');
+            	   
+      	      stompClient = Stomp.over(socket);
+      	     
+      	      stompClient.connect({}, function (frame) {
+      	     
+      	           stompClient.send("/selectbbsPost", {}, JSON.stringify({'name': '1'}));
+      	      });
+            }
+           
+          }
+        });
+      }
+    },
     mounted() {
+      this.getPost()
+      /*注册编辑器*/
+      let E = window.wangEditor
+      let editor = new E(this.$refs.editor)
+      // 自定义菜单配置
+      editor.customConfig.menus = [
+        'head',  // 标题
+        'bold',  // 粗体
+        'fontSize',  // 字号
+        'fontName',  // 字体
+        'italic',  // 斜体
+        'underline',  // 下划线
+        'strikeThrough',  // 删除线
+        'foreColor',  // 文字颜色
+        'backColor',  // 背景颜色
+        'link',  // 插入链接
+        'list',  // 列表
+        'justify',  // 对齐方式
+        'quote',  // 引用
+        'emoticon',  // 表情
+        'image',  // 插入图片
+        'table',  // 表格
+        'code',  // 插入代码
+        'undo',  // 撤销
+        'redo'  // 重复
+      ]
+      editor.customConfig.onchange = (html) => {
+        this.editorContent = html
+      }
+      editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
+      editor.customConfig.uploadImgMaxSize = 2 * 1024 * 1024 //上传图片大小
+      editor.customConfig.customAlert = function (info) {
+        // info 是需要提示的内容
+        alert('自定义提示：' + info)
+      }
+      editor.create()
     }
-  })
+  }
+  $(function () {
+	
+      var socket = new SockJS('/endpointSang');
+ 	   
+	      stompClient = Stomp.over(socket);
+	     
+	      stompClient.connect({}, function (frame) {
+	           stompClient.subscribe('/topic/selectbbsPost', function (response) {
+	        	 
+	        	   $.ajax({
+	        	          type: "post",
+	        	          url: "/t_reply/querylist",
+	        	          dataType: "json",
+	        	          data: {
+	        	            id: vm.getHrefParam('id'),
+	        	            page: 1,
+	        	            limit: 10
+	        	          },
+	        	          success: (res) => {
+	        	           
+	        	            if (res.code == 1) {
+	        	              res.data[0].create_time = vm.timeFormat(res.data[0].create_time)
+	        	              for (let i = 0; i < res.data[0].map.length; i++) {
+	        	                res.data[0].map[i].create_time = vm.timeFormat(res.data[0].map[i].create_time)
+	        	                res.data[0].map[i].show_c = true
+	        	              }
+	        	              alert("dfgd"+res.data[0])
+	        	              vm.post = res.data[0];
+	        	            }
+	        	          }
+	        	        });
+	             })
+	      });
+	   
+        });
+	  
+   /* function disconnect() {
+	    if (stompClient != null) {
+	      stompClient.disconnect();
+	    }
+	    setConnected(false);
+	    console.log('Disconnected');
+	  }
+
+	  function showResponse(message) {
+	    $("#num1").html(message);
+	  }
+
+	  function showResponse1(message) {
+	    $("#num").html(message);
+	  } */
 </script>
+<div th:replace="/home/common :: commonFooterjs"></div>
 </body>
 </html>

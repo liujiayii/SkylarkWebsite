@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_salesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_sales">
+        <id column="sales_id" property="sales_id" />
+        <result column="order_id" property="order_id" />
+        <result column="sales_cause" property="sales_cause" />
+        <result column="cause_type" property="cause_type" />
+        <result column="cause_explain" property="cause_explain" />
+        <result column="cause_time" property="cause_time" />
+        <result column="stele" property="stele" />
+        <result column="sales_no" property="sales_no" />
+    </resultMap>
+    <update id="updatestaletrtr">
+    update T_sales  set T_sales.stele=#{stale}  where sales_id=#{sales_id}
+  
+    </update>
+    <select id="th_list"  resultType="com.websit.entityvo.th_list">
+    select  t.sales_no,t.order_id,t.cause_time,dd.order_money as zongjia,t.cause_type,t.sales_cause,t.cause_explain,dd.order_state,dd.user_id,US.nickname  from T_sales   t   join   t_order dd  ON  dd.order_id=t.order_id  join  t_user US  ON  US.id=dd.user_id 
+   
+  
+    </select>
+    
+
+</mapper>

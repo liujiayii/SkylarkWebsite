@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="commonHeader(title)">
+  <title th:text="${title}"></title>
+  <link href="//lib.baomitu.com/iview/latest/styles/iview.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/assets/css/mallbackreset.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/cont.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/mallreset.css">
+  <script src="/assets/js/jquery-3.1.1.min.js"></script>
+  <script src="/assets/js/vue.js"></script>
+  <script src="/assets/js/header.js"></script>
+  <script src="//lib.baomitu.com/iview/latest/iview.min.js"></script>
+  <style>
+    .input-bigbox {
+      font-size: 12px;
+    }
+
+    .ivu-input-wrapper {
+      width: 91% !important
+    }
+
+    .ivu-btn-error {
+      position: relative;
+      top: -10px;
+      left: -3px;
+    }
+    .head-topleft span{cursor: pointer;}
+  </style>
+</head>
+
+<body>
+<div th:fragment="commonNav">
+  <back-top></back-top>
+  <!--  <style>
+    .input-bigbox{font-size:12px;}
+    .ivu-input-wrapper{width:91%!important}
+    .ivu-btn-error{position: relative;top: -10px;left: -3px;}
+    </style> -->
+  <div class="head">
+    <div class="head-top">
+      <div class="wrap">
+        <div class="head-topleft">
+          <span>{{userInfo.name}} </span>
+          欢迎光临本店!&nbsp&nbsp&nbsp
+          <span v-if="userInfo.name===null">
+              <a href="/toLogin?type=login" class="head-topa active">请登录</a>
+              <a href="/toLogin?type=reg" class="head-topa">免费注册</a>
+            </span>
+          <span v-if="userInfo.name!=null"  @click="modal1 = true" >退出</span>
+          <Modal
+          v-model="modal1"
+          title="提示"
+          @on-ok="ok"
+          @on-cancel="cancel">
+          <p>确认退出</p>
+      </Modal>
+        </div>
+        <div class="head-topright">
+          <a href="/" class="head-topa"><img src="" alt="">返回主站</a>
+          <a href="/orderList" class="head-topa"><img src="" alt="">个人中心</a>
+          <a @click="getCars()" class="head-topa active"><img src="/assets/image/mall/public/spcar.png" alt=""
+                                                              class="ico">购物车</a>
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <div class="nav_box-top">
+      <div class=" wrap">
+        <a href="/mall" class="logo">
+          <img src="/assets/image/mall/public/logo.png" alt="">
+        </a>
+        <div class="search-box">
+          <i-input class="input input-bigbox" type="text" placeholder="输入关键词进行搜索..." v-model="searchcont"/>
+        </div>
+        <i-button type="error" @click="gotosearch()">搜索</i-button>
+
+        <div class="nav_box-topright">
+          <img src="/assets/image/mall/public/1.png" alt="" class="topimg">
+          <img src="/assets/image/mall/public/2.png" alt="" class="topimg">
+          <img src="/assets/image/mall/public/3.png" alt="" class="topimg">
+          <img src="/assets/image/mall/public/4.png" alt="" class="topimg">
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <div class="nav-big-box wrap">
+      <div class="nav-big-box-top wrap">
+        <span class="navli">全部分类</span>
+      </div>
+      <div class="wrap">
+        <div class="nav-span">
+          <ul class="nav-ul">
+            <li v-for="(item,key,index) in classData" class="nav-ullibox"><a href="" class="nav-ulli"><img
+                    src="/assets/image/mall/nav1.png" alt="">{{key}}</a>
+              <p>
+                <a v-for="(item_c,index) in classData[key]" :href="'/goodList?id='+item_c.id"
+                   class="navs">{{item_c.name}}</a>
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="foot" th:fragment="commonFooter">
+  <div class="foot-top">
+    <div class="wrap">
+      <div class="foottop-cont"><img src="/assets/image/mall/public/quality.png" alt=""><span
+              class="foottit">品质保证</span></div>
+      <div class="foottop-cont"><img src="/assets/image/mall/public/real.png" alt=""><span class="foottit">正品货源</span>
+      </div>
+      <div class="foottop-cont"><img src="/assets/image/mall/public/true.png" alt=""><span class="foottit">真实描述</span>
+      </div>
+      <div class="foottop-cont"><img src="/assets/image/mall/public/alive.png" alt=""><span
+              class="foottit">闪电发货</span>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="foot-cont">
+      <ul v-for="(item,index) in footList" class="foot-ul">
+        <li>{{item.t}}</li>
+        <template v-for="(item_c,index_c) in item.c">
+          <li class="flltul-li"><a>{{item_c}}</a></li>
+        </template>
+      </ul>
+    </div>
+    <p class="foot-bot">© 2005-2018 云阙商城 版权所有，并保留所有权利。</p>
+  </div>
+</div>
+
+<div th:fragment="commonFooterjs">
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      mixins: [mixin],
+      data() {
+        return {
+        modal1: false,
+          userInfo: {
+            name: null,
+            id: null
+          },
+          searchcont: "",
+          classData: [],
+          footList: [
+            {t: '会员中心', c: ['注册会员', '密码管理', '地址管理']},
+            {t: '买家帮助', c: ['充值和提现', '退款说明']},
+            {t: '支付方式', c: ['支付宝支付', '余额支付', '微信支付']},
+            {t: '售后服务', c: ['买家接货标准', '交易纠纷处理细则', '活体退换货注意事项']},
+            {t: '商家服务', c: ['入驻资质', '订单结算']},
+            {t: '服务支持', c: ['客服1 18935156337', '客服 QQ 2850671559', '工作时间 9：00-18：30']},
+          ]
+
+        }
+      },
+      methods: {
+        getUserInfo() {
+          this.userInfo.name = sessionStorage.getItem("SkyUserName");
+          this.userInfo.id = sessionStorage.getItem("SkyUserId");
+          /*  alert(sessionStorage.getItem("SkyUserId")) */
+        },
+        ok () {
+          sessionStorage.removeItem('SkyUserName')
+          sessionStorage.removeItem('SkyUserId')
+          this.userInfo.name = null
+          this.userInfo.id = null
+            },
+            cancel () {
+            },
+        // out() {
+         
+        // },
+        getCars() {
+          if (this.userInfo.id == null) {
+            this.$Message.info('请先登录');
+            setTimeout("window.location.href = '/toLogin?type=login'", 1500)
+          } else {
+            window.location.href = "/ShoppingCart"
+          }
+        },
+        gotosearch() {
+          window.location.href = "/searchs?name=" + this.searchcont
+        },
+        /*获取地址栏参数*/
+        getHrefParam(key) {
+          let s = window.location.href;
+          let reg = new RegExp(key + "=\\w+");
+          let rs = reg.exec(s);
+          if (rs === null || rs === undefined) {
+            return "";
+          } else {
+            return rs[0].split("=")[1];
+          }
+        },
+        formatData(now) {
+          var date = new Date(now);
+          var year = date.getFullYear();
+          var month = date.getMonth() + 1;
+          var day = date.getDate();
+          var month = month < 10 ? "0" + month : month;
+          var day = day < 10 ? "0" + day : day;
+          return year + '-' + month + '-' + day;
+        },
+      },
+      mounted() {
+        this.getUserInfo()
+        this.$Loading.start();
+        setTimeout(() => {
+          this.$Loading.finish()
+        }, 100)
+      }
+    })
+  </script>
+  <script>
+    $(".navli").click(function () {
+      $(".nav-span").slideToggle();
+    });
+
+  </script>
+</div>
+</body>
+
+</html>

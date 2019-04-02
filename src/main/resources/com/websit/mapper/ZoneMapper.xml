@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.ZoneMapper">
+
+    <!--  通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.Zone">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="create_time" property="create_time" />
+         <result column="ioc" property="ioc" />
+    </resultMap>
+
+<!-- 查询商品类型 分页 -->
+    <select id="selectZoneList" resultType="com.websit.entity.Zone">
+       SELECT DISTINCT
+                    id,
+                    name ,
+                    create_time, 
+                     image
+                FROM
+                    t_zone
+               group by id
+               DESC
+      	limit #{page},#{limit} 
+    </select>
+    
+    <!-- 查询商品专区 不分页 -->
+    <select id="selectZoneNoPage" resultType="com.websit.entity.Zone">
+       SELECT DISTINCT
+                    id,
+                    name ,
+                    create_time, 
+                     image
+                FROM
+                    t_zone
+               group by id
+    </select>
+      <!-- 查询当前商品专区及各个专区下商品集合 -->
+    <select id="listZoneByTypeId" resultMap="productsAndZone">
+       SELECT DISTINCT
+                    p.id id,
+                    z. name ZoneName,
+                    z. id zoneId,
+                    p.name name,
+                    z.image images,
+                    p.image image,
+                    p.color color,
+                    p.price price,
+                    p.brand brand,
+                    p.create_time create_times,
+                    p.state state,
+                    p.specifications specifications,
+                    p.describes describion
+                FROM
+                    t_product p,
+                    t_zone z
+         <where>
+                   p.zone_id = z.id
+                and z.id = #{zoneId}
+        </where>
+    </select>
+    <select id="listZoneByTypeIds" resultMap="productsAndZone">
+       SELECT DISTINCT
+                    p.id id,
+                    z. name ZoneName,
+                    z. id zoneId,
+                    p.name name,
+                    z.image images,
+                    p.image image,
+                    p.color color,
+                    p.price price,
+                    p.brand brand,
+                    p.create_time create_times,
+                    p.state state,
+                    p.specifications specifications,
+                    p.describes describion
+                FROM
+                    t_product p,
+                    t_zone z
+         <where>
+                   p.zone_id = z.id
+                and z.id = #{zoneId} and p.state=1
+        </where>
+    </select>
+    <resultMap type="com.websit.entityvo.ZoneVo" id="productsAndZone">
+    
+       <id column="zoneId" property="zoneId"/>
+      
+       <result column="images" property="image"/>
+        <result column="ZoneName" property="ZoneName"/>
+       <result column="create_time" property="create_time"/>
+       <collection property="productLists" ofType="com.websit.entity.T_product">
+           <id column="id" property="id"/>
+           <result column="name" property="name"/>
+           <result column="image" property="image"/>
+           <result column="price" property="price"/>
+           <result column="brand" property="brand"/>
+           <result column="create_times" property="create_times"/>
+           <result column="describion" property="describion"/>
+           <result column="state" property="state"/>
+            <result column="specifications" property="specifications"/>
+           <result column="color" property="color"/>
+       </collection>
+    </resultMap>
+    
+    <!-- 查询商品类型数量 -->
+	<select id="findBpiList"  resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM (select id from t_zone
+		<where>
+			<!-- <if test="name != null and name != ''">
+				and z.name like "%"#{name}"%"
+			</if> -->
+		</where>
+		)as tb
+	</select>
+	  <!-- 增加商品专区 -->
+	<insert id="saveZone" parameterType="com.websit.entity.Zone">
+		insert into
+		  t_zone(name,image,create_time)
+		values
+		(#{name},#{image},now())
+	</insert>
+	
+	<!-- 修改商品专区 -->
+	<update id="updateZone" parameterType="com.websit.entity.Zone">
+		update  t_zone
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="image != null and image != ''">
+				image = #{image},
+			</if>
+			<if test="create_time != null and create_time != ''">
+				create_time = #{create_time}
+			</if>
+		</set>
+		where id= #{id}
+	</update>
+	 <!-- 根据专区id删除商品专区 -->
+    <delete id="deleteZoneById" parameterType="BigInteger">
+		delete
+		   from
+		 t_zone
+		   where id=#{id}
+		
+	</delete>
+	
+	<select id="listZoneByzoneId" resultType="com.websit.entityvo.ZoneProductVo">
+       SELECT DISTINCT
+                    p.id id,
+                    z. name ZoneName,
+                    p.name name,
+                    z.image zone_image,
+                    p.image image,
+                    p.color color,
+                    p.price price,
+                    p.brand brand,
+                     p.specifications specifications
+ 
+                FROM
+                    t_product p,
+                    t_zone z
+         <where>
+                   p.zone_id = z.id
+                and z.id = #{zoneId}
+        </where>
+    </select>
+        <!-- 根据商品id查询商品专区 -->
+    <select id="selectZoneByProductId" resultType="com.websit.entityvo.ZoneProductVo">
+				SELECT DISTINCT
+					tz.id id,
+					tz. NAME ZoneName,
+					tp.id productaid,
+					tp. NAME NAME
+				FROM
+					t_zone tz,
+					t_product tp
+				WHERE
+					tp.zone_id = tz.id
+				AND tp.id = #{productaid}
+    </select>
+</mapper>

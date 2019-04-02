@@ -2,12 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.websit.mapper.T_plateMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.websit.entity.T_plate">
-        <id column="id" property="id" />
-        <result column="company_id" property="company_id" />
-        <result column="name" property="name" />
-        <result column="introduce" property="introduce" />
-    </resultMap>
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.websit.entity.T_plate">
+		<id column="id" property="id" />
+		<result column="company_id" property="company_id" />
+		<result column="name" property="name" />
+		<result column="introduce" property="introduce" />
+	</resultMap>
+
+	<!-- 查询所有版块信息 -->
+	<resultMap id="selectAllPlates" type="com.websit.entityvo.PlateCompanyVo">
+		<id column="c_id" property="id" />
+		<result column="c_name" property="name" />
+		<collection property="t_plate" ofType="com.websit.entity.T_plate">
+			<id column="id" property="id" />
+			<result column="company_id" property="company_id" />
+			<result column="name" property="name" />
+			<result column="introduce" property="introduce" />
+			<result column="image" property="image" />
+			<result column="number" property="number" />
+			<result column="numbers" property="numbers" />
+			<result column="plate_name" property="plate_name" />
+			<result column="commentCount" property="commentCount" />
+		</collection>
+	</resultMap>
+	<select id="selectAllPlates" resultMap="selectAllPlates">
+		select
+		p.*,
+		c.id as c_id, c.name as c_name
+		from t_plate p
+		RIGHT JOIN t_company c ON
+		p.company_id = c.id
+	</select>
+
+	<!-- 查询每个模块的回帖总条数 -->
+	<select id="selectPlateCommentCount" resultType="int">
+		SELECT count(*)
+		FROM t_comment tc
+		LEFT JOIN t_posting tp on tc.posting_id=tp.id
+		LEFT
+		JOIN t_plate tpl on tpl.id=tp.plate_id
+		WHERE tpl.id = #{plate_id}
+	</select>
+
+	<select id="selectFindId" resultType="com.websit.entity.T_plate">
+		SELECT
+		p.introduce,
+		p.image,
+		p.`name`,
+		p.plate_name,
+		p.image_name
+		from t_plate p
+		WHERE
+		p.id=#{id}
+	</select>
 
 </mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_revertMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.websit.entity.T_revert">
+		<id column="id" property="id" />
+		<result column="review_id" property="review_id" />
+		<result column="user_id" property="user_id" />
+		<result column="byuser_id" property="byuser_id" />
+		<result column="revert" property="revert" />
+		<result column="revert_time" property="revert_time" />
+	</resultMap>
+	<!-- 通过评论表id查询回复评论 -->
+	<select id="seleceFirstRevert" resultType="com.websit.entityvo.T_revertVo">
+		SELECT
+		ree.id,
+		ree.revert,
+		ree.revert_time,
+		ree.byuser_id,
+		ree.user_id,
+		u.nickname,
+		(
+		SELECT
+		nickname
+		FROM
+		t_user
+		WHERE
+		byuser_id = id
+		) AS bynickname
+		FROM
+		t_revert ree
+		JOIN t_user u ON ree.user_id = u.id
+		AND
+		ree.review_id=#{id}
+		ORDER BY ree.revert_time DESC
+	</select>
+</mapper>

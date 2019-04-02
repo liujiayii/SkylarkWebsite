@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_alipay_refundMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_alipay_refund">
+        <id column="id" property="id" />
+        <result column="buyer_user_id" property="buyer_user_id" />
+        <result column="fund_change" property="fund_change" />
+        <result column="gmt_refund_pay" property="gmt_refund_pay" />
+        <result column="out_trade_no" property="out_trade_no" />
+        <result column="present_refund_buyer_amount" property="present_refund_buyer_amount" />
+        <result column="refund_fee" property="refund_fee" />
+        <result column="store_name" property="store_name" />
+        <result column="send_back_fee" property="send_back_fee" />
+        <result column="present_refund_discount_amount" property="present_refund_discount_amount" />
+        <result column="present_refund_mdiscount_amount" property="present_refund_mdiscount_amount" />
+    </resultMap>
+
+</mapper>

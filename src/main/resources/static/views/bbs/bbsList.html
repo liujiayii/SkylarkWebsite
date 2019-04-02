@@ -2,178 +2,247 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>云阙论坛</title>
-  <link rel="stylesheet" href="/assets/css/reset.css">
   <link rel="stylesheet" href="/assets/css/bbs.css">
-  <script src="//lib.baomitu.com/vue/2.6.8/vue.js"></script>
-  <script src="//lib.baomitu.com/jquery/3.3.1/jquery.js"></script>
-  <script src="//lib.baomitu.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
-  <link href="//lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+  <div th:replace="/home/common :: commonHeader(云阙论坛)"></div>
+  <script src="//lib.baomitu.com/wangEditor/latest/wangEditor.min.js"></script>
 </head>
 <body>
 
-<div id="app">
-  <div class="bbsList">
-    <div class="listTitle">置顶主题</div>
-    <div class="postList">
-      <div class="postBox hot">
-        <a class="head" href="">
-          <img src="http://www.narkii.com/club/uc_server/avatar.php?uid=40161&size=small" alt="">
-        </a>
-        <div class="postInfo">
-          <div class="title">
-            <a class="text-truncate" href="/views/bbs/bbsPost.html"><img
-                    src="http://www.narkii.com/club/static/image/common//pin_1.gif"
-                    alt=""> 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？
-              什么是阅读权限？为什么无法下载？</a>
-            <span class="count text-truncate">浏览量：123456</span>
-          </div>
-          <div class="author">
-            <div><a href="">传说的落叶</a><span class="date">2013-8-13</span></div>
-            <span class="count text-truncate">回复量：123456</span></div>
-        </div>
-      </div>
-      <div class="postBox hot">
-        <a class="head" href="">
-          <img src="http://www.narkii.com/club/uc_server/avatar.php?uid=40161&size=small" alt="">
-        </a>
-        <div class="postInfo">
-          <div class="title">
-            <a class="text-truncate" href=""><img src="http://www.narkii.com/club/static/image/common//pin_1.gif"
-                                                  alt=""> 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？
-              什么是阅读权限？为什么无法下载？</a>
-            <span class="count text-truncate">浏览量：123456</span>
-          </div>
-          <div class="author">
-            <div><a href="">传说的落叶</a><span class="date">2013-8-13</span></div>
-            <span class="count text-truncate">回复量：123456</span></div>
-        </div>
-      </div>
-      <div class="postBox hot">
-        <a class="head" href="">
-          <img src="http://www.narkii.com/club/uc_server/avatar.php?uid=40161&size=small" alt="">
-        </a>
-        <div class="postInfo">
-          <div class="title">
-            <a class="text-truncate" href=""><img src="http://www.narkii.com/club/static/image/common//pin_1.gif"
-                                                  alt=""> 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？
-              什么是阅读权限？为什么无法下载？</a>
-            <span class="count text-truncate">浏览量：123456</span>
-          </div>
-          <div class="author">
-            <div><a href="">传说的落叶</a><span class="date">2013-8-13</span></div>
-            <span class="count text-truncate">回复量：123456</span></div>
-        </div>
-      </div>
-      <div class="postBox hot">
-        <a class="head" href="">
-          <img src="http://www.narkii.com/club/uc_server/avatar.php?uid=40161&size=small" alt="">
-        </a>
-        <div class="postInfo">
-          <div class="title">
-            <a class="text-truncate" href=""><img src="http://www.narkii.com/club/static/image/common//pin_1.gif"
-                                                  alt=""> 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？
-              什么是阅读权限？为什么无法下载？</a>
-            <span class="count text-truncate">浏览量：123456</span>
-          </div>
-          <div class="author">
-            <div><a href="">传说的落叶</a><span class="date">2013-8-13</span></div>
-            <span class="count text-truncate">回复量：123456</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="listTitle">板块主题</div>
-    <div class="postList">
-      <div class="postBox">
-        <a class="head" href="">
-          <img src="http://www.narkii.com/club/uc_server/avatar.php?uid=40161&size=small" alt="">
-        </a>
-        <div class="postInfo">
-          <div class="title">
-            <a class="text-truncate" href=""><img src="http://www.narkii.com/club/static/image/common//pin_1.gif"
-                                                  alt=""> 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？
-              什么是阅读权限？为什么无法下载？</a>
-            <span class="count text-truncate">浏览量：123456</span>
-          </div>
-          <div class="author">
-            <div><a href="">传说的落叶</a><span class="date">2013-8-13</span></div>
-            <span class="count text-truncate">回复量：123456</span></div>
-        </div>
-      </div>
-      <div class="postBox">
-        <a class="head" href="">
-          <img src="http://www.narkii.com/club/uc_server/avatar.php?uid=40161&size=small" alt="">
-        </a>
-        <div class="postInfo">
-          <div class="title">
-            <a class="text-truncate" href=""><img src="http://www.narkii.com/club/static/image/common//pin_1.gif"
-                                                  alt=""> 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？
-              什么是阅读权限？为什么无法下载？</a>
-            <span class="count text-truncate">浏览量：123456</span>
-          </div>
-          <div class="author">
-            <div><a href="">传说的落叶</a><span class="date">2013-8-13</span></div>
-            <span class="count text-truncate">回复量：123456</span></div>
-        </div>
-      </div>
-      <div class="postBox">
-        <a class="head" href="">
-          <img src="http://www.narkii.com/club/uc_server/avatar.php?uid=40161&size=small" alt="">
-        </a>
-        <div class="postInfo">
-          <div class="title">
-            <a class="text-truncate" href=""><img src="http://www.narkii.com/club/static/image/common//pin_1.gif"
-                                                  alt=""> 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？
-              什么是阅读权限？为什么无法下载？</a>
-            <span class="count text-truncate">浏览量：123456</span>
-          </div>
-          <div class="author">
-            <div><a href="">传说的落叶</a><span class="date">2013-8-13</span></div>
-            <span class="count text-truncate">回复量：123456</span></div>
-        </div>
-      </div>
-      <div class="postBox">
-        <a class="head" href="">
-          <img src="http://www.narkii.com/club/uc_server/avatar.php?uid=40161&size=small" alt="">
-        </a>
-        <div class="postInfo">
-          <div class="title">
-            <a class="text-truncate" href=""><img src="http://www.narkii.com/club/static/image/common//pin_1.gif"
-                                                  alt=""> 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？ 什么是阅读权限？为什么无法下载？
-              什么是阅读权限？为什么无法下载？</a>
-            <span class="count text-truncate">浏览量：123456</span>
-          </div>
-          <div class="author">
-            <div><a href="">传说的落叶</a><span class="date">2013-8-13</span></div>
-            <span class="count text-truncate">回复量：123456</span></div>
-        </div>
-      </div>
-    </div>
-    <nav aria-label="Page navigation example" style="margin-top: 20px;">
-      <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" tabindex="-1">上一页</a>
-        </li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">下一页</a>
-        </li>
-      </ul>
-    </nav>
+<div id="app" class="" v-cloak>
+  <div class="banner">
+    <div th:replace="/home/common :: commonNav"></div>
+    <img src="/assets/image/bbs/banner.png" alt="">
   </div>
+  <breadcrumb class="bbsBreadcrumb" separator=">">
+    <breadcrumb-item to="/club">论坛</breadcrumb-item>
+    <breadcrumb-item>{{intro.plate_name}}</breadcrumb-item>
+  </breadcrumb>
+  <div class="intro">
+    <div class="icon">
+      <img :src="intro.image" alt="">
+      <p class="name">{{intro.plate_name}}</p>
+    </div>
+    <div class="infoBox">
+      <p class="title"><strong>【板块说明】</strong></p>
+      <p class="info">{{intro.introduce}}</p>
+    </div>
+  </div>
+  <div class="bbsList">
+    <div class="bbsInner">
+      <div class="listTitle">置顶主题</div>
+      <div class="postList">
+        <template v-for="(item,index) in postList.topList" v-if="item.is_top == 1">
+          <div class="postBox hot">
+            <a class="head" :href="'/space?id='+item.user_id">
+              <img :src="item.avatar" alt="">
+            </a>
+            <div class="postInfo">
+              <div class="title">
+                <a class="textOverFlow" :href="'/post?id='+item.id">{{item.title}}</a>
+                <span class="count text-truncate">浏览量：{{item.number}}</span>
+              </div>
+              <div class="author">
+                <div><a :href="'/space?id='+item.user_id">{{item.nickname}}</a><span
+                        class="date">{{item.new_time}}</span>
+                </div>
+                <span class="count text-truncate">回复量：123456</span></div>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="listTitle">板块主题</div>
+      <div class="postList">
+        <template v-for="(item,index) in postList.list.data" v-if="item.is_top == 0">
+          <div class="postBox">
+            <a class="head" :href="'/space?id='+item.user_id">
+              <img :src="item.avatar" alt="">
+            </a>
+            <div class="postInfo">
+              <div class="title">
+                <a class="textOverFlow" :href="'/post?id='+item.id">{{item.title}}</a>
+                <span class="count text-truncate">浏览量：{{item.number}}</span>
+              </div>
+              <div class="author">
+                <div><a :href="'/space?id='+item.user_id">{{item.nickname}}</a><span
+                        class="date">{{item.new_time}}</span>
+                </div>
+                <span class="count text-truncate">回复量：123456</span></div>
+            </div>
+          </div>
+        </template>
+      </div>
+      <div class="pageBox">
+        <page :current="currPage" :total="postList.list.count" size="small" show-elevator prev-text="上一页"
+              next-text="下一页"
+              @on-change="pageChange"/>
+      </div>
+    </div>
+    <div class="editor">
+      <p class="info">发表新帖</p>
+      <i-input v-model="newTitle" placeholder="严禁发布各类虚假欺诈信息" style="background: #f7f7f7;margin-bottom: 10px;"></i-input>
+      <div ref="editor" style="text-align:left"></div>
+      <i-button v-if="userInfo.name===null" class="sub" type="primary" disabled>请先登录</i-button>
+      <i-button v-else class="sub" type="primary" @click="getContent">发表</i-button>
+    </div>
+  </div>
+  <div th:replace="/home/common :: commonFooter"></div>
 </div>
 <script>
-  let vm = new Vue({
+  const mixin = {
     el: '#app',
     data() {
-      return {}
+      return {
+        intro: {},
+        postList: {
+          topList: [],
+          list: {
+            data: [],
+            count: 0
+          }
+        },
+        editorContent: '',
+        newTitle: '',
+        currPage: parseInt(this.getHrefParam('page'))
+      }
     },
-    methods: {},
+    methods: {
+      /*板块说明*/
+      getIntro() {
+        $.ajax({
+          type: "post",
+          url: "/t_plate/selectFindId",
+          dataType: "json",
+          data: {id: this.getHrefParam('id')},
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              this.intro = res.data
+            }
+          }
+        });
+      },
+      /*置顶帖子*/
+      getTopList() {
+        $.ajax({
+          type: "post",
+          url: "/selecAllSomeTop",
+          dataType: "json",
+          data: {
+            plate_id: this.getHrefParam('id'),
+          },
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              for (let i = 0; i < res.data.length; i++) {
+                res.data[i].new_time = this.timeFormat(res.data[i].new_time)
+              }
+              this.postList.topList = res.data
+            }
+          }
+        });
+      },
+      /*帖子列表*/
+      getList(page) {
+        $.ajax({
+          type: "post",
+          url: "/selecAllSome",
+          dataType: "json",
+          data: {
+            plate_id: this.getHrefParam('id'),
+            page,
+            limit: 10
+          },
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              for (let i = 0; i < res.data.length; i++) {
+                res.data[i].new_time = this.timeFormat(res.data[i].new_time)
+              }
+              this.postList.list.data = res.data
+              this.postList.list.count = res.count
+            }
+          }
+        });
+      },
+      /*分页*/
+      pageChange(page) {
+        console.log(page)
+        window.location.href = '/forum?id=' + this.getHrefParam('id') + '&page=' + page
+      },
+      /*发表帖子*/
+      getContent() {
+        console.log(this.editorContent)
+        if (this.newTitle == '') {
+          this.error('标题不能为空')
+        } else {
+          $.ajax({
+            type: "post",
+            url: "/addT_posting",
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify({
+              user_id: this.userInfo.id,
+              context: this.editorContent,
+              title: this.newTitle,
+              plate_id: this.getHrefParam('id')
+            }),
+            success: (res) => {
+              console.log(res)
+              if (res.code == 1) {
+                this.success(res.msg)
+                this.getList(this.currPage)
+                this.newTitle = ''
+                this.editorContent = ''
+              } else {
+                this.error(res.msg)
+              }
+            }
+          });
+        }
+      }
+    },
     mounted() {
+      this.getList(this.currPage)
+      this.getIntro()
+      this.getTopList()
+      /*注册编辑器*/
+      let E = window.wangEditor
+      let editor = new E(this.$refs.editor)
+      // 自定义菜单配置
+      editor.customConfig.menus = [
+        'head',  // 标题
+        'bold',  // 粗体
+        'fontSize',  // 字号
+        'fontName',  // 字体
+        'italic',  // 斜体
+        'underline',  // 下划线
+        'strikeThrough',  // 删除线
+        'foreColor',  // 文字颜色
+        'backColor',  // 背景颜色
+        'link',  // 插入链接
+        'list',  // 列表
+        'justify',  // 对齐方式
+        'quote',  // 引用
+        'emoticon',  // 表情
+        'image',  // 插入图片
+        'table',  // 表格
+        'code',  // 插入代码
+        'undo',  // 撤销
+        'redo'  // 重复
+      ]
+      editor.customConfig.uploadImgShowBase64 = true   // 使用 base64 保存图片
+      editor.customConfig.uploadImgMaxSize = 2 * 1024 * 1024 //上传图片大小
+      editor.customConfig.customAlert = function (info) {
+        // info 是需要提示的内容
+        this.error(info)
+      }
+      editor.customConfig.onchange = (html) => {
+        this.editorContent = html
+      }
+      editor.create()
     }
-  })
+  }
 </script>
+<div th:replace="/home/common :: commonFooterjs"></div>
 </body>
 </html>

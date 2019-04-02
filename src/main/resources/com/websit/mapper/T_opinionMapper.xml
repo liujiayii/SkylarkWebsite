@@ -11,5 +11,42 @@
         <result column="emaill" property="emaill" />
         <result column="create_time" property="create_time" />
     </resultMap>
-
+    
+    <!-- 增加一条意见 -->
+	<insert id="insertOneOpinion" parameterType="T_opinion">
+		insert into
+		t_opinion(name,phone,address,emaill,create_time,content)
+		values
+		(#{name},#{phone},#{address},#{emaill},#{create_time},#{content})
+	</insert>
+<!-- 查询所有意见 -->
+    <select id="listAllOpinion" resultType="com.websit.entity.T_opinion">
+       SELECT DISTINCT
+                    id,
+                   name,
+                   phone,
+                   address,
+                   emaill,
+                   create_time,
+                   content
+                FROM
+                    t_opinion
+                     <!--     limit #{page},#{limit}  -->
+    </select>
+    <!-- 查询商品一级分类条数 -->
+	<select id="findOpinionCount" resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM
+		(
+		select
+		   id 
+		from
+		 t_opinion
+		<where>
+			<!-- <if test="name != null and name != ''">
+				and name like "%"#{name}"%"
+			</if> -->
+		</where>
+		)as tb
+	</select>
 </mapper>

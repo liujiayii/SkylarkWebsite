@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_wxpay_notifyMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.websit.entity.T_wxpay_notify">
+		<id column="id" property="id" />
+		<result column="user_id" property="user_id" />
+		<result column="openid" property="openid" />
+		<result column="cash_fee" property="cash_fee" />
+		<result column="total_fee" property="total_fee" />
+		<result column="out_trade_no" property="out_trade_no" />
+		<result column="transaction_id" property="transaction_id" />
+		<result column="result_code" property="result_code" />
+		<result column="return_code" property="return_code" />
+		<result column="time" property="time" />
+	</resultMap>
+	
+	<!-- 根据商户号查找是否已经插入用来判断是否已经回调 -->
+	<select id="findByOrderId" resultType="com.websit.entity.T_wxpay_notify">
+
+		SELECT * FROM T_wxpay_notify where transaction_id=#{transaction_id}
+
+	</select>
+</mapper>

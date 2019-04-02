@@ -1,0 +1,752 @@
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
+  body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53; }
+  h1, h2, h3, h4, h5, h6{ font-size:100%; }
+  address, cite, dfn, em, var { font-style:normal; }
+  code, kbd, pre, samp { font-family:couriernew, courier, monospace; }
+  small{ font-size:12px; }
+  ul, ol { list-style:none; }
+  a { text-decoration:none; }
+  a:hover { text-decoration:none; }
+  sup { vertical-align:text-top; }
+  sub{ vertical-align:text-bottom; }
+  legend { color:#000; }
+  fieldset, img { border:0; }
+  button, input, select, textarea { font-size:100%; }
+  table { border-collapse:collapse; border-spacing:0; }
+  div{box-sizing: border-box;}
+  .container{
+  	
+  }
+  .header,.detailCont{
+  	width: 1200px;
+  	margin: 0 auto;
+  	box-sizing: border-box;
+  	overflow: hidden;
+  }
+  .head-red{
+  	width: 10%;
+	height: 120px;
+  	background: red;
+  	float: left;
+  }
+  .head-cont{
+  	width: 90%;
+  	float: left;
+  	position: relative;
+  	overflow: hidden;
+  	height: 100%;
+  }
+  .head-cont-top{
+  	width: 100%;
+  	float: left;
+  	height: 40px;
+  	line-height: 40px;
+  	overflow: hidden;
+  }
+  .head-cont-top p{
+  	width: 40%;
+  	float: left;
+  	font-size: 15px;
+  	box-sizing: border-box;
+	padding-left: 10px;
+  }
+  .head-cont-top p span{
+  	margin: 0 20px;
+  }
+  .head-cont-top p a{
+  	color: #d5232f;
+  }
+  .head-cont-top ul{
+  	overflow: hidden;
+  	float: left;
+  	width: 60%;
+  }
+  .head-cont-top ul li{
+  	float: right;
+    box-sizing: border-box;
+    padding: 0 10px;
+    margin-left: 10px;
+  }
+  .head-cont-top ul li a img{
+  	margin-right: 5px;
+  }
+  .head-cont-bottom{
+  	float: left;
+    /* height: 80px; */
+    width: 100%;
+    overflow: hidden;
+    margin-top: 23px;
+  }
+	.head-cont-bottom form{
+	    width: 30%;
+    	float: right;
+	}
+	.head-cont-bottom form .formInput{
+		width: 260px;
+	    height: 44px;
+	    border: 2px solid #cea571;
+	    box-sizing: border-box;
+	    padding-left: 10px;
+	}
+	.head-cont-bottom form  button{
+		width: 57px;
+	    height: 44px;
+	    background: #cea571;
+	}
+	.head-cont-bottom .form-img{
+		float: right;
+		margin: 5px;
+	}
+	.contHr{
+		width: 100%;
+	    height: 2px;
+	    background: #cea571;
+	    border: none;
+	}
+	.detailCont{
+		padding: 20px 0;
+	}
+	.goodsMall{
+		width: 100%;
+		box-sizing: border-box;
+		padding-right: 200px;
+		margin: 50px 0 30px;
+		overflow: hidden;
+		position: relative;
+	}
+	.goodsImage{
+		width: 40%;
+		float: left;
+	}
+	.goodsState{
+		float: left;
+	}
+	.goodsImage{
+		float: left;
+		width: 400px;
+		overflow: hidden
+	}
+	.goodsImage-big{
+		width: 400px;
+		height: 518px;
+		float: left;
+	}
+	.goodsImage-big img{
+		width: 400px;
+		height: 100%;
+	}
+	.goodsImage-imgs{
+		width: 100%;
+		padding: 5px;
+		float: left;
+	}
+	.goodsImage-imgs .bannerImgBorder{
+		border:1px solid red;
+	}
+	.goodsImage-imgs ul{
+		overflow: hidden;
+	}
+	.goodsImage-imgs ul li{
+		float: left;
+		border: 1px solid #ddd;
+		margin-right: 3px
+	}
+	.clickImg{
+		width: 55px;
+		height: 75px;
+	}
+	.imgsDom{
+		display: inline-block;
+	    float: left;
+	    margin-right: 5px;
+        width: 55px;
+    	height: 75px;
+	}
+	.goodsState{
+		float: left;
+		width: 550px;
+		margin-left: 35px;
+		padding: 0 10px;
+	}
+	.goodsState > p{
+	    text-align: center;
+    	font-size: 19px;
+	}
+	.goodsState .price{
+		padding: 15px;
+	    background: #f5ede3;
+	    margin: 25px 0 20px;
+	    font-size: 13px;
+	}
+	.goodsState .price p:nth-of-type(1){
+		margin-bottom: 25px;
+	}
+	.goodsState .price p:nth-of-type(2) span{
+		font-size: 18px;
+	    color: #d5232f;
+	    font-weight: bold;
+	}
+	.freightArea{
+		width: 100%;
+	}
+	.freightArea .freight{
+		width: 100%;
+		overflow: hidden;
+		box-sizing: border-box;
+		padding: 5px;
+	}
+	.freightArea .freight dt{
+		float: left;
+		width: 70px;
+		text-align: left;
+		color: #6C6C6C;
+	}
+	.freightArea .freight dd{
+		float: left;
+	}
+	.titleArea{
+		width: 100%;
+		border-top: 1px solid #ddd;
+    	border-bottom: 1px solid #ddd;
+	}
+	.titleArea .titleUl{
+		width: 100%;
+		box-sizing: border-box;
+		padding: 5px 5px;
+		overflow: hidden;
+	}
+	.titleArea .titleUl li{
+		float: left;
+	    padding: 0 50px;
+	}
+	.titleArea .titleUl li span{
+		color: red;
+		margin: 0 3px;
+	}
+	.titleArea .titleUl li:nth-of-type(2){
+		border-left: 1px solid #ddd;
+		border-right: 1px solid #ddd;
+	}
+	.contArea{
+		width: 100%;
+	}
+	.contArea dl{
+		overflow: hidden;
+	    padding: 15px 5px;
+		box-sizing: border-box;
+	}
+	.contArea dl dt{
+		float: left;
+		width: 70px;
+		text-align: left;
+		color: #6C6C6C;
+	}
+	.contArea dl dd{
+		float: left;
+		box-sizing: border-box;
+		padding: 5px;
+		width: 450px;
+	}
+	.contArea dl dd .sizeUl{
+		overflow: hidden;
+	}
+	.contArea dl dd .sizeUl li{
+		float: left;
+		margin-right: 6px;
+	    margin-bottom: 2px;
+	}
+	.contArea dl dd .sizeUl li a{
+		display: inline-block;
+		border: 1px solid #6C6C6C;
+		padding: 1px 5px;
+	}
+	.contArea dl .imgDd {
+		overflow: hidden;
+	}
+	.contArea dl .imgDd span{
+	    height: 30px;
+	    margin-right: 10px;
+	    padding: 0 8px;
+	    line-height: 30px;
+	    float: left;
+	    border: 1px dashed;
+	}
+	.contArea dl dd .number{
+		padding: 5px 10px;
+	    font-size: 18px;
+	    border: 1px solid #ccc;
+	    float: left;
+	}
+	.contArea dl dd .calculate{
+		float: left;
+	    width: 20px;
+	    /* height: 56%; */
+	    overflow: hidden;
+	    margin-left: 20px;
+	}
+	.contArea dl dd .calculate a{
+		width: 80%;
+	    float: left;
+	    height: 15px;
+	    border: 1px solid #ccc;
+	    text-align: center;
+	    box-sizing: border-box;
+	    line-height: 15px;
+	    margin-bottom: 5px;
+	}
+	.unit{
+		float: left;
+		margin: 5px 10px;
+	}
+	.goodsForm{
+	    padding: 3px 0px;
+	}
+	.form-btn{
+		width: 100%;
+		text-align: center;
+	}
+	.form-btn input{
+		display:inline-block;
+	    padding: 10px 30px;
+		background: red;
+		color: #fff;
+		border: 2px solid red;
+		margin: 0 15px;
+	}
+	.form-btn input:nth-of-type(2){
+		display:inline-block;
+		background: #fdebec !important;
+		color: red !important;
+		border: 2px solid red !important;
+	}
+	.form-btn a{
+		display:inline-block;
+	    padding: 10px 30px;
+		background: red;
+		color: #fff;
+		border: 2px solid red;
+		margin: 0 15px;
+	}
+	.form-btn a:nth-of-type(2){
+		display:inline-block;
+		background: #fdebec !important;
+		color: red !important;
+		border: 2px solid red !important;
+	}
+	.goodsDeails {
+		background: #faf6f1;
+	}
+	.goodsDel{
+		width: 1000px;
+		background: #fff;
+	    padding: 0 0 20px 0;
+	}
+	.goodsDeails h2{
+		width: 100%;
+	    font-size: 20px;
+	    border-bottom: 1px solid #ccc;
+	}
+	.goodsDeails h2 .contP{
+		text-align: center;
+	    display: inline-block;
+	    padding: 2px 20px;
+   	    height: 100%;
+    	line-height: 50px;
+    	cursor: pointer;
+	}
+	.active{
+		border-top: 3px solid red !important;
+	    border-left: 1px solid #cea571 !important;
+	    border-right: 1px solid #cea571 !important;
+	    border-bottom: 1px solid #cea571 !important;
+	}
+	.goodsDeails h2 span a{
+		font-weight: 100;
+		color: red;
+	}
+	.detailsDiv{
+	    min-height: 200px;
+	}
+	.detailsDiv-top{
+		box-sizing: border-box;
+		padding: 25px 15px;
+		border-bottom: 1px solid #CCCCCC;
+	}
+	.detailsDiv-top p{
+	    font-size: 16px;
+    	margin: 10px 0;
+	}
+	.detailsDiv-last p{
+	    box-sizing: border-box;
+	    padding: 20px;
+	    color: red;
+	    font-size: 18px;
+	    font-weight: bold;
+	}
+	.detailImgs{
+		width: 100%;
+		
+	}
+	.detailImgs img{
+		width: 790px;
+	    height: 1100px;
+	    margin: 0 auto;
+	}
+	.show{
+		display: block;
+	}
+	.detailReview{
+		width: 98%;
+		border-bottom: 1px solid #CCCCCC;
+	}
+	.detailReview dl{
+		box-sizing: border-box;
+	    padding: 25px;
+	    overflow: hidden;
+	}
+	.detailReview dl dt{
+	    width: 115px;
+	    float: left;
+	    box-sizing: border-box;
+    	padding: 15px 20px;
+	    height: 120px;
+	}
+	.detailReview dl dt img{
+		width: 50px;
+		height: 50px;
+	}
+	.detailReview dl dd{
+	    float: left;
+    	width: 800px;
+    	margin-bottom: 10px;
+	}
+	.detailReview dl dd img{
+		width: 45px;
+		height: 45px;
+		margin-right: 10px;
+	}
+	.detailReview .times{
+		text-align: right;
+		color: #CCCCCC;
+	}
+	#mainImg{
+			width: 320px;
+			height: 240px;
+			border: 10px solid #ff7300;
+			position: relative;
+			float: left;
+			margin-bottom: 40px;
+		}
+		#mainImg img{
+			width: 320px;
+			height: 240px;
+		}
+	/*商品列表页面*/
+	.detail-tab-list{
+		width: 100%;
+		margin: 20px 0;
+	}
+	.detail-tab .detail-tab-span{
+		margin: 0 10px;
+	}
+	.detail-tab-01{
+		width: 100%;
+		box-sizing: border-box;
+		padding: 5px 10px;
+		border-bottom: 1px dashed #ccc;
+	}
+	.detail-tab-01 dl {
+		overflow: hidden;
+		width: 100%;
+		height: auto;
+	}
+	.detail-tab-01 dl dt{
+		text-align: left;
+		width: 100px;
+		float: left;
+		height: 100%;
+		font-weight: bold;
+	}
+	.detail-tab-01 dl dd{
+		float: left;
+		width: auto;	
+	}
+	.detail-tab-01 dl dd ul{
+		overflow: hidden;
+	}
+	.detail-tab-01 dl dd ul li{
+		float: left;
+		margin: 0 10px;
+	}
+	.detail-tab-01 dl dd ul li a{
+		display: inline-block;
+    padding: 3px 9px;
+    background: #FFFFFF;
+    color: #010101;
+	}
+	.aTitle{
+		background: red !important;
+    color: #fff !important;
+	}
+	.detail-area{
+		width: 100%;
+		overflow: hidden;
+		height: auto;
+	}
+	.detail-goods-list{
+    padding: 5px;
+    width: 300px;
+		float: left;	
+	}
+	.detail-area-A{
+		display: inline-block;
+		width: 100%;
+		height: auto;
+		text-align: center;
+		border: 1px dashed #FFFFFF;
+	}
+	.detail-goods-list:hover .carP{
+		opacity: 1 !important;
+	}
+	.detail-goods-list:hover .ps-02{
+		background: red !important;
+		color: #FFFFFF !important;
+	}
+	.detail-goods-list:hover .detail-goods-list{
+		background: red !important;
+		color: #FFFFFF;
+	}
+	.detail-goods-list:hover .detail-goods-list .carP{
+		opacity: 1 !important;
+	}
+	.detail-goods-list:hover .h2s{
+		background: red;
+		color: #FFFFFF;
+	}
+	.detail-goods-list:hover .ps-01{
+		background: red;
+		color: #FFFFFF;
+	}
+	/* .detail-area-A:hover .goods-list-Img{
+		border: 1px dashed #5C5C5C !important;
+		border-bottom: none !important;
+	}
+	.detail-area-A:hover .detail-goods-list{
+		background: red !important;
+		color: #FFFFFF;
+	}
+	.detail-area-A:hover .detail-goods-list .carP{
+		opacity: 1 !important;
+	}
+	.detail-area-A:hover .h2s{
+		background: red;
+		color: #FFFFFF;
+	}
+	.detail-area-A:hover .ps-01{
+		background: red;
+		color: #FFFFFF;
+	}
+	.detail-area-A:hover .ps-02{
+		background: red;
+		color: #FFFFFF;
+	}
+	.detail-area-A:hover .uls{
+		background: red;
+		color: #FFFFFF;
+	} */
+	.goods-list-Img {
+		width: 100%;
+		height: 240px;
+	}
+	.goods-list-Img img{
+		width: 100%;
+		height: 100%;
+	}
+	.detail-area-A .h2s{
+	    font-size: 16px;
+	    box-sizing: border-box;
+	}
+	.detail-area-A .ps-01{
+		font-size: 14px;
+    	box-sizing: border-box;
+	}
+	.detail-area-A .ps-02{
+		font-size: 20px;
+		color: red;
+		font-weight: bold;
+		box-sizing: border-box;
+	}
+	.detail-area-A .uls{
+		width: 100%;
+		overflow: hidden;
+		box-sizing: border-box;
+		padding: 5px 10px;
+		text-align: center;
+		border-top: 1px dashed #CCCCCC;
+	}
+	.detail-area-A .uls li{
+		float: left;
+		box-sizing: border-box;
+		padding: 1px 15px;
+	}
+	.detail-goods-list .carP{
+        width: 100%;
+	    height: 35px;
+	    line-height: 35px;
+	    text-align: center;
+	    background: #666666 !important;
+	    font-size: 18px;
+	    box-sizing: border-box;
+	    /* margin: -1px 0 0 3px; */
+	    /* margin: 0 3px 0 3px; */
+	    color: #ffffff;
+	    margin-top: -1px;
+	    opacity: 0;
+	    box-sizing: border-box;
+	    cursor: pointer;
+	}
+	.detail-area-A .carP img{
+		margin: 0 5px;
+	}
+	.goods-title{
+		overflow: hidden;
+		width: 100%;
+		height: auto;
+		line-height: 35px;
+		text-align: center;
+		margin-bottom: 20px;
+	}
+	.case{
+	  width: 110px;
+	  height: 100%;
+	  float: left;
+	}
+	.title-form,.title-form-02{
+		height: 100%;
+		float: left;
+		box-sizing: border-box;
+		padding: 3px 15px;
+		border-left: 1px solid #CCCCCC;
+	}
+	.title-form-02 input{
+		width: 150px !important;
+	}
+	.title-form input,.title-form-02 input{
+		width: 100px;
+		height: 30px;
+		box-sizing: border-box;
+		padding-left: 3px;
+		border: 1px solid;
+	}
+	.title-form-02 button{
+		background: red !important;
+	}
+	.title-form button,.title-form-02 button{
+		box-sizing: border-box;
+		padding: 5px;
+		background: #DDDDDD;
+		color: #FFFFFF;
+		border:none;
+	}
+	.on {
+	  width: 110px;
+	  height: 100%;
+	  display: table-cell;
+	  position: relative;
+	  float: left;
+	  border-left: 1px solid #CCCCCC;
+	}
+	.on a {
+	  display: block;
+	  overflow: hidden;
+	  width: 100%;
+	  height: 35px;
+	  line-height: 35px;
+	  text-align: center;
+	  color: #5e5e5e;
+	}
+	
+	.angle_top {
+	  content: '';
+	  width: 0;
+	  height: 0;
+	  display: block;
+	  border-style: solid;
+	  border-width: 0 6px 6px;
+	  border-color: transparent transparent #5e5e5e;
+	  position: absolute;
+	  transform: rotate(180deg);
+	  bottom: 11px;
+	  right: 17px;
+	}
+	
+	.angle_bottom {
+	  content: '';
+	  width: 0;
+	  height: 0;
+	  display: block;
+	  border-style: solid;
+	  border-width: 0 6px 6px;
+	  border-color: transparent transparent #5e5e5e;
+	  position: absolute;
+	  top: 10px;
+	  right: 17px;
+	}
+	.logisticsDom{
+	    box-sizing: border-box;
+        border: 1px solid #e2e2e2;
+	    margin-top: 15px;
+        padding-bottom: 20px;
+	}
+	.logisticsDom > p{
+        height: 40px;
+	    line-height: 40px;
+	    background: #f1f1f1;
+	    padding-left: 25px;
+	    font-size: 20px;
+	}
+	.logistics{
+        padding: 20px;
+	    margin: 30px 20px;
+	    background: #f5f5f5;
+	    border-radius: 5px;
+	    box-sizing: border-box;
+	}
+	.logistics h3{
+		font-size: 17px;
+	    margin: 10px 0;
+	}
+	.logistics hr{
+		width: 100%;
+		height: 2px;
+		background-color: #000000;
+		border: none
+	}
+	.logistics ul{
+		padding: 15px;
+    	box-sizing: border-box;
+	}
+	.logistics ul li{
+		list-style: cambodian;
+	    height: 30px;
+	    line-height: 30px;
+	    padding-left: 20px;
+	}
+	.ints p{
+		    padding: 5px 15px;
+	}
+	.ints p span{
+		margin-right: 20px;
+	}
+	.imgDom{
+		overflow: hidden;
+	    padding: 0 135px;
+	    margin-top: 15px;
+	}
+	.imgDom .imgImgs{
+		float: left;
+		width: 260px;
+	}
+	.imgDom .imgImgs:nth-of-type(4){
+		width: 100px
+	}

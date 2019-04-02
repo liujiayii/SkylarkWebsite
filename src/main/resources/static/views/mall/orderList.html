@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <div th:replace="/mall/common  :: commonHeader(订单信息)"></div>
+  <link rel="stylesheet" type="text/css" href="/assets/layui/css/layui.css">
+  <link rel="stylesheet" href="/assets/css/order.css">
+  <style>
+    .nav-big-box {
+      position: relative;
+      font-size: 0;
+      display: none !important;
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li:last-child .pay_btn {
+      height: 20px;
+      line-height: 16px;
+    }
+
+    .spxx-conttop li button {
+      color: #ffa312 !important
+    }
+
+    .spxx-conttop {
+      border-bottom: 1px solid #f1f1f1;
+      margin: 5px 0;
+      padding-bottom: 5px;
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li:nth-child(3) {
+      line-height: 60px;
+      width: 12%;
+      display: flex;
+      align-items: center
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li:first-child {
+      width: 35%
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li {
+      display: flex;
+      align-items: center
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li:nth-child(5) {
+      display: flex;
+      align-items: center;
+      justify-content: center !important
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li:nth-child(4) {
+      display: flex;
+      align-items: center;
+      justify-content: center !important
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li:nth-child(2) {
+      width: 12%;
+      display: flex;
+      align-items: center;
+      justify-content: center !important
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li:nth-child(6) {
+      display: flex;
+      align-items: center;
+      justify-content: center !important
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li:nth-child(3) {
+      display: flex;
+      align-items: center;
+      justify-content: center !important
+    }
+
+    .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .spxx-cont {
+      border-bottom: 1px dashed #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+<div class="main" id="app">
+  <div th:replace="mall/common :: commonNav"></div>
+  <div class="wrap main-wrap">
+    <div class="cont-nav">
+      <div class="cont-top">会员中心</div>
+      <ul class="cont-top-one">
+        <li>我的信息</li>
+        <li><a href="">我的订单</a></li>
+      </ul>
+    </div>
+    <div class="main-rg">
+      <div class="rg-title">我的订单</div>
+      <div class="rg-p1">
+        <ul>
+          <li class="list-nav" @click="toggleActive(0,0)" :class="{active : active == 0}">待付款({{dfk}})</li>
+          <li class="list-nav" @click="toggleActive(1,1)" :class="{active : active == 1}">待发货({{daf}})</li>
+          <li class="list-nav" @click="toggleActive(2,2)" :class="{active : active == 2}">待收货({{dsh}})</li>
+          <li class="list-nav" @click="toggleActive(3,3)" :class="{active : active == 3}">已完成({{ysh}})</li>
+          <li class="list-nav" @click="toggleActive('',4)" :class="{active : active == 4}">全部({{quantum}})</li>
+        </ul>
+      </div>
+      <div class="rg-p2">
+        <div v-if="active==0" class="rg-p2list">
+          <!--一块订单信息开始-->
+          <div class="rg-p2-order">
+            <div class="rg-p2-bt">
+              <div class="rg-p2-btn">
+                <button>系统确认中</button>
+              </div>
+            </div>
+            <div class="rg-p2-title">
+              <div class="flex spxx-title">
+                <div class="li">品名</div>
+                <div class="li">规格</div>
+                <div class="li">购买数量</div>
+                <div class="li">下单时间</div>
+                <div class="li">货款金额</div>
+                <!-- <div class="li">操作</div> -->
+              </div>
+            </div>
+            <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
+              <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
+                <div class="spxx-conttop flex">
+                  <p class="lis">订单编号：{{item.order_no}}</p>
+                  <div class="li">
+                    <button @click=clear(item.order_id)>取消订单</button>
+                    <button class="pay_btn" @click="payments(item.order_no,item_c.price)">立即付款</button>
+                  </div>
+                </div>
+                <div class="flex spxx-cont">
+                  <div class="li"><img :src="item_c.image" alt="">
+                    <p>{{item_c.brand}}</p></div>
+                  <div class="li"><p>{{item_c.specifications}}</p></div>
+                  <div class="li"><p>{{item.order_number}}</p></div>
+                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">¥{{item_c.price}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="active==1" class="rg-p2list">
+          <!--一块订单信息开始-->
+          <div class="rg-p2-order">
+            <div class="rg-p2-bt">
+              <div class="rg-p2-btn">
+                <button>系统确认中</button>
+              </div>
+            </div>
+            <div class="rg-p2-title">
+              <div class="flex spxx-title">
+                <div class="li">品名</div>
+                <div class="li">规格</div>
+                <div class="li">购买数量</div>
+                <div class="li">下单时间</div>
+                <div class="li">货款金额</div>
+              </div>
+            </div>
+            <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
+              <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
+                <div class="spxx-conttop flex">
+                  <p class="lis">订单编号：{{item.order_no}}</p>
+                  <div class="li">
+                    <button class="pay_btn" @click="shipment()">提醒发货</button>
+                  </div>
+                </div>
+                <div class="flex spxx-cont">
+                  <div class="li"><img :src="item_c.image" alt="">
+                    <p>{{item_c.brand}}</p></div>
+                  <div class="li"><p>{{item_c.specifications}}</p></div>
+                  <div class="li"><p>{{item.order_number}}</p></div>
+                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">¥{{item_c.price}}</div>
+                  <!-- <div class="li"><button class="pay_btn">提醒发货</button></div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="active==2" class="rg-p2list">
+          <!--一块订单信息开始-->
+          <div class="rg-p2-order">
+            <div class="rg-p2-bt">
+              <div class="rg-p2-btn">
+                <button>物流运输中</button>
+              </div>
+            </div>
+            <div class="rg-p2-title">
+              <div class="flex spxx-title">
+                <div class="li">品名</div>
+                <div class="li">规格</div>
+                <div class="li">购买数量</div>
+                <div class="li">下单时间</div>
+                <div class="li">货款金额</div>
+              </div>
+            </div>
+            <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
+              <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
+                <div class="spxx-conttop flex">
+                  <p class="lis">订单编号：{{item.order_no}}</p>
+                  <div class="li">
+                    <button @click="logistics(item.order_shouhuo_id)">查看物流</button>
+                    <button class="pay_btn" @click="okOrder(item.order_id)">确认收货</button>
+                  </div>
+                </div>
+                <div class="flex spxx-cont">
+                  <div class="li"><img :src="item_c.image" alt="">
+                    <p>{{item_c.brand}}</p></div>
+                  <div class="li"><p>{{item_c.specifications}}</p></div>
+                  <div class="li"><p>{{item.order_number}}</p></div>
+                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">¥{{item_c.price}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="active==3" class="rg-p2list">
+          <!--一块订单信息开始-->
+          <div class="rg-p2-order">
+            <div class="rg-p2-bt">
+              <div class="rg-p2-btn">
+                <button>已完成</button>
+              </div>
+            </div>
+            <div class="rg-p2-title">
+              <div class="flex spxx-title">
+                <div class="li">品名</div>
+                <div class="li">规格</div>
+                <div class="li">购买数量</div>
+                <div class="li">下单时间</div>
+                <div class="li">货款金额</div>
+              </div>
+            </div>
+            <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
+              <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
+                <div class="spxx-conttop flex">
+                  <p class="lis">订单编号：{{item.order_no}}</p>
+                  <div class="li">
+                    <button>评价</button>
+                  </div>
+                </div>
+                <div class="flex spxx-cont">
+                  <div class="li"><img :src="item_c.image" alt="">
+                    <p>{{item_c.brand}}</p></div>
+                  <div class="li"><p>{{item_c.specifications}}</p></div>
+                  <div class="li"><p>{{item.order_number}}</p></div>
+                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">¥{{item_c.price}}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="active==4" class="rg-p2list">
+          <!--一块订单信息开始-->
+          <div class="rg-p2-order">
+            <div class="rg-p2-bt">
+              <div class="rg-p2-btn">
+                <button>全部</button>
+              </div>
+            </div>
+            <div class="rg-p2-title">
+              <div class="flex spxx-title">
+                <div class="li">品名</div>
+                <div class="li">规格</div>
+                <div class="li">购买数量</div>
+                <div class="li">下单时间</div>
+                <div class="li">货款金额</div>
+                <div class="li">操作</div>
+              </div>
+            </div>
+            <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
+              <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
+                <div class="flex spxx-cont">
+                  <div class="li"><img :src="item_c.image" alt="">
+                    <p>{{item_c.brand}}</p></div>
+                  <div class="li"><p>{{item_c.specifications}}</p></div>
+                  <div class="li"><p>{{item.order_number}}</p></div>
+                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">¥{{item_c.price}}</div>
+                  <div class="li">
+                    <button v-if='item.order_state==-1'>取消订单</button>
+                    <button v-if='item.order_state==0'>待付款</button>
+                    <button v-if='item.order_state==1'>待发货</button>
+                    <button v-if='item.order_state==2'>待收货</button>
+                    <button v-if='item.order_state==3'>已完成</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="mall/common :: commonFooter"></div>
+</div>
+</body>
+<script>
+  const mixin = {
+    data() {
+      return {
+        classData: [],
+        active: 0,
+        orderCount: {},
+        orderListPaid: [],
+        notDelivered: [],
+        daf: null,
+        dfk: null,
+        dsh: null,
+        ysh: null,
+        quantum: null
+      }
+    },
+    methods: {
+      okOrder(ids) {
+        alert(ids)
+        $.ajax({
+          type: "post",
+          url: "t_order/ordercan/",
+          data: {
+            order_id: ids,
+            order_state: 3,
+          },
+          dataType: "json",
+          success: (res) => {
+            console.log(res)
+            this.getOrder(2)
+            this.getOrder(3)
+          }
+        });
+      },
+      //提醒发货
+      shipment() {
+        this.$Message.info('已提醒商户');
+      },
+      //取消订单
+      clear(ids) {
+        $.ajax({
+          type: "post",
+          url: "t_order/ordercan/",
+          data: {
+            order_id: ids,
+            order_state: -1,
+          },
+          dataType: "json",
+          success: (res) => {
+            console.log(res)
+            this.getOrder(0)
+          }
+        });
+      },
+      logistics(logistics) {
+        console.log(logistics)
+        window.location.href = "/logistics?log=" + logistics;
+      },
+      payments(productId, gonum) {
+        //console.log(id+gonum)
+        //	window.location.href = "/OrderOk?id=" + productId ;
+        window.location.href = "/alipay/pcPay?order_no=" + productId + "&order_money=" + gonum
+      },
+
+      qercxjb() {
+        $.ajax({
+          type: "post",
+          url: "/t_order/qercxjb",
+          data: {
+            user_id: sessionStorage.getItem("SkyUserId"),
+          },
+          dataType: "json",
+          success: (res) => {
+            console.log(res.data)
+            this.daf = res.data.daf,
+              this.dfk = res.data.dfk,
+              this.dsh = res.data.dsh,
+              this.ysh = res.data.ysh,
+              this.quantum = res.data.quantum
+          }
+        });
+      },
+      getOrder(num) {
+        $.ajax({
+          type: "post",
+          url: "/t_order/orderlist",
+          data: {
+            user_id: sessionStorage.getItem("SkyUserId"),
+            order_state: num,
+            page: 0,
+            limit: 10
+          },
+          dataType: "json",
+          success: (res) => {
+            console.log(res.data)
+            this.userInfo.name
+            if (res.code == 1) {
+              this.orderListPaid = res.data
+              console.log(this.orderListPaid)
+            }
+          }
+        });
+      },
+      getOrderCount() {
+        $.ajax({
+          type: "post",
+          url: "/t_order/qercxjb",
+          data: {user_id: sessionStorage.getItem("SkyUserId")},
+          dataType: "json",
+          success: (res) => {
+            console.log(123)
+            console.log(res)
+            if (res.code == 1) {
+
+            }
+          }
+        });
+      },
+      toggleActive(nums, index) {
+        this.active = index;
+        $.ajax({
+          type: "post",
+          url: "/t_order/orderlist",
+          data: {
+            user_id: sessionStorage.getItem("SkyUserId"),
+            order_state: nums,
+            page: 0,
+            limit: 10
+          },
+          dataType: "json",
+          success: (res) => {
+            console.log(res.data)
+            this.userInfo.name
+            if (res.code == 1) {
+              this.orderListPaid = res.data
+              console.log(this.orderListPaid)
+            }
+          }
+        });
+      }
+    },
+    mounted() {
+      this.getOrder(0)
+      this.getOrderCount()
+      this.qercxjb()
+    }
+  }
+</script>
+<div th:replace="mall/common :: commonFooterjs"></div>
+</html>

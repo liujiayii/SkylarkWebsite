@@ -88,8 +88,24 @@ public class T_user extends Model<T_user> {
      * 地址
      */
     private String address;
+    /**
+     * 讴业普惠id
+     */
+    private Long  phid;
 
-    public Long getId() {
+    public Long getPhid() {
+		return phid;
+	}
+
+	public void setPhid(Long phid) {
+		this.phid = phid;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -210,6 +226,7 @@ public class T_user extends Model<T_user> {
         ", followcount=" + followcount +
         ", avatar=" + avatar +
         ", address=" + address +
+         ", phid=" + phid +
         "}";
     }
 }

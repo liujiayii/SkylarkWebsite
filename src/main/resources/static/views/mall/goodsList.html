@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <div th:replace="/mall/common  :: commonHeader(商品列表)"></div>
+  <link rel="stylesheet" href="/assets/css/goods.css">
+  <style>
+    .nav-span {
+      display: none
+    }
+
+    .navli {
+      cursor: pointer;
+    }
+    	.detail-area-A .h2s{
+    	line-height: 1.2;
+	    font-size: 16px;
+	    box-sizing: border-box;
+	    word-break: break-all;
+    	overflow: hidden;
+    	display: -webkit-box;
+    	-webkit-line-clamp: 1;
+    	-webkit-box-orient: vertical;
+	}
+	.detail-area-A .ps-01{padding:5px 0}
+	.detail-goods-list{transition: all .4s;}
+  </style>
+</head>
+
+<body>
+
+<div class="container" id="app">
+  <div th:replace="mall/common :: commonNav"></div>
+  <div class="detailCont">
+    <!--<p class="detail-tab">
+      首页 <span class="detail-tab-span">母婴玩具</span>
+    </p>-->
+    <div class="detail-tab-list"></div>
+    <div class="goods-title"></div>
+    <div class="detail-area">
+      <div class="detail-goods-list" v-for="(items,index) in goodsData">
+        <a :href="'/goodDetails?id='+items.id" class="detail-area-A">
+          <div class="goods-list-Img">
+            <img :src="items.image"/>
+          </div>
+          <h2 class="h2s">{{items.name}}</h2>
+          <p class="ps-01">正品保证</p>
+          <p class="ps-02">￥{{items.price}}</p>
+          <ul class="uls" style="display: none">
+            <li>成交 | <span>0</span></li>
+            <li>评论 | <span>0</span></li>
+            <li>库存 | <span>100</span></li>
+          </ul>
+        </a>
+        <p class="carP" @click='test_click(items.id)'>加入购物车</p>
+      </div>
+    </div>
+  </div>
+  <div th:replace="mall/common :: commonFooter"></div>
+</div>
+</body>
+<script type="text/javascript">
+  const mixin = {
+    data() {
+      return {
+        classData: [],
+        goodsData: [],
+      }
+    },
+    methods: {
+      test_click(e) {
+        if (this.userInfo.name != null) {
+          $.ajax({
+            type: "post",
+            url: "/t_trolley/addt_trolley",
+            dataType: "json",
+            data: {
+              product_id: e,
+              user_id: this.userInfo.id,
+              number: 1
+            },
+            success: (res) => {
+              console.log(res)
+              if (res.code == 1) {
+                this.$Message.info(res.msg)
+              } else {
+                this.$Message.info(res.msg)
+              }
+            }
+          });
+        } else {
+          this.$Message.info('请先登录');
+        }
+      },
+      getClass() {
+        $.ajax({
+          type: "post",
+          url: "/selectAllproductation",
+          dataType: "json",
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              this.classData = res.data
+              console.log(this.classData)
+            }
+          }
+        });
+      },
+      getGoods() {
+        $.ajax({
+          type: "post",
+          url: "/findBpproducs",
+          dataType: "json",
+          data: {id: this.getHrefParam("id")},
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              this.goodsData = res.data
+              console.log(this.goodsData)
+            }
+          }
+        });
+      }
+    },
+    mounted() {
+      this.getClass()
+      this.getGoods()
+    }
+  }
+</script>
+<div th:replace="mall/common :: commonFooterjs"></div>
+</html>

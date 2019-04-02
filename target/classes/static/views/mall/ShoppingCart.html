@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
+  <title></title>
+  <div th:replace="/mall/common  :: commonHeader(购物车)"></div>
+  <link rel="stylesheet" type="text/css" href="/assets/css/2Order.css">
+  <style>
+    .nav-big-box {
+      position: relative;
+      font-size: 0;
+      display: none !important;
+    }
+  </style>
+</head>
+<body id="mallorder ">
+<div id="app">
+  <div th:replace="mall/common :: commonNav"></div>
+  <div class="wrap">
+    <div class="main_wrap ddmx">
+      <div class="lcbox">
+        <div class="liucheng">
+          <div class="bz on"><p>1</p>
+            <h1>购物车</h1></div>
+          <div class="lj"><img src="/assets/image/mall/jtxy.png"></div>
+          <div class="bz "><p>2</p>
+            <h1>订单确认</h1></div>
+          <div class="lj"><img src="/assets/image/mall/jtxy.png"></div>
+          <div class="bz"><p>3</p>
+            <h1>支付订单</h1></div>
+        </div>
+      </div>
+      <div class="sestion">
+        <div class="sestion sestion3">
+          <h1>全部商品</h1>
+          <div class="flex spxx-title">
+            <div class="li"><span style="float:left">全选：<input type="checkbox" name="1" v-model="selectAll"
+                                                               class="checkbox" @click="checkboxShows()"></span>品名
+            </div>
+            <div class="li">规格</div>
+            <div class="li">价格</div>
+            <div class="li">采购数量</div>
+            <div class="li">小计</div>
+            <div class="li">操作</div>
+          </div>
+          <div class="flex spxx-cont" v-for="(goodsList,indexs) in goodsLists" ref="tables">
+            <div class="li"><input type="checkbox" name="1" class="checkboxs" v-model="goodsList.select"
+                                   @change="checkboxShow($event,indexs)">
+              <img :src="goodsList.image" alt="">
+              <p>{{goodsList.name}}</p></div>
+            <div class="li"><p>颜色：{{goodsList.color}}</p>
+              <p>规格：{{goodsList.specifications}}</p></div>
+            <div class="li">¥ {{goodsList.price}}</div>
+            <div class="li"><span @click="changeNum('-1',indexs,goodsList.id)" class="yuns">-</span><span
+                    style="width: 40px;" id="num" disabled="disabled">{{goodsList.number}}</span>
+              <span id="j" @click="changeNum('1',indexs,goodsList.id)" class="yuns">+</span>
+            </div>
+            <div class="li">{{goodsList.price*goodsList.number}}</div>
+            <div class="li" @click="deleteDom(goodsList.trolley_id)">删除</div>
+          </div>
+        </div>
+      </div>
+      <div class="sestion sestion5">
+        <div class="sestion5-left"><h1>应付金额</h1>
+          <p>计算方法：应付金额=货款金额+物流费用</p></div>
+        <div class="sestion5-right sestion4">
+          <ul>
+            <li><p>应付货款：</p><span class="wlfy">{{prices}}</span></li>
+            <li><p>优惠金额：</p><span class="wlfy">{{discount}}</span></li>
+            <li><p>物流费用：</p><span class="wlfy">{{express}}</span></li>
+            <li><p>合计：</p><span class="wlfy b">{{sums}}</span></li>
+          </ul>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="sestion6">
+        <a class="btn" href="javascript:;" @click=payDat()>结算</a>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div th:replace="mall/common :: commonFooter"></div>
+</div>
+</body>
+<script>
+  const mixin = {
+    data() {
+      return {
+        $event: false,
+        //checkedNames: [{},{},],
+        nums: 1,
+        classData: [],
+        sums: 0,
+        goodsLists: [],
+        selectAll: false,
+        express: 0,
+        prices: 0,
+        discount: 0
+      }
+    },
+    methods: {
+      //单选框
+      checkboxShow(event, index) {
+        console.log(index);
+        this.goodsLists[index].select = event.target.checked;
+        this.getExpress();
+      },
+      //多选框
+      checkboxShows() {
+        this.selectAll = !this.selectAll
+        for (let i = 0; i < this.goodsLists.length; i++) {
+          this.goodsLists[i].select = this.selectAll
+        }
+        this.getExpress();
+      },
+      //删除购物车
+      deleteDom(i) {
+        $.ajax({
+          type: "post",
+          url: "t_trolley/delt_trolley",
+          data: {trolley_id: i},
+          dataType: "json",
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              this.$Message.info(res.msg)
+              this.getgoodsList()
+            } else {
+              this.$Message.info(res.msg)
+            }
+          }
+        });
+      },
+      //查询优惠和运费
+      getExpress() {
+        let ids = "";
+        this.prices = 0;
+        this.sums = 0;
+        this.express = 0;
+        this.discount = 0;
+        for (let i = 0; i < this.goodsLists.length; i++) {
+          if (this.goodsLists[i].select) {
+            ids += this.goodsLists[i].trolley_id + ",";
+            this.prices += this.goodsLists[i].price * this.goodsLists[i].number;
+          }
+        }
+        ids = ids.substring(0, ids.lastIndexOf(','));
+        console.log(ids);
+        console.log(this.prices);
+        if (ids != "") {
+          $.ajax({
+            type: "post",
+            url: "t_order/qeryunfeiyouhui",
+            data: {trolley_id: ids},
+            dataType: "json",
+            success: (res) => {
+              console.log(res)
+              if (res.code == 1) {
+                console.log(res.data)
+                this.discount = res.data
+                this.express = res.count
+                this.sums = this.prices - this.discount + this.express;
+              } else {
+                this.$Message.info(res.msg)
+              }
+            }
+          });
+        }
+      },
+      //查询购物车列表
+      getgoodsList() {
+        $.ajax({
+          type: "post",
+          url: "t_trolley/lt_trolleylst",
+          data: {user_id: window.sessionStorage.getItem("SkyUserId"), page: 0, limit: 100},
+          dataType: "json",
+          success: (res) => {
+            //console.log(res)
+            if (res.code == 1) {
+              this.goodsLists = res.data;
+              //console.log(res.data)
+            } else {
+              this.$Message.info(res.msg)
+            }
+          }
+        });
+      },
+      //改变购物车数量
+      changeNum(count, index, ids) {
+        if (count == 1 || this.goodsLists[index].number > 1) {
+          $.ajax({
+            type: "post",
+            url: "t_trolley/uptate",
+            data: {user_id: window.sessionStorage.getItem("SkyUserId"), num: this.goodsLists[index].number, id: ids},
+            dataType: "json",
+            success: (res) => {
+              //console.log(res)
+              if (res.code == 1) {
+                this.$Message.info(res.msg)
+                this.goodsLists[index].number = this.goodsLists[index].number * 1 + count * 1
+              } else {
+                this.$Message.info(res.msg)
+              }
+            }
+          });
+        }
+      },
+      //查库存
+      payDat() {
+        let trolleId = "";
+        for (let i = 0; i < this.goodsLists.length; i++) {
+          if (this.goodsLists[i].select) {
+            trolleId += this.goodsLists[i].trolley_id + ",";
+          }
+        }
+        console.log(trolleId);
+        //trolleId = trolleId.substr(0,trolleId.Length - 1)
+        trolleId = trolleId.substring(0, trolleId.lastIndexOf(","));
+        if (trolleId == "") {
+          this.$Message.info("至少选择一份商品，在进行购买");
+        } else {
+          console.log(trolleId);
+          $.ajax({
+            type: "post",
+            url: "t_trolley/chakucun",
+            data: {trolley_id: trolleId},
+            dataType: "json",
+            success: (res) => {
+              if (res.code == 1) {
+                this.$Message.info(res.msg);
+                window.location.href = "/OrderOk?ids=" + trolleId;
+              } else {
+                this.$Message.info(res.msg)
+              }
+            }
+          });
+        }
+      }
+    },
+    mounted() {
+      this.getgoodsList()
+      //this.getInfo()
+    }
+  }
+</script>
+<div th:replace="mall/common :: commonFooterjs"></div>
+</html>

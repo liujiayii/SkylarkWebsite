@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_wxpay_unified_orderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_wxpay_unified_order">
+        <id column="id" property="id" />
+        <result column="user_id" property="user_id" />
+        <result column="out_trade_no" property="out_trade_no" />
+        <result column="spbill_create_ip" property="spbill_create_ip" />
+        <result column="total_fee" property="total_fee" />
+        <result column="result_code" property="result_code" />
+        <result column="return_code" property="return_code" />
+        <result column="return_msg" property="return_msg" />
+        <result column="err_code" property="err_code" />
+        <result column="err_code_des" property="err_code_des" />
+        <result column="time" property="time" />
+    </resultMap>
+
+</mapper>

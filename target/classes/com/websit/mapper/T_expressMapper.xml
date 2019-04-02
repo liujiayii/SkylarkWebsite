@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_expressMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_express">
+        <id column="id" property="id" />
+        <result column="expName" property="expName" />
+        <result column="type" property="type" />
+        <result column="expPhone" property="expPhone" />
+        <result column="expSite" property="expSite" />
+        <result column="number" property="number" />
+        <result column="deliverystatus" property="deliverystatus" />
+        <result column="courier" property="courier" />
+        <result column="courierPhone" property="courierPhone" />
+        <result column="issign" property="issign" />
+    </resultMap>
+
+	<!-- 通过订单号查询订单信息 -->
+	<resultMap type="com.websit.entityvo.ExpressDetailsVo" id="selectExpressDetails" extends="BaseResultMap" >
+		<collection property="expressDetail" ofType="com.websit.entity.T_express_details">
+			<id column="ted_id" property="id" />
+	        <result column="ted_number" property="number" />
+	        <result column="time" property="time" />
+	        <result column="status" property="status" />
+		</collection>
+	</resultMap>
+	<select id="selectExpressDetails" parameterType="Map" resultMap="selectExpressDetails">
+		select te.id,te.expName,te.type,te.expPhone,te.expSite,te.deliverystatus,te.courier, te.courierPhone,te.issign, ted.id as ted_id, ted.number as ted_number, ted.time, ted.status
+		from t_express te, t_express_details ted
+		where te.number = ted.number
+		and te.number=#{number}
+		order by ted.time desc
+	</select>
+
+
+</mapper>

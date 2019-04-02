@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_tagMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_tag">
+        <id column="id" property="id" />
+        <result column="tag_name" property="tag_name" />
+        <result column="posting_id" property="posting_id" />
+        <result column="plate_id" property="plate_id" />
+        <result column="company_id" property="company_id" />
+    </resultMap>
+
+	<!-- 查询标签 -->
+	<select id="selectTags" resultMap="BaseResultMap"> 
+		select tag_name 
+		from t_tag 
+		<where>
+			<if test="id != null and id != ''">
+				and id = #{id}
+			</if>
+			<if test="tag_name != null and tag_name != ''">
+				and tag_name = #{tag_name}
+			</if>
+			<if test="posting_id != null and posting_id != ''">
+				and posting_id = #{posting_id}
+			</if>
+			<if test="plate_id != null and plate_id != ''">
+				and plate_id = #{plate_id}
+			</if>
+			<if test="company_id != null and company_id != ''">
+				and company_id = #{company_id}
+			</if>
+		</where>
+	</select>
+
+</mapper>

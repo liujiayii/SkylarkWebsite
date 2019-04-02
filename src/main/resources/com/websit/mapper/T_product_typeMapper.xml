@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_product_typeMapper">
+
+    <!--  通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_product_type">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="create_time" property="create_time" />
+         <result column="ioc" property="ioc" />
+    </resultMap>
+
+<!-- 查询商品类型 分页 -->
+    <select id="selectAllProductTypeList" resultType="com.websit.entity.T_product_type">
+       SELECT DISTINCT
+                    pt.id id,
+                    pt. name name,
+                    pt.create_time create_time,
+                    pt.ioc ioc,
+                    tc.id classificationId,
+                    tc.name classificationName
+                FROM
+                    t_product_type pt,t_classification tc
+         WHERE
+          pt.classification_id = tc.id
+           group by pt.id
+         DESC
+        limit #{page},#{limit} 
+    </select>
+    
+    <!-- 查询商品类型 不分页 -->
+    <select id="selectproductTypeNoPage" resultType="com.websit.entity.T_product_type">
+    SELECT DISTINCT
+                    pt.id id,
+                    pt. name productTypeName,
+                    pt.create_time create_time,
+                    pt.ioc ioc,
+                    pt.classification_id classificationId,
+                    tc.name classificationName
+                FROM
+                    t_product_type pt,t_classification tc
+         WHERE
+          pt.classification_id = tc.id
+    </select>
+     <!-- 增加商品类型  -->
+	<insert id="saveProductType" parameterType="com.websit.entity.T_product_type">
+		insert into
+		 t_product_type(name,ioc,create_time,classification_id)
+		values
+		(#{name},#{ioc},now(),#{classificationId})
+	</insert>
+	
+	<!-- 修改商商品类型  -->
+	<update id="updateProductType" parameterType="com.websit.entity.T_product_type">
+		update  t_product_type
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="ioc != null and ioc != ''">
+				ioc = #{ioc},
+			</if>
+			<if test="create_time != null and create_time != ''">
+				create_time = #{create_time},
+			</if>
+				<if test="classificationId != null and classificationId != ''">
+				classification_id = #{classificationId}
+			</if>
+		</set>
+		where id= #{id}
+	</update>
+	 <!-- 根据专区id删除商品类型 -->
+    <delete id="deleteProductTypeById" parameterType="BigInteger">
+		delete
+		   from
+		t_product_type
+		   where id=#{id}
+		
+	</delete>
+
+	
+	<select id="selectproduct" parameterType="com.websit.entity.Classification" resultType="com.websit.entity.T_product_type">
+	
+	select * from t_product_type where  classification_id = #{id}
+	</select>
+	
+
+	  <!-- 查询商品分类条数 -->
+	<select id="findProductTypeCount" resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM
+		(
+		select
+		   id 
+		from
+		t_product_type
+		<where>
+			<!-- <if test="name != null and name != ''">
+				and name like "%"#{name}"%"
+			</if> -->
+		</where>
+		)as tb
+	</select>
+
+</mapper>

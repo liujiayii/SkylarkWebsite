@@ -21,13 +21,28 @@ import com.baomidou.mybatisplus.service.IService;
 public interface IT_postingService extends IService<T_posting> {
 	/**
 	 * @Title: selecAllSome
-	 * @description 查询版主下的话题列表
+	 * @description 查询版主下的话题列表不置顶
 	 * @return List<T_postingVo> 
 	 * @author linhongyu
 	 * @createDate 2019年03月14日
 	 */
 	public List<T_postingVo> selecAllSome(T_postingVo postingVo);
-	
+	/**
+	 * @Title: selecAllSomeTop
+	 * @description 查询版主下的话题列表置顶
+	 * @return List<T_postingVo> 
+	 * @author linhongyu
+	 * @createDate 2019年03月19日
+	 */
+	public List<T_postingVo> selecAllSomeTop(T_postingVo postingVo);
+	/**
+	 * @Title: selecAllSome
+	 * @description 查询版主下的话题列表条数
+	 * @return T_postingVo
+	 * @author linhongyu
+	 * @createDate 2019年03月15日
+	 */
+	public T_postingVo selectCountTwo(T_postingVo postingVo);
 	/**
 	 * 查询热门帖子（回帖最多）
 	 *
@@ -43,7 +58,7 @@ public interface IT_postingService extends IService<T_posting> {
 	 * @author lujinpeng
 	 * @createDate 2019年3月14日-下午5:28:58
 	 */
-	String showHotPostings(Integer row);
+	String showHotPostings(Integer page, Integer row);
 	
 	/**
 	 * 查询最新帖子
@@ -60,7 +75,7 @@ public interface IT_postingService extends IService<T_posting> {
 	 * @author lujinpeng
 	 * @createDate 2019年3月14日-下午5:50:43
 	 */
-	String showNewestPotings(Integer row);
+	String showNewestPotings(Long plate_id, Integer row);
 	
 	/**
 	 * 查询精华帖子
@@ -102,6 +117,6 @@ public interface IT_postingService extends IService<T_posting> {
 	 * @author pangchong
 	 * @createDate 2019年03月15日
 	 */
-	public Integer selectPostingCount(T_postingVo postingVo);
+	public Integer selectPostingCount();
 
 }

@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
+import java.util.List;
+
+import org.springframework.data.annotation.Transient;
 
 /**
  * <p>
@@ -50,8 +53,47 @@ public class T_plate extends Model<T_plate> {
      */
     private String name;
     
+    /**
+     * 版块名称
+     */
+    private String plate_name;
+    
+    /**
+     * 版块下总回帖量（临时属性）
+     */
+    @Transient
+    private Integer commentCount = 0;
+    
+    /**
+     * 标签表集合（临时属性）
+     */
+    private List<T_tag> tagList;
+    
+    public List<T_tag> getTagList() {
+		return tagList;
+	}
 
-    public Long getId() {
+	public void setTagList(List<T_tag> tagList) {
+		this.tagList = tagList;
+	}
+
+	public Integer getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(Integer commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public String getPlate_name() {
+		return plate_name;
+	}
+
+	public void setPlate_name(String plate_name) {
+		this.plate_name = plate_name;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -106,16 +148,11 @@ public class T_plate extends Model<T_plate> {
         return this.id;
     }
 
-    @Override
-    public String toString() {
-        return "T_plate{" +
-        "id=" + id +
-        ", company_id=" + company_id +
-        ", introduce=" + introduce +
-        ", image=" + image +
-        ", number=" + number +
-        ", numbers=" + numbers +
-        ", name=" + name +
-        "}";
-    }
+	@Override
+	public String toString() {
+		return "T_plate [id=" + id + ", company_id=" + company_id + ", introduce=" + introduce + ", image=" + image
+				+ ", number=" + number + ", numbers=" + numbers + ", name=" + name + ", plate_name=" + plate_name + "]";
+	}
+
+    
 }

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta name="referrer" content="no-referrer">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="renderer" content="webkit">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1,user-scalable=no">
+  <div th:replace="/home/common :: commonHeader(云阙首页)"></div>
+  
+  <link rel="stylesheet" href="/assets/css/home.css">
+</head>
+<body>
+<div id="app" class="home" v-cloak>
+  <div class="banner">
+    <div th:replace="/home/common :: commonNav"></div>
+    <img src="/assets/image/index/banner.png" alt="">
+    <span class="mouse"></span>
+    <div class="download flex wrap">
+      <div class="downloadlist">
+        <img src="/assets/image/index/downloadA.png" alt="">
+        <div class="cont">
+          <p>android客户端下载</p>
+          <p data-method="confirmTrans" class="btn confirmTrans">立即下载</p>
+        </div>
+      </div>
+      <div class="downloadlist">
+        <img src="/assets/image/index/downloadIos.png" alt="">
+        <div class="cont">
+          <p>ios客户端下载</p>
+          <p class="btn">立即下载</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="business">
+    <div class="titleAll">
+      <p class="titlec">所营业务</p>
+      <span class="titleen">Battalion business</span>
+    </div>
+    <div class="businesscont">
+      <img src="/assets/image/index/businesss.png" alt="">
+      <div class="wrap">
+        <div class="businesslist">
+          <p class="imgbox"><img src="/assets/image/index/busicon1.png" alt=""></p>
+          <p>讴业普惠</p>
+          <span>最值得信赖的互联网<br/>金融服务平台</span>
+        </div>
+        <div class="businesslist">
+          <p class="imgbox"><img src="/assets/image/index/busicon2.png" alt=""></p>
+          <p>喔驰汽贸</p>
+          <span>绿色出行<br/>让出行变得简单</span>
+        </div>
+        <div class="businesslist">
+          <p class="imgbox"><img src="/assets/image/index/busicon3.png" alt=""></p>
+          <p>智莱云</p>
+          <span>科技改变世界<br/>智莱云改变未来</span>
+        </div>
+        <div class="businesslist">
+          <p class="imgbox"><img src="/assets/image/index/busicon4.png" alt=""></p>
+          <p>玉景斋</p>
+          <span>连锁餐饮改变你<br/>未来的生活</span>
+        </div>
+        <div class="businesslist">
+          <p class="imgbox"><img src="/assets/image/index/busicon5.png" alt=""></p>
+          <p>闪电传媒</p>
+          <span>最专业的广告服务<br/>让全球没有难做的生意</span>
+        </div>
+        <div class="businesslist">
+          <p class="imgbox"><img src="/assets/image/index/busicon6.png" alt=""></p>
+          <p>喔家房产</p>
+          <span>让天下没有难租的房<br/>天下之大，到处都是喔家</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="lift">
+    <div class="titleAll">
+      <p class="titlec">云阙让你的生活变得简单</p>
+      <span class="titleen">Clouds Make Your Life Simple</span>
+    </div>
+    <div class="leftcont flex wrap">
+      <div class="leftcontlist">
+        <img src="/assets/image/index/lifticon1.png" alt="">
+        <p>简单创业</p>
+        <span>游戏试玩</span>
+        <span>游戏挂机</span>
+        <span>QQ营销</span>
+        <span>SEO</span>
+      </div>
+      <div class="leftcontlist">
+        <img src="/assets/image/index/lifticon2.png" alt="">
+        <p>网络推广</p>
+        <span>竞价优化</span>
+        <span>文档分享</span>
+        <span>投票管理</span>
+        <span>问答推广</span>
+      </div>
+      <div class="leftcontlist">
+        <img src="/assets/image/index/lifticon3.png" alt="">
+        <p>数据链接</p>
+        <span>数据采集</span>
+        <span>投票点赞</span>
+        <span>增效回访</span>
+        <span>用户注册</span>
+      </div>
+    </div>
+    <div class="flow  wrap">
+      <p class="flowtitle">简单、全面、可靠</p>
+      <div class="flex">
+        <div class="flowlist">
+          <div class="cont">
+            <p>用户量</p>
+            <p class="btn" id="num" th:text="${count}">0</p>
+          </div>
+        </div>
+        <div class="flowlist">
+          <div class="cont">
+            <p>每日使用量</p>
+            <p class="btn" id="num1"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="Dynamic">
+    <div class="titleAll">
+      <p class="titlec">云阙让你的生活变得简单</p>
+      <span class="titleen">Clouds Make Your Life Simple</span>
+    </div>
+    <div class="DynamicCont wrap flex">
+      <div class="DynamicContList">
+        <img src="/assets/image/index/Dynamic1.png" alt=""/>
+        <div class="date">
+          <h1>30</h1>
+          <p>2018/08</p>
+        </div>
+        <div class="cont-box">
+          <p class="title">标题标题标题标题标题标题标题</p>
+          <p class="cont">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</p>
+          <a href="" class="more">→</a>
+        </div>
+      </div>
+      <div class="DynamicContList">
+        <img src="/assets/image/index/Dynamic1.png" alt=""/>
+        <div class="date">
+          <h1>30</h1>
+          <p>2018/08</p>
+        </div>
+        <div class="cont-box">
+          <p class="title">标题标题标题标题标题标题标题</p>
+          <p class="cont">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</p>
+          <a href="" class="more">→</a>
+        </div>
+      </div>
+      <div class="DynamicContList">
+        <img src="../../assets/image/index/Dynamic1.png" alt=""/>
+        <div class="date">
+          <h1>30</h1>
+          <p>2018/08</p>
+        </div>
+        <div class="cont-box">
+          <p class="title">标题标题标题标题标题标题标题</p>
+          <p class="cont">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</p>
+          <a href="" class="more">→</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="/home/common :: commonFooter"></div>
+</div>
+<script>
+  $(function () {
+    console.log($(".businesscont>img").height())
+    var top = $(".businesscont>img").height() - 80;
+    $(".businesslist").eq(1).css("top", top)
+    $(".businesslist").eq(3).css("top", top * 1.2)
+    $(".businesslist").eq(4).css("top", top * 0.4)
+  })
+  function scroll() {
+    if (window.pageYOffset !== null) {
+      return {
+        top: window.pageYOffset,
+        left: window.pageXOffset
+      }
+    } else if (document.compatMode === "CSS1Compat") {
+      return {
+        top: document.documentElement.scrollTop,
+        left: document.documentElement.scrollLeft
+      }
+    }
+    return {
+      top: document.body.scrollTop,
+      left: document.body.scrollLeft
+    }
+  }
+  var stompClient = null;
+  $(function () {
+    var socket = new SockJS('/endpointSang');
+    stompClient = Stomp.over(socket);
+    stompClient.connect({}, function (frame) {
+      stompClient.send("/welcome", {}, JSON.stringify({'name': 1}));
+      stompClient.subscribe('/topic/getResponse', function (response) {
+        showResponse(JSON.parse(response.body).responseMessage);
+      })
+      stompClient.subscribe('/topic/selectCount', function (response) {
+        showResponse1(JSON.parse(response.body).responseMessage);
+      })
+    });
+  });
+  function disconnect() {
+    if (stompClient != null) {
+      stompClient.disconnect();
+    }
+    setConnected(false);
+    console.log('Disconnected');
+  }
+
+  function showResponse(message) {
+    $("#num1").html(message);
+  }
+
+  function showResponse1(message) {
+    $("#num").html(message);
+  }
+
+  const mixin = {
+ }
+</script>
+<div th:replace="/home/common :: commonFooterjs"></div>
+</body>
+</html>

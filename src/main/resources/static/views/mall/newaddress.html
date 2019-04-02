@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <div th:replace="/mall/common  :: commonHeader(新增收货地址)"></div>
+  <style>
+  .btn.met1{display:none}
+    .lt {
+      float: left;
+    }
+
+    .rt {
+      float: right;
+    }
+
+    .clear {
+      clear: both;
+    }
+
+    .sestion {
+      padding: 15px;
+    }
+
+    .sestion-top {
+      width: 501px;
+    }
+
+    .sestion-top input {
+      width: 160px;
+      height: 28px;
+      line-height: 28px;
+      font-size: 14px;
+      padding-left: 5px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+      color: #999
+    }
+
+    .sestop1 .pack {
+      margin-right: 5px;
+    }
+
+    .sestion-top .new {
+      font-size: 14px;
+      color: #666;
+      width: 56px;
+      text-align: right;
+      display: block;
+      float: left;
+      line-height: 30px;
+      margin-right: 6px;
+    }
+
+    .sestion-top .select {
+      width: 136px;
+      height: 30px;
+      margin-right: 5px;
+      font-size: 14px;
+      color: #999;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .sestion-top textarea {
+      width: 435px;
+      height: 60px;
+      line-height: 30px;
+      padding: 0 10px;
+      resize: none;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      color: #999;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .sestion-top .sestop1, .sestion-top .sestop2, .sestion-top .sestop3 {
+      margin-bottom: 12px
+    }
+
+    .sestion-bottom .map {
+      width: 100%;
+      margin: 0 auto;
+      display: block
+    }
+
+    .sestion-bottom {
+      margin-top: 10px;
+      position: relative;
+    }
+
+    .sestion-bottom .free {
+      font-size: 18px;
+      position: absolute;
+      right: 0;
+      top: -30px;
+    }
+
+    .sestion-bottom .free b {
+      color: #c7000a
+    }
+
+    .submit-btn {
+      display: block;
+      text-decoration: none;
+      color: #fff;
+      background-color: #c7000a;
+      width: 120px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 3px;
+      text-align: center;
+      margin: 0 auto;
+      margin-top: 15px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-color: #d1000a;
+    }
+
+    .submit-btn:active {
+      background-color: #b4000a;
+    }
+
+    @media (max-width: 540px) {
+      .sestion-top {
+        width: 100%;
+      }
+
+      .sestion-top .lt {
+        float: none;
+      }
+
+      .sestion-top .rt {
+        float: none;
+      }
+
+      .sestion {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+      }
+
+      .sestion-top input, .sestion-top .select, .sestion-top textarea {
+        width: calc(100% - 69px);
+      }
+
+      .sestion-top .select {
+        margin-left: 61px;
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .sestop1 .pack.lt {
+        margin-bottom: 8px;
+      }
+
+      .sestion-bottom {
+        margin-top: 35px;
+      }
+
+      .sestion-bottom .free {
+        font-size: 16px;
+      }
+
+      .submit-btn {
+        height: 28px;
+        line-height: 28px;
+        font-size: 14px;
+      }
+
+      option {
+        width: 100px
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="sestion" id="app">
+  <form action="">
+    <div class="sestion-top">
+      <div class="sestop1">
+        <div class="pack lt">
+          <span class="new">收货人</span><input type="text" autocomplete="off" class="input1" id="input1">
+        </div>
+        <div class="pack rt">
+          <span class="new">手机号</span><input type="text" autocomplete="off" id="input2" v-model="usermap.num">
+        </div>
+        <div class="clear"></div>
+      </div>
+      <div class="sestop2">
+        <p id="addr-show" class="new">所在地</p>
+        <!--省份选择-->
+        <select id="cmbProvince" class="select">
+
+        </select>
+        <!--城市选择-->
+        <select id="cmbCity" class="select">
+
+        </select>
+        <!--县区选择-->
+        <select id="cmbArea" class="select">
+
+        </select>
+        <p class="btn met1" onClick="showAddr()"></p>
+      </div>
+      <div class="sestop3">
+        <span class="new new1">详细地址</span><textarea id="textarea" v-model="usermap.map">请100字以内写出详细地址...</textarea>
+        <div class="clear"></div>
+      </div>
+      <div class="sestop4">
+        <span class="new new1" style="width: 120px;float:left"><input name="state" id="newmap" type="checkbox" value=""
+                                                                      style="width: 16px !important;float:left;margin: 6px 0 0 15px;height: 16px"/> 设为默认地址</span>
+        <div class="clear"></div>
+      </div>
+    </div>
+    <!-- {{usermap.s1s}} -->
+    <!-- <div class="sestion-bottom">
+        <img src="image/map.png" class="map"/>
+        <span class="free">物流费用:<b>864.00</b></span>
+    </div> -->
+    <div class="submit-box">
+      <a href="javascript:" class="submit-btn" id="submit-btn">新增地址</a>
+      <a href="javascript:" class="submit-btn" id="submit-btn2">修改地址</a>
+    </div>
+  </form>
+</div>
+
+<script type="text/javascript" src="/assets/js/js7_jsAddress.js"></script>
+<script>
+  var text = document.getElementById('textarea');
+  text.onclick = function () {
+    text.innerText = "";
+  }
+</script>
+
+
+<script>
+  $(document).ready(function () {
+    var usermapjson = {};
+    var state = parent.$("#state").val();
+    $.ajax({
+      type: "post",
+      url: "/t_goods/selectFindIds",
+      data: {goods_id: state},
+      dataType: "json",
+      success: (res) => {
+
+
+        console.log(res);
+        $('#input1').val(res.data.goods_name)
+        $('#input2').val(res.data.goods_tel)
+        $('#textarea').val(res.data.goods_address)
+        if ($('#input1').val() != "") {
+          $('#submit-btn').css("display", "none")
+        }
+        if ($('#input1').val() == "") {
+          $('#submit-btn2').css("display", "none")
+        }
+        var c = res.data.goods_sheng;
+
+        var b = res.data.goods_shi;
+        var a = res.data.goods_xian;
+        if (c == undefined) {
+
+          addressInit('cmbProvince', 'cmbCity', 'cmbArea', "请选择省", "请选择市", "请选择县");
+        } else {
+          addressInit('cmbProvince', 'cmbCity', 'cmbArea', c, b, a);
+        }
+
+        /*  $("#cmbProvince option[value='"+res.data.goods_sheng+"']").attr("selected",true);
+         showcmbCity(res.data.goods_sheng)
+         $("#cmbCity option[value='"+res.data.goods_shi+"']").attr("selected",true);
+         showcmbArea(res.data.goods_xian)
+         $("#cmbArea option[value='"+res.data.goods_xian+"']").attr("selected",true); */
+        usermapjson.goods_id = state;
+        if (res.data.goods_ster == 0) {
+          $('#newmap').attr("checked", 'checked')
+        } else {
+          $('#newmap').attr("checked", false)
+        }
+
+      }
+    });
+
+    $("#submit-btn").click(function () {
+
+      dataform();
+      delete usermapjson.goods_id
+     // alert("999")
+      if (!(/^1[34578]\d{9}$/.test($('#input2').val()))) {
+        alert("手机号码有误，请重填");
+        return false;
+      }
+
+      //alert(JSON.stringify(usermapjson))
+      $.ajax({
+        type: "post",
+        url: "/t_goods/addGoods",
+        data: JSON.stringify(usermapjson),
+        contentType: 'application/json',
+        dataType: "json",
+        success: (res) => {
+          console.log(res)
+          $('#input1').val("")
+          $('#input2').val("")
+          $('#textarea').val("")
+        }
+      });
+
+      var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+      parent.layer.close(index);
+    })
+
+    $("#submit-btn2").click(function () {
+      dataform();
+
+      if (!(/^1[34578]\d{9}$/.test($('#input2').val()))) {
+
+        alert("手机号码有误，请重填");
+        return false;
+      }
+      $.ajax({
+        type: "post",
+        url: "t_goods/updateGoods",
+        data: JSON.stringify(usermapjson),
+        contentType: 'application/json',
+        dataType: "json",
+        success: (res) => {
+          //console.log(res)
+          $('#input1').val("")
+          $('#input2').val("")
+          $('#textarea').val("")
+        }
+      });
+      var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+      parent.layer.close(index);
+    })
+
+    function dataform() {
+      var newmapvalue = 2;
+      var name = document.getElementById("input1").value
+      var num = document.getElementById("input2").value
+      var cmbProvince = document.getElementById("cmbProvince")
+      var cmbCity = document.getElementById("cmbCity")
+      var cmbArea = document.getElementById("cmbArea")
+      var cmbProvincelength = document.getElementById("cmbProvince").value
+      var cmbCitylength = document.getElementById("cmbCity").value
+      var cmbArealength = document.getElementById("cmbArea").value
+      var textareavalue = document.getElementById("textarea").value
+      var newmap = document.getElementById('newmap');
+      if (newmap.checked) {
+        newmapvalue = 1
+      }
+      usermapjson.goods_name = name;
+      usermapjson.goods_tel = num;
+      usermapjson.goods_sheng = cmbProvincelength;
+      //usermapjson.goods_sheng =cmbProvincelength;
+      usermapjson.goods_shi = cmbCitylength;
+     // alert("****")
+      // usermapjson.goods_shi =cmbCitylength;
+      usermapjson.goods_xian = cmbArealength;
+      //usermapjson.goods_xian =cmbArealength;
+      usermapjson.goods_address = textareavalue;
+      usermapjson.user_id = sessionStorage.getItem("SkyUserId")
+      usermapjson.goods_ster = newmapvalue;
+      //alert(usermapjson)
+      //alert(sessionStorage.getItem("SkyUserId"))
+    }
+  })
+</script>
+</body>
+</html>

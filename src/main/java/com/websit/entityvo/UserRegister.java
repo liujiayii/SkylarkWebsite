@@ -18,6 +18,7 @@ public class UserRegister {
 	private String code;
 	private String msg_code;
 	private String password;
+	private Integer cilent;
 	public String getPhone() {
 		return phone;
 	}
@@ -42,6 +43,13 @@ public class UserRegister {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public Integer getCilent() {
+		return cilent;
+	}
+	public void setCilent(Integer cilent) {
+		this.cilent = cilent;
 	}
 	@Override
 	public String toString() {

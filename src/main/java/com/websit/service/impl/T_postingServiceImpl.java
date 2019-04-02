@@ -1,7 +1,11 @@
 package com.websit.service.impl;
 
+import com.websit.constant.PostingType;
 import com.websit.constant.ReturnCode;
+import com.websit.entity.T_comment;
 import com.websit.entity.T_posting;
+import com.websit.entity.T_user;
+import com.websit.entityvo.PostingPlateVo;
 import com.websit.entityvo.T_postingVo;
 import com.websit.mapper.T_postingMapper;
 import com.websit.service.IT_postingService;
@@ -40,29 +44,39 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 	 * 查询热门帖子
 	 */
 	@Override
-	public String showHotPostings(Integer row) {
-		List<T_posting> postingList = null;
+	public String showHotPostings(Integer page, Integer row) {
+		List<PostingPlateVo> postingList = null;
+		String msg = ReturnCode.SUCCESS_SELECT_MSG;
+		
+		if (page != null && row != null) {
+			page = row * (page - 1); 
+		}
 		
 		try {
-			postingList = t_postingMapper.selectHotPotings(row);
+			postingList = t_postingMapper.selectHotPotings(page, row);
+			
+			if (postingList == null || postingList.size() == 0) {
+				msg = ReturnCode.NORESULT_SELECT_MSG;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, ReturnCode.EXCEPTION_MSG, null, null);
 		}
 		
-		return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, postingList.size(), postingList);
+		return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, msg, postingList.size(), postingList);
 	}
 
 	/**
 	 * 查询最新帖子
 	 */
 	@Override
-	public String showNewestPotings(Integer row) {
+	public String showNewestPotings(Long plate_id, Integer row) {
 		
-		List<T_posting> postingList = null;
+		List<PostingPlateVo> postingList = null;
 		
 		try {
-			postingList = t_postingMapper.selectNewestPotings(row);
+			postingList = t_postingMapper.selectNewestPotings(plate_id, row);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, ReturnCode.EXCEPTION_MSG, null, null);
@@ -99,15 +113,11 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 	 * @createDate 2019年3月15日-上午9:45:46
 	 */
 	public String showGoodPostings(Integer row) {
-		EntityWrapper<T_posting> ew = new EntityWrapper<> ();
-		ew.eq("is_good", 1)
-		  .orderBy("toGood_time")
-		  .last("limit " + row)	;
 		
-		List<T_posting> postingList = null;
+		List<PostingPlateVo> postingList = null;
 		
 		try {
-			postingList = t_postingMapper.selectList(ew);
+			postingList = t_postingMapper.selectGoodPostings(PostingType.IS_GOOD, row);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, ReturnCode.EXCEPTION_MSG, null, null);
@@ -124,9 +134,22 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 	 * @createDate 2019年03月15日
 	 */
 	@Override
-	public Integer selectPostingCount(T_postingVo postingVo) {
+	public Integer selectPostingCount() {
 		
-		return t_postingMapper.selectPostingCount(postingVo);
+		return t_postingMapper.selectPostingCount();
+	}
+
+	/**
+	 * @Title: selecAllSome
+	 * @description 查询版主下的话题列表条数
+	 * @return T_postingVo
+	 * @author linhongyu
+	 * @createDate 2019年03月15日
+	 */
+	@Override
+	public T_postingVo selectCountTwo(T_postingVo postingVo) {
+		// TODO Auto-generated method stub
+		return t_postingMapper.selectCountTwo(postingVo);
 	}
 	
 	/**
@@ -140,11 +163,14 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 		int yesterdayCount = 0;
 		// 总发帖数
 		int totalPostCount = 0;
+		// 会员总数
+		int userCount = 0;
 		
 		try {
 			todayCount = t_postingMapper.selectCount(this.selectPostCounts("to_days(create_time) - to_days(now())", "0"));
 			yesterdayCount = t_postingMapper.selectCount(this.selectPostCounts("to_days(now()) - to_days(create_time)", "1"));
 			totalPostCount = t_postingMapper.selectCount(null);
+			userCount = new T_user().selectCount(null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, ReturnCode.EXCEPTION_MSG, null, null);
@@ -153,6 +179,7 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 		map.put("todayCount", todayCount);
 		map.put("yesterdayCount", yesterdayCount);
 		map.put("totalPostCount", totalPostCount);
+		map.put("userCount", userCount);
 		
 		return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, totalPostCount, map);
 		
@@ -162,7 +189,6 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 	 * 重载发帖计数方法
 	 *
 	 * @Title: selectPostCount
-	
 	 * @description 
 	 *
 	 * @param param1
@@ -183,6 +209,18 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 		ew.eq(param1, param2);
 		
 		return ew;
+	}
+
+	/**
+	 * @Title: selecAllSomeTop
+	 * @description 查询版主下的话题列表置顶
+	 * @return List<T_postingVo> 
+	 * @author linhongyu
+	 * @createDate 2019年03月19日
+	 */
+	@Override
+	public List<T_postingVo> selecAllSomeTop(T_postingVo postingVo) {
+		return t_postingMapper.selecAllSomeTop(postingVo);
 	}
 
 }

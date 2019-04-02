@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.ClassificationMapper">
+
+    <!--  通用查询映射结果 -->
+   <!--  <resultMap id="BaseResultMap" type="com.websit.entity.Inventory">
+        <id column="id" property="id" />
+        <result column="number" property="number" />
+        <result column="create_time" property="create_time" />
+         <result column="productName" property="productName" />
+          <result column="products_id" property="products_id" />
+    </resultMap> -->
+
+<!-- 查询商品一级分类 -->
+    <select id="listClassificationList" resultType="com.websit.entity.Classification">
+       SELECT DISTINCT
+                    id,
+                   name,
+                   image,
+                   create_time
+                FROM
+                    t_classification
+    </select>
+    <!-- 查询商品一级分类 分页 -->
+    <select id="listAllClassification"  resultType="com.websit.entity.Classification">
+       SELECT DISTINCT
+                    c.id id,
+                  c.name name,
+                   c.image image,
+                   c.create_time create_time
+                  FROM
+                  
+                    t_classification c
+                    <where>
+                   <if test="name != null and name !=''">
+                   c.name like "%"#{name}"%" 		
+                   </if>
+                   </where>
+                     order by id
+                   	 DESC
+                     limit #{page},#{limit}  
+    </select>
+    
+    <!-- 增加商品一级分类 -->
+	<insert id="saveClassification" parameterType="com.websit.entity.Classification">
+		insert into
+		 t_classification(name,image,create_time)
+		values
+		(#{name},#{image},now())
+	</insert>
+	
+	<!-- 修改商品一级分类 -->
+	<update id="updateClassification" parameterType="com.websit.entity.Classification">
+		update  t_classification
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="image != null and image != ''">
+				image = #{image},
+			</if>
+			<if test="create_time != null and create_time != ''">
+				create_time = #{create_time}
+			</if>
+		</set>
+		where id= #{id}
+	</update>
+	 <!-- 根据一级类型id查询当前一级类型及每个一级类型下所有商品类型(app) -->
+    <select id="listClassificationByClassificationId" resultMap="typeAndClassification">
+       SELECT DISTINCT
+                tc.id classificationId,
+                  <!--  tc.name classificationName, -->
+                  tpt.id id,
+                  tpt.name name,
+                  tpt.ioc ioc
+                FROM
+                  t_classification tc,
+                  t_product_type tpt
+         <where>
+                   tpt.classification_id = tc.id
+                and tc.id = #{classificationId}
+        </where>
+    </select>
+    <resultMap type="com.websit.entityvo.ProductVos" id="typeAndClassification">
+       <id column="classificationId" property="classificationId"/>
+       <result column="classificationName" property="classificationName"/>
+       <result column="create_time" property="create_time"/>
+       <collection property="productTypeList" ofType="com.websit.entity.T_product_type">
+           <id column="id" property="id"/>
+           <result column="name" property="name"/>
+           <result column="ioc" property="ioc"/>
+       </collection>
+    </resultMap>
+    <!-- 查询商品一级分类条数 -->
+	<select id="findClassificationCount" resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM
+		(
+		select
+		   id 
+		from
+		 t_classification
+		<where>
+			<if test="name != null and name != ''">
+				and name like "%"#{name}"%"
+			</if>
+		</where>
+		)as tb
+	</select>
+	 <!-- 根据商品一级分类id删除一级分类 -->
+    <delete id="deleteClassificationById" parameterType="BigInteger">
+		delete
+		   from
+		 t_classification
+		   where id=#{id}
+		
+	</delete>
+	
+	<select id="selectClassification" resultType="com.websit.entity.Classification">
+       SELECT DISTINCT
+                    id,
+                   name,
+                   image,
+                   create_time
+                FROM
+                    t_classification
+    </select>
+</mapper>

@@ -1,18 +1,21 @@
 package com.websit.web;
-
 import org.springframework.web.bind.annotation.RequestBody;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.websit.entity.T_plate;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.websit.entityvo.T_postingVo;
 import com.websit.service.IT_postingService;
 import java.util.List;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.websit.constant.ReturnCode;
 import com.websit.entity.T_posting;
 import com.websit.until.JsonUtil;
+import com.websit.until.fileuiil;
 import java.util.Date;
-
 
 
 /**
@@ -31,12 +34,14 @@ public class T_postingController {
 	public IT_postingService T_postingService;
     /**
      * 发帖接口
+     * @author chengzhihao
      * @param T_posting
      * @return
+     * @Title: selecAllSome
      */
 	@RequestMapping("/addT_posting")
 	@ResponseBody
-	public String T_postingController(@RequestBody T_posting T_posting) {
+	public String postingController(@RequestBody T_posting T_posting) {
 		// System.out.println("请求成功"+T_posting.toString());
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
@@ -44,16 +49,23 @@ public class T_postingController {
 
 		try {
 			T_posting.setCreate_time(sdf);//获取当前时间
+			T_posting.setIs_dele(1);
+			T_posting.setNew_time(sdf);
+			
+			String  content=T_posting.getContext();
+			fileuiil fileuiil=new fileuiil();
+			String cent=fileuiil.upfileuiil(content);
+			T_posting.setContext(cent);
 			boolean fig = T_postingService.insert(T_posting);// 调用T_postingService层
-			if (fig) {
+			
+			if (fig==true) {
 				msg = "发帖成功";
 				cood = 1;
 			} else {
 				msg = "发帖失败";
 				cood = -1;
 			}
-
-			return JsonUtil.getResponseJson(cood, msg, null, null);
+			return JsonUtil.getResponseJson(cood, msg, null, fig);
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -75,16 +87,43 @@ public class T_postingController {
 	 */
 	@RequestMapping(value = "/selecAllSome", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public Object selecAllSome(T_postingVo postingVo) {
-		T_plate plate = new T_plate();
-		long id=plate.getId();
-		postingVo.setPlate_id(id);
+	public Object selecAllSome(T_postingVo postingVo,Integer page,Integer limit) {
 		try{
+			postingVo.setPage((page-1)*limit);
+			postingVo.setLimit(limit);
+			postingVo.getPlate_id();
 			List<T_postingVo> post=T_postingService.selecAllSome(postingVo);
-			if (post.size() >=1) {
-				return JsonUtil.getResponseJson(1, "查看成功", null, null);
+			T_postingVo selectCount = T_postingService.selectCountTwo(postingVo);
+			Integer count = selectCount.getCount();
+			if (post.size() >=1&&count!=null) {
+				return JsonUtil.getResponseJson(1, "查看成功", count, post);
 			} else {
-				return JsonUtil.getResponseJson(1, "无数据", null, null);
+				return JsonUtil.getResponseJson(2, "无数据", null, null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
+		}
+	}
+
+	/**
+	 * @Title: selecAllSomeTop
+	 * @description 查询版主下的话题列表置顶
+	 * @return List<T_postingVo> 
+	 * @author linhongyu
+	 * @createDate 2019年03月19日
+	 */
+	@RequestMapping(value = "/selecAllSomeTop", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Object selecAllSomeTop(T_postingVo postingVo) {
+		try{
+			postingVo.getPlate_id();
+			List<T_postingVo> post=T_postingService.selecAllSomeTop(postingVo);
+			
+			if (post.size() >=1) {
+				return JsonUtil.getResponseJson(1, "查看成功", null, post);
+			} else {
+				return JsonUtil.getResponseJson(2, "无数据", null, null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -107,9 +146,19 @@ public class T_postingController {
 	 */
 	@RequestMapping("/showHotPostings")
 	@ResponseBody
-	public String showHotPostings(Integer row) {
+	public String showHotPostings(String page, String row) {
+		Integer limit = null;
+		if (StringUtils.isEmpty(page)) {
+			page = "1";
+		}
 		
-		return T_postingService.showHotPostings(row);
+		if (StringUtils.isNotEmpty(row)) {
+			limit = Integer.valueOf(row);
+		} else {
+			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, "参数缺失", null, null);
+		}
+		
+		return T_postingService.showHotPostings(Integer.valueOf(page), limit);
 	}
 	
 	/**
@@ -129,9 +178,18 @@ public class T_postingController {
 	 */
 	@RequestMapping("/showNewestPostings")
 	@ResponseBody
-	public String showNewestPostings(Integer row) {
+	public String showNewestPostings(@RequestParam(value="plate_id", required = false) String plate_id, String row) {
+		Long plateId = null;
 		
-		return T_postingService.showNewestPotings(row);
+		if (StringUtils.isNotEmpty(plate_id)) {
+			plateId = Long.valueOf(plate_id);
+		}
+		
+		if (StringUtils.isEmpty(row)) {
+			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, "参数缺失", null, null);
+		}
+		
+		return T_postingService.showNewestPotings(plateId, Integer.valueOf(row));
 	}
 	
 	/**
@@ -157,32 +215,6 @@ public class T_postingController {
 	}
 
 	/**
-	 * @Title: selectPostingCount
-	 * @description 根据用户id查询用户发帖数量
-	 * @return String
-	 * @author pangchong
-	 * @createDate 2019年03月15日
-	 */
-	@RequestMapping(value = "/selectPostingCount", produces = "application/json; charset=utf-8")
-	@ResponseBody
-	public String selectPostingCount(T_postingVo postingVo ) {
-			try{
-			Integer count = T_postingService.selectPostingCount(postingVo);
-			System.out.println(count);
-			if (count != null) {
-				return JsonUtil.getResponseJson(1, "查询成功", null, count);
-			} else {
-				return JsonUtil.getResponseJson(1, "无数据", null, null);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
-		
-		}
-		}
-
-	
-	/**
 	 * 显示昨天、今天发帖数量以及总发帖数量
 	 *
 	 * @Title: showPostCount
@@ -200,7 +232,22 @@ public class T_postingController {
 	}
 	
 	
-	
+	/**
+	 * 显示昨天、今天发帖数量以及总发帖数量
+	 *
+	 * @Title: showPostCount
+	 * @description 
+	 * @return  
+	 * String    
+	 * @author lujinpeng
+	 * @createDate 2019年3月15日-下午5:13:40
+	 */
+	@RequestMapping("/showPost")
+	@ResponseBody
+	public String upnumber() {
+		
+		return null;
+	}
 	
 	
 	

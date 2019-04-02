@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_alipay_successMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_alipay_success">
+        <id column="id" property="id" />
+        <result column="trade_no" property="trade_no" />
+        <result column="out_trade_no" property="out_trade_no" />
+        <result column="total_amount" property="total_amount" />
+        <result column="pay_date" property="pay_date" />
+        <result column="seller_id" property="seller_id" />
+    </resultMap>
+
+</mapper>

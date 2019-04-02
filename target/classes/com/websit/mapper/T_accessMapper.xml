@@ -9,5 +9,25 @@
         <result column="number" property="number" />
         <result column="create_time" property="create_time" />
     </resultMap>
+    
+    <select id="conent" resultType="com.websit.entity.T_access">
+      select number from t_access where create_time=#{create_time}
+    
+    </select>
+    
+    
+    <insert id="insert" >
+    
+    
+    insert into t_access(number,create_time)value(1,#{create_time})
+    
+    </insert>
+   
+    
+     <update id="updatenumber">
+      update t_access set  number=number+1  where create_time=#{create_time}
+    
+    </update>
+    
 
 </mapper>

@@ -72,9 +72,21 @@ public class T_posting extends Model<T_posting> {
      * 是否置顶
      */
     private int is_top;
+    /*/*
+     * 是否置顶
+     */
+    private int is_dele;
     
 
-    public int getNumber() {
+    public int getIs_dele() {
+		return is_dele;
+	}
+
+	public void setIs_dele(int is_dele) {
+		this.is_dele = is_dele;
+	}
+
+	public int getNumber() {
 		return number;
 	}
 
@@ -174,7 +186,7 @@ public class T_posting extends Model<T_posting> {
 		return "T_posting [id=" + id + ", user_id=" + user_id + ", context=" + context + ", title=" + title
 				+ ", introduce=" + introduce + ", create_time=" + create_time + ", plate_id=" + plate_id + ", is_good="
 				+ is_good + ", toGood_time=" + toGood_time + ", number=" + number + ", new_time=" + new_time
-				+ ", is_top=" + is_top + "]";
+				+ ", is_top=" + is_top + ", is_dele=" + is_dele + "]";
 	}
 
 	

@@ -1,6 +1,6 @@
 .cont {
     width: 1200px;
-    margin: 0 auto;
+    margin: 20px auto;
 }
 
 /*论坛首页*/
@@ -23,6 +23,13 @@
 .bbsIndex .banner .hot {
     width: 635px;
     height: 100%;
+    background: #fff;
+    overflow: hidden;
+}
+
+.bbsIndex .banner .hot .ivu-tabs-bar {
+    margin-bottom: 10px !important;
+    background: #f1f1f1;
 }
 
 .bbsIndex .banner .hot .tab-pane {
@@ -163,12 +170,58 @@
 }
 
 /*论坛帖子列表*/
-.bbsList {
+.bbsList, .intro {
     width: 1010px;
-    margin: 0 auto;
+    margin: 10px auto;
     border: 5px solid #f1f1f1;
     box-sizing: border-box;
+}
+
+.bbsBreadcrumb {
+    width: 980px;
+    margin: 20px auto;
+}
+
+.bbsList .bbsInner {
     padding: 10px;
+}
+
+.intro {
+    display: flex;
+    padding: 20px;
+}
+
+.intro .icon {
+    width: 84px;
+    height: 104px;
+    margin-right: 20px;
+}
+
+.intro .icon img {
+    display: inline-block;
+    width: 84px;
+    height: 84px;
+    border: 1px solid #ccc;
+}
+
+.intro .icon .name {
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
+}
+
+.intro .infoBox {
+    width: 80%;
+}
+
+.intro .infoBox .title {
+    font-size: 14px;
+    color: #707070;
+    margin-bottom: 10px;
+}
+
+.intro .infoBox .info {
+    color: #666;
 }
 
 .bbsList .listTitle {
@@ -183,10 +236,15 @@
     align-items: center;
     width: 980px;
     height: 80px;
+    padding-left: 20px;
 }
 
 .bbsList .postBox:hover {
     background: #f1f1f1;
+}
+
+.bbsList .postBox:hover a {
+    color: #ff8600;
 }
 
 .bbsList .postBox .head {
@@ -204,6 +262,10 @@
 
 .bbsList .postList .hot a {
     color: #ff8600;
+}
+
+.bbsList .postList .hot .ivu-tabs-nav-scroll {
+    background: #f1f1f1;
 }
 
 .bbsList .postBox .head img {
@@ -249,12 +311,59 @@
     margin-left: 20px;
 }
 
+.bbsList .pageBox {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.bbsList .editor {
+    border-top: 1px solid #cdcdcd;
+    background: #f7f7f7;
+    padding: 20px 120px;
+}
+
+.bbsList .editor .info {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    line-height: 40px;
+}
+
+.bbsList .editor .sub {
+    margin: 20px 0 100px;
+}
+
 /*帖子详情*/
 .bbsPost {
     width: 980px;
-    margin: 0 auto;
+    margin: 20px auto;
     border: 1px solid #e5e5e5;
     color: #333;
+}
+
+.bbsPost .home {
+    display: flex;
+    align-items: center;
+    height: 82px;
+    background: #f2f4f7;
+    font-size: 20px;
+    color: #333;
+}
+
+.bbsPost .home .head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 50px;
+    border: 1px solid #BBBDBF;
+    margin: 0 30px;
+}
+
+.bbsPost .home .head img {
+    height: 48px;
+    width: 48px;
 }
 
 .bbsPost .caption {
@@ -306,11 +415,140 @@
 }
 
 .bbsPost .postMain .reply .replyInfo {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    display: flex;
+    flex-direction: row-reverse;
     height: 30px;
     width: auto;
     line-height: 30px;
     color: #999;
+}
+
+.bbsPost .postMain .replyToReplyList {
+    background: #f7f8fa;
+    margin: 0 0 20px 20px;
+    overflow: hidden;
+    transition: all 2s linear;
+}
+
+.bbsPost .postMain .replyToReplyList .inner {
+    padding: 16px 16px 0 16px;
+    border: 1px solid #f0f1f2;
+    box-sizing: border-box;
+    transition: all .5s linear;
+    height: 100%;
+    margin-top: 0px;
+}
+
+.bbsPost .postMain .replyToReplyHide .inner {
+    margin-top: -500px;
+}
+
+.bbsPost .postMain .replyToReplyList .replyToReplyBox {
+    display: flex;
+    border-bottom: 1px dotted #ccc;
+    padding: 10px 0;
+}
+
+.bbsPost .postMain .replyToReplyList .replyToReplyHead {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #f0f1f2;
+    margin-right: 10px;
+}
+
+.bbsPost .postMain .replyToReplyList .replyToReplyInfo {
+    width: 90%;
+    font-size: 14px;
+    color: #333;
+}
+
+.bbsPost .postMain .replyToReplyList .replyToReplyHead img {
+    width: 100%;
+    height: 100%;
+}
+
+.bbsPost .pageBox {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.bbsPost .editor {
+    border-top: 1px solid #cdcdcd;
+    background: #f7f7f7;
+    padding: 20px 120px;
+}
+
+.bbsPost .editor .info {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    line-height: 40px;
+}
+
+.bbsPost .editor .sub {
+    margin: 20px 0 100px;
+}
+
+/*个人空间*/
+.space {
+
+}
+
+.space .main {
+    padding: 20px;
+}
+
+.space .title {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    font-size: 12px;
+    color: #444;
+}
+
+.space .postList {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #C2D5E3;
+    color: #999;
+    font-size: 12px;
+}
+
+.space .postList a {
+    color: #069;
+    font-size: 12px;
+    max-width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.space .pageBox {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.space .nameBox {
+    display: flex;
+}
+
+.space .name {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 10px 10px 0;
+}
+
+.space .infoBox {
+    border-bottom: 1px dashed #cdcdcd;
+    padding: 10px 0;
+}
+
+.space .infoBox .line {
+    padding: 0 5px;
 }

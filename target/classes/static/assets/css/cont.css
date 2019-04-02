@@ -1,0 +1,159 @@
+.mainRight{
+	margin-left: 160px;
+    min-height: 700px;
+}
+.mainRight-01,.mainRight-02,.mainRight-03,.mainRight-04,.mainRight-05{
+	width: 100%;
+	box-sizing: border-box;
+    padding: 25px;
+	overflow: hidden;
+	background: #FFFFFF;
+	margin-bottom: 20px;
+}
+.mainRight-01-1{
+    float: left;
+    width: 120px;
+    margin-right: 25px;
+}
+.mainRightImg{
+	width: 100%;
+}
+.mainRightImg img{
+    width: 100%;
+    height: 120px;
+    border-radius: 50%;
+}
+.mainRight-01-2{
+    float: left;
+    height: 100%;
+    padding: 0 10px;
+    font-size: 17px;
+    position: relative;
+}
+.mainRight-01-2 .cornerMark{
+    position: absolute;
+    padding: 2px 5px;
+    box-sizing: border-box;
+    display: inline-block;
+    background: red;
+    color: #FFFFFF;
+    border-radius: 50%;
+    top: -10px;
+    right: 68px;
+    font-size: 12px;
+}
+.mainRight-01-2 p:nth-of-type(1) img,p:nth-of-type(2) img{
+	width: 25px;
+    height: 20px;
+    margin: 0 10px;
+}
+.mainRight-01-2 p:nth-of-type(2) {
+	margin:10px 0;
+	color: #ff6600;
+}
+.mainRight-01-2 p:nth-of-type(3) span{
+	color: #ff6600;
+}
+.mainRight-01-3{
+	float: left;
+	box-sizing: border-box;
+	padding: 20px 0;
+}
+.mainRight-01-3-1{
+	overflow: hidden;
+}
+.mainRight-01-3-1 ul{
+	overflow: hidden;
+}
+.mainRight-01-3-1 ul li{
+	float: left;
+    margin-left: 40px;
+}
+.mainRight-01-3-1 ul li a{
+    display: inline-block;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: #ccc;
+    margin-left: 15px;
+}
+.mainRight-01-3-1 ul li a img{
+	width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 13px 13px;
+}
+.mainRight-01-3-1 ul li span{
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+.mainRight-01-3-1 ul li:nth-of-type(1) a{
+	background: #ff9900;
+}
+.mainRight-01-3-1 ul li:nth-of-type(2) a{
+	background: #00aaff;
+}
+.mainRight-01-3-1 ul li:nth-of-type(3) a{
+	background: #99cc33;
+}
+.mainRight-02  h2,.mainRight-03 h2,.mainRight-04 h2{
+    height: 45px;
+    line-height: 32px;
+    font-weight: bold;
+}
+.mainRight-02  p{
+	margin-bottom: 10px;
+	border-bottom: 1px dashed #CCCCCC;
+	box-sizing: border-box;
+	padding: 0 0 10px 0;
+}
+.red{
+	color: red !important;
+}
+.mainRight-04 form .items{
+	margin-bottom: 20px;
+}
+.mainRight-04 form .items label{
+	box-sizing: border-box;
+    padding: 3px 5px;
+    width: 101px;
+    text-align: right;
+    display: inline-block;
+    float: left;
+}
+.mainRight-04 form .items label span{
+	color: red;
+}
+.mainRight-04 form .items > span{
+	color: red;
+}
+.mainRight-04 form .items input{
+	width: 200px;
+    height: 35px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    padding: 2px 5px;
+}
+.mainRight-04 form .items select{
+    height: 35px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    padding: 2px 5px;
+}
+.mainRight-04 form .items .subBtn{
+    width: 100px !important;
+    /* border: blanchedalmond; */
+    border: none !important;
+    border-radius: 5px !important;
+    background: red !important;
+    color: #ffffff !important;
+    margin-left: 135px !important;
+}
+.mainRight-04 form .items textarea{
+	border: 1px solid #C9C9C9;
+	float: left;
+}

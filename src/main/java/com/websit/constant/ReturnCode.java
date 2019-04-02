@@ -21,6 +21,9 @@ public class ReturnCode {
 	//查询成功返回消息
 	public static final String SUCCESS_SELECT_MSG = "查询成功";
 	
+	//查询成功返回消息
+	public static final String NORESULT_SELECT_MSG = "无数据";
+	
 	//查询失败返回消息
 	public static final String FAILED_SELECT_MSG = "查询失败";
 	

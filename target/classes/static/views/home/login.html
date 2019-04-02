@@ -1,23 +1,18 @@
 <!doctype html>
-<html lang="en">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta name="referrer" content="no-referrer">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1,user-scalable=no">
-  <link rel="stylesheet" href="/assets/css/reset.css">
-  <link rel="stylesheet" href="/assets/css/login.css" media="all">
-  <script src="//lib.baomitu.com/vue/2.6.8/vue.js"></script>
-  <script src="//lib.baomitu.com/jquery/3.3.1/jquery.js"></script>
-  <script src="//lib.baomitu.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
-  <link href="//lib.baomitu.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
-  <title>登录注册</title>
-</head>
+  <link rel="stylesheet" href="/assets/css/home.css">
+  <div th:replace="/home/common :: commonHeader(登录)"></div>
 
+</head>
 <body>
 <h1 th:text="${info}"/>
-<div id="app">
+<div id="app" class="login" v-cloak>
   <form action="imgvrifyControllerDefaultKaptcha">
     <input type="text" name="vrifyCode"/>
     <input type="submit" value="提交"></input>
@@ -28,7 +23,7 @@
         <h1>让生活更简单</h1>
         <p>Make the design simpler</p>
       </div>
-      <a href="/views/home/index.html" class="goback"><img src="/assets/image/public/goback.png" alt=""> 返回首页</a>
+      <i-button type="primary" to="/" class="goback" icon="ios-home-outline">返回首页</i-button>
     </div>
     <div class="right">
       <div class="right-box">
@@ -37,133 +32,198 @@
           <span class="nav" :class="{ active: type=='reg' }" @click="toggleType('reg')">账号注册</span>
         </div>
         <div class="loginBox">
-          <form action="">
-            <div class="form-group">
-              <input v-model="form.phone" class="form-control" type="text" placeholder="请输入手机号"
-                     name="phone" required>
-              <div class="invalid-feedback">{{errorMsg.phone}}</div>
-            </div>
-            <div v-if="type=='reg'" class="input-group form-group">
-              <input type="text" v-model="form.msg_code" class="form-control" name="msg_code" required
-                     placeholder="请输入短信验证码">
-              <div class="invalid-feedback">{{errorMsg.msg_code}}</div>
-              <div class="input-group-append">
-                <button v-show="msgError=='60'" class="btn btn-primary" type="button" @click="getMsgCode">获取短信验证码
-                </button>
-                <button v-show="msgError!='60'" class="btn btn-primary" type="button" disabled>请在{{msgError}}秒后重新获取
-                </button>
-              </div>
-            </div>
-            <div class="input-group form-group">
-              <input type="text" v-model="form.code" class="form-control" name="code" required
-                     placeholder="请输入图文验证码">
-              <div class="invalid-feedback">{{errorMsg.code}}</div>
-              <div class="input-group-append">
-                <img alt="验证码" id="code" style="height: 100%;cursor: pointer" src="/createValicode" @click="getCode"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <input v-model="form.password" type="password" name="password" class="form-control"
-                     placeholder="请输入密码">
-              <div class="invalid-feedback">{{errorMsg.code}}</div>
-            </div>
-            <div class="form-group">
-              <button v-show="type=='reg'" type="button" class="btn btn-primary btn-block" @click="reg">注册</button>
-              <button v-show="type=='login'" type="button" class="btn btn-primary btn-block" @click="login">登录</button>
-            </div>
-          </form>
+          <i-form :model="form" action="" :rules="ruleValidate" ref="form">
+            <form-item prop="phone">
+              <i-input v-model="form.phone" type="text" placeholder="请输入手机号" name="phone" required/>
+            </form-item>
+            <template v-if="type === 'reg'">
+              <form-item style="margin-bottom: 0"><!--iview在输入框内部插入元素和v-if、v-show疑似冲突--></form-item>
+              <form-item prop="code">
+                <i-input v-model="form.code" type="text" placeholder="请输入图文验证码" name="code" required>
+                  <img slot="append" alt="验证码" id="code" style="cursor: pointer" src="/createValicode"
+                       @click="getCode"/>
+                </i-input>
+              </form-item>
+              <form-item prop="msg_code">
+                <i-input v-model="form.msg_code" type="text" placeholder="请输入短信验证码" name="msg_code" required>
+                  <i-button v-show="msgError=='60'" slot="append" @click="getMsgCode">获取短信验证码</i-button>
+                  <i-button v-show="msgError!='60'" slot="append" disabled>请在{{msgError}}秒后重新获取</i-button>
+                </i-input>
+              </form-item>
+              <form-item prop="password">
+                <i-input v-model="form.password" type="password" placeholder="请输入密码" name="password" required/>
+              </form-item>
+              <form-item>
+                <i-input v-model="form.rePassword" type="password" placeholder="确认密码" name="rePassword" required/>
+              </form-item>
+            </template>
+            <template v-else-if="type === 'login'">
+              <form-item prop="password">
+                <i-input v-model="form.password" type="password" placeholder="请输入密码" name="password" required/>
+              </form-item>
+              <form-item prop="code">
+                <i-input v-model="form.code" type="text" placeholder="请输入图文验证码" name="code" required>
+                  <img slot="append" alt="验证码" id="code" style="cursor: pointer" src="/createValicode"
+                       @click="getCode"/>
+                </i-input>
+              </form-item>
+            </template>
+            <form-item>
+              <i-button v-show="type=='reg'" type="primary" long @click="reg('form')">注册</i-button>
+              <i-button v-show="type=='login'" type="primary" long @click="login('form')">登录</i-button>
+            </form-item>
+          </i-form>
         </div>
       </div>
       <p class="Agreement">登录即同意 <a href="">《云阙网络服务协议》</a></p>
     </div>
   </div>
-  <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModal"
-       aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">提示</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          错误...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 <script>
-  let vm = new Vue({
-    el: '#app',
+  const mixin = {
     data() {
       return {
         type: 'login',
         msgError: 60,
+        name: "",
         form: {
           phone: '',
           code: '',
           msg_code: '',
-          password: ''
+          password: '',
+          rePassword: ''
         },
-        errorMsg: {
-          phone: '',
-          code: '',
-          msg_code: '',
-          password: ''
-        }
+        ruleValidate: {
+          phone: [
+            {
+              validator: (rule, value, callback) => {
+                if (!value) {
+                  return callback(new Error('手机号不能为空'));
+                } else if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(value)) {
+                  callback('手机号格式不正确');
+                } else {
+                  callback();
+                }
+              }, trigger: 'blur'
+            }
+          ],
+          msg_code: [
+            {required: true, message: '验证码不能为空', trigger: 'blur'}
+          ],
+          code: [
+            {required: true, message: '验证码不能为空', trigger: 'blur'}
+          ],
+          password: [
+            {
+              validator: (rule, value, callback) => {
+                if (!value) {
+                  return callback(new Error('密码不能为空'));
+                } else if (!/^[\w_-]{6,16}$/.test(value)) {
+                  callback('请输入正确的6-16位密码');
+                } else {
+                  callback();
+                }
+              }, trigger: 'blur'
+            }
+          ]
+        },
       }
     },
     methods: {
       /*获取短信验证码*/
       getMsgCode() {
-        let timer = setInterval(() => {
-          this.msgError = this.msgError - 1
-          if (this.msgError == 0) {
-            clearInterval(timer)
-            this.msgError = 60
-          }
-        }, 1000)
-        $.ajax({
-          type: "post",
-          url: "/getmsg",
-          data: {phone: this.form.phone},
-          dataType: "json",
-          success: (res) => {
-            console.log(res)
-          }
-        });
+        if (/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(this.form.phone) && this.form.code != '') {
+          $.ajax({
+            type: "post",
+            url: "/getmsg",
+            data: {phone: this.form.phone, code: this.form.code},
+            dataType: "json",
+            success: (res) => {
+              console.log(res)
+              if (res.code == 1) {
+                let timer = setInterval(() => {
+                  this.msgError = this.msgError - 1
+                  if (this.msgError == 0) {
+                    clearInterval(timer)
+                    this.msgError = 60
+                  }
+                }, 1000)
+                this.success(res.msg)
+              } else {
+                this.error(res.msg)
+              }
+            }
+          });
+        } else {
+          this.error('请输入正确的手机号和图文验证码')
+        }
       },
       /*注册*/
-      reg() {
-        $.ajax({
-          type: "post",
-          url: "/register",
-          data: JSON.stringify(this.form),
-          contentType: 'application/json',
-          dataType: "json",
-          success: (res) => {
-            console.log(res)
+      reg(form) {
+        this.$refs[form].validate((valid) => {
+          if (valid) {
+            if (this.form.password != this.form.rePassword) {
+              this.error('两次输入的密码不一致')
+            } else {
+              $.ajax({
+                type: "post",
+                url: "/register",
+                data: JSON.stringify(this.form),
+                contentType: 'application/json',
+                dataType: "json",
+                success: (res) => {
+                  console.log(res)
+                  if (res.code == 1) {
+                    var c = res.data.count;
+                    var socket = new SockJS('/endpointSang');
+
+                    stompClient = Stomp.over(socket);
+
+                    stompClient.connect({}, function (frame) {
+
+                      stompClient.send("/selectCount", {}, JSON.stringify({'name': c}));
+                    });
+
+                    this.success(res.msg)
+                    this.type = 'login'
+                  } else {
+                    this.error(res.msg)
+                    this.getCode()
+                  }
+                }
+              });
+            }
+          } else {
+            console.log('error')
           }
-        });
+        })
       },
       /*登录*/
-      login() {
-        $.ajax({
-          type: "post",
-          url: "/login",
-          data: JSON.stringify(this.form),
-          contentType: 'application/json',
-          dataType: "json",
-          success: (res) => {
-            console.log(res)
+      login(form) {
+        this.$refs[form].validate((valid) => {
+          if (valid) {
+            $.ajax({
+              type: "post",
+              url: "/login",
+              data: JSON.stringify(this.form),
+              contentType: 'application/json',
+              dataType: "json",
+              success: (res) => {
+                console.log(res)
+                if (res.code == 1) {
+                  sessionStorage.setItem("SkyUserName", (res.data.nickname == undefined ? res.data.phone : res.data.nickname))
+                  sessionStorage.setItem("SkyUserId", res.data.id)
+                  window.history.go(-1);
+                } else {
+                  this.getCode()
+                  this.error(res.msg)
+                }
+              }
+            });
+          } else {
+            console.log('error')
           }
-        });
+        })
       },
       /*获取图文验证码*/
       getCode() {
@@ -175,13 +235,10 @@
       }
     },
     mounted() {
-      $('#myModal').modal('show')
+      this.type = this.getHrefParam('type')
     }
-  })
+  }
 </script>
-<script>
-
-</script>
+<div th:replace="/home/common :: commonFooterjs"></div>
 </body>
-
 </html>

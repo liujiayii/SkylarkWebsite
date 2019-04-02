@@ -7,13 +7,16 @@ import com.websit.entityvo.postinglist;
 import com.websit.mapper.T_postingMapper;
 import com.websit.mapper.T_replyMapper;
 import com.websit.service.IT_replyService;
+import com.websit.until.fileuiil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.websit.entityvo.T_replylist;
 
 /**
  * <p>
@@ -28,17 +31,64 @@ public class T_replyServiceImpl extends ServiceImpl<T_replyMapper, T_reply> impl
 
 	@Autowired
 	private T_replyMapper T_replyMapper;
-	public List<postinglist> postingli(String id) {	
-		
-		return T_replyMapper.postinglist(id);
+	public List<postinglist> postingli(String id,RowBounds RowBounds) {	
+		List<postinglist> tre=T_replyMapper.postinglist(id, RowBounds);
+		fileuiil  fileuiil=new fileuiil();
+		for(int  i=0;i<tre.size();i++) {
+			String text=fileuiil.readTxt(tre.get(i).getComment());
+			
+			tre.get(i).setComment(text);
+		}
+		System.out.println(tre.toString()+"1111111111111111111111111111111111111111111111");
+		return tre;
 	}
-	public List<postinglist> t_commentlist(String posting_id){
-		return T_replyMapper.t_commentlist(posting_id);
-	}
+	
 	@Override
 	public List<T_plateputing> tret(String posting_id) {
-		
-		 return T_replyMapper.tret(posting_id);
+		List<T_plateputing> tre=T_replyMapper.tret(posting_id);
+		fileuiil  fileuiil=new fileuiil();
+		for(int  i=0;i<tre.size();i++) {
+			String text=fileuiil.readTxt(tre.get(i).getContext());
+			
+			tre.get(i).setContext(text);
+		}
+		System.out.println(tre.toString()+"2222222222222222222222222222222222222222222");
+		 return tre;
+	}
+	@Override
+	public List<T_replylist> T_replylist(String comment_id,RowBounds RowBounds) {
+		List<T_replylist> tre=T_replyMapper.T_replylist(comment_id,RowBounds);
+//		for(int  i=0;i<tre.size();i++) {
+//			String text=fileuiil.readTxt(tre.get(i).getResponse());
+//			
+//			tre.get(i).setResponse(text);
+//		}
+//		 
+		return tre;
+	}
+
+	@Override
+	public int updime(String comment_id) {
+		// TODO Auto-generated method stub
+		 return T_replyMapper.updime(comment_id);
+	}
+
+	@Override
+	public int upnumber(String posting_id) {
+		// TODO Auto-generated method stub
+		return T_replyMapper.number(posting_id);
+	}
+
+	@Override
+	public int querlist(String posting_id) {
+		// TODO Auto-generated method stub
+		return T_replyMapper.querlist(posting_id);
+	}
+
+	@Override
+	public int querlistnuk(String comment_id) {
+	
+		return T_replyMapper.querlistnuk(comment_id);
 	}
 
 }

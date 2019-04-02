@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_reviewMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.websit.entity.T_review">
+		<id column="id" property="id" />
+		<result column="product_id" property="product_id" />
+		<result column="user_id" property="user_id" />
+		<result column="review_content" property="review_content" />
+		<result column="review_time" property="review_time" />
+		<result column="reply" property="reply" />
+		<result column="reply_time" property="reply_time" />
+		<result column="browse_number" property="browse_number" />
+		<result column="appraise" property="appraise" />
+	</resultMap>
+	<!-- 添加评论 -->
+	<insert id="insertReview" parameterType="com.websit.entity.T_review"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_review(
+		product_id,
+		user_id,
+		review_content,
+		review_time,
+		appraise,
+		picture
+		)
+		VALUES
+		(
+		#{product_id},
+		#{user_id},
+		#{review_content},
+		#{review_time},
+		#{appraise},
+		#{picture}
+		)
+	</insert>
+	<!-- 商家回复 -->
+	<update id="updateOnethin" parameterType="com.websit.entity.T_review">
+		UPDATE t_review
+		SET
+		reply = #{reply},
+		reply_time=DATE(NOW())
+		WHERE
+		t_review.id = #{id}
+	</update>
+
+	<!-- 查询历史评价 -->
+	<select id="seleceUserThin" resultType="com.websit.entityvo.T_reviewVo" resultMap="desksAndCategories">
+		select
+		re.id id,
+		re.appraise appraise,
+		re.review_content review_content,
+		re.review_time review_time,
+		re.product_id product_id,
+		pr.name name,
+		pr.color color,
+		pr.image image,
+		pr.price price,
+		pr.specifications specifications,
+		pv.picture picture
+		from t_review re left join t_picture_video pv on re.id= pv.review_id left
+		join t_product pr on pr.id = re.product_id
+		WHERE
+		re.user_id=#{id}
+		ORDER BY re.review_time DESC
+		limit #{page},#{limit}
+	</select>
+	 <resultMap id="desksAndCategories" type="com.websit.entityvo.T_reviewVo"> 
+		<id column="id" property="id"></id> 
+		<result column="appraise" property="appraise"/> 
+		<result column="review_content" property="review_content"/> 
+		<result column="review_time" property="review_time"/> 
+		<result column="name" property="name"/> 
+		<result column="color" property="color"/> 
+		<result column="image" property="image"/> 
+		<result column="price" property="price"/> 
+		<result column="specifications" property="specifications"/> 
+		<collection property="picture_video" ofType="com.websit.entity.T_picture_video"> 
+		<id column="review_id" property="review_id"></id> 
+		<result column="picture" property="picture"/> 
+		</collection> 
+	</resultMap>
+
+	<!-- 评价分数平均分 -->
+	<select id="selectappraise" resultType="int">
+		SELECT
+		avg(re.appraise)
+		appraise
+		FROM
+		t_review re
+		WHERE
+		re.product_id=#{id}
+	</select>
+
+	<!-- 通过商品表id查询所有商品评论 -->
+	<select id="selectAllSome" resultType="com.websit.entityvo.T_reviewVo" resultMap="AllSomeCategories">
+		SELECT
+		re.id id,
+		re.appraise appraise,
+		re.review_content review_content,
+		re.review_time,
+		re.reply reply,
+		re.reply_time reply_time,
+		u.nickname nickname,
+		u.avatar avatar,
+		pr.name name,
+		pv.picture picture
+		from t_review re 
+		left join t_picture_video pv on re.id= pv.review_id  
+		left join t_product pr on pr.id = re.product_id 
+		left join t_user u on re.user_id=u.id 
+		WHERE
+		re.product_id=#{product_id}
+		ORDER BY re.review_time DESC
+		limit #{page},#{limit}
+	</select>
+	<resultMap id="AllSomeCategories" type="com.websit.entityvo.T_reviewVo"> 
+		<id column="id" property="id"></id> 
+		<result column="appraise" property="appraise"/> 
+		<result column="review_content" property="review_content"/> 
+		<result column="review_time" property="review_time"/> 
+		<result column="reply" property="reply"/> 
+		<result column="reply_time" property="reply_time"/>
+		<result column="nickname" property="nickname"/> 
+		<result column="avatar" property="avatar"/>  
+		<result column="image" property="image"/> 
+		<result column="name" property="name"/> 
+		<collection property="picture_video" ofType="com.websit.entity.T_picture_video"> 
+		<id column="review_id" property="review_id"></id> 
+		<result column="picture" property="picture"/> 
+		</collection> 
+	</resultMap>
+	<!-- 查询该商品所有评价条数 -->
+	<select id="selectCounts" resultType="int">
+		SELECT
+		COUNT(DISTINCT re.id)
+		count
+		FROM
+		t_review re
+		WHERE
+		re.product_id=#{id}
+	</select>
+
+	<!-- 通过评论表id查询商品评论详情 -->
+	<select id="seleceFirstThin" resultType="com.websit.entityvo.T_reviewVo"
+		parameterType="com.websit.entityvo.T_reviewVo" resultMap="FirstThinCategories">
+		SELECT
+		re.id id,
+		re.appraise appraise,
+		re.review_content review_content,
+		re.review_time,
+		re.reply,
+		re.reply_time,
+		re.product_id product_id,
+		u.nickname nickname,
+		u.avatar avatar,
+		pr.name name,
+		pr.color color,
+		pr.image image,
+		pr.price price,
+		pr.specifications specifications,
+		pv.picture picture
+		from t_review re left join t_picture_video pv on re.id= pv.review_id  left join t_product pr on pr.id = re.product_id left join t_user u on re.user_id=u.id 
+		WHERE
+		re.id=#{id}
+	</select>
+	<resultMap id="FirstThinCategories" type="com.websit.entityvo.T_reviewVo"> 
+		<id column="id" property="id"></id> 
+		<result column="appraise" property="appraise"/> 
+		<result column="review_content" property="review_content"/> 
+		<result column="review_time" property="review_time"/> 
+		<result column="reply" property="reply"/> 
+		<result column="reply_time" property="reply_time"/>
+		<result column="nickname" property="nickname"/> 
+		<result column="avatar" property="avatar"/>
+		<result column="product_id" property="product_id"/>  
+		<result column="image" property="image"/> 
+		<result column="price" property="price"/> 
+		<result column="name" property="name"/> 
+		<result column="color" property="color"/> 
+		<result column="specifications" property="specifications"/>
+		<collection property="picture_video" ofType="com.websit.entity.T_picture_video"> 
+		<id column="review_id" property="review_id"></id> 
+		<result column="picture" property="picture"/> 
+		</collection> 
+	</resultMap>
+	<!-- 查询所有评论 -->
+	<select id="selectAllEvery" resultType="com.websit.entityvo.T_reviewVo">
+		SELECT
+		re.id id,
+		pr.name name,
+		re.appraise appraise,
+		re.review_content review_content,
+		re.review_time,
+		u.nickname nickname,
+		u.phone phone,
+		re.reply reply,
+		re.reply_time reply_time
+		FROM
+		t_review re,t_product
+		pr,t_user u
+		<where>
+			re.product_id=pr.id
+			AND
+			re.user_id=u.id
+			<if test="nickname != null and nickname != ''">
+				AND u.nickname = #{nickname}
+			</if>
+			<if test="id != null and id != ''">
+				AND re.id = #{id}
+			</if>
+		</where>
+		ORDER BY re.review_time DESC
+		limit #{page},#{limit}
+	</select>
+	<!-- 查询所有评论数据条数 -->
+	<select id="selectAllEveryCount" resultType="int">
+		SELECT DISTINCT
+		COUNT(re.id) count
+		FROM
+		t_review re,t_product pr,t_user u
+		<where>
+			re.product_id=pr.id
+			AND
+			re.user_id=u.id
+			<if test="nickname != null and nickname != ''">
+				AND u.nickname like "%"#{nickname}"%"
+			</if>
+			<if test="id != null and id != ''">
+				AND re.id = #{id}
+			</if>
+		</where>
+	</select>
+</mapper>

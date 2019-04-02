@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_orderMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.websit.entity.T_order">
+		<id column="order_id" property="order_id" />
+		<result column="order_product_id" property="order_product_id" />
+		<result column="order_number" property="order_number" />
+		<result column="order_money" property="order_money" />
+		<result column="order_no" property="order_no" />
+		<result column="order_state" property="order_state" />
+		<result column="order_time" property="order_time" />
+		<result column="order_payment" property="order_payment" />
+		<result column="order_mode" property="order_mode" />
+		<result column="order_shouhuo_id" property="order_shouhuo_id" />
+		<result column="user_id" property="user_id" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<!-- 购买商品减去库存 -->
+	<update id="updatenumbergoumai">
+		update T_inventory set number=number-#{number} WHERE
+		product_id=#{product_id}
+
+	</update>
+	<select id="Queryinginventory" resultType="Integer">
+		SELECT number FROM
+		T_inventory WHERE product_id=#{order_product_id}
+
+	</select>
+	<select id="Querysteda" resultType="com.websit.entity.T_product">
+
+		SELECT * FROM t_product where
+		id=#{order_product_id}
+
+	</select>
+	<update id="ordercancelled">
+
+		UPDATE t_order SET order_state =#{order_state} where
+		order_id=#{order_id}
+
+	</update>
+	
+	<!-- 查询订单列表 -->
+	<select id="order_list" resultType="com.websit.entityvo.order_list">
+		SELECT t.yunfei,(t.order_money*t.order_number) as
+		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_product_id,order_state,order_shouhuo_id
+		from t_order t where 1=1 and  t.user_id=#{user_id}
+		<if test="id != null and id != ''">
+		and  t.order_id=#{id}   
+		</if>
+		<if test=" order_state != null and order_state != ''">
+			and t.order_state=#{order_state}
+		</if>
+		order by order_time desc
+	</select>
+	<!--  查询商品列表-->
+	<select id="shopinglist" resultType="com.websit.entityvo.shopinglist">
+ SELECT   DISTINCT
+                    p.id productId,
+                    pt. name producttypename,
+                    pt. id producttypeid, 
+                    p.name productName,
+                    p.image image,
+                    p.color color,
+                    p.price price,
+                    p.brand brand,
+                    p.create_time create_times,
+                    p.state state,
+                    p.specifications specifications,
+                    p.describes describion,
+                    t.*
+               
+                FROM
+                    t_product p 
+                    join t_product_type pt on p.product_type_id = pt.id
+
+                    join t_classification tc on pt.classification_id = tc.id
+                    join t_shopping  t on t.product_id=p.id
+                WHERE        
+           
+		t.order_id=#{no}
+
+	</select>
+	<!-- 查询运费 -->
+	<select id="yunfei" resultType="Integer">
+		SELECT freight FROM t_freight
+		WHERE
+		t_freight.price&gt;#{yunfei} and t_freight.prices &lt;=#{yunfei}
+
+     
+
+
+	</select>
+	<!-- 查询个人未评价商品 -->
+	<select id="selectAllSecond" resultType="com.websit.entityvo.T_orderVo">
+		SELECT
+		shp.number number,
+		shp.product_id product_id,
+		shp.danjia danjia,
+		shp.zongjia zongjia,
+		shp.order_id order_id,
+		od.user_id user_id,
+		pd.`name` name,
+		pd.image image,
+		pd.color color,
+		pd.brand brand,
+		pd.specifications specifications,
+		pd.`describes` describes
+		FROM
+		t_order od,
+		t_product pd,
+		t_shopping shp
+		WHERE
+		od.order_state = 3
+		AND
+		od.order_no = shp.order_id
+		AND shp.product_id = pd.id
+		AND
+		od.user_id=#{user_id}
+		limit #{page},#{limit}
+	</select>
+	<!-- 修改评论状态 -->
+	<update id="updateState" parameterType="com.websit.entityvo.T_orderVo">
+		UPDATE t_shopping
+		SET t_shopping.is_dianpng = 2
+		WHERE
+		t_shopping.order_id=#{order_id}
+		AND t_shopping.product_id = #{product_id}
+	</update>
+		<update id="updatewuliudanhao" >
+		UPDATE  t_order
+		SET order_shouhuo_id=#{order_shouhuo_id}
+		WHERE  order_id=#{order_id}
+	   
+	</update>
+<!-- 商品的优惠区间 -->
+	<select id="selectpase" parameterType="String"  resultType="com.websit.entityvo.youhui">
+	select  t_discount.id,t_discount.price  from  t_discount join   t_discount_product  
+    ON   t_discount_product.discount_id=t_discount.id join   t_product   on t_product.id=t_discount_product.product_id
+    where  t_product.id=#{id}
+	</select>
+	<!-- 商品的优惠 -->
+	<select id="selectyhjene" parameterType="String"  resultType="Integer">
+	SELECT t_discount.money FROM t_discount  where t_discount.id=#{id}
+	</select>
+		<!-- 查询订单列表 -->
+	<select id="order_list1" resultType="com.websit.entityvo.order_list">
+		SELECT t.yunfei,t.order_money as
+		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_shouhuo_id,order_state
+		from t_order t where 1=1 or Order_no=#{date}
+	
+		<if test=" order_state != null and order_state != ''">
+			and t.order_state=#{order_state}
+		</if>
+	</select>
+	<!-- 查询角标的数字 -->
+	<select id="querdfk"  resultType="Integer">
+	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id  where  t_order.user_id=#{user_id}  and t_order.order_state='0'
+	</select>
+	<select id="yifukuan"  resultType="Integer">
+	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id  where  t_order.user_id=#{user_id} and t_order.order_state='1'
+	</select>
+	<select id="yifahuo"  resultType="Integer">
+	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id  where  t_order.user_id=#{user_id} and t_order.order_state='2'
+	</select>
+	<select id="yishouhuo" resultType="Integer">
+	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id where  t_order.user_id=#{user_id}  and t_order.order_state='3'
+	</select>
+		<select id="quantum" resultType="Integer">
+	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id  where  t_order.user_id=#{user_id}
+	</select>
+<!-- 支付宝回调改状态 -->
+<update id="updateorderpayment" >
+		UPDATE  t_order
+		SET order_payment=#{order_payment}
+		WHERE  order_id=#{order_id}
+	   
+	</update>
+</mapper>

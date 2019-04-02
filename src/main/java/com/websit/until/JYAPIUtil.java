@@ -21,8 +21,11 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class JYAPIUtil {
 
-	private static String appId = "e14987773b8848d748881718df5361fa";
-	private static String appKey = "03741585e5d2be0f5990b151319a22ec";
+	/*private static String appId = "e14987773b8848d748881718df5361fa";
+	private static String appKey = "03741585e5d2be0f5990b151319a22ec";*/
+	
+	private static String appId = "1789b3069aab3a9aa8449d4a5ad590d1";
+	private static String appKey = "341845e839eb9c5abf8f9b21202aaf04";
 
     public static String Authorization(HashMap<String, Object> params) {
 
