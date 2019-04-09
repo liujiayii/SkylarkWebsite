@@ -25,6 +25,10 @@ public class ContactUs implements Serializable{
 	 * 企业邮箱
 	 */
 	private String enterprise_email;
+	/**
+	 * 备案号
+	 */
+	private String record;
 	public BigInteger getId() {
 		return id;
 	}
@@ -49,6 +53,12 @@ public class ContactUs implements Serializable{
 	public void setEnterprise_email(String enterprise_email) {
 		this.enterprise_email = enterprise_email;
 	}
+	public String getRecord() {
+		return record;
+	}
+	public void setRecord(String record) {
+		this.record = record;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -68,9 +78,12 @@ public class ContactUs implements Serializable{
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ContactUs [id=").append(id).append(", address=").append(address).append(", phone=")
-				.append(phone).append(", enterprise_email=").append(enterprise_email).append("]");
+				.append(phone).append(", enterprise_email=").append(enterprise_email).append(", record=").append(record)
+				.append("]");
 		return builder.toString();
 	}
+	
+	
 	
 	
 }

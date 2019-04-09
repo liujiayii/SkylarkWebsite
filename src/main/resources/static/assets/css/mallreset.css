@@ -40,6 +40,7 @@ input::-webkit-input-placeholder{ color: #666;}
 /****主体宽度****/
 .wrap{width:1200px;margin: 0 auto;}
 /*头部*/
+.head{border-bottom: 1px solid #e60012;}
 .head-top{height: 28px;  background: #f9f9f9;  border-bottom: 1px solid #eee;line-height:28px}
 .head-topleft{float: left;font-size: 12px}
 .head-topright{float: right;font-size: 12px}
@@ -49,29 +50,34 @@ input::-webkit-input-placeholder{ color: #666;}
     top: -2px;}
 .input{width:calc(100% - 60px);height: 30px;border-radius: 6px;display: inline-block;padding: 5px;box-sizing: border-box}
 .nav_box-top{padding-top: 30px;background: #ffffff}
-.search-box{font-size: 0;display: inline-block;width: 50%;position: relative;top:-20px;left:5%}
-.nav_box-topright{width: 25%;float: right}
-.nav_box-topright .topimg{width: 20%;display: inline-block}
-.topimg:hover{transform: scale(1.1);cursor:pointer;transition: all .4s}
+.search-box{font-size: 0;display: inline-block;width: 50%;position: relative;top:-10px;left:9.5%}
+.nav_box-topright{width:17%;float: right}
+.nav_box-topright .topimg{width:60px;height:70px;cursor:pointer;transition: all .4s}
+.topimg:hover{transform: scale(1.1);}
 .logo{display: inline-block;width: 15%;cursor:pointer}
 .logo img{width: 100%}
 .submit{width: 50px;height: 30px;display: inline-block;position: relative;top: 10px}
 .nav-big-box{position: relative;margin-top: 20px}
 .nav-big-box-top{position: relative;font-size: 0}
-.nav-ul{width: 230px;line-height: 30px;background-color: rgba(255,255,255, 0.8);padding-top: 0px;box-sizing: border-box;z-index: 2;font-size: 16px;position: relative}
+.nav-ul{width:180px;line-height: 36px;background:#252212;position: relative}
 
 .nav-ullibox.active .nav-ulli{color: #E60012}
-.nav-bigbox{position: absolute;top: 0;left: 100%;background-color: #fff;width:750px;padding: 10px;bottom: 0}
 .nav-bigbox-list{text-align: left;font-size: 12px}
 .nav-bigbox-a{border-left: 1px solid #e0e0e0;padding: 0 10px}
 .nav-bigboxtit{font-size: 12px;font-weight: bold;margin-right:10px}
-.nav-ul li{border-bottom: 1px solid #cac5c3;padding: 0 20px;transition: all .4s}
-.nav-ul li:hover{border-left: 2px solid #E60012;}
-.nav-ul li .navs{font-size: 12px;color:#767676 ;display: inline-block;margin-right: 10px;transition: all .4s;line-height: 1}
+.nav-ul li {transition: all .4s}
+.nav-ul li .nav-bigbox {position: absolute;top: 0;left: 100%;background-color: #fff;width:0;bottom: 0;height: 100%;overflow: hidden;transition: all .2s;}
+.nav-ul li .nav-bigbox .inner{width:100%;height:100%;padding: 10px;border: 1px solid #e60012;border-left: none}
+.nav-ul li:hover .nav-bigbox {width:750px;}
+.nav-ul li:hover{background: #fff;color:#e60012}
+.nav-ul li:hover .nav-ulli{color:#e60012}
+.nav-ul li .navs{font-size: 12px;color:#767676 ;transition: all .4s;line-height: 1; border-right: 1px solid #767676; padding: 0 10px;text-decoration: #0C0C0C}
+.nav-ul li .navs:last-child{border:none}
 .nav-ul li .navs:hover{color: #E60012}
-.navli{width:230px;height: 38px;background-color: #E60012;text-align: center;line-height: 38px;color: #fff;display: inline-block;font-size: 16px;position: relative;cursor:pointer;z-index:999}
-.nav-ulli{transition: all .4s;display:block;font-size: 16px;font-weight:500;color: #000;;padding:8px 0;font-weight: bold;}
-.nav-ulli img{vertical-align: middle;display: inline-block;margin-right: 20px}
+.navli{width:180px;height: 38px;background-color: #E60012;text-align: center;line-height: 38px;color: #fff;display: inline-block;font-size: 16px;position: relative;cursor:pointer;z-index:999}
+.nav-ulli{transition: all .4s;font-size: 15px;color:#fff;}
+.nav-ulli{word-break:break-all;overflow: hidden;display: -webkit-box;-webkit-line-clamp:1;-webkit-box-orient: vertical;text-align: center;}
+.nav-ulli img{vertical-align: middle;display: inline-block;margin-right: 20px;display:none;}
 
 /*.nav-ul{position:absolute;position: absolute;}*/
 .navli2{width: 150px;height: 38px;line-height: 38px;text-align: center;display: inline-block;font-size: 16px;position: relative}
@@ -133,7 +139,7 @@ div.page span.disabled,div.page li.disabled{ color:#999; background:#fafafa; cur
 .fg-nav{height: 2px; background-color: #E60012}
 
 
-  .input-bigbox{font-size:12px;} 
+  .input-bigbox{font-size:12px;}
   .ivu-input-wrapper{width:91%!important}
   .ivu-btn-error{position: relative;top: -10px;left: -3px;}
 @media(max-width:1219px){

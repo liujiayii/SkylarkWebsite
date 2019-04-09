@@ -7,7 +7,8 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.websit.entity.T_goods;
 import com.websit.service.IT_goodsService;
 import com.websit.until.JsonUtil;
-import java.math.BigInteger;
+import com.websit.until.Security;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,7 +69,10 @@ public class T_goodsController {
 	@RequestMapping("/addGoodsScend")
 	@ResponseBody
 	public synchronized String addGoodsScend( T_goods t){
-		
+	
+		System.out.println(t.getUser_id());
+		t.setUser_id(((Security.decode(t.getUser_id()))));
+		System.out.println(t.getUser_id());
 		String atr;
 		try {
 			String s=t.getGoods_ster();
@@ -99,11 +103,25 @@ public class T_goodsController {
 	 */
 	@RequestMapping("/selectGoods")
 	@ResponseBody
-	public String selectGoods(BigInteger id){
-		
+	public String selectGoods(String  id,Integer is_des){
+		Integer ids=0;
+		//加密之后的数据解密，先把id值解密赋值给ids，如果id值没有加密则转化类型
+		if(is_des!=null) {
+		System.out.println(id+"解密之前");
+		id=(Security.decode(id.toString()));  //解密数据将加密的数据解密 
+		 ids=Integer.valueOf(id);   //赋值给ids
+		System.out.println(id+"揭秘之后");
+		}else {
+			ids=Integer.valueOf(id);//没有加密直接转化
+		}
 		String str;
 		try {
-			List<T_goods >list=goodsService.selectList(new EntityWrapper<T_goods>().eq("user_id", id));
+			List<T_goods >list=goodsService.selectList(new EntityWrapper<T_goods>().eq("user_id", ids));
+			for(int i=0;i<list.size();i++) {
+				if(is_des!=null) {
+					list.get(i).setUser_id(Security.encode(list.get(i).getUser_id()));
+				}
+			}
 			if(list.size()==0){
 				str=JsonUtil.getResponseJson(2, "暂无地址", null, null);
 			}else{
@@ -176,7 +194,7 @@ public class T_goodsController {
 	@RequestMapping("/updateGoods")
 	@ResponseBody
 	public String updateGoods(@RequestBody T_goods t){
-		
+	
 		String str;
 		try {
 			String s=t.getGoods_ster();
@@ -208,6 +226,7 @@ public class T_goodsController {
 	@RequestMapping("/updateGoodsScend")
 	@ResponseBody
 	public String updateGoodsScend( T_goods t){
+		t.setUser_id(((Security.decode(t.getUser_id().toString()))));
 		
 		String str;
 		try {

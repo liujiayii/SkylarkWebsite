@@ -30,7 +30,7 @@ public interface IT_opinionService extends IService<T_opinion> {
 	 * @author pangchong
 	 * @createDate 2019年3月25日
 	 */
-	public List<T_opinion> listAllOpinion(@Param("star") Integer star, @Param("limit") Integer limit);
+	public List<T_opinion> listAllOpinion(@Param("page") Integer page, @Param("limit") Integer limit);
 	/**
 	 * @description 查询所有意见条数
 	 * @param 

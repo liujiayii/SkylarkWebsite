@@ -20,6 +20,34 @@
     .goodsForm {
       float: right
     }
+
+    .goodsState .describion {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #e60012;
+    }
+
+    .goodsState .name {
+      color: #222;
+      font-size: 20px;
+      line-height: 22px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .goodsState .price span {
+      font-size: 24px;
+      color: #e60012;
+      font-weight: bold;
+      position: relative;
+      top: 3px;
+    }
+
+    /*  .gg{letter-spacing: 16px;} */
+    .classs {
+      position: relative;
+      top: 2px;
+    }
   </style>
 </head>
 
@@ -41,38 +69,35 @@
           </div>
         </div>
         <div class="goodsState">
-          <p>{{goods.productName}}</p>
+          <p class="name">{{goods.productName}}</p>
+          <p class="describion">{{goods.describion}}</p>
           <div class="price">
             <p>专柜价：<span>￥{{goods.price}}</span></p>
           </div>
           <div class="goodsForm">
             <div class="titleArea">
               <ul class="titleUl">
-                <li><a href="">
-                  <!-- 月销量 --></a><span></span></li>
-                <li><a href="">累计评论</a><span>{{countSum}}</span></li>
-                <li><a href="">
-                  <!-- 关注 --></a><span></span></li>
+                <li>累计评论：<span>{{countSum}}</span></li>
               </ul>
             </div>
             <div class="contArea">
               <dl>
-                <dt>规格</dt>
+                <dt>规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</dt>
                 <dd>
                   <ul class="sizeUl">
-                    <li><a>{{goods.specifications}}</a></li>
+                    <li>{{goods.specifications}}</li>
                   </ul>
                 </dd>
               </dl>
-              <dl>
-                <dt>颜色</dt>
+              <dl v-if="goods.color">
+                <dt>颜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</dt>
                 <dd class="imgDd">
                   <span :title="goods.color">{{goods.color}}</span>
                 </dd>
               </dl>
               <dl>
-                <dt>数量</dt>
-                <dd style="overflow: hidden;">
+                <dt>数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量：</dt>
+                <dd style="overflow: hidden;position: relative; top: -8px;">
                   <div class="number" v-html="num[0]" id="num">1</div>
                   <div class="calculate">
                     <a href="javascript:;" id="adds" @click="add(0)">+</a>
@@ -83,7 +108,15 @@
                 </dd>
               </dl>
               <dl>
-                <dt>服务承诺</dt>
+                <dt>所属分类：</dt>
+                <dd>
+                  <ul class="classs">
+                    <li>{{goods.classificationNames}}>{{goods.producttypename}}</li>
+                  </ul>
+                </dd>
+              </dl>
+              <dl>
+                <dt>服务承诺：</dt>
                 <dd>正品保证</dd>
               </dl>
             </div>
@@ -116,7 +149,7 @@
             </div>
           </div>
           <div class="detailsDiv" v-if="type === 'tesk'">
-            <div class="detailReview" v-for="(item,index) in classDatas">
+            <div class="detailReview" v-for="(item,index) in classDatas" v-if="Clases">
               <dl>
                 <dt><img :src="item.avatar">
                   <p>{{item.nickname}}</p>
@@ -128,6 +161,7 @@
                 <!-- 商家回复<dd>{{item.reply}}</dd>  -->
               </dl>
             </div>
+            <div v-if="!Clases">暂无评价</div>
           </div>
         </div>
       </div>
@@ -150,7 +184,8 @@
         goodsData: [],
         countSum: 0,
         num: [1],
-        inventory: 0
+        inventory: 0,
+        Clases: true
       }
     },
     methods: {
@@ -241,10 +276,12 @@
           data: {"product_id": this.getHrefParam("id")},
           success: (res) => {
             if (res.code == 1) {
-              this.countSum = res.count
-              this.classDatas = res.data
+              this.countSum = res.count || 0
+              this.classDatas = res.data == 'null' ? [] : res.data
             } else {
-             // this.$Message.info(res.msg)
+              //alert(123)
+
+              // this.$Message.info(res.msg)
             }
           }
         });

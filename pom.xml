@@ -17,23 +17,48 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
-	<!-- 在线客服 -->
+	
 	<dependencies>
-		<!-- <dependency>
-			<groupId>com.alibaba.citrus.tool</groupId>
-			<artifactId>antx-autoconfig</artifactId>
-			<version>1.2</version>
-			 <exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency> -->
+	<!-- 在线客服 -->
+	 <!-- 以下是访客名片需要使用的denpendency -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.28</version>
+        </dependency>
+        <!-- 这里是引入了本地的jar包 这个jar包可以联系云客服索要 -->
+     
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+        
+        
+               <!-- JSONObject对象依赖的jar包 -->  
+   	     
+        <dependency>  
+            <groupId>commons-beanutils</groupId>  
+            <artifactId>commons-beanutils</artifactId>  
+            <version>1.9.3</version>  
+        </dependency>  
+        <dependency>  
+            <groupId>commons-collections</groupId>  
+            <artifactId>commons-collections</artifactId>  
+            <version>3.2.1</version>  
+        </dependency>  
+        <dependency>  
+            <groupId>commons-lang</groupId>  
+            <artifactId>commons-lang</artifactId>  
+            <version>2.6</version>  
+        </dependency>  
+        
+        <dependency>  
+            <groupId>net.sf.ezmorph</groupId>  
+            <artifactId>ezmorph</artifactId>  
+            <version>1.0.6</version>  
+        </dependency>      
+		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>com.springsource.org.apache.commons.httpclient</artifactId>
@@ -66,12 +91,7 @@
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 		</dependency>
-		<!-- fastjson -->
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.15</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

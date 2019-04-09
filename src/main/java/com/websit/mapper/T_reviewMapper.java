@@ -1,8 +1,10 @@
 package com.websit.mapper;
 
 import com.websit.entity.T_review;
+import com.websit.entityvo.T_orderVo;
 import com.websit.entityvo.T_reviewVo;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
@@ -107,4 +109,24 @@ public interface T_reviewMapper extends BaseMapper<T_review> {
 	 * @createDate 2019年3月26日
 	 */
 	public int selectAllEveryCount(T_reviewVo reviewVo);
+	/**
+	 * @Title: seleceOne
+	 * @description 查询评论状态
+	 * @param @param t_reviewVo
+	 * @param @return    
+	 * @return T_reviewVo    
+	 * @author linhongyu
+	 * @createDate 2019年4月3日
+	 */
+	public List<T_orderVo> seleceOne(String order_id);
+	/**
+	 * @Title: updateState
+	 * @description 修改订单状态
+	 * @param @param order_on
+	 * @param @return    
+	 * @return int    
+	 * @author linhongyu
+	 * @createDate 2019年4月3日
+	 */
+	public int updateState(String order_no);
 }

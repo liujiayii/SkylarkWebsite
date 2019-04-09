@@ -3,12 +3,12 @@
 <head th:fragment="commonHeader(title)">
   <title th:text="${title}"></title>
   <link rel="stylesheet" href="/assets/css/reset.css">
-  <script src="//lib.baomitu.com/vue/2.6.8/vue.js"></script>
+  <script src="//lib.baomitu.com/vue/2.6.8/vue.min.js"></script>
   <script src="//lib.baomitu.com/iview/latest/iview.min.js"></script>
   <link href="//lib.baomitu.com/iview/latest/styles/iview.css" rel="stylesheet">
   <script src="//lib.baomitu.com/jquery/latest/jquery.min.js"></script>
-  <script src="https://lib.baomitu.com/sockjs-client/1.3.0/sockjs.min.js"></script>
-    <script src="https://lib.baomitu.com/stomp.js/2.3.3/stomp.min.js"></script>
+  <script src="//lib.baomitu.com/sockjs-client/1.3.0/sockjs.min.js"></script>
+  <script src="//lib.baomitu.com/stomp.js/2.3.3/stomp.min.js"></script>
 </head>
 <body>
 <div th:fragment="commonNav">
@@ -47,10 +47,10 @@
         <div class="center">
           <span class="left"></span>
           <div class="cen">
-            <p>固定电话电话：0311-80952324</p>
-            <p>电子邮箱：19991243637@163.com</p>
-            <p>公司地址：河北省石家庄市新华区华强广场A座1605</p>
-            <p>备案号  冀ICP备18024390号</p>
+            <p>固定电话电话：{{info.phone}}</p>
+            <p>电子邮箱：{{info.enterprise_email}}</p>
+            <p>公司地址：{{info.address}}</p>
+            <p>备案号 冀ICP备18024390号</p>
           </div>
           <span class="right"></span>
           <div class="clear"></div>
@@ -70,7 +70,8 @@
           userInfo: {
             name: null,
             id: null
-          }
+          },
+          info: {}
         }
       },
       methods: {
@@ -84,6 +85,7 @@
           $.ajax({
             type: "post",
             url: "/selectAllcooperation",
+            data:{page:1,limit:100},
             dataType: "json",
             success: (res) => {
               console.log(res)
@@ -139,6 +141,21 @@
             title: msg
           });
         },
+        getInfo() {
+          $.ajax({
+            type: "post",
+            url: "/selectAllContactUsList",
+            dataType: "json",
+            success: (res) => {
+              console.log(res)
+              if (res.code == 1) {
+                this.info = res.data[0]
+              } else {
+                this.error(res.msg)
+              }
+            }
+          });
+        }
       },
       created() {
         this.$Loading.start();
@@ -149,19 +166,9 @@
       mounted() {
         this.getFriendsLink()
         this.getUserInfo()
+        this.getInfo()
       }
     })
-    /*获取地址栏参数*/
-    function getHrefParam(key) {
-        let s = window.location.href;
-        let reg = new RegExp(key + "=\\w+");
-        let rs = reg.exec(s);
-        if (rs === null || rs === undefined) {
-          return "";
-        } else {
-          return rs[0].split("=")[1];
-        }
-      }
   </script>
 </div>
 </body>

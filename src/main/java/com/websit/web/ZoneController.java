@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.websit.entity.Classification;
+import com.websit.constant.ReturnCode;
 import com.websit.entity.Zone;
 import com.websit.entityvo.ZoneProductVo;
 import com.websit.entityvo.ZoneVo;
@@ -54,7 +53,9 @@ public class ZoneController {
 	public String selectZoneNoPage() {
 		try{
 		List<Zone> result = zoneService.selectZoneNoPage();
-		
+		if (result == null) {
+			return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, null, new Zone());
+		}
 		if (result.size()>=1) {
 			return JsonUtil.getResponseJson(1, "查看成功", null, result);
 		} else {
@@ -73,18 +74,19 @@ public class ZoneController {
 @RequestMapping(value = "/listZoneByTypeId", produces = "application/json; charset=utf-8")
 @ResponseBody
 	public String listZoneByTypeId(BigInteger zoneId) {
-		try{
-		ZoneVo result = zoneService.listZoneByTypeId(zoneId);
-		
-		if (result!= null ) {
-			return JsonUtil.getResponseJson(1, "查看成功", null, result);
-		} else {
-			return JsonUtil.getResponseJson(1, "无数据", null, null);
+		try {
+			ZoneVo result = zoneService.listZoneByTypeId(zoneId);
+			
+			if (result != null) {
+				return JsonUtil.getResponseJson(1, "查看成功", null, result);
+			} else {
+				return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.NORESULT_SELECT_MSG, null,
+						null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
 		}
-	} catch (Exception e) {
-		e.printStackTrace();
-		return JsonUtil.getResponseJson(-1, "程序异常", null, null);
-	}
 	}
 /**
  * 增加商品专区
@@ -163,6 +165,28 @@ public String selectZoneByProductId(BigInteger productaid) {
 	
 	if (result.size()>=1) {
 		return JsonUtil.getResponseJson(1, "查看成功", null, result);
+	} else {
+		return JsonUtil.getResponseJson(1, "无数据", null, null);
+	}
+} catch (Exception e) {
+	e.printStackTrace();
+	return JsonUtil.getResponseJson(-1, "程序异常", null, null);
+}
+}
+/**
+ * 根据专区id查询当前商品专区及每个专区下所有商品(分页)
+ * @author pangchong
+ * @createDate 2019年3月24日 下午2:00
+ */
+@RequestMapping(value = "/listZoneByTypeIdPage", produces = "application/json; charset=utf-8")
+@ResponseBody
+public String listZoneByTypeIdPage(BigInteger zoneId,Integer page,Integer limit) {
+	try{
+		Integer star = (page - 1) * limit;
+		ZoneVo  result = zoneService.listZoneByTypeIdPage(zoneId,star,limit);
+		int count = zoneService.findBpiListByZoneId(zoneId);
+	if (result != null) {
+		return JsonUtil.getResponseJson(1, "查询成功", count, result);
 	} else {
 		return JsonUtil.getResponseJson(1, "无数据", null, null);
 	}

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.auditing.CurrentDateTimeProvider;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -219,8 +220,9 @@ public String selectAllproductation() {
 
 @RequestMapping(value = "/findBpproduc", produces = "application/json; charset=utf-8")
 @ResponseBody
-public String findBpproduc() {
+public String findBpproduc(Integer page,Integer limit) {
 	try{
+		Integer star = (page - 1) * limit;
 		Map<String,Object> map=new HashMap<>();
 		
 		List<Zone>list=zoneService.selectZoneNoPage();
@@ -229,17 +231,23 @@ public String findBpproduc() {
 		for(int i=0;i<list.size();i++){
 			
 			BigInteger big = new BigInteger(list.get(i).getId().toString());
-			System.out.println("big"+big);
-				ZoneVo result = zoneService.listZoneByTypeIds(big);
+				ZoneVo result = zoneService.listZoneByTypeIds(big,star,limit);
+				Integer productTotal = zoneService.findBpiListByZoneId(big);
+				
+				if (result == null) {
+					continue;
+				}
+				result.setProductTotal(productTotal);
+				
 				if(result!=null){
 					System.out.println("result"+result);
 					lista.add(result);
 				}
 				
-				
 		}
+	
 	System.out.println("lista"+lista);
-		return JsonUtil.getResponseJson(1, "查询成功", null, lista);
+		return JsonUtil.getResponseJson(1, "查询成功", list.size(), lista);
 } catch (Exception e) {
 	e.printStackTrace();
 	return JsonUtil.getResponseJson(-1, "程序异常", null, null);

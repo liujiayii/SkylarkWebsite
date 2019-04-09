@@ -12,6 +12,7 @@ import com.websit.service.IT_shoppingService;
 import com.websit.service.IT_trolleyService;
 import com.websit.until.JsonUtil;
 import com.websit.until.OrderCodeFactory;
+import com.websit.until.Security;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -52,12 +53,16 @@ public class T_trolleyController {
 	 */
 	@RequestMapping("/addt_trolley")
 	@ResponseBody
-	public String  add(T_trolley t_trolley) {
+	public String  add(T_trolley t_trolley,Integer is_des) {
+		if(is_des!=null) {
+		t_trolley.setUser_id((((Security.decode(t_trolley.getUser_id())))));
+		t_trolley.setProduct_id((((Security.decode(t_trolley.getProduct_id())))));
+		}
 		//DesUtil.decode("yunquekj", T_order.toString());
 				String msg = "系统异常，请稍后再试";
 				Integer cood = -1;
 				// 获取当前库存
-				//try {
+				try {
 				if(t_trolley.getNumber()==null) {
 					t_trolley.setNumber(1);
 				}
@@ -69,13 +74,14 @@ public class T_trolleyController {
 					T_product product = IT_orderService.Querysteda(t_trolley.getProduct_id().toString());
 					System.out.println(T_trolleyService.number(t_trolley.getProduct_id().toString()));
 					 int numbers=T_trolleyService.number(t_trolley.getProduct_id().toString());
-					if (number==0) {
+					if (number<=0) {
 						cood = -1;
 						msg = "库存数量不足，请修改购买数量";
+						return JsonUtil.getResponseJson(cood, msg, null, null);
 					} else if (product.getState() == 2) {
 						cood = -1;
 						msg = "商品已下架";
-						
+						return JsonUtil.getResponseJson(cood, msg, null, null);
 					}
 					else if(T_trolleyService.shppingnum(t_trolley.getProduct_id().toString(),t_trolley.getUser_id().toString())==0) {
 						fig = T_trolleyService.insert(t_trolley);
@@ -83,7 +89,7 @@ public class T_trolleyController {
 						
 							cood = -1;
 							msg = "库存数量不足，请修改购买数量";
-						
+							return JsonUtil.getResponseJson(cood, msg, null, null);
 					}
 					else  if(T_trolleyService.shppingnum(t_trolley.getProduct_id().toString(),t_trolley.getUser_id().toString())>0)
 					{
@@ -99,9 +105,9 @@ public class T_trolleyController {
 				     System.err.println(msg);
 
 					return JsonUtil.getResponseJson(cood, msg, null, null);
-				//} catch (Exception e) {
-					//return JsonUtil.getResponseJson(cood, msg, null, null);
-				//}
+				} catch (Exception e) {
+					return JsonUtil.getResponseJson(cood, msg, null, null);
+				}
 
 	}
     /**
@@ -144,10 +150,13 @@ public class T_trolleyController {
      */
 	@RequestMapping("/lt_trolleylst")
 	@ResponseBody
-	public   String lt_trolleylst(String  user_id,RowBounds RowBounds,Integer page,Integer limit) {
+	public   String lt_trolleylst(String  user_id,RowBounds RowBounds,Integer page,Integer limit,Integer is_des) {
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		Integer numbers;
+		if(is_des!=null) {
+		user_id=(Security.decode(user_id));
+		}
 		System.out.println(page+limit+"6666666666666666666666666");
 		
 		try { 
@@ -192,8 +201,10 @@ public class T_trolleyController {
 	
 	@RequestMapping("/uptate")
 	@ResponseBody
-	public   String updatetrolleylst(Integer  num,Integer id,String user_id) {
-		
+	public   String updatetrolleylst(Integer  num,Integer id,String user_id,  Integer is_des) {
+		if(is_des!=null) {
+			user_id=(Security.decode(user_id));
+			}
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		boolean fig=false;
@@ -363,7 +374,7 @@ public class T_trolleyController {
 		return JsonUtil.getResponseJson(cood, msg, null, trolley_id);
 	}
 	/**
-	 * 购物车购买
+	 * 查询库存
 	 */
 	@RequestMapping("/quernumber")
 	@ResponseBody
@@ -377,7 +388,7 @@ public class T_trolleyController {
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		boolean fig=true;
-//		try {
+	try {
 			
 		List<T_trolley> trolley=new ArrayList();
 		for(int i=0;i<str.length;i++) {
@@ -408,11 +419,11 @@ public class T_trolleyController {
 			
 		
 	     
-		//} catch (Exception e) {
-			//fig=false;
-			//msg = "库存不足";
-			//return JsonUtil.getResponseJson(cood, msg, null, trolley_id);
-		//}
+		} catch (Exception e) {
+			fig=false;
+			msg = "库存不足";
+			return JsonUtil.getResponseJson(cood, msg, null, trolley_id);
+		}
 		
 		
 	}

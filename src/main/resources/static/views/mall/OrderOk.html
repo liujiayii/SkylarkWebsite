@@ -248,9 +248,9 @@
                   for (let n = 0; n < res.data.length; n++) {
                     if (loclist[1].split(",")[i] == res.data[n].trolley_id) {
                       this.goodscont.push(res.data[n])
-                      for(let j=0;j<this.goodscont.length;j++){
-                    	 console.log( res.data[j].name)
-                    	  this.goodscont[j].productName=res.data[j].name
+                      for (let j = 0; j < this.goodscont.length; j++) {
+                        console.log(res.data[j].name)
+                        this.goodscont[j].productName = res.data[j].name
                       }
                       this.pricebig += res.data[n].number * res.data[n].price
                     }

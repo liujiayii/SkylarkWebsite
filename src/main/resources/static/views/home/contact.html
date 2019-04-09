@@ -94,8 +94,7 @@
           content: [
             {required: true, message: '请输入内容', trigger: 'blur'}
           ],
-        },
-        info: {}
+        }
       }
     },
     methods: {
@@ -121,25 +120,7 @@
 
           }
         })
-      },
-      getInfo() {
-        $.ajax({
-          type: "post",
-          url: "/selectAllContactUsList",
-          dataType: "json",
-          success: (res) => {
-            console.log(res)
-            if (res.code == 1) {
-              this.info = res.data[0]
-            } else {
-              this.error(res.msg)
-            }
-          }
-        });
       }
-    },
-    mounted() {
-      this.getInfo()
     }
   }
 
@@ -149,7 +130,7 @@
 <script>
   let map = new AMap.Map('container', {
     resizeEnable: true,
-    center: [114.476571, 38.067575],
+    center: [114.476571,38.067575],
     zoom: 13
   });
 
@@ -163,7 +144,7 @@
   marker.setTitle('我是marker的title');
   marker.setLabel({
     offset: new AMap.Pixel(20, 20),
-    content: "<div class='info'>河北省石家庄市新华区中储广场B座1102</div>"
+    content: "<div class='info'>河北省石家庄市新华区中储广场D座1102</div>"
   });
 </script>
 </body>

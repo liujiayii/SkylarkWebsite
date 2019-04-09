@@ -5,6 +5,8 @@ import com.websit.mapper.T_cooperationMapper;
 import com.websit.service.IT_cooperationService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -22,17 +24,30 @@ public class T_cooperationServiceImpl extends ServiceImpl<T_cooperationMapper, T
 
 	@Resource
 	private T_cooperationMapper cooperationMapper;
+	/**
+	 * @Title: selectThink
+	 * @description 查询合作名称是否重复
+	 * @param @param cooperation
+	 * @param @return    
+	 * @return T_cooperation    
+	 * @author linhongyu
+	 * @createDate 2019年4月4日
+	 */
 	@Override
 	public T_cooperation selectThink(T_cooperation cooperation) {
-		// TODO Auto-generated method stub
 		return cooperationMapper.selectThink(cooperation);
 	}
-	/* (non-Javadoc)
-	 * @see com.websit.service.IT_cooperationService#selectThinkTwo(com.websit.entity.T_cooperation)
+	/**
+	 * @Title: selectThinkTwo
+	 * @description 查询地址名称是否重复
+	 * @param @param cooperation
+	 * @param @return    
+	 * @return T_cooperation    
+	 * @author linhongyu
+	 * @createDate 2019年4月4日
 	 */
 	@Override
 	public T_cooperation selectThinkTwo(T_cooperation cooperation) {
-		// TODO Auto-generated method stub
 		return cooperationMapper.selectThinkTwo(cooperation);
 	}
 

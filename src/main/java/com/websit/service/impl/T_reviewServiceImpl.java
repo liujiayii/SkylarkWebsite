@@ -1,13 +1,12 @@
 package com.websit.service.impl;
-
 import com.websit.entity.T_review;
+import com.websit.entityvo.T_orderVo;
 import com.websit.entityvo.T_reviewVo;
 import com.websit.mapper.T_reviewMapper;
 import com.websit.service.IT_reviewService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-
+import java.math.BigInteger;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -112,7 +111,6 @@ public class T_reviewServiceImpl extends ServiceImpl<T_reviewMapper, T_review> i
 	 */
 	@Override
 	public List<T_reviewVo> selectAllEvery(T_reviewVo reviewVo) {
-		// TODO Auto-generated method stub
 		return t_reviewMapper.selectAllEvery(reviewVo);
 	}
 	/***
@@ -126,7 +124,32 @@ public class T_reviewServiceImpl extends ServiceImpl<T_reviewMapper, T_review> i
 	 */
 	@Override
 	public int selectAllEveryCount(T_reviewVo reviewVo) {
-		// TODO Auto-generated method stub
 		return t_reviewMapper.selectAllEveryCount(reviewVo);
+	}
+	/**
+	 * @Title: seleceOne
+	 * @description 查询评论状态
+	 * @param @param t_reviewVo
+	 * @param @return    
+	 * @return T_reviewVo    
+	 * @author linhongyu
+	 * @createDate 2019年4月3日
+	 */
+	@Override
+	public List<T_orderVo> seleceOne(String order_id) {
+		return t_reviewMapper.seleceOne(order_id);
+	}
+	/**
+	 * @Title: updateState
+	 * @description 修改订单状态
+	 * @param @param order_no
+	 * @param @return    
+	 * @return int    
+	 * @author linhongyu
+	 * @createDate 2019年4月3日
+	 */
+	@Override
+	public int updateState(String order_no) {
+		return t_reviewMapper.updateState(order_no);
 	}
 }

@@ -60,17 +60,20 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 	}
 	@Override
 	public List<com.websit.entityvo.order_list> order_list(String user_id, String order_state,RowBounds RowBounds,String id) {
-		// TODO Auto-generated method stub
+		
 		return T_orderMapper.order_list(user_id, order_state,RowBounds,id);
 	}
 	@Override
 	/**
 	 * 查询商品订单
 	 */
-	public List<com.websit.entityvo.shopinglist> shopinglist(String no) {
-		// TODO Auto-generated method stub
-		return T_orderMapper.shopinglist(no);
-	}
+	public List<com.websit.entityvo.shopinglist> shopinglist(String no,String order_state) {
+
+			return T_orderMapper.shopinglist(no,order_state);
+		}
+	
+		
+	
 	@Override
 	/**
 	 * 查询运费
@@ -161,26 +164,31 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 	/**
 	 * web端订单
 	 */
-	public List<com.websit.entityvo.order_list> order_list1( String order_state,RowBounds RowBounds,String date) {
+	public List<com.websit.entityvo.order_list> order_list1( String order_state,Integer page,Integer limit,String date) {
 		// TODO Auto-generated method stub
-		return T_orderMapper.order_list1(order_state,RowBounds,date);
+		return T_orderMapper.order_list1(order_state, page,limit,date);
 	}
 	@Override
 	public jiaobiao jiaobiao(String user_id) {
-		System.out.println(user_id+"999999999999999999999999");  
+		
 		jiaobiao jiaobiao=new jiaobiao();
 		jiaobiao.setDfk(T_orderMapper.querdfk(user_id));
 		jiaobiao.setDaf(T_orderMapper. yifukuan(user_id));
 		jiaobiao.setDsh(T_orderMapper.yifahuo(user_id));
 		jiaobiao.setYsh((T_orderMapper.  yishouhuo(user_id)));
 		jiaobiao.setQuantum(T_orderMapper.quantum(user_id));
-		System.out.println(T_orderMapper.quantum(user_id)+"6666666666666666666666666666666666666666666666");
+		
 		return jiaobiao;
 	}
 	@Override
 	public int updateorderpayment(String order_id, String order_payment) {
 		// TODO Auto-generated method stub
 		return T_orderMapper.updateorderpayment(order_id,order_payment);
+	}
+	@Override
+	public int updatenqux(Integer number, String product_id) {
+		// TODO Auto-generated method stub
+		return T_orderMapper.updatenqux(number,product_id);
 	}
 
 }

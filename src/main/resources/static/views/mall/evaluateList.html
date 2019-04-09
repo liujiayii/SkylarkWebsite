@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <div th:replace="/mall/common  :: commonHeader(评价列表)"></div>
+  <link rel="stylesheet" type="text/css" href="/assets/css/mallbackreset.css">
+
+  <style>
+    .nav-big-box {
+      display: none
+    }
+
+    .identify {
+      padding: 24px
+    }
+
+    .rg-title {
+      font-size: 18px;
+      margin-bottom: 27px
+    }
+
+    .ulTit {
+      height: 40px;
+      line-height: 40px;
+      background-color: #f2f2f2
+    }
+
+    .conts {
+      width: 50%;
+      text-align: center
+    }
+
+    .ulTit .user {
+      width: 25%;
+      text-align: center
+    }
+
+    .ulTit .productCont {
+      width: 25%;
+      text-align: center
+    }
+
+    .contList {
+      border-bottom: 1px dashed #b5aeae;
+      padding: 10px;
+    }
+
+    .contList span {
+      display: block;
+      color: #777;
+      margin-top: 5px
+    }
+
+    .contListCont {
+      width: 50%;
+      align-items: center;
+      justify-content: center !important
+    }
+
+    .contListUser {
+      width: 25%;
+      display: flex;
+      align-items: center;
+      justify-content: center !important
+    }
+
+    .contListProductCont {
+      width: 25%;
+    }
+
+    .contListCont img {
+      display: block;
+      width: 40px;
+      border-radius: 100%;
+      float: left;
+      margin: 0 20px 0 0
+    }
+
+    .contListProductCont p {
+      word-break: break-all;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      line-height: 1.2
+    }
+
+  </style>
+</head>
+<body id=" ">
+<div id="app">
+  <div th:replace="mall/common :: commonNav"></div>
+  <div class="cont">
+    <div class="wrap">
+      <div class="cont-nav">
+        <div class="cont-top">
+          会员中心
+        </div>
+        <ul class="cont-top-one">
+          <li>我的信息</li>
+          <li><a href="">我的订单</a></li>
+          <li><a href="">评价管理</a></li>
+        </ul>
+
+      </div>
+      <div class="main_wrap identify">
+        <div class="rg-title">评价列表</div>
+        <div class="pjList">
+          <div class="ulTit flex">
+            <p class="conts">评价内容</p>
+            <p class="user">被评价人</p>
+            <p class="productCont">宝贝信息</p>
+          </div>
+          <div class="contList flex" v-for="(item ,index) in evaluateList">
+            <div class="contListCont">
+              <img :src="item.avatar" alt="">
+              <p>{{item.review_content}}<span>[{{formatData(item.review_time)}}]</span></p>
+            </div>
+            <p class="contListUser">卖家：融宜购</p>
+            <div class="contListProductCont"><p>{{item.name}}</p>  <span>{{item.price}}元</span></div>
+          </div>
+          <!-- <Page :total="evaluateListlength" :page-size="2" @on-change="replyPage($event)"/> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div th:replace="mall/common :: commonFooter"></div>
+</div>
+</body>
+<script>
+  const mixin = {
+    data() {
+      return {
+        evaluateList: [],
+        evaluateListlength: null
+      }
+    },
+    methods: {
+      replyPage(page) {
+        console.log(page)
+        /*  $.ajax({
+           type: "post",
+           url: "/t_reply/t_replylist",
+           dataType: "json",
+           data: {
+             comment_id: this.post.map[index].id,
+             page: page * 5 - 5,
+             limit: page * 5
+           },
+           success: (res) => {
+             console.log(res)
+             if (res.code == 1) {
+               this.post.map[index].t_replylist = res.data
+             } else {
+               this.error(res.msg)
+             }
+           }
+         }); */
+      },
+      formatData(now) {
+        var date = new Date(now);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var month = month < 10 ? "0" + month : month;
+        var day = day < 10 ? "0" + day : day;
+        return year + '-' + month + '-' + day;
+      },
+
+
+      getevaluateList() {
+        $.ajax({
+          type: "post",
+          url: "/t_review/seleceUserThin",
+          data: {
+            id: sessionStorage.getItem("SkyUserId"),
+            page: 2,
+            limit: 2
+          },
+          dataType: "json",
+          success: (res) => {
+            console.log(123)
+            console.log(res)
+            if (res.code == 1) {
+              this.evaluateListlength = res.data.length
+              this.evaluateList = res.data
+            }
+          }
+        });
+      }
+    },
+    mounted() {
+      this.getevaluateList()
+    }
+  }
+</script>
+<div th:replace="mall/common :: commonFooterjs"></div>
+</html>

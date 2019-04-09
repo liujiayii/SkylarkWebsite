@@ -126,7 +126,7 @@ public class UpdateFile {
 		key = key.substring(key.indexOf("shop"));
 
 	    ossClient.deleteObject(bucketName, key);
-	   
+	    ossClient.shutdown();
 		} catch (Exception e) {
 			
 			  return false;

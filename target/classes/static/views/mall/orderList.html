@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <div th:replace="/mall/common  :: commonHeader(订单信息)"></div>
+  <link rel="stylesheet" type="text/css" href="/assets/css/mallbackreset.css">
   <link rel="stylesheet" type="text/css" href="/assets/layui/css/layui.css">
   <link rel="stylesheet" href="/assets/css/order.css">
+  <script src="/assets/layui/layui.js" charset="utf-8"></script>
   <style>
     .nav-big-box {
       position: relative;
@@ -78,6 +80,11 @@
     .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .spxx-cont {
       border-bottom: 1px dashed #f1f1f1;
     }
+
+    .nullcont {
+      text-align: center;
+      margin-top: 20px
+    }
   </style>
 </head>
 <body>
@@ -98,7 +105,7 @@
           <li class="list-nav" @click="toggleActive(0,0)" :class="{active : active == 0}">待付款({{dfk}})</li>
           <li class="list-nav" @click="toggleActive(1,1)" :class="{active : active == 1}">待发货({{daf}})</li>
           <li class="list-nav" @click="toggleActive(2,2)" :class="{active : active == 2}">待收货({{dsh}})</li>
-          <li class="list-nav" @click="toggleActive(3,3)" :class="{active : active == 3}">已完成({{ysh}})</li>
+          <li class="list-nav" @click="toggleActive(3,3)" :class="{active : active == 3}">待评价({{ysh}})</li>
           <li class="list-nav" @click="toggleActive('',4)" :class="{active : active == 4}">全部({{quantum}})</li>
         </ul>
       </div>
@@ -121,6 +128,7 @@
                 <!-- <div class="li">操作</div> -->
               </div>
             </div>
+            <p v-if="dfk==0" class="nullcont">暂无信息</p>
             <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
               <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
                 <div class="spxx-conttop flex">
@@ -159,6 +167,7 @@
                 <div class="li">货款金额</div>
               </div>
             </div>
+            <p v-if="daf==0" class="nullcont">暂无信息</p>
             <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
               <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
                 <div class="spxx-conttop flex">
@@ -197,6 +206,7 @@
                 <div class="li">货款金额</div>
               </div>
             </div>
+            <p v-if="dsh==0" class="nullcont">暂无信息</p>
             <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
               <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
                 <div class="spxx-conttop flex">
@@ -235,12 +245,13 @@
                 <div class="li">货款金额</div>
               </div>
             </div>
+            <p v-if="ysh==0" class="nullcont">暂无信息</p>
             <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
               <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
                 <div class="spxx-conttop flex">
                   <p class="lis">订单编号：{{item.order_no}}</p>
                   <div class="li">
-                    <button>评价</button>
+                    <button @click="evaluate(item_c.productId,item.order_no)">评价</button>
                   </div>
                 </div>
                 <div class="flex spxx-cont">
@@ -273,6 +284,7 @@
                 <div class="li">操作</div>
               </div>
             </div>
+            <p v-if="quantum==0" class="nullcont">暂无信息</p>
             <div class="rg-p2-data" v-for="(item,index) in orderListPaid">
               <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
                 <div class="flex spxx-cont">
@@ -297,6 +309,8 @@
       </div>
     </div>
   </div>
+  <input id="state1" v-model="goodsid">
+  <input id="state2" v-model="orderid">
   <div th:replace="mall/common :: commonFooter"></div>
 </div>
 </body>
@@ -313,12 +327,32 @@
         dfk: null,
         dsh: null,
         ysh: null,
-        quantum: null
+        quantum: null,
+        goodsid: null,
+        orderid: null,
       }
     },
     methods: {
+      evaluate(goodsid, orderid) {
+        this.goodsid = goodsid;
+        this.orderid = orderid;
+        layui.use('layer', function () {
+          var layer = layui.layer;
+          layer.open({
+            title: '评价商品',
+            type: 2,
+            id: 2,
+            scrollbar: false,
+            area: ['800px', '450px'],
+            content: ['/evaluates', 'no'],
+            end: function () {
+              window.location.reload();
+            }
+          });
+        });
+      },
       okOrder(ids) {
-        alert(ids)
+
         $.ajax({
           type: "post",
           url: "t_order/ordercan/",

@@ -12,18 +12,49 @@
     .navli {
       cursor: pointer;
     }
-    	.detail-area-A .h2s{
-    	line-height: 1.2;
-	    font-size: 16px;
-	    box-sizing: border-box;
-	    word-break: break-all;
-    	overflow: hidden;
-    	display: -webkit-box;
-    	-webkit-line-clamp: 1;
-    	-webkit-box-orient: vertical;
-	}
-	.detail-area-A .ps-01{padding:5px 0}
-	.detail-goods-list{transition: all .4s;}
+
+    .detail-area-A .h2s {
+      line-height: 1.6;
+      font-size: 16px;
+      box-sizing: border-box;
+      word-break: break-all;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      margin-top: 7px;
+
+    }
+
+    .detail-goods-list {
+      transition: all .4s;
+      position: relative;
+    }
+
+    .gwc {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 28px;
+      height: 28px;
+      background-color: #de5c66;
+      border-radius: 100%;
+      padding: 2px;
+      cursor: pointer;
+    }
+
+    .gwc img {
+      display: block;
+      width: 70%;
+      margin-left: 15%;
+      margin-top: 15%
+    }
+
+    .detail-goods-list:hover {
+      transform: translate3d(0, -3px, 0);
+      box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.15);
+    }
+
   </style>
 </head>
 
@@ -32,28 +63,28 @@
 <div class="container" id="app">
   <div th:replace="mall/common :: commonNav"></div>
   <div class="detailCont">
-    <!--<p class="detail-tab">
-      首页 <span class="detail-tab-span">母婴玩具</span>
-    </p>-->
-    <div class="detail-tab-list"></div>
-    <div class="goods-title"></div>
-    <div class="detail-area">
+    <breadcrumb>
+      <breadcrumb-item to="/mall">商城</breadcrumb-item>
+      <breadcrumb-item>{{getSearchKeyWord('class_one') || getSearchKeyWord('type') ? '专区' : '搜索'}}</breadcrumb-item>
+      <breadcrumb-item>{{getSearchKeyWord('class_two') || getSearchKeyWord('type') || getSearchKeyWord('search')}}
+      </breadcrumb-item>
+    </breadcrumb>
+    <Divider v-if="!(goodsData.length>0)">暂时没有更多了</Divider>
+    <div v-else class="detail-area">
       <div class="detail-goods-list" v-for="(items,index) in goodsData">
         <a :href="'/goodDetails?id='+items.id" class="detail-area-A">
           <div class="goods-list-Img">
             <img :src="items.image"/>
           </div>
-          <h2 class="h2s">{{items.name}}</h2>
-          <p class="ps-01">正品保证</p>
-          <p class="ps-02">￥{{items.price}}</p>
-          <ul class="uls" style="display: none">
-            <li>成交 | <span>0</span></li>
-            <li>评论 | <span>0</span></li>
-            <li>库存 | <span>100</span></li>
-          </ul>
+          <h2 class="h2s">{{items.name || items.productName}}</h2>
+          <p class="ps-02"><span>售价：</span>￥{{items.price}}</p>
         </a>
-        <p class="carP" @click='test_click(items.id)'>加入购物车</p>
+        <span @click="test_click(items.id)" class="gwc"><img src="/assets/image/mall/car.png"
+                                                             alt=""></span>
       </div>
+    </div>
+    <div v-if="this.getHrefParam('zone')" style="display: flex;margin: 20px;justify-content: center">
+      <page :total="pageCount" :page-size="40" size="small" show-elevator show-total @on-change="pageChange"/>
     </div>
   </div>
   <div th:replace="mall/common :: commonFooter"></div>
@@ -65,6 +96,7 @@
       return {
         classData: [],
         goodsData: [],
+        pageCount: 0
       }
     },
     methods: {
@@ -106,16 +138,20 @@
           }
         });
       },
-      getGoods() {
+      pageChange(page) {
+        this.getGoods("/listZoneByTypeIdPage", {zoneId: this.getHrefParam('zone'), page: page, limit: 40})
+      },
+      getGoods(url, data) {
         $.ajax({
           type: "post",
-          url: "/findBpproducs",
+          url,
           dataType: "json",
-          data: {id: this.getHrefParam("id")},
+          data,
           success: (res) => {
             console.log(res)
             if (res.code == 1) {
-              this.goodsData = res.data
+              this.getHrefParam('zone') ? this.goodsData = res.data.productLists : this.goodsData = res.data
+              this.pageCount = res.count
               console.log(this.goodsData)
             }
           }
@@ -124,7 +160,13 @@
     },
     mounted() {
       this.getClass()
-      this.getGoods()
+      if (this.getHrefParam('id')) {
+        this.getGoods("/findBpproducs", {id: this.getHrefParam("id")})
+      } else if (this.getSearchKeyWord('search')) {
+        this.getGoods("/listProductByProductTypeId", {productName: this.getSearchKeyWord('search')})
+      } else if (this.getHrefParam('zone')) {
+        this.getGoods("/listZoneByTypeIdPage", {zoneId: this.getHrefParam('zone'), page: 1, limit: 40})
+      }
     }
   }
 </script>

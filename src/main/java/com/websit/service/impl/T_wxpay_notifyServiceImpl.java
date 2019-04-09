@@ -1,16 +1,20 @@
 package com.websit.service.impl;
 
+import com.websit.entity.T_order;
 import com.websit.entity.T_wxpay_notify;
 import com.websit.mapper.T_orderMapper;
 import com.websit.mapper.T_wxpay_notifyMapper;
 import com.websit.pay.WxPayConfig;
 import com.websit.pay.utils.PayUtil;
+import com.websit.service.IT_orderService;
 import com.websit.service.IT_wxpay_notifyService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +36,8 @@ public class T_wxpay_notifyServiceImpl extends ServiceImpl<T_wxpay_notifyMapper,
 		implements IT_wxpay_notifyService {
 	@Autowired
 	public T_wxpay_notifyMapper wxpayNotifyMapper;
+	@Autowired
+	public com.websit.service.IT_orderService IT_orderService;
 
 	/**
 	 * 
@@ -114,8 +120,13 @@ public class T_wxpay_notifyServiceImpl extends ServiceImpl<T_wxpay_notifyMapper,
 			if (result != null) {
 
 				if (result == "SUCCESS" || result_code.equals(result_code)) {
+					
+					Map<String, Object> columnMap=new HashMap<String,Object>(); 
+					columnMap.put("order_no",out_trade_no);
+					
+					List<T_order> T_order=IT_orderService.selectByMap(columnMap);
 
-					// 更新订单状态为未配送
+					int fig=IT_orderService.ordercancelled(T_order.get(0).getOrder_id().toString(),"1");
 
 					System.out.println("更新订单状态为未配送");
 

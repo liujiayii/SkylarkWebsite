@@ -27,9 +27,9 @@ public class T_trolley extends Model<T_trolley> {
     /**
      * 用户id
      */
-    private Integer user_id;
+    private String user_id;
 
-    private Integer product_id;
+    private String product_id;
 
     /**
      * 数量
@@ -48,21 +48,25 @@ public class T_trolley extends Model<T_trolley> {
     public void setTrolley_id(Integer trolley_id) {
         this.trolley_id = trolley_id;
     }
-    public Integer getUser_id() {
-        return user_id;
-    }
 
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
-    }
-    public Integer getProduct_id() {
-        return product_id;
-    }
+    public String getUser_id() {
+		return user_id;
+	}
 
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
-    }
-    public Integer getNumber() {
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+
+
+    public String getProduct_id() {
+		return product_id;
+	}
+
+	public void setProduct_id(String product_id) {
+		this.product_id = product_id;
+	}
+
+	public Integer getNumber() {
         return number;
     }
 

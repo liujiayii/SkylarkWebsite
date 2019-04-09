@@ -129,6 +129,7 @@ public class T_salesController {
 		List<th_list> ter=null;
 		int  cent=0;
 		Integer cood = 1;
+		page=(page-1)*limit;
 		try {
 			//cent=1T_salesService;
 	    cent=T_salesService.selectCount(null);

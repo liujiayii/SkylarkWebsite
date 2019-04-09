@@ -36,7 +36,7 @@ public class JsonUtil {
 			count = 0;
 		}
 		if (obj == null) {
-			obj = "null";
+			obj = new Object();
 		}
 		map.put("data", obj);
 		String json = JSONObject.toJSONString(map);

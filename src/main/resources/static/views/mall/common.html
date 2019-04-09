@@ -4,11 +4,13 @@
 <head th:fragment="commonHeader(title)">
   <title th:text="${title}"></title>
   <link href="//lib.baomitu.com/iview/latest/styles/iview.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="/assets/css/mallbackreset.css">
+  <!--   <link rel="stylesheet" type="text/css" href="/assets/css/mallbackreset.css"> -->
   <link rel="stylesheet" type="text/css" href="/assets/css/cont.css">
   <link rel="stylesheet" type="text/css" href="/assets/css/mallreset.css">
   <script src="/assets/js/jquery-3.1.1.min.js"></script>
-  <script src="/assets/js/vue.js"></script>
+  <!--   <script src="/assets/js/vue.js"></script> -->
+
+  <script src="//lib.baomitu.com/vue/2.6.8/vue.js"></script>
   <script src="/assets/js/header.js"></script>
   <script src="//lib.baomitu.com/iview/latest/iview.min.js"></script>
   <style>
@@ -17,7 +19,7 @@
     }
 
     .ivu-input-wrapper {
-      width: 91% !important
+      width: 100% !important
     }
 
     .ivu-btn-error {
@@ -25,18 +27,33 @@
       top: -10px;
       left: -3px;
     }
-    .head-topleft span{cursor: pointer;}
+
+    .head-topleft span {
+      cursor: pointer;
+    }
+
+    .ivu-input-search, .ivu-input-search:hover {
+      background: #e60012 !important;
+      border-color: #e60012 !important;
+    }
+
+    .ivu-input:focus {
+      border-color: #e60012;
+    }
+
+    .ivu-input-with-search:hover .ivu-input {
+      border-color: #e60012;
+    }
+
+    .nav_box-topright {
+      width: 17%
+    }
   </style>
 </head>
 
 <body>
 <div th:fragment="commonNav">
   <back-top></back-top>
-  <!--  <style>
-    .input-bigbox{font-size:12px;}
-    .ivu-input-wrapper{width:91%!important}
-    .ivu-btn-error{position: relative;top: -10px;left: -3px;}
-    </style> -->
   <div class="head">
     <div class="head-top">
       <div class="wrap">
@@ -47,18 +64,18 @@
               <a href="/toLogin?type=login" class="head-topa active">请登录</a>
               <a href="/toLogin?type=reg" class="head-topa">免费注册</a>
             </span>
-          <span v-if="userInfo.name!=null"  @click="modal1 = true" >退出</span>
+          <span v-if="userInfo.name!=null" @click="modal1 = true">退出</span>
           <Modal
-          v-model="modal1"
-          title="提示"
-          @on-ok="ok"
-          @on-cancel="cancel">
-          <p>确认退出</p>
-      </Modal>
+                  v-model="modal1"
+                  title="提示"
+                  @on-ok="ok"
+                  @on-cancel="cancel">
+            <p>确认退出</p>
+          </Modal>
         </div>
         <div class="head-topright">
           <a href="/" class="head-topa"><img src="" alt="">返回主站</a>
-          <a href="/orderList" class="head-topa"><img src="" alt="">个人中心</a>
+          <a @click="getOrderlistss()" class="head-topa"><img src="" alt="">个人中心</a>
           <a @click="getCars()" class="head-topa active"><img src="/assets/image/mall/public/spcar.png" alt=""
                                                               class="ico">购物车</a>
         </div>
@@ -68,18 +85,15 @@
     <div class="nav_box-top">
       <div class=" wrap">
         <a href="/mall" class="logo">
-          <img src="/assets/image/mall/public/logo.png" alt="">
+          <img src="/assets/image/mall/public/logo1.png" alt="">
         </a>
         <div class="search-box">
-          <i-input class="input input-bigbox" type="text" placeholder="输入关键词进行搜索..." v-model="searchcont"/>
+          <i-input v-model="searchcont" search enter-button="搜索" placeholder="搜索 " @on-search="goSearch"/>
         </div>
-        <i-button type="error" @click="gotosearch()">搜索</i-button>
-
-        <div class="nav_box-topright">
+        <div class="nav_box-topright flex">
           <img src="/assets/image/mall/public/1.png" alt="" class="topimg">
           <img src="/assets/image/mall/public/2.png" alt="" class="topimg">
           <img src="/assets/image/mall/public/3.png" alt="" class="topimg">
-          <img src="/assets/image/mall/public/4.png" alt="" class="topimg">
         </div>
         <div class="clear"></div>
       </div>
@@ -92,11 +106,14 @@
         <div class="nav-span">
           <ul class="nav-ul">
             <li v-for="(item,key,index) in classData" class="nav-ullibox"><a href="" class="nav-ulli"><img
-                    src="/assets/image/mall/nav1.png" alt="">{{key}}</a>
-              <p>
-                <a v-for="(item_c,index) in classData[key]" :href="'/goodList?id='+item_c.id"
-                   class="navs">{{item_c.name}}</a>
-              </p>
+                    src="/assets/image/mall/nav1.png" alt=""><span>{{key}}</span></a>
+              <div class="nav-bigbox">
+                <div class="inner">
+                  <a v-for="(item_c,index) in classData[key]"
+                     :href="'/goodList?id='+item_c.id+'&class_one='+key+'&class_two='+item_c.name"
+                     class="navs">{{item_c.name}}</a>
+                </div>
+              </div>
             </li>
           </ul>
         </div>
@@ -139,7 +156,7 @@
       mixins: [mixin],
       data() {
         return {
-        modal1: false,
+          modal1: false,
           userInfo: {
             name: null,
             id: null
@@ -163,17 +180,14 @@
           this.userInfo.id = sessionStorage.getItem("SkyUserId");
           /*  alert(sessionStorage.getItem("SkyUserId")) */
         },
-        ok () {
+        ok() {
           sessionStorage.removeItem('SkyUserName')
           sessionStorage.removeItem('SkyUserId')
           this.userInfo.name = null
           this.userInfo.id = null
-            },
-            cancel () {
-            },
-        // out() {
-         
-        // },
+        },
+        cancel() {
+        },
         getCars() {
           if (this.userInfo.id == null) {
             this.$Message.info('请先登录');
@@ -182,8 +196,16 @@
             window.location.href = "/ShoppingCart"
           }
         },
-        gotosearch() {
-          window.location.href = "/searchs?name=" + this.searchcont
+        getOrderlistss() {
+          if (this.userInfo.id == null) {
+            this.$Message.info('请先登录');
+            setTimeout("window.location.href = '/toLogin?type=login'", 1500)
+          } else {
+            window.location.href = "/orderList"
+          }
+        },
+        goSearch() {
+          window.location.href = "/goodList?search=" + encodeURI(this.searchcont)
         },
         /*获取地址栏参数*/
         getHrefParam(key) {
@@ -195,6 +217,12 @@
           } else {
             return rs[0].split("=")[1];
           }
+        },
+        getSearchKeyWord(key) {
+          let reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)", "i");
+          let r = window.location.search.substr(1).match(reg);
+          if (r != null) return decodeURI(r[2]);
+          return null;
         },
         formatData(now) {
           var date = new Date(now);
@@ -219,7 +247,6 @@
     $(".navli").click(function () {
       $(".nav-span").slideToggle();
     });
-
   </script>
 </div>
 </body>

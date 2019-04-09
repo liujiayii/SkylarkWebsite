@@ -1,6 +1,8 @@
 package com.websit.entity;
 
 import com.baomidou.mybatisplus.enums.IdType;
+import com.websit.until.Security;
+
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -32,7 +34,7 @@ public class T_review extends Model<T_review> {
     /**
      * 买家id
      */
-    private Long user_id;
+    private String user_id;
 
     /**
      * 买家评论内容
@@ -89,12 +91,12 @@ public class T_review extends Model<T_review> {
     public void setProduct_id(Long product_id) {
         this.product_id = product_id;
     }
-    public Long getUser_id() {
+    public String getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setUser_id(String user_id) {
+        this.user_id =user_id;
     }
     public String getReview_content() {
         return review_content;

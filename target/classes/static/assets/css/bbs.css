@@ -1,554 +1,553 @@
 .cont {
-    width: 1200px;
-    margin: 20px auto;
+  width: 1200px;
+  margin: 20px auto;
 }
 
 /*论坛首页*/
 .bbsIndex .banner {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 335px;
-    padding: 5px;
-    box-sizing: border-box;
-    background: #f1f1f1;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 335px;
+  padding: 5px;
+  box-sizing: border-box;
+  background: #f1f1f1;
 }
 
 .bbsIndex .banner .slide {
-    width: 525px;
-    height: 100%;
-    overflow: hidden;
+  width: 525px;
+  height: 100%;
+  overflow: hidden;
 }
 
 .bbsIndex .banner .hot {
-    width: 635px;
-    height: 100%;
-    background: #fff;
-    overflow: hidden;
+  width: 635px;
+  height: 100%;
+  background: #fff;
+  overflow: hidden;
 }
 
 .bbsIndex .banner .hot .ivu-tabs-bar {
-    margin-bottom: 10px !important;
-    background: #f1f1f1;
+  margin-bottom: 10px !important;
+  background: #f1f1f1;
 }
 
 .bbsIndex .banner .hot .tab-pane {
-    height: 100%;
-    background: #fff;
+  height: 100%;
+  background: #fff;
 }
 
 .bbsIndex .banner .hot li {
-    height: 35px;
-    width: 100%;
-    padding: 0 10px;
-    line-height: 35px;
-    font-size: 14px;
-    color: #666;
-    border-bottom: 1px dashed #f1f1f1;
+  height: 35px;
+  width: 100%;
+  padding: 0 10px;
+  line-height: 35px;
+  font-size: 14px;
+  color: #666;
+  border-bottom: 1px dashed #f1f1f1;
 }
 
 .bbsIndex .banner .hot li a {
-    color: #666;
+  color: #666;
 }
 
 .bbsIndex .banner .hot li .module {
-    padding: 0 6px;
+  padding: 0 6px;
 }
 
 .bbsIndex .banner .hot li .module:hover {
-    text-decoration: none;
-    color: #ff8600;
+  text-decoration: none;
+  color: #ff8600;
 }
 
 .bbsIndex .banner .hot li .date {
-    color: #999;
-    float: right;
+  color: #999;
+  float: right;
 }
 
 .bbsIndex .visit {
-    font-size: 12px;
-    color: #999;
-    height: 38px;
-    line-height: 38px;
+  font-size: 12px;
+  color: #999;
+  height: 38px;
+  line-height: 38px;
 }
 
 .bbsIndex .visit .num {
-    color: #333;
+  color: #333;
 }
 
 .bbsIndex .visit .line {
-    color: #333;
-    margin: 0 10px;
+  color: #333;
+  margin: 0 10px;
 }
 
 .bbsIndex .visit .new {
-    color: #ff8600;
+  color: #ff8600;
 }
 
 .bbsIndex .module {
-    width: 100%;
-    padding-bottom: 15px;
-    border-bottom: 1px dashed #f1f1f1;
+  width: 100%;
+  padding-bottom: 15px;
+  border-bottom: 1px dashed #f1f1f1;
 }
 
 .bbsIndex .module .titleBox {
-    display: flex;
-    font-size: 18px;
-    color: #333;
-    height: 46px;
-    align-items: center;
+  display: flex;
+  font-size: 18px;
+  color: #333;
+  height: 46px;
+  align-items: center;
 }
 
 .bbsIndex .module .titleBox .em {
-    color: #ff8600;
-    font-weight: bold;
+  color: #ff8600;
+  font-weight: bold;
 }
 
 .bbsIndex .titleBox img {
-    width: 16px;
-    height: 16px;
-    margin-right: 10px;
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
 }
 
 .bbsIndex .module .moduleCont {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    background: #f1f1f1;
-    width: 100%;
-    padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background: #f1f1f1;
+  width: 100%;
+  padding: 5px;
 }
 
 .bbsIndex .module .moduleCont a {
-    text-decoration: none;
-    color: #666;
+  text-decoration: none;
+  color: #666;
 }
 
 .bbsIndex .module .moduleCont .moduleBox {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 392px;
-    height: 100px;
-    padding: 10px;
-    background: #fff;
-    box-sizing: border-box;
-    margin-bottom: 5px;
-    border-left: 6px solid #91D5D6;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 392px;
+  height: 100px;
+  padding: 10px;
+  background: #fff;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+  border-left: 6px solid #91D5D6;
 }
 
 .bbsIndex .module .moduleCont .moduleBox img {
-    width: 80px;
-    height: 80px;
-    margin-right: 10px;
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
 }
 
 .bbsIndex .module .moduleCont .moduleBox .moduleBoxInfo {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .bbsIndex .module .moduleCont .moduleBox .moduleBoxInfo .title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 16px;
-    color: #333333;
-    height: 40px;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #333333;
+  height: 40px;
+  width: 100%;
 }
 
 .bbsIndex .module .moduleCont .moduleBox .moduleBoxInfo .moduleVisit {
-    font-size: 12px;
-    color: #999;
+  font-size: 12px;
+  color: #999;
 }
 
 .bbsIndex .module .moduleCont .moduleBox .moduleBoxInfo .tags {
-    height: 34px;
-    width: 100%;
-    overflow: hidden;
+  height: 34px;
+  width: 100%;
+  overflow: hidden;
 }
 
 /*论坛帖子列表*/
-.bbsList, .intro {
-    width: 1010px;
-    margin: 10px auto;
-    border: 5px solid #f1f1f1;
-    box-sizing: border-box;
+.bbsList,
+.intro {
+  width: 1010px;
+  margin: 10px auto;
+  border: 5px solid #f1f1f1;
+  box-sizing: border-box;
 }
 
 .bbsBreadcrumb {
-    width: 980px;
-    margin: 20px auto;
+  width: 980px;
+  margin: 20px auto;
 }
 
 .bbsList .bbsInner {
-    padding: 10px;
+  padding: 10px;
 }
 
 .intro {
-    display: flex;
-    padding: 20px;
+  display: flex;
+  padding: 20px;
 }
 
 .intro .icon {
-    width: 84px;
-    height: 104px;
-    margin-right: 20px;
+  width: 84px;
+  height: 104px;
+  margin-right: 20px;
 }
 
 .intro .icon img {
-    display: inline-block;
-    width: 84px;
-    height: 84px;
-    border: 1px solid #ccc;
+  display: inline-block;
+  width: 84px;
+  height: 84px;
+  border: 1px solid #ccc;
 }
 
 .intro .icon .name {
-    font-size: 14px;
-    color: #333333;
-    text-align: center;
+  font-size: 14px;
+  color: #333333;
+  text-align: center;
 }
 
 .intro .infoBox {
-    width: 80%;
+  width: 80%;
 }
 
 .intro .infoBox .title {
-    font-size: 14px;
-    color: #707070;
-    margin-bottom: 10px;
+  font-size: 14px;
+  color: #707070;
+  margin-bottom: 10px;
 }
 
 .intro .infoBox .info {
-    color: #666;
+  color: #666;
 }
 
 .bbsList .listTitle {
-    height: 50px;
-    line-height: 50px;
-    color: #707070;
-    font-size: 18px;
+  height: 50px;
+  line-height: 50px;
+  color: #707070;
+  font-size: 18px;
 }
 
 .bbsList .postBox {
-    display: flex;
-    align-items: center;
-    width: 980px;
-    height: 80px;
-    padding-left: 20px;
+  display: flex;
+  align-items: center;
+  width: 980px;
+  height: 80px;
+  padding-left: 20px;
 }
 
 .bbsList .postBox:hover {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
 
 .bbsList .postBox:hover a {
-    color: #ff8600;
+  color: #ff8600;
 }
 
 .bbsList .postBox .head {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 54px;
-    height: 54px;
-    border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid #ccc;
 }
 
 .bbsList .postList {
-    border-bottom: 1px dashed #cccccc;
+  border-bottom: 1px dashed #cccccc;
 }
 
 .bbsList .postList .hot a {
-    color: #ff8600;
+  color: #ff8600;
 }
 
 .bbsList .postList .hot .ivu-tabs-nav-scroll {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
 
 .bbsList .postBox .head img {
-    width: 48px;
-    height: 48px;
+  width: 48px;
+  height: 48px;
 }
 
 .bbsList .postBox .postInfo {
-    padding-left: 20px;
-    width: 920px;
-    height: 54px;
+  padding-left: 20px;
+  width: 920px;
+  height: 54px;
 }
 
 .bbsList .postBox .postInfo .title {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .bbsList .postBox .postInfo .title a {
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 30px;
-    width: 80%;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 30px;
+  width: 80%;
 }
 
 .bbsList .postBox .postInfo .author {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .bbsList .postBox .postInfo .author a {
-    font-size: 12px;
-    line-height: 20px;
+  font-size: 12px;
+  line-height: 20px;
 }
 
 .bbsList .postBox .postInfo .count {
-    width: 120px;
-    line-height: 30px;
+  width: 120px;
+  line-height: 30px;
 }
 
 .bbsList .postBox .postInfo .author .date {
-    color: #707070;
-    margin-left: 20px;
+  color: #707070;
+  margin-left: 20px;
 }
 
 .bbsList .pageBox {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 .bbsList .editor {
-    border-top: 1px solid #cdcdcd;
-    background: #f7f7f7;
-    padding: 20px 120px;
+  border-top: 1px solid #cdcdcd;
+  background: #f7f7f7;
+  padding: 20px 120px;
 }
 
 .bbsList .editor .info {
-    font-size: 14px;
-    color: #333;
-    font-weight: bold;
-    line-height: 40px;
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+  line-height: 40px;
 }
 
 .bbsList .editor .sub {
-    margin: 20px 0 100px;
+  margin: 20px 0 100px;
 }
 
 /*帖子详情*/
 .bbsPost {
-    width: 980px;
-    margin: 20px auto;
-    border: 1px solid #e5e5e5;
-    color: #333;
+  width: 980px;
+  margin: 20px auto;
+  border: 1px solid #e5e5e5;
+  color: #333;
 }
 
 .bbsPost .home {
-    display: flex;
-    align-items: center;
-    height: 82px;
-    background: #f2f4f7;
-    font-size: 20px;
-    color: #333;
+  display: flex;
+  align-items: center;
+  height: 82px;
+  background: #f2f4f7;
+  font-size: 20px;
+  color: #333;
 }
 
 .bbsPost .home .head {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    width: 50px;
-    border: 1px solid #BBBDBF;
-    margin: 0 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  width: 50px;
+  border: 1px solid #BBBDBF;
+  margin: 0 30px;
 }
 
 .bbsPost .home .head img {
-    height: 48px;
-    width: 48px;
+  height: 48px;
+  width: 48px;
 }
 
 .bbsPost .caption {
-    padding-left: 20px;
-    height: 56px;
-    line-height: 56px;
-    font-size: 16px;
-    border-bottom: 1px solid #BBBDBF;
+  padding-left: 20px;
+  height: 56px;
+  line-height: 56px;
+  font-size: 16px;
+  border-bottom: 1px solid #BBBDBF;
 }
 
 .bbsPost .postMain {
-    display: flex;
-    border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .bbsPost .postMain .author {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    width: 130px;
-    background: #FAFBFC;
-    overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 130px;
+  background: #FAFBFC;
+  overflow: hidden;
 }
 
 .bbsPost .postMain .author .head {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 88px;
-    height: 88px;
-    border: 1px solid #ccc;
-    margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 88px;
+  height: 88px;
+  border: 1px solid #ccc;
+  margin: 20px auto;
 }
 
 .bbsPost .postMain .author .head img {
-    height: 80px;
-    width: 80px;
+  height: 80px;
+  width: 80px;
 }
 
 .bbsPost .postMain .reply {
-    position: relative;
-    width: 82%;
+  position: relative;
+  width: 82%;
 }
 
 .bbsPost .postMain .reply .replyMain {
-    padding: 20px 20px 100px 20px;
-    font-size: 14px;
-    line-height: 24px;
+  padding: 20px 20px 100px 20px;
+  font-size: 14px;
+  line-height: 24px;
 }
 
 .bbsPost .postMain .reply .replyInfo {
-    display: flex;
-    flex-direction: row-reverse;
-    height: 30px;
-    width: auto;
-    line-height: 30px;
-    color: #999;
+  display: flex;
+  flex-direction: row-reverse;
+  height: 30px;
+  width: auto;
+  line-height: 30px;
+  color: #999;
 }
 
 .bbsPost .postMain .replyToReplyList {
-    background: #f7f8fa;
-    margin: 0 0 20px 20px;
-    overflow: hidden;
-    transition: all 2s linear;
+  background: #f7f8fa;
+  margin: 0 0 20px 20px;
+  overflow: hidden;
+  transition: all 2s linear;
 }
 
 .bbsPost .postMain .replyToReplyList .inner {
-    padding: 16px 16px 0 16px;
-    border: 1px solid #f0f1f2;
-    box-sizing: border-box;
-    transition: all .5s linear;
-    height: 100%;
-    margin-top: 0px;
+  padding: 16px 16px 0 16px;
+  border: 1px solid #f0f1f2;
+  box-sizing: border-box;
+  transition: all .5s linear;
+  height: 100%;
+  margin-top: 0px;
 }
 
 .bbsPost .postMain .replyToReplyHide .inner {
-    margin-top: -500px;
+  margin-top: -500px;
 }
 
 .bbsPost .postMain .replyToReplyList .replyToReplyBox {
-    display: flex;
-    border-bottom: 1px dotted #ccc;
-    padding: 10px 0;
+  display: flex;
+  border-bottom: 1px dotted #ccc;
+  padding: 10px 0;
 }
 
 .bbsPost .postMain .replyToReplyList .replyToReplyHead {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #f0f1f2;
-    margin-right: 10px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #f0f1f2;
+  margin-right: 10px;
 }
 
 .bbsPost .postMain .replyToReplyList .replyToReplyInfo {
-    width: 90%;
-    font-size: 14px;
-    color: #333;
+  width: 90%;
+  font-size: 14px;
+  color: #333;
 }
 
 .bbsPost .postMain .replyToReplyList .replyToReplyHead img {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .bbsPost .pageBox {
-    display: flex;
-    justify-content: center;
-    margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
 }
 
 .bbsPost .editor {
-    border-top: 1px solid #cdcdcd;
-    background: #f7f7f7;
-    padding: 20px 120px;
+  border-top: 1px solid #cdcdcd;
+  background: #f7f7f7;
+  padding: 20px 120px;
 }
 
 .bbsPost .editor .info {
-    font-size: 14px;
-    color: #333;
-    font-weight: bold;
-    line-height: 40px;
+  font-size: 14px;
+  color: #333;
+  font-weight: bold;
+  line-height: 40px;
 }
 
 .bbsPost .editor .sub {
-    margin: 20px 0 100px;
+  margin: 20px 0 100px;
 }
 
 /*个人空间*/
-.space {
-
-}
+.space {}
 
 .space .main {
-    padding: 20px;
+  padding: 20px;
 }
 
 .space .title {
-    display: flex;
-    justify-content: space-between;
-    height: 40px;
-    line-height: 40px;
-    width: 100%;
-    font-size: 12px;
-    color: #444;
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+  font-size: 12px;
+  color: #444;
 }
 
 .space .postList {
-    display: flex;
-    justify-content: space-between;
-    height: 40px;
-    line-height: 40px;
-    border-bottom: 1px solid #C2D5E3;
-    color: #999;
-    font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #C2D5E3;
+  color: #999;
+  font-size: 12px;
 }
 
 .space .postList a {
-    color: #069;
-    font-size: 12px;
-    max-width: 80%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  color: #069;
+  font-size: 12px;
+  max-width: 80%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .space .pageBox {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .space .nameBox {
-    display: flex;
+  display: flex;
 }
 
 .space .name {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 0 10px 10px 0;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0 10px 10px 0;
 }
 
 .space .infoBox {
-    border-bottom: 1px dashed #cdcdcd;
-    padding: 10px 0;
+  border-bottom: 1px dashed #cdcdcd;
+  padding: 10px 0;
 }
 
 .space .infoBox .line {
-    padding: 0 5px;
+  padding: 0 5px;
 }

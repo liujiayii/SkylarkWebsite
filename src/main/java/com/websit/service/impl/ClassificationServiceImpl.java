@@ -42,6 +42,9 @@ public String listClassificationByClassificationId(Long classificationId) {
 	try {
 		 result = classificationMapper.listClassificationByClassificationId(classificationId);
 			System.out.println(result);
+		if (result == null) {
+			return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, null, new ProductVos());
+		}
 	} catch (Exception e) {
 		e.printStackTrace();
 		return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, ReturnCode.EXCEPTION_MSG, null, null);

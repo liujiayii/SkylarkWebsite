@@ -2,7 +2,6 @@ package com.websit.web;
 
 import java.awt.image.BufferedImage;
 
-
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,10 +32,12 @@ import com.websit.entityvo.UserRegister;
 import com.websit.service.IT_accessService;
 import com.websit.service.IT_userService;
 import com.websit.until.DesUtil;
+
 import com.websit.until.HttpClientUtil;
 import com.websit.until.JYSMSUtil;
 import com.websit.until.JsonUtil;
 import com.websit.until.MD5Utils;
+import com.websit.until.Security;
 import com.websit.until.VerifyUtil;
 
 /**
@@ -52,13 +53,14 @@ import com.websit.until.VerifyUtil;
 
 @Controller
 public class LoginController {
-
+String key="12345678";
 	@Autowired
 	private IT_userService userService;
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	@Autowired
 	private IT_accessService accessService;
+	Security  DesUtilt=new Security();
 
 	/**
 	 * 
@@ -135,21 +137,30 @@ public class LoginController {
 		// 将手机号码加密
 		String encode = DesUtil.encode("yunquekj", phone);
 		// 调用验证接口正式
-
-		String doPost = HttpClientUtil
-
-				.doPost("http://www.ouyepuhui.com/loginAndRegiste/isExistMobile?params=" + encode);
-
+		String doPost="";
+        try {
+	
+		 doPost = HttpClientUtil
+			.doPost("https://www.ouyepuhui.com/loginAndRegiste/isExistMobile?params=" + encode);
+        } catch (Exception e) {
+			return JsonUtil.getResponseJson(1, "请求异常", null, null);
+		}
 		// 测试
-		/*
-		 * String doPost = HttpClientUtil
-		 * 
-		 * .doPost(
-		 * "http://192.168.1.101:8000/loginAndRegiste/isExistMobile?params=" +
-		 * encode);
-		 */
+		
+		  /*String doPost = HttpClientUtil
+		  
+		  .doPost(
+		 "http://192.168.1.101:8000/loginAndRegiste/isExistMobile?params=" +
+		  encode);*/
+		 
 		// 解析验证信息
-		JSONObject parse = (JSONObject) JSONObject.parse(doPost);
+        JSONObject parse =null;
+        try {
+        	 parse = (JSONObject) JSONObject.parse(doPost);
+		} catch (Exception e) {
+			return JsonUtil.getResponseJson(1, "请求异常", null, null);
+		}
+		
 		// 获取返回信息
 		Integer Pcode = (Integer) parse.get("code");
 		// -200 代表已经注册过 终止程序返回信息
@@ -219,11 +230,16 @@ public class LoginController {
 		String encode = DesUtil.encode("yunquekj", phone);
 		// 调用验证接口正式
 
-		String doPost = HttpClientUtil
-
-				.doPost("http://www.ouyepuhui.com/loginAndRegiste/isExistMobile?params=" + encode);
-
+		String doPost="";
+        try {
+	
+		 doPost = HttpClientUtil
+			.doPost("https://www.ouyepuhui.com/loginAndRegiste/isExistMobile?params=" + encode);
+        } catch (Exception e) {
+			return JsonUtil.getResponseJson(1, "请求异常", null, null);
+		}
 		// 测试
+
 		/*
 		 * String doPost = HttpClientUtil
 		 * 
@@ -231,8 +247,14 @@ public class LoginController {
 		 * "http://192.168.1.101:8000/loginAndRegiste/isExistMobile?params=" +
 		 * encode);
 		 */
+
 		// 解析验证信息
-		JSONObject parse = (JSONObject) JSONObject.parse(doPost);
+        JSONObject parse =null;
+        try {
+        	 parse = (JSONObject) JSONObject.parse(doPost);
+		} catch (Exception e) {
+			return JsonUtil.getResponseJson(1, "请求异常", null, null);
+		}
 		// 获取返回信息
 		Integer Pcode = (Integer) parse.get("code");
 		// -200 代表已经注册过 终止程序返回信息
@@ -433,7 +455,7 @@ public class LoginController {
 	@RequestMapping("/mRegister")
 	@ResponseBody
 	public String mRegister(/* @RequestBody */ UserRegister user, HttpSession session) {
-
+		
 		// 校验手机号码格式是否正确
 		String regularp = "^((13[0-9])|(14[0-9])|(19[0-9])|(16[0-9])|(15[^4,\\D])|(17[0-9])|(18[0-9]))(\\d{8})$";
 		String phone = user.getPhone();
@@ -658,12 +680,16 @@ public class LoginController {
 	 *
 	 * 
 	 * @author lishaozhang
+	 * @throws Exception 
 	 * @createDate 2019年3月21日
 	 */
 	@RequestMapping("/mLogin")
 	@ResponseBody
-	public String login(Logivo log) {
-
+	public String login(Logivo log) throws Exception {
+		System.out.println(log.getPassword());
+		log.setPassword(Security.decode(log.getPassword()));
+		System.out.println("解密之后"+log.getPassword());
+		
 		// MD5密码
 		// String hash = MD5Utils.hash(log.getPassword() + "KwX3jBV5hOmTSUdc");
 
@@ -729,9 +755,11 @@ public class LoginController {
 		T_user t_user = records.get(0);
 
 		Map<String, Object> resault = new HashMap<String, Object>();
-		resault.put("id", t_user.getId());
+		resault.put("id", Security.encode(t_user.getId().toString()));//加密userid
 		resault.put("phid", t_user.getPhid());
 		// 返回加密userid
+		System.out.println(Security.encode(JsonUtil.getResponseJson(1, "登陆成功", null, resault)));
+		
 		return JsonUtil.getResponseJson(1, "登陆成功", null, resault);
 
 	}

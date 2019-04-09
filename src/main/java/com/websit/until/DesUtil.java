@@ -209,6 +209,7 @@ public class DesUtil {
             Cipher cipher = Cipher.getInstance(ALGORITHM_DES);
             IvParameterSpec iv = new IvParameterSpec("12345678".getBytes());
             AlgorithmParameterSpec paramSpec = iv;
+            System.out.println(secretKey.toString()+"              "+cipher+"         "+iv);
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, paramSpec);
             byte[] bytes = cipher.doFinal(data.getBytes());
             return byte2String(bytes);
@@ -311,6 +312,10 @@ public static  Map<String,String> map(String sds){
 
 	}
 	return maplist;
+}
+public static void main(String[] args) {
+	DesUtil DesUtil=new DesUtil();
+	System.out.println(DesUtil.encode("yZPtvXfIQ6nWJVMF", "12345678"));
 }
 
 }

@@ -39,7 +39,7 @@
 		insert into
 		 t_discount_product(product_id,discount_id)
 		values
-		(#{productid},#{id})
+		(#{productid},#{discountid})
 	</insert>
 	
 	<!-- 修改商品专区 -->

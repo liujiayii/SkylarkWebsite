@@ -10,7 +10,7 @@ package com.websit.online.utils;
  * @createDate 2019年3月27日-下午5:21:50
  */
 public class OnlineConfig {
-	 /* 根据自己所在租户的环境选择对应的URL *///https://cschat-ccs.aliyun.com/index.htm?tntInstId=_0rhgRUW&scene=SCE00002186
+	 /* 根据自己所在租户的环境选择对应的URL */// https://cschat-ccs.aliyun.com/index.htm?tntInstId=_0rhgRUW&scene=SCE00004278
     /** 阿里云云客服URL */
     public static final String HOST_URL                 = "https://cschat-ccs.aliyun.com/openapi/";
     /** 金融云云客服URL */
@@ -28,7 +28,7 @@ public class OnlineConfig {
     /** 租户ID */
     public static final String tntInstId        = "_0rhgRUW";
     /** */
-    public static final String scene            = "SCE00002186";
+    public static final String scene            = "SCE00004278";
 
     //--------------------------------------------------------------------------------
     /* 以下内容为固定写死内容, 无需关心 */

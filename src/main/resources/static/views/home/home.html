@@ -7,7 +7,7 @@
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1,user-scalable=no">
   <div th:replace="/home/common :: commonHeader(云阙首页)"></div>
-  
+
   <link rel="stylesheet" href="/assets/css/home.css">
 </head>
 <body>
@@ -129,47 +129,73 @@
       <span class="titleen">Clouds Make Your Life Simple</span>
     </div>
     <div class="DynamicCont wrap flex">
-      <div class="DynamicContList">
-        <img src="/assets/image/index/Dynamic1.png" alt=""/>
+      <div v-for="(item,index) in newsList" class="DynamicContList">
+        <img :src="item.dynamic_image" alt=""/>
         <div class="date">
-          <h1>30</h1>
-          <p>2018/08</p>
+          <p>{{item.dynamic_time}}</p>
         </div>
-        <div class="cont-box">
-          <p class="title">标题标题标题标题标题标题标题</p>
-          <p class="cont">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</p>
-          <a href="" class="more">→</a>
-        </div>
-      </div>
-      <div class="DynamicContList">
-        <img src="/assets/image/index/Dynamic1.png" alt=""/>
-        <div class="date">
-          <h1>30</h1>
-          <p>2018/08</p>
-        </div>
-        <div class="cont-box">
-          <p class="title">标题标题标题标题标题标题标题</p>
-          <p class="cont">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</p>
-          <a href="" class="more">→</a>
-        </div>
-      </div>
-      <div class="DynamicContList">
-        <img src="../../assets/image/index/Dynamic1.png" alt=""/>
-        <div class="date">
-          <h1>30</h1>
-          <p>2018/08</p>
-        </div>
-        <div class="cont-box">
-          <p class="title">标题标题标题标题标题标题标题</p>
-          <p class="cont">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</p>
-          <a href="" class="more">→</a>
+        <div class="cont-box" @click="showNews(item)">
+          <p class="title">{{item.dynamic_title}}</p>
+          <p class="cont">{{item.dynamic_content}}</p>
+          <a class="more">→</a>
         </div>
       </div>
     </div>
+    <Divider v-if="currPage*3>newsList.length">没有更多了</Divider>
+    <i-button v-else class="readMore" ghost type="info" @click="pageChange">更多
+      <Icon type="md-arrow-round-forward"/>
+    </i-button>
+    <Drawer :closable="false" width="640" v-model="drawShow">
+      <p style="font-size: 16px;color: rgba(0,0,0,0.85);line-height: 24px;margin-bottom: 16px">
+        {{newsCont.dynamic_title}}</p>
+      <p style="font-size: 12px;color: rgba(0,0,0,0.85);line-height: 24px;margin-bottom: 16px">
+        {{newsCont.dynamic_time}}</p>
+      <img :src="newsCont.dynamic_image" alt="" style="width: 400px">
+      <p>{{newsCont.dynamic_content}}</p>
+    </Drawer>
   </div>
   <div th:replace="/home/common :: commonFooter"></div>
 </div>
 <script>
+  const mixin = {
+    data() {
+      return {
+        drawShow: false,
+        newsList: [],
+        currPage: 0,
+        newsCont: {}
+      }
+    },
+    methods: {
+      showNews(item) {
+        this.drawShow = true
+        this.newsCont = item
+      },
+      pageChange() {
+        this.currPage += 1
+        $.ajax({
+          type: "post",
+          url: "/t_dynamic/SelectAllDy",
+          dataType: "json",
+          data: {page: this.currPage, limit: 3},
+          success: (res) => {
+            console.log(res)
+            if (res.code == 1) {
+              for (let i = 0; i < res.data.length; i++) {
+                res.data[i].dynamic_time = this.dateFormat(res.data[i].dynamic_time)
+                this.newsList.push(res.data[i])
+              }
+            } else {
+              this.error(res.msg)
+            }
+          }
+        })
+      }
+    },
+    mounted() {
+      this.pageChange()
+    }
+  }
   $(function () {
     console.log($(".businesscont>img").height())
     var top = $(".businesscont>img").height() - 80;
@@ -177,6 +203,7 @@
     $(".businesslist").eq(3).css("top", top * 1.2)
     $(".businesslist").eq(4).css("top", top * 0.4)
   })
+
   function scroll() {
     if (window.pageYOffset !== null) {
       return {
@@ -194,6 +221,7 @@
       left: document.body.scrollLeft
     }
   }
+
   var stompClient = null;
   $(function () {
     var socket = new SockJS('/endpointSang');
@@ -208,6 +236,7 @@
       })
     });
   });
+
   function disconnect() {
     if (stompClient != null) {
       stompClient.disconnect();
@@ -223,9 +252,6 @@
   function showResponse1(message) {
     $("#num").html(message);
   }
-
-  const mixin = {
- }
 </script>
 <div th:replace="/home/common :: commonFooterjs"></div>
 </body>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_dynamicMapper">
+
+	<!-- f通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.websit.entity.T_dynamic">
+		<id column="id" property="id" />
+		<result column="dynamic_title" property="dynamic_title" />
+		<result column="dynamic_content" property="dynamic_content" />
+		<result column="dynamic_image" property="dynamic_image" />
+		<result column="dynamic_time" property="dynamic_time" />
+	</resultMap>
+	<select id="SelectAllDy" resultType="com.websit.entityvo.T_dynamicVo" parameterType="com.websit.entityvo.T_dynamicVo">
+		SELECT
+		t_dynamic.id,
+		t_dynamic.dynamic_title,
+		t_dynamic.dynamic_content,
+		t_dynamic.dynamic_image,
+		t_dynamic.dynamic_time
+		FROM
+		t_dynamic
+		ORDER BY t_dynamic.dynamic_time DESC
+		limit #{page},#{limit}
+	</select>
+</mapper>

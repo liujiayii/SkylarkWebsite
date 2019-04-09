@@ -31,10 +31,23 @@ public class ZoneVo  extends Model<ZoneVo>{
      * 专区名称
      */
     private String image;
+    
+    /**
+     * 专区下商品总数
+     */
+    private int productTotal;
+    
     /**
      * 每个专区下商品列表
      */
     List<T_product>productLists;
+    
+	public int getProductTotal() {
+		return productTotal;
+	}
+	public void setProductTotal(int productTotal) {
+		this.productTotal = productTotal;
+	}
 	public Long getZoneId() {
 		return zoneId;
 	}
@@ -68,12 +81,13 @@ public class ZoneVo  extends Model<ZoneVo>{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("ZoneVo [zoneId=").append(zoneId).append(", ZoneName=").append(ZoneName).append(", create_time=")
-				.append(create_time).append(", image=").append(image).append(", productLists=").append(productLists)
-				.append("]");
+				.append(create_time).append(", image=").append(image).append(", productTotal=").append(productTotal)
+				.append(", productLists=").append(productLists).append("]");
 		return builder.toString();
 	}
 	/**  

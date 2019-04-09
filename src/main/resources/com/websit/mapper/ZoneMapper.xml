@@ -81,6 +81,32 @@
                    p.zone_id = z.id
                 and z.id = #{zoneId} and p.state=1
         </where>
+        	limit #{page},#{limit} 
+    </select>
+ <!--    根据专区id查询当前商品专区及每个专区下所有商品(分页) -->
+     <select id="listZoneByTypeIdPage" resultMap="productsAndZone">
+       SELECT DISTINCT
+                    p.id id,
+                    z. name ZoneName,
+                    z. id zoneId,
+                    p.name name,
+                    z.image images,
+                    p.image image,
+                    p.color color,
+                    p.price price,
+                    p.brand brand,
+                    p.create_time create_times,
+                    p.state state,
+                    p.specifications specifications,
+                    p.describes describion
+                FROM
+                    t_product p,
+                    t_zone z
+        WHERE
+                   p.zone_id = z.id
+                and z.id = #{zoneId} and p.state=1
+       
+        	limit #{page},#{limit} 
     </select>
     <resultMap type="com.websit.entityvo.ZoneVo" id="productsAndZone">
     
@@ -181,4 +207,19 @@
 					tp.zone_id = tz.id
 				AND tp.id = #{productaid}
     </select>
+    
+    <!-- 按专区id查询商品条数 -->
+	<select id="findBpiListByZoneId" resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM
+		(
+		select
+		p.id
+		from
+		 t_product p
+        WHERE 
+        p.zone_id =  #{zoneId}
+      
+		)as tb
+	</select>
 </mapper>

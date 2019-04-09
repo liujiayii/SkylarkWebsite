@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.websit.entity.T_order;
 import com.websit.entity.T_picture_video;
 import com.websit.entity.T_revert;
 import com.websit.entity.T_review;
+import com.websit.entityvo.T_orderVo;
 import com.websit.entityvo.T_reviewVo;
 import com.websit.mapper.T_reviewMapper;
 import com.websit.service.IT_orderService;
@@ -15,6 +17,7 @@ import com.websit.service.IT_picture_videoService;
 import com.websit.service.IT_revertService;
 import com.websit.service.IT_reviewService;
 import com.websit.until.JsonUtil;
+import com.websit.until.Security;
 import com.websit.until.UpdateFile;
 import java.util.Date;
 import java.util.List;
@@ -55,17 +58,22 @@ public class T_reviewController {
 	 */
 	@RequestMapping(value = "/insertReview", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String insertReview(T_review t_review,String order_id,String product_id,HttpServletRequest req) {
+	public String insertReview(T_review t_review,String order_id,HttpServletRequest req,String order_no,Integer is_des ) {
 		try {
+			if(is_des!=null) {
+				t_review.setUser_id((Security.decode(t_review.getUser_id())));
+			}
+		
+			T_order t_order=new T_order();
 			T_picture_video t_picture_video=new T_picture_video();
 			Date sdf = new Date();
 			t_review.setReview_time(sdf);
 			int insertReview = it_reviewService.insertReview(t_review);
 			if (insertReview != 0) {
-				//接受传入的图片并储存路径
 				long id=t_review.getId();
 				MultipartHttpServletRequest multipartRequest =  (MultipartHttpServletRequest)req;
 				List<MultipartFile> files = multipartRequest.getFiles("pic");
+				System.out.println(multipartRequest.getFiles("pic"));
 				for (MultipartFile multipartFile : files) {
 					Map<String, String> map = UpdateFile.update(multipartFile);
 					String urls = map.get("Path");
@@ -74,7 +82,13 @@ public class T_reviewController {
 					it_picture_videoService.insert(t_picture_video);
 				}
 				//修改商品是否评价状态
+				String	product_id=t_review.getProduct_id().toString();
+				System.out.println("order_id"+order_id+"product_id"+product_id);
 				it_orderService.updateState(order_id, product_id);
+				List<T_orderVo> seleceOne = it_reviewService.seleceOne(order_id);
+				if(seleceOne==null||seleceOne.size()==0){
+					it_reviewService.updateState(order_no);
+				}
 				return JsonUtil.getResponseJson(1, "添加成功", null, null);
 			} else {
 				return JsonUtil.getResponseJson(2, "添加失败", null, null);

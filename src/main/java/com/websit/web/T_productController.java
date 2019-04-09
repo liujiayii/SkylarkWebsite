@@ -253,7 +253,7 @@ public class T_productController {
 			if (result.size() >= 1) {
 				return JsonUtil.getResponseJson(1, "查看成功", null, result);
 			} else {
-				return JsonUtil.getResponseJson(1, "无数据", null, null);
+				return JsonUtil.getResponseJson(1, "无数据", null, result);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -328,5 +328,24 @@ public class T_productController {
 		}
 
 		return res;
+	}
+	/**
+	 * 根据类型id查询当前商品种类及每个种类下所有商品
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月21日 下午2:00
+	 */
+	@RequestMapping(value = "/listProductByType", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String listProductByType(@RequestParam(value = "productTypeId", required = false) String productTypeId,
+			String page, String limit) {
+		Long productTypeIds = null;
+
+		if (StringUtils.isNotEmpty(productTypeId)) {
+			productTypeIds = Long.valueOf(productTypeId);
+		}
+		
+		return productService.listProductByTypeId(productTypeIds,1,10);
+
 	}
 }

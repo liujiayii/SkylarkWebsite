@@ -31,7 +31,9 @@
                    content
                 FROM
                     t_opinion
-                     <!--     limit #{page},#{limit}  -->
+                      order by id
+               DESC
+                      limit #{page},#{limit}  
     </select>
     <!-- 查询商品一级分类条数 -->
 	<select id="findOpinionCount" resultType="Integer">

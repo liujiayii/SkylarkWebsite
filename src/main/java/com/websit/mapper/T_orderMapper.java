@@ -47,7 +47,7 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	/**
 	 * 商品订单
 	 */
-	List<shopinglist> shopinglist(String no);
+	List<shopinglist> shopinglist(@Param("no")String no,@Param("state")String state);
 	/**
 	 * 查询运费
 	 * @param jiage
@@ -95,7 +95,7 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	/**
 	 * 查询订单列表
 	 */
-	List<order_list> order_list1(@Param("order_state")String order_state,RowBounds RowBounds,@Param("date")String date);
+	List<order_list> order_list1(@Param("order_state")String order_state,@Param("page")Integer page,@Param("limit")Integer limit,@Param("date")String date);
 	//
 	int  querdfk(String  user_id);
 	int  yifukuan(String  user_id);
@@ -103,6 +103,7 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	int  yishouhuo(String  user_id);
 	int  quantum(String  user_id);
 	int updateorderpayment(@Param("order_id")String order_id,@Param("order_payment")String order_payment);
+	int updatenqux(@Param("number")Integer number, @Param("product_id")String product_id);
 
 
 }

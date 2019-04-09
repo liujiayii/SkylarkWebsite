@@ -18,7 +18,7 @@ body{ line-height: 1;}
 .ddmx .sestion textarea{width: 100%;border: 1px solid #dedddd;margin-top: 10px;padding: 5px;display: block;}
 .ddmx .pay span{display: inline-block;width: 100px;height: 40px;line-height: 40px;text-align: center;border: 2px solid #dedddd;margin-left: 5px;cursor: pointer}
 .ddmx .pay span.active{border: 2px solid #ffa312}
-.ddmx .sestion h1{display: inline-block; font-size: 16px; color: #010101;}
+.ddmx .sestion .h1{font-size: 16px; color: #010101;font-weight:600;}
 .ddmx .sestion1 span{display: inline-block; font-size: 16px; color: #ffa312; margin-left: 20px;}
 .ddmx .sestion2 p{ display: inline-block; font-size: 14px; color: #5c5c5c; padding-right: 40px; margin-top: 15px;}
 .ddmx .sestion2 h1{ display: block}
@@ -34,17 +34,16 @@ body{ line-height: 1;}
 .ddmx .sestion3 .spxx-cont .li:nth-child(4){height: 70px;line-height: 70px}
 .ddmx .sestion3 .spxx-cont .li:nth-child(5){height: 70px;line-height: 70px}
 .ddmx .sestion3 .spxx-cont .li:nth-child(6){height: 70px;line-height: 70px;color:#ffa312;cursor: pointer }
-.ddmx .sestion3 .spxx-cont .li:first-child{width: 35%}
+.ddmx .sestion3 .spxx-cont .li:first-child{width: 35%;}
 .ddmx .sestion3 .spxx-cont .li:first-child .checkbox{position: relative;top: -20px}
 .ddmx .sestion3 .spxx-title .li:nth-child(2){width: 15%}
 .ddmx .sestion3 .spxx-cont .li:nth-child(2){width: 15%}
 .ddmx .sestion3 .spxx-cont .li:nth-child(2) p{word-break: break-all;overflow: hidden;display: -webkit-box;-webkit-line-clamp:1;-webkit-box-orient: vertical;}
 .ddmx .sestion4 p{ display: inline-block; line-height: 25px; font-size: 14px;}
 .sestion5 .sestion4 ul{margin-top: 0; margin-bottom: 20px; }
-.sestion5 .sestion4 ul li p{ width: 75px; text-align: right;}
-.sestion3 .li #num{ display: inline-block; padding: 5px 10px; border: 1px solid #e5e5e5; line-height: 1; cursor: pointer;width:45px;text-align: center;}
+.sestion3 .li #num{ padding: 5px 10px; line-height: 1; cursor: pointer;width:45px;text-align: center;}
  #num1{ display: inline-block; padding: 5px 10px; border: 1px solid #e5e5e5; line-height: 1; cursor: pointer;}
-.sestion3 .li .yuns{ padding: 5px 5px; border: 1px solid #e5e5e5; line-height: 1; display: inline-block; cursor: pointer }
+.sestion3 .li .yuns{ padding: 5px; border: 1px solid #e5e5e5; line-height: 1; cursor: pointer }
 .b{ font-weight: bold;font-size: 18px;color: #d63038}
 .sestion7-left p{ margin-top: 28px;}
 .sestion7 { border-bottom: 1px solid #aeaeae}

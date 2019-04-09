@@ -37,13 +37,19 @@ public class T_cooperationController {
 	 */
 	@RequestMapping(value = "/selectAllcooperation", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String selectAllcooperation(T_cooperation cooperation) {
+	public String selectAllcooperation(T_cooperation cooperation, Integer page, Integer limit) {
 		try {
-			Page<Map<String, Object>> selectMapsPage = cooperationService.selectMapsPage(new Page<>(),
+			/*
+			 * Page<Map<String, Object>> selectMapsPage =
+			 * cooperationService.selectMapsPage(new Page<>(), new
+			 * EntityWrapper<T_cooperation>());
+			 */
+			Page<T_cooperation> selectPage = cooperationService.selectPage(new Page<>(page, limit),
 					new EntityWrapper<T_cooperation>());
-			List<Map<String, Object>> records = selectMapsPage.getRecords();
+			List<T_cooperation> records = selectPage.getRecords();
+			int selectCount = cooperationService.selectCount(null);
 			if (records.size() >= 1) {
-				return JsonUtil.getResponseJson(1, "查看成功", null, records);
+				return JsonUtil.getResponseJson(1, "查看成功", selectCount, records);
 			} else {
 				return JsonUtil.getResponseJson(2, "无数据", null, null);
 			}

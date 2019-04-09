@@ -9,16 +9,17 @@
   <div th:replace="/mall/common  :: commonHeader(云阙商城)"></div>
   <link rel="stylesheet" href="/assets/css/mallindex.css">
   <style>
-  .nav-big-box-top{display:block!important;}
+    .nav-big-box-top {
+      display: block !important;
+    }
   </style>
 </head>
 <body>
 <div id="app">
   <div th:replace="mall/common :: commonNav"></div>
-  
   <div class="banner">
     <div class="banners">
-      <carousel autoplay loop>
+      <carousel autoplay loop :height="500" :autoplay-speed="4000">
         <template v-for="(item,index) in slideList">
           <carousel-item>
             <img :src="item.path" alt="">
@@ -38,6 +39,7 @@
             </h1>
           </div>
           <div class="sec2-top-right flex">
+            <a :href="'/goodList?zone='+item.zoneId+'&type='+item.zoneName">更多></a>
           </div>
         </div>
         <div class="sec2-box flex">
@@ -51,14 +53,15 @@
               <div class="sec2-cont-1 sec-conts">
                 <div class="sec-contswpsimg" v-for="(item_c,index_c) in item.productLists">
                   <a :href="'/goodDetails?id='+item_c.id">
-                  <div class="img">
-                    <img :src="item_c.image" alt="">
-                  </div>                
+                    <div class="img">
+                      <img :src="item_c.image" alt="">
+                    </div>
                     <p class="name">{{item_c.name}}</p>
                     <p class="money">
                       售价：<i>￥</i><span class="mony">{{item_c.price}}</span>
                     </p>
-                  </a> <span @click="orderCart(item_c.id)" class="gwc"><img src="/assets/image/mall/car.png" alt=""></span>
+                  </a> <span @click="orderCart(item_c.id)" class="gwc"><img src="/assets/image/mall/car.png"
+                                                                            alt=""></span>
                 </div>
               </div>
             </div>
@@ -72,11 +75,11 @@
         </div>
         <div class="sec3-box flex">
           <a v-for="(item,index) in newList" class="sec3-list" :href="'goodDetails?id='+item.id">
-            <img :src="item.image" alt="">           
-              <p class="name">{{item.name}}</p>
-              <p class="money">
-                售价：<i>￥</i><span class="mony">{{item.price}}</span>
-              </p>
+            <div class="img"><img :src="item.image" alt=""></div>
+            <p class="name">{{item.name}}</p>
+            <p class="money">
+              售价：<i>￥</i><span class="mony">{{item.price}}</span>
+            </p>
           </a>
         </div>
       </div>
@@ -84,6 +87,15 @@
   </div>
   <div th:replace="mall/common :: commonFooter"></div>
 </div>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?fb97013250e2161f3582cf67132bb44d";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 </body>
 <script>
   const mixin = {
@@ -92,17 +104,10 @@
         classData: [],
         classList: [],
         newList: [],
-        nav: null,
-        keys2: null,
         slideList: []
       }
     },
     methods: {
-      navsClick(nav) {
-        console.log(nav)
-        //this.nav = nav
-        this.keys2 = nav
-      },
       getClass() {
         $.ajax({
           type: "post",
@@ -121,6 +126,7 @@
         $.ajax({
           type: "post",
           url: "/findBpproduc",
+          data: {page: 1, limit: 12},
           dataType: "json",
           success: (res) => {
             console.log(res)
@@ -162,30 +168,29 @@
         });
       },
       orderCart(productId) {
-          if (this.userInfo.name != null) {
-            $.ajax({
-              type: "post",
-              url: "/t_trolley/addt_trolley",
-              dataType: "json",
-              data: {
-                product_id: productId,
-                user_id: this.userInfo.id,
-                number: 1
-              },
-              success: (res) => {
-                if (res.code == 1) {
-                  this.$Message.info(res.msg)
-                } else {
-                  this.$Message.info(res.msg)
-                }
+        if (this.userInfo.name != null) {
+          $.ajax({
+            type: "post",
+            url: "/t_trolley/addt_trolley",
+            dataType: "json",
+            data: {
+              product_id: productId,
+              user_id: this.userInfo.id,
+              number: 1
+            },
+            success: (res) => {
+              if (res.code == 1) {
+                this.$Message.info(res.msg)
+              } else {
+                this.$Message.info(res.msg)
               }
-            });
-
-          } else {
-            this.$Message.info('请先登录');
-            setTimeout("window.location.href = '/toLogin?type=login'", 1500)
-          }
-        },
+            }
+          });
+        } else {
+          this.$Message.info('请先登录');
+          setTimeout("window.location.href = '/toLogin?type=login'", 1500)
+        }
+      },
     },
     mounted() {
       this.getClass()
@@ -196,5 +201,4 @@
   }
 </script>
 <div th:replace="mall/common :: commonFooterjs"></div>
-
 </html>

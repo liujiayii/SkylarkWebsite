@@ -81,7 +81,10 @@
                 WHERE        
            
 		t.order_id=#{no}
-
+		<if test=" state != null and state != ''">
+		and  t.is_dianpng='1'
+		</if>
+             
 	</select>
 	<!-- 查询运费 -->
 	<select id="yunfei" resultType="Integer">
@@ -153,7 +156,9 @@
 	
 		<if test=" order_state != null and order_state != ''">
 			and t.order_state=#{order_state}
+			
 		</if>
+		 limit #{page},#{limit}
 	</select>
 	<!-- 查询角标的数字 -->
 	<select id="querdfk"  resultType="Integer">
@@ -166,7 +171,7 @@
 	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id  where  t_order.user_id=#{user_id} and t_order.order_state='2'
 	</select>
 	<select id="yishouhuo" resultType="Integer">
-	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id where  t_order.user_id=#{user_id}  and t_order.order_state='3'
+	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id where  t_order.user_id=#{user_id}  and t_order.order_state='3' and  t_shopping.is_dianpng='1'
 	</select>
 		<select id="quantum" resultType="Integer">
 	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id  where  t_order.user_id=#{user_id}
@@ -177,5 +182,11 @@
 		SET order_payment=#{order_payment}
 		WHERE  order_id=#{order_id}
 	   
+	</update>
+		<!-- 取消订单加库存 -->
+	<update id="updatenqux">
+		update T_inventory set number=number+#{number} WHERE
+		product_id=#{product_id}
+
 	</update>
 </mapper>

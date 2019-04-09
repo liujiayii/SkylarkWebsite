@@ -81,6 +81,14 @@ public class T_indesController {
 
 		return mv;
 	}
+	@RequestMapping("/searchs")
+	public ModelAndView searchs() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/mall/searchs.html");
+
+		return mv;
+	}
+	
 
 	@RequestMapping("/toLogin")
 	public ModelAndView toLogin() {
@@ -203,14 +211,20 @@ public class T_indesController {
 
 		return mv;
 	}
-
-	@RequestMapping("/searchs")
-	public ModelAndView searchs() {
+	@RequestMapping("/demo")
+	public ModelAndView demo() {
 
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/searchs.html");
+		mv.setViewName("/mall/demo.html");
 
 		return mv;
 	}
+	@RequestMapping("/evaluates")
+	public ModelAndView evaluates() {
 
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/mall/evaluates.html");
+
+		return mv;
+	}
 }

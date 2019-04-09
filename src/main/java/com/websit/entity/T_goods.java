@@ -61,9 +61,20 @@ public class T_goods extends Model<T_goods> {
     /**
      * 用户id
      */
-    private Long user_id;
+    private String user_id;
 
-    public Integer getGoods_id() {
+
+
+
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+
+	public Integer getGoods_id() {
         return goods_id;
     }
 
@@ -119,13 +130,7 @@ public class T_goods extends Model<T_goods> {
     public void setGoods_ster(String goods_ster) {
         this.goods_ster = goods_ster;
     }
-    public Long getUser_id() {
-        return user_id;
-    }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
-    }
 
     @Override
     protected Serializable pkVal() {
@@ -140,7 +145,8 @@ public class T_goods extends Model<T_goods> {
 	public String toString() {
 		return "T_goods [goods_id=" + goods_id + ", goods_name=" + goods_name + ", goods_tel=" + goods_tel
 				+ ", goods_sheng=" + goods_sheng + ", goods_shi=" + goods_shi + ", goods_xian=" + goods_xian
-				+ ", goods_address=" + goods_address + ", goods_ster=" + goods_ster + ", user_id=" + user_id + "]";
+				+ ", goods_address=" + goods_address + ", goods_ster=" + goods_ster + ", user_id=" + user_id
+				 + "]";
 	}
     
 }

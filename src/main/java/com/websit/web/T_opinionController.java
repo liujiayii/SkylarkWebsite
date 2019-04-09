@@ -38,12 +38,12 @@ public class T_opinionController {
 	@ResponseBody
 	public String insertOneOpinion(T_opinion opinion ) {
 		try{
-		opinion.setName("张儿");
+		/*opinion.setName("张儿");
 	    opinion.setPhone("13514515865");
 		opinion.setAddress("石家庄市啊");
 		opinion.setEmaill("2547813597@qq.com");
 		opinion.setCreate_time(new Date());
-		opinion.setContent("刚发的");
+		opinion.setContent("刚发的");*/
 		boolean result = opinionService.insertOneOpinion(opinion);
 		if (result) {
 			return JsonUtil.getResponseJson(1, "添加成功", null, null);
@@ -64,8 +64,8 @@ public class T_opinionController {
 	@ResponseBody
 	public String listAllOpinion(Integer page,Integer limit,T_opinion opinion) {
 		try{
-			//Integer star = (page - 1) * limit;
-		List<T_opinion> result = opinionService.listAllOpinion(page, limit);
+			Integer star = (page - 1) * limit;
+		List<T_opinion> result = opinionService.listAllOpinion(star, limit);
 		Integer count = opinionService.findOpinionCount(opinion);
 		if (result.size() >=1) {
 			return JsonUtil.getResponseJson(1, "查看成功", count, result);

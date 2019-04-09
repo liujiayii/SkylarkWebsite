@@ -46,11 +46,13 @@
 	</update>
 
 	<!-- 查询历史评价 -->
-	<select id="seleceUserThin" resultType="com.websit.entityvo.T_reviewVo" resultMap="desksAndCategories">
+	<select id="seleceUserThin" resultType="com.websit.entityvo.T_reviewVo"
+		resultMap="desksAndCategories">
 		select
 		re.id id,
 		re.appraise appraise,
-		re.review_content review_content,
+		re.review_content
+		review_content,
 		re.review_time review_time,
 		re.product_id product_id,
 		pr.name name,
@@ -59,27 +61,30 @@
 		pr.price price,
 		pr.specifications specifications,
 		pv.picture picture
-		from t_review re left join t_picture_video pv on re.id= pv.review_id left
-		join t_product pr on pr.id = re.product_id
+		from t_review re
+		left join t_picture_video pv on re.id= pv.review_id left
+		join t_product
+		pr on pr.id = re.product_id
 		WHERE
 		re.user_id=#{id}
-		ORDER BY re.review_time DESC
+		ORDER BY
+		re.review_time DESC
 		limit #{page},#{limit}
 	</select>
-	 <resultMap id="desksAndCategories" type="com.websit.entityvo.T_reviewVo"> 
-		<id column="id" property="id"></id> 
-		<result column="appraise" property="appraise"/> 
-		<result column="review_content" property="review_content"/> 
-		<result column="review_time" property="review_time"/> 
-		<result column="name" property="name"/> 
-		<result column="color" property="color"/> 
-		<result column="image" property="image"/> 
-		<result column="price" property="price"/> 
-		<result column="specifications" property="specifications"/> 
-		<collection property="picture_video" ofType="com.websit.entity.T_picture_video"> 
-		<id column="review_id" property="review_id"></id> 
-		<result column="picture" property="picture"/> 
-		</collection> 
+	<resultMap id="desksAndCategories" type="com.websit.entityvo.T_reviewVo">
+		<id column="id" property="id"></id>
+		<result column="appraise" property="appraise" />
+		<result column="review_content" property="review_content" />
+		<result column="review_time" property="review_time" />
+		<result column="name" property="name" />
+		<result column="color" property="color" />
+		<result column="image" property="image" />
+		<result column="price" property="price" />
+		<result column="specifications" property="specifications" />
+		<collection property="picture_video" ofType="com.websit.entity.T_picture_video">
+			<id column="review_id" property="review_id"></id>
+			<result column="picture" property="picture" />
+		</collection>
 	</resultMap>
 
 	<!-- 评价分数平均分 -->
@@ -94,11 +99,13 @@
 	</select>
 
 	<!-- 通过商品表id查询所有商品评论 -->
-	<select id="selectAllSome" resultType="com.websit.entityvo.T_reviewVo" resultMap="AllSomeCategories">
+	<select id="selectAllSome" resultType="com.websit.entityvo.T_reviewVo"
+		resultMap="AllSomeCategories">
 		SELECT
 		re.id id,
 		re.appraise appraise,
-		re.review_content review_content,
+		re.review_content
+		review_content,
 		re.review_time,
 		re.reply reply,
 		re.reply_time reply_time,
@@ -106,30 +113,31 @@
 		u.avatar avatar,
 		pr.name name,
 		pv.picture picture
-		from t_review re 
-		left join t_picture_video pv on re.id= pv.review_id  
-		left join t_product pr on pr.id = re.product_id 
-		left join t_user u on re.user_id=u.id 
+		from t_review re
+		left join t_picture_video pv on re.id= pv.review_id
+		left join t_product pr on pr.id = re.product_id
+		left join t_user u on re.user_id=u.id
 		WHERE
 		re.product_id=#{product_id}
 		ORDER BY re.review_time DESC
-		limit #{page},#{limit}
+		limit
+		#{page},#{limit}
 	</select>
-	<resultMap id="AllSomeCategories" type="com.websit.entityvo.T_reviewVo"> 
-		<id column="id" property="id"></id> 
-		<result column="appraise" property="appraise"/> 
-		<result column="review_content" property="review_content"/> 
-		<result column="review_time" property="review_time"/> 
-		<result column="reply" property="reply"/> 
-		<result column="reply_time" property="reply_time"/>
-		<result column="nickname" property="nickname"/> 
-		<result column="avatar" property="avatar"/>  
-		<result column="image" property="image"/> 
-		<result column="name" property="name"/> 
-		<collection property="picture_video" ofType="com.websit.entity.T_picture_video"> 
-		<id column="review_id" property="review_id"></id> 
-		<result column="picture" property="picture"/> 
-		</collection> 
+	<resultMap id="AllSomeCategories" type="com.websit.entityvo.T_reviewVo">
+		<id column="id" property="id"></id>
+		<result column="appraise" property="appraise" />
+		<result column="review_content" property="review_content" />
+		<result column="review_time" property="review_time" />
+		<result column="reply" property="reply" />
+		<result column="reply_time" property="reply_time" />
+		<result column="nickname" property="nickname" />
+		<result column="avatar" property="avatar" />
+		<result column="image" property="image" />
+		<result column="name" property="name" />
+		<collection property="picture_video" ofType="com.websit.entity.T_picture_video">
+			<id column="review_id" property="review_id"></id>
+			<result column="picture" property="picture" />
+		</collection>
 	</resultMap>
 	<!-- 查询该商品所有评价条数 -->
 	<select id="selectCounts" resultType="int">
@@ -146,7 +154,8 @@
 	<select id="seleceFirstThin" resultType="com.websit.entityvo.T_reviewVo"
 		parameterType="com.websit.entityvo.T_reviewVo" resultMap="FirstThinCategories">
 		SELECT
-		re.id id,
+		re.id
+		id,
 		re.appraise appraise,
 		re.review_content review_content,
 		re.review_time,
@@ -161,29 +170,31 @@
 		pr.price price,
 		pr.specifications specifications,
 		pv.picture picture
-		from t_review re left join t_picture_video pv on re.id= pv.review_id  left join t_product pr on pr.id = re.product_id left join t_user u on re.user_id=u.id 
+		from t_review re left join t_picture_video pv on
+		re.id= pv.review_id left join t_product pr on pr.id = re.product_id
+		left join t_user u on re.user_id=u.id
 		WHERE
 		re.id=#{id}
 	</select>
-	<resultMap id="FirstThinCategories" type="com.websit.entityvo.T_reviewVo"> 
-		<id column="id" property="id"></id> 
-		<result column="appraise" property="appraise"/> 
-		<result column="review_content" property="review_content"/> 
-		<result column="review_time" property="review_time"/> 
-		<result column="reply" property="reply"/> 
-		<result column="reply_time" property="reply_time"/>
-		<result column="nickname" property="nickname"/> 
-		<result column="avatar" property="avatar"/>
-		<result column="product_id" property="product_id"/>  
-		<result column="image" property="image"/> 
-		<result column="price" property="price"/> 
-		<result column="name" property="name"/> 
-		<result column="color" property="color"/> 
-		<result column="specifications" property="specifications"/>
-		<collection property="picture_video" ofType="com.websit.entity.T_picture_video"> 
-		<id column="review_id" property="review_id"></id> 
-		<result column="picture" property="picture"/> 
-		</collection> 
+	<resultMap id="FirstThinCategories" type="com.websit.entityvo.T_reviewVo">
+		<id column="id" property="id"></id>
+		<result column="appraise" property="appraise" />
+		<result column="review_content" property="review_content" />
+		<result column="review_time" property="review_time" />
+		<result column="reply" property="reply" />
+		<result column="reply_time" property="reply_time" />
+		<result column="nickname" property="nickname" />
+		<result column="avatar" property="avatar" />
+		<result column="product_id" property="product_id" />
+		<result column="image" property="image" />
+		<result column="price" property="price" />
+		<result column="name" property="name" />
+		<result column="color" property="color" />
+		<result column="specifications" property="specifications" />
+		<collection property="picture_video" ofType="com.websit.entity.T_picture_video">
+			<id column="review_id" property="review_id"></id>
+			<result column="picture" property="picture" />
+		</collection>
 	</resultMap>
 	<!-- 查询所有评论 -->
 	<select id="selectAllEvery" resultType="com.websit.entityvo.T_reviewVo">
@@ -191,7 +202,8 @@
 		re.id id,
 		pr.name name,
 		re.appraise appraise,
-		re.review_content review_content,
+		re.review_content
+		review_content,
 		re.review_time,
 		u.nickname nickname,
 		u.phone phone,
@@ -232,4 +244,25 @@
 			</if>
 		</where>
 	</select>
+	<select id="seleceOne" resultType="com.websit.entityvo.T_orderVo">
+		SELECT
+		s.shoping_id
+		FROM
+		t_order o,t_shopping s
+		WHERE
+		o.order_no=s.order_id
+		AND
+		s.is_dianpng=1
+		AND
+		s.order_id=#{order_id}
+	</select>
+	
+	<!-- 商家回复 -->
+	<update id="updateState" parameterType="com.websit.entityvo.T_orderVo">
+		UPDATE t_order
+		SET
+		order_state=4
+		WHERE
+		t_order.order_no=#{order_no}
+	</update>
 </mapper>

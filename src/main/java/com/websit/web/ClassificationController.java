@@ -116,7 +116,6 @@ public String updateClassification(String name,Long id,String image) {
 	try{
 	int result = classificationService.updateClassification(classification);
 //System.out.println(classification.getCreate_time());	
-	System.out.println("result"+result);
 	if (result >0) {
 		return JsonUtil.getResponseJson(1, "修改成功", null, result);
 	} else {

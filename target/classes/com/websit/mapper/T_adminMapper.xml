@@ -25,7 +25,10 @@
     
     </select>
     
-   
+    <!-- 查询管理员账户 -->
+   	<select id="findAdminList" resultType="com.websit.entity.T_admin">
+		select * from t_admin   	    
+   	</select>
    
    
 </mapper>

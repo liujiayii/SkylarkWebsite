@@ -22,10 +22,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class T_salesServiceImpl extends ServiceImpl<T_salesMapper, T_sales> implements IT_salesService {
 	@Autowired
-	public T_salesMapper T_salesService;
+	public T_salesMapper T_salesMapper;
 	@Override
 	public boolean updatestale(String stale,Integer sales_id) {
-	        int fig=(T_salesService.updatestaletrtr(stale,sales_id ));
+	        int fig=(T_salesMapper.updatestaletrtr(stale,sales_id ));
 	        if(fig>0) {
 	        	return true;
 	        }
@@ -35,7 +35,7 @@ public class T_salesServiceImpl extends ServiceImpl<T_salesMapper, T_sales> impl
 	@Override
 	public List<com.websit.entityvo.th_list> th_list(String date,RowBounds RowBounds) {
 		// TODO Auto-generated method stub
-		return T_salesService.th_list(date,RowBounds);
+		return T_salesMapper.th_list(date,RowBounds);
 	}
   
 }

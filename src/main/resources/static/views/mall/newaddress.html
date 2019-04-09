@@ -6,7 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <div th:replace="/mall/common  :: commonHeader(新增收货地址)"></div>
   <style>
-  .btn.met1{display:none}
+    .btn.met1 {
+      display: none
+    }
+
     .lt {
       float: left;
     }
@@ -292,7 +295,7 @@
 
       dataform();
       delete usermapjson.goods_id
-     // alert("999")
+      // alert("999")
       if (!(/^1[34578]\d{9}$/.test($('#input2').val()))) {
         alert("手机号码有误，请重填");
         return false;
@@ -362,7 +365,7 @@
       usermapjson.goods_sheng = cmbProvincelength;
       //usermapjson.goods_sheng =cmbProvincelength;
       usermapjson.goods_shi = cmbCitylength;
-     // alert("****")
+      // alert("****")
       // usermapjson.goods_shi =cmbCitylength;
       usermapjson.goods_xian = cmbArealength;
       //usermapjson.goods_xian =cmbArealength;

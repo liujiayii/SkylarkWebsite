@@ -65,10 +65,10 @@
         </div>
       </div>
       <div class="sestion sestion5">
-        <div class="sestion5-left"><h1>应付金额</h1>
-          <p>计算方法：应付金额=货款金额+物流费用</p></div>
+        <div class="sestion5-left h1">应付金额</div>
         <div class="sestion5-right sestion4">
           <ul>
+            <li><p>计算方法：应付金额=货款金额+物流费用</p></li>
             <li><p>应付货款：</p><span class="wlfy">{{prices}}</span></li>
             <li><p>优惠金额：</p><span class="wlfy">{{discount}}</span></li>
             <li><p>物流费用：</p><span class="wlfy">{{express}}</span></li>
@@ -91,8 +91,6 @@
   const mixin = {
     data() {
       return {
-        $event: false,
-        //checkedNames: [{},{},],
         nums: 1,
         classData: [],
         sums: 0,

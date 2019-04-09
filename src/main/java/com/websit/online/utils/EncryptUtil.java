@@ -4,8 +4,22 @@
  */
 package com.websit.online.utils;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Base64;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.ArrayUtils;
+
+import com.alibaba.fastjson.JSONObject;
+
+
 
 /**
  * 加密工具类

@@ -39,9 +39,9 @@ public class T_opinionServiceImpl extends ServiceImpl<T_opinionMapper, T_opinion
 	 * @createDate 2019年3月25日
 	 */
 	@Override
-	public List<T_opinion> listAllOpinion(Integer star, Integer limit) {
+	public List<T_opinion> listAllOpinion(Integer page, Integer limit) {
 		
-		return opinionMapper.listAllOpinion(star, limit);
+		return opinionMapper.listAllOpinion(page, limit);
 	}
 	/**
 	 * @description 查询所有意见条数

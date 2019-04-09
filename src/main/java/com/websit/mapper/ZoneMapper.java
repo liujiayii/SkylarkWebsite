@@ -36,7 +36,7 @@ public interface ZoneMapper {
 	 */
 	public ZoneVo listZoneByTypeId(BigInteger zoneId);
 	
-	public ZoneVo listZoneByTypeIds(BigInteger zoneId);
+	public ZoneVo listZoneByTypeIds(@Param("zoneId")BigInteger zoneId,@Param("page")Integer page,@Param("limit")Integer limit);
 	
 	public List<ZoneProductVo> listZoneByzoneId(BigInteger zoneId);
 	
@@ -72,5 +72,18 @@ public interface ZoneMapper {
 	 * @createDate 2019年3月22日 下午2:00
 	 */
 	List<ZoneProductVo> selectZoneByProductId( BigInteger productaid);
-	
+	/**
+	 * @description 根据专区id查询当前商品专区及每个专区下所有商品(分页)
+	 * @param zoneId
+	 * @return 专区类型及每个专区类型下所有商品
+	 * @author pangchong
+	 * @createDate 2019年4月8日
+	 */
+	public ZoneVo listZoneByTypeIdPage(@Param("zoneId")BigInteger zoneId,@Param("page") Integer page, @Param("limit") Integer limit);
+	/**
+	 * 按专区id查询商品条数
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	public Integer findBpiListByZoneId(BigInteger zoneId);
 }

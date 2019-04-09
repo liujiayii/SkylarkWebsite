@@ -42,7 +42,7 @@ public interface IT_orderService extends IService<T_order> {
 	/**
 	 * 商品订单
 	 */
-	List<shopinglist> shopinglist(String no);
+	List<shopinglist> shopinglist(String no,String order_state);
 	/**
 	 * 查询运费
 	 * @param jiage
@@ -91,7 +91,7 @@ public interface IT_orderService extends IService<T_order> {
 	/**
 	 * 查询订单列表
 	 */
-	List<order_list> order_list1(String order_state,RowBounds RowBounds,String date);
+	List<order_list> order_list1(String order_state,Integer page,Integer limit,String date);
 	
 	/**
 	 * 查询角标
@@ -104,5 +104,12 @@ public interface IT_orderService extends IService<T_order> {
 	 * @return
 	 */
 	int updateorderpayment(String order_id,String order_payment);
+	/**
+	 * 取消订单加库存
+	 * @param number
+	 * @param product_id
+	 * @return
+	 */
+	int updatenqux(Integer number,String product_id);
 	
 }
