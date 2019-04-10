@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
   <title>订单确认</title>
   <div th:replace="/mall/common  :: commonHeader(云阙商城)"></div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1/build/qrcode.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/assets/css/2Order.css">
   <script src="/assets/layui/layui.js" charset="utf-8"></script>
   <style>
@@ -21,6 +22,15 @@
 
 <body id="mallorder ">
 <div id="app">
+  <Modal title="微信" v-model="qrcode" :mask-closable="false" :closable="false">
+    <div style="display: flex">
+      <canvas id="canvas"></canvas>
+      <div style="line-height: 100px">扫描左侧二维码付款</div>
+    </div>
+    <div slot="footer">
+      <i-button type="success" size="large" long @click="goOrder">支付完成再点我</i-button>
+    </div>
+  </Modal>
   <div th:replace="mall/common :: commonNav"></div>
   <div class="wrap">
     <div class="main_wrap ddmx">
@@ -165,6 +175,7 @@
 </div>
 </body>
 <script>
+
   const mixin = {
     data() {
       return {
@@ -188,9 +199,21 @@
           order_mode: "",
           user_id: sessionStorage.getItem("SkyUserId")
         },
+        qrcode: false
       }
     },
     methods: {
+      useqrcode(canvasData) {
+        console.log(canvasData)
+        let canvas = document.getElementById('canvas')
+        QRCode.toCanvas(canvas, canvasData, function (error) {
+          if (error) console.error(error)
+          console.log('QRCode success!');
+        })
+      },
+      goOrder() {
+        window.location.href = '/orderList'
+      },
       //支付方式
       toggleType(types) {
         this.type = types
@@ -199,7 +222,6 @@
       //支付
       paymentOrder() {
         console.log(this.type)
-
         //生成订单
         $.ajax({
           type: "get",
@@ -225,7 +247,22 @@
               if (this.type == 'zfb') {
                 window.location.href = "/alipay/pcPay?order_no=" + res.data + "&order_money=" + (this.pricebig - this.discounts + this.freights)
               } else {
-                //alert('wx')
+                $.ajax({
+                  type: "get",
+                  url: "/wXpay_pc",
+                  data: {out_trade_no: res.data, total_money: (this.pricebig - this.discounts + this.freights) * 100},
+                  contentType: 'application/json',
+                  dataType: "json",
+                  success: (res_) => {
+                    if (res_.success) {
+                      this.qrcode = true
+                      this.useqrcode(res_.data.code_url)
+                      console.log('====')
+                    } else {
+
+                    }
+                  }
+                });
               }
             }
           }

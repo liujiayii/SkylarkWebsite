@@ -44,8 +44,8 @@
 	
 	<!-- 查询订单列表 -->
 	<select id="order_list" resultType="com.websit.entityvo.order_list">
-		SELECT t.yunfei,(t.order_money*t.order_number) as
-		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_product_id,order_state,order_shouhuo_id
+		SELECT t.yunfei,t.order_money as
+		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_product_id,order_state,order_shouhuo_id,order_time,order_payment
 		from t_order t where 1=1 and  t.user_id=#{user_id}
 		<if test="id != null and id != ''">
 		and  t.order_id=#{id}   
@@ -189,4 +189,10 @@
 		product_id=#{product_id}
 
 	</update>
+	
+	<!-- 根据订单号查用户id -->
+	
+	<select id="selectbyout_trade_no" resultType="com.websit.entity.T_order">
+	  select user_id from t_order where order_no=#{order_no}
+	</select>
 </mapper>

@@ -3,7 +3,9 @@ package com.websit.service;
 import com.websit.entity.T_order;
 import com.websit.entity.T_product;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
@@ -38,7 +40,7 @@ public interface IT_orderService extends IService<T_order> {
 	/**
 	 * 查询订单列表
 	 */
-	List<order_list> order_list(String user_id,String order_state,RowBounds RowBounds,String id);
+	ArrayList<order_list> order_list(String user_id,String order_state,RowBounds RowBounds,String id);
 	/**
 	 * 商品订单
 	 */
@@ -111,5 +113,12 @@ public interface IT_orderService extends IService<T_order> {
 	 * @return
 	 */
 	int updatenqux(Integer number,String product_id);
+	
+	/**
+	 * 根据订单号查用户id
+	 * @param t
+	 * @return
+	 */
+	T_order selectbyout_trade_no(String order_no);
 	
 }

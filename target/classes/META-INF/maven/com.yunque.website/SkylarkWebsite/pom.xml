@@ -186,6 +186,11 @@
 		    <artifactId>commons-logging</artifactId>
 		    <version>1.1.1</version>
 		</dependency>
+		<!-- 错误页面 -->
+		 <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 		<!--因配置外部TOMCAT 而配置 -->
 		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId> 
 			<scope>provided</scope> </dependency> -->
@@ -197,7 +202,11 @@
 			<email></email>
 			<url>https://pay.weixin.qq.com/wiki/doc/api/wxa/wxa_api.php?chapter=11_1</url>
 		</developer>
+		
 	</developers>
+	
+	    
+
 	<licenses>
 		<license>
 			<name>The BSD 3-Clause License</name>

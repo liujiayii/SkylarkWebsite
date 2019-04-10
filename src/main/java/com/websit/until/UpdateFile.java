@@ -1,5 +1,6 @@
 package com.websit.until;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
@@ -7,11 +8,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.LifecycleRule;
 import com.aliyun.oss.model.LifecycleRule.RuleStatus;
 import com.aliyun.oss.model.PutObjectResult;
 import com.aliyun.oss.model.SetBucketLifecycleRequest;
+import com.aliyun.oss.model.UploadFileRequest;
 import com.sun.corba.se.spi.orbutil.fsm.State;
 
 /**
@@ -37,6 +42,77 @@ public class UpdateFile {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+    
+    /** 
+     *  
+     * @MethodName: putObject 
+     * @Description: 上传文件 
+     * @param file 
+     * @param fileType 
+     * @param fileName 
+     * @return String 
+     */  
+    public static String putObject(File file,String fileType,String fileName){  
+        
+        OSSClient ossClient = null; 
+        URL urls = null;
+        StringBuffer url = new StringBuffer("https://");
+        String transfer = null;
+        try {  
+        //    ossClient = new OSSClient(config.ENDPOINT, config.ACCESSKEYID, config.ACCESSKEYSECRET); 
+             ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+	         // 设置断点续传请求
+	         UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, fileName);
+	         // 指定上传的本地文件
+	         uploadFileRequest.setUploadFile(file.toString());
+	         // 指定上传并发线程数
+	         uploadFileRequest.setTaskNum(5);
+	         // 指定上传的分片大小
+	         uploadFileRequest.setPartSize(1 * 1024 * 1024);
+	         // 开启断点续传
+	         uploadFileRequest.setEnableCheckpoint(true);
+	         // 断点续传上传
+	         try {
+				ossClient.uploadFile(uploadFileRequest);
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null; 
+			}
+
+            
+            
+            
+            /*InputStream input = new FileInputStream(file);    
+            ObjectMetadata meta = new ObjectMetadata();             // 创建上传Object的Metadata  
+            meta.setContentType(OSSUploadUtil.contentType(fileType));       // 设置上传内容类型  
+            meta.setCacheControl("no-cache");                   // 被下载时网页的缓存行为    
+            PutObjectRequest request = new PutObjectRequest(config.BUCKETNAME, fileName,input,meta);  
+            ossClient.putObject(request); */
+            
+            Date expiration = new Date(new Date().getTime() + 3600l * 1000 * 24 * 365 * 20);
+            // 生成URL
+            urls = ossClient.generatePresignedUrl(bucketName, fileName, expiration);
+            
+        } catch (OSSException oe) {  
+            oe.printStackTrace();  
+            return null;  
+        } catch (ClientException ce) {  
+            ce.printStackTrace();  
+            return null;  
+        } /*catch (FileNotFoundException e) {  
+            e.printStackTrace();  
+            return null;  
+        }*/ finally {  
+            ossClient.shutdown();  
+        }  
+        
+        transfer = urls.toString();
+        int beginIndex = transfer.indexOf(url.toString());
+        String zhi = transfer.substring(beginIndex+url.toString().length());
+        
+        return url.append(zhi).toString();  
+    }  
    
     /**
      * 

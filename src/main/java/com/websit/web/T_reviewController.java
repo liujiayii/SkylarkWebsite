@@ -63,7 +63,7 @@ public class T_reviewController {
 			if(is_des!=null) {
 				t_review.setUser_id((Security.decode(t_review.getUser_id())));
 			}
-		
+			String	product_id="";
 			T_order t_order=new T_order();
 			T_picture_video t_picture_video=new T_picture_video();
 			Date sdf = new Date();
@@ -82,7 +82,7 @@ public class T_reviewController {
 					it_picture_videoService.insert(t_picture_video);
 				}
 				//修改商品是否评价状态
-				String	product_id=t_review.getProduct_id().toString();
+				product_id=t_review.getProduct_id().toString();
 				System.out.println("order_id"+order_id+"product_id"+product_id);
 				it_orderService.updateState(order_id, product_id);
 				List<T_orderVo> seleceOne = it_reviewService.seleceOne(order_id);
@@ -192,15 +192,26 @@ public class T_reviewController {
 	 */
 	@RequestMapping(value = "/seleceUserThin", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String seleceUserThin(T_reviewVo reviewVo,Integer page,Integer limit) {
+	public String seleceUserThin(T_reviewVo reviewVo,Integer page,Integer limit,Integer  is_des) {
 		try {
-			//reviewVo.setPage((page-1)*limit);
+			System.out.println(reviewVo.getUser_id());
+			if(is_des!=null) {
+				reviewVo.setUser_id((Security.decode(reviewVo.getUser_id())));
+			}
+			System.out.println(page);
+			//如果没有分页的情况直接显示前十条数据
+			if(page==null) {
+				page=1;
+				limit=10;
+			}
+			reviewVo.setPage((page-1)*limit);
+			reviewVo.setLimit(limit);
+			//reviewVo.setPage(page);
 			//reviewVo.setLimit(limit);
-			reviewVo.setPage(0);
-			reviewVo.setLimit(10);
 			List<T_reviewVo> post= it_reviewService.seleceUserThin(reviewVo);
+			
 			if (post!=null&&!post.isEmpty()) {
-				return JsonUtil.getResponseJson(1, "查询成功", null, post);
+				return JsonUtil.getResponseJson(1, "查询成功", post.size(), post);
 			} else {
 				return JsonUtil.getResponseJson(2, "暂时无评价", null, null);
 			}
@@ -221,11 +232,12 @@ public class T_reviewController {
 	@RequestMapping(value = "/selectAllSome", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String selectAllSome(T_reviewVo reviewVo,Integer page,Integer limit) {
+		System.out.println("page"+page+"limit"+limit);
 		try {
-			//reviewVo.setPage((page-1)*limit);
-			//reviewVo.setLimit(limit);
-			reviewVo.setPage(0);
-			reviewVo.setLimit(10);
+			reviewVo.setPage((page-1)*limit);
+			reviewVo.setLimit(limit);
+//			reviewVo.setPage(0);
+//			reviewVo.setLimit(10);
 			List<T_reviewVo> some = it_reviewService.selectAllSome(reviewVo);
 			long id=reviewVo.getProduct_id();
 			int count=t_reviewMapper.selectCounts(id);
@@ -301,10 +313,10 @@ public class T_reviewController {
 	@ResponseBody
 	public String selectAllEvery(T_reviewVo reviewVo,Integer page,Integer limit){
 		try {
-			//reviewVo.setPage((page-1)*limit);
-			//reviewVo.setLimit(limit);
-			reviewVo.setPage(0);
-			reviewVo.setLimit(10);
+			reviewVo.setPage((page-1)*limit);
+			reviewVo.setLimit(limit);
+//			reviewVo.setPage(0);
+//			reviewVo.setLimit(10);
 			List<T_reviewVo> review =it_reviewService.selectAllEvery(reviewVo);
 			if (review.size()>0) {
 				int count=it_reviewService.selectAllEveryCount(reviewVo);

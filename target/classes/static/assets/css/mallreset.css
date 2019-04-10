@@ -38,6 +38,7 @@ input:-ms-input-placeholder{ color: #666;}
 input::-webkit-input-placeholder{ color: #666;}
 
 /****主体宽度****/
+#newBridge #nbWebImLightContainer .nb-webim-light-support{height:0!important;overflow: hidden!important;}
 .wrap{width:1200px;margin: 0 auto;}
 /*头部*/
 .head{border-bottom: 1px solid #e60012;}

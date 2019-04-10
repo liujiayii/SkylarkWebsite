@@ -35,7 +35,7 @@ public class T_reviewVo implements Serializable{
     /**
      * 买家id
      */
-    private Long user_id;
+    private String user_id;
 
     /**
      * 买家评论内容
@@ -209,11 +209,11 @@ public class T_reviewVo implements Serializable{
 		this.product_id = product_id;
 	}
 
-	public Long getUser_id() {
+	public String getUser_id() {
 		return user_id;
 	}
 
-	public void setUser_id(Long user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 

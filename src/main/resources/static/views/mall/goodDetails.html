@@ -273,7 +273,13 @@
           type: "post",
           url: "/t_review/selectAllSome",
           dataType: "json",
-          data: {"product_id": this.getHrefParam("id")},
+          data: {"product_id": this.getHrefParam("id"),
+        	  "page":1,
+        	  "limit": 100
+        	    
+          
+          
+                       },
           success: (res) => {
             if (res.code == 1) {
               this.countSum = res.count || 0

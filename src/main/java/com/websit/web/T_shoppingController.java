@@ -59,81 +59,13 @@ public class T_shoppingController {
 		    cood = -1;
 			msg = "商品已下架";
 			
-		}  else if (str.length==0){
-			
-		T_order  T_order=new T_order();
-		Double jiage=product.getPrice().doubleValue()*order_number;
-		int mum=IT_orderService.selectpase(id.toString(),jiage);//查询优惠价格
-		double jine=jiage-mum;
-		T_order.setUser_id(user_id);
-		T_order.setOrder_no(order_no);
-		T_order.setOrder_state("0");
-		T_order.setOrder_mode(order_mode);
-		T_order.setOrder_number(order_number.toString());
-		T_order.setOrder_money(jine);
-		T_order.setOrder_time(cause_time);
-		/**
-		 * 查询运费
-		 */
-		Integer  yongfei=IT_orderService.yunfei(jiage);
-		System.out.println("yunfei"+yongfei);
-		T_order.setOrder_id(id);
-		T_order.setYunfei(yongfei.toString());
-		
-		fig=IT_orderService.insert(T_order);
-		T_shopping T_shopping=new T_shopping();
-		T_shopping.setDanjia(product.getPrice().doubleValue());
-		T_shopping.setNumber(order_number);
-		T_shopping.setOrder_id(order_no);
-		T_shopping.setProduct_id(id.toString());
-		T_shopping.setZongjia(jine);
-		T_shopping.setYouhuijine(mum);
-		fig=T_shoppingService.insert(T_shopping);
-		/*
-		 *  减去库存
-		 */
-		IT_orderService.updatenumbergoumai(order_number, id.toString());	
+		}  else {
 			
 			
-		}else {
-			  String [] str1= str;
-			  double zongjia=0; Integer number=0;//总价，数量
-			  double ddzongjia=0;
-			  T_trolley T_trolley=new T_trolley();
-			  for(int i=0;i<str1.length;i++) {
-			T_trolley=T_trolleyService.selectById(str1[i]);
-			System.out.println(T_trolley);
-			T_product T_product=new T_product();
-			T_product=T_trolleyService.T_produc(T_trolley.getProduct_id().toString());
-			T_shopping T_shopping=new T_shopping();
-			T_shopping.setDanjia(T_product.getPrice().doubleValue());
-			T_shopping.setNumber(T_trolley.getNumber());//商品数量
-			T_shopping.setProduct_id(T_trolley.getProduct_id().toString());
-			T_shopping.setOrder_id(order_no);
-			}
-
-				T_order  T_order=new T_order();
 			
-				T_order.setUser_id(user_id);
-				T_order.setOrder_no(order_no);
-				T_order.setOrder_state("0");
-				T_order.setOrder_mode(order_mode);
-				T_order.setOrder_number(number.toString());
-				T_order.setOrder_money(ddzongjia);
-				T_order.setOrder_time(cause_time);
-				/**
-				 * 查询运费
-				 */
-				Integer  yongfei=IT_orderService.yunfei(zongjia);
-				
-				T_order.setYunfei(yongfei.toString());
-				fig=IT_orderService.insert(T_order);		
 		}
-		System.err.println(user_id+"00000000000000000000000000000000000000000000000000");
+			
 	
-		
-		
-		return JsonUtil.getResponseJson(cood, msg, null, order_no);
-		
+		return JsonUtil.getResponseJson(cood, msg, null, null);
 }
 }

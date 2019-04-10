@@ -14,39 +14,60 @@ import com.websit.WxpaY.MyConfig;
 import com.websit.WxpaY.WXPay;
 import com.websit.WxpaY.WXPayConfig;
 import com.websit.entity.UserUpdateVo;
+import com.websit.pay.Json;
+import com.websit.pay.utils.IpUtils;
+import com.websit.pay.utils.PayUtil;
 
 @Controller
 public class wXpayController {
 	
 	@RequestMapping("/wXpay_pc")
 	@ResponseBody
-	public String wXpay_pc(String out_trade_no, String total_money) {
+	public Json wXpay_pc(String out_trade_no, String total_money,HttpServletRequest request) {
 		
 		 Map<String, String> reqData =new HashMap<>();
 		 WXPayConfig myConfig;
-		 
+		 Json json = new Json();
 		try {
 			   String urlSuffix="/pay/unifiedorder";
 			 String ip = InetAddress.getLocalHost().getHostAddress(); 
 			myConfig = new MyConfig();
 			WXPay wxPay = new WXPay(myConfig,null,true, true);
-			reqData.put("out_trade_no", "123456789");
-			reqData.put("spbill_create_ip", "http://yunque.free.idcfengye.com/");
+			reqData.put("out_trade_no",out_trade_no);
+			reqData.put("spbill_create_ip", IpUtils.getIpAddr(request));
 			
-			reqData.put("total_fee", "100.00");
-			reqData.put("notify_url", "192.168.1.110:8080/wXpay_pchd");
+			reqData.put("total_fee", total_money);
+			reqData.put("notify_url", "https://23ce556732.51mypc.cn/wxNotify");
 			 reqData.put("trade_type", "NATIVE");
 			reqData = wxPay.fillRequestData(reqData);
+			System.out.println("reqData:"+reqData);
 			String result = wxPay.requestWithoutCert(urlSuffix, reqData, 5000, 5000);
+	        System.out.println("result:"+result);
 	        
-	        Map<String, String> resultMap = wxPay.processResponseXml(result);
-	        System.out.println(resultMap);
+	    	Map map = PayUtil.doXMLParse(result);
+	    	if(map.get("result_code").equals("SUCCESS")) {
+	    		 json.setSuccess(true);
+	 	        json.setData(map.get("code_url"));
+	 	        json.setMsg("请求成功");
+	    	}else {
+	    		 json.setSuccess(false);
+		 	        
+		 	        json.setMsg("请求失败");
+	    	}
+	        
+	        
+	       
+	        return json;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		}
+		json.setSuccess(false);      
+        json.setMsg("请求失败");
+		return json;
 	       
-		return null;
+	
 		
 	}
 	

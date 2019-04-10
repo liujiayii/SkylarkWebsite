@@ -7,7 +7,9 @@ import com.websit.entityvo.order_list;
 import com.websit.entityvo.shopinglist;
 import com.websit.entityvo.youhui;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
@@ -43,7 +45,7 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	/**
 	 * 查询订单列表
 	 */
-	List<order_list> order_list(@Param("user_id")String user_id,@Param("order_state")String order_state,RowBounds RowBounds,@Param("id")String id);
+	ArrayList<order_list> order_list(@Param("user_id")String user_id,@Param("order_state")String order_state,RowBounds RowBounds,@Param("id")String id);
 	/**
 	 * 商品订单
 	 */
@@ -104,6 +106,12 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	int  quantum(String  user_id);
 	int updateorderpayment(@Param("order_id")String order_id,@Param("order_payment")String order_payment);
 	int updatenqux(@Param("number")Integer number, @Param("product_id")String product_id);
+	/**
+	 * 根据订单号查用户id
+	 * @param t
+	 * @return
+	 */
+	T_order selectbyout_trade_no(@Param("order_no")String order_no);
 
 
 }

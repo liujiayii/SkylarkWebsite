@@ -186,17 +186,7 @@ public class CustomerInfo {
 	@ResponseBody
     @RequestMapping(value = "/onlineSend", method = RequestMethod.POST)
 	public static String customerInfo(String params ,String key) throws Exception {
-//		request.contentType = "application/json";
-//		
-//		response.setHeader("Content-Type", "application/json");
-//		response.setHeader("charset", "utf-8");
-//		response.setHeader("Access-Control-Allow-Origin", "*");
-//        response.setHeader("Access-Control-Max-Age", "3600");
-//        // 响应类型
-//        response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS, DELETE");
-//        // 响应头设置
-//        response.setHeader("Access-Control-Allow-Headers", "Content-Type, x-requested-with, X-Custom-Header, HaiYi-Access-Token");
-        
+
         JSONObject json = new JSONObject();
         if (params == null || key == null) {
         	json.put("message", "查询失败 ");

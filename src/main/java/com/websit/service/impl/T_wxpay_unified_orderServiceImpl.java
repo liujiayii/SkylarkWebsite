@@ -61,23 +61,23 @@ public class T_wxpay_unified_orderServiceImpl extends ServiceImpl<T_wxpay_unifie
 		String spbill_create_ip = IpUtils.getIpAddr(request);
 		// 订单编号
 		// String orderNo = id;
-
+		
 		Map<String, String> packageParams = new HashMap<String, String>();
 		packageParams.put("appid", WxPayConfig.appid);
 		packageParams.put("mch_id", WxPayConfig.mch_id);
 		packageParams.put("nonce_str", nonce_str); //32位随机字符串 
 		packageParams.put("body", body);
-
+		
 		packageParams.put("out_trade_no", out_trade_no);// 商户订单号
 		packageParams.put("total_fee", total_money);// 支付金额，这边需要转成字符串类型，否则后面的签名会失败
 		packageParams.put("spbill_create_ip", spbill_create_ip);
 		packageParams.put("notify_url", WxPayConfig.notify_url);
 		packageParams.put("trade_type", WxPayConfig.TRADETYPE);
-
+	
 		// 除去数组中的空值和签名参数
 		packageParams = PayUtil.paraFilter(packageParams);
 		String prestr = PayUtil.createLinkString(packageParams); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
-
+System.out.println("prestr:"+prestr);
 		// MD5运算生成签名，这里是第一次签名，用于调用统一下单接口
 		String mysign = PayUtil.sign(prestr, WxPayConfig.key, "UTF8").toUpperCase();
 		// 拼接统一下单接口使用的xml数据，要将上一步生成的签名一起拼接进去
@@ -118,6 +118,7 @@ public class T_wxpay_unified_orderServiceImpl extends ServiceImpl<T_wxpay_unifie
 		if (return_code == "SUCCESS" || return_code.equals(return_code)) {
 			// 业务结果
 			String prepay_id = (String) map.get("prepay_id");// 返回的预付单信息
+			System.out.println("prepay_id:"+prepay_id);
 			response.put("nonceStr", nonce_str);
 			response.put("package", "prepay_id=" + prepay_id);
 			Long timeStamp = System.currentTimeMillis() / 1000;

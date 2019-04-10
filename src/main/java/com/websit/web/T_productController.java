@@ -92,10 +92,10 @@ public class T_productController {
 			productVo.setLimit(limit);
 			// Integer star = (page - 1) * limit;
 			List<ProductVo> result = productService.listAllProductById(productVo);
-			// System.out.println(result);
+		
 			ProductVo selectCount = productService.findBpiLists(productVo);
 			Integer count = selectCount.getCount();
-			// System.out.println(count);
+			
 			if (result.size() >= 1 && count != null) {
 				return JsonUtil.getResponseJson(1, "查看成功", count, result);
 			} else {
@@ -137,7 +137,7 @@ public class T_productController {
 				productImgService.insert(product_img);
 			}
 			if (result > 0 && results > 0) {
-				System.out.println("----------------------//////////");
+			
 				return JsonUtil.getResponseJson(1, "增加成功", null, result);
 			} else {
 				return JsonUtil.getResponseJson(1, "无数据", null, null);
@@ -201,9 +201,9 @@ public class T_productController {
 			}
 			product_img.getProduct_id();
 			productImgService.updateAllColumnById(product_img);
-			System.out.println(productVo);
+		
 			int result = productService.updateProduct(productVo);
-			System.out.println(result);
+			
 			if (result > 0) {
 				return JsonUtil.getResponseJson(1, "修改成功", null, result);
 			} else {
@@ -247,8 +247,10 @@ public class T_productController {
 	@RequestMapping(value = "/listProductByProductId", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String listProductByProductId(BigInteger productId) {
+		
 		try {
 	        List<ProductDetails> result = productService.listProductByProductId(productId);
+	      
 
 			if (result.size() >= 1) {
 				return JsonUtil.getResponseJson(1, "查看成功", null, result);

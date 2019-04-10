@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <div th:replace="/mall/common  :: commonHeader(订单信息)"></div>
   <link rel="stylesheet" type="text/css" href="/assets/css/mallbackreset.css">
   <link rel="stylesheet" type="text/css" href="/assets/layui/css/layui.css">
   <link rel="stylesheet" href="/assets/css/order.css">
   <script src="/assets/layui/layui.js" charset="utf-8"></script>
+  <div th:replace="/mall/common  :: commonHeader(订单信息)"></div>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1/build/qrcode.min.js"></script>
   <style>
     .nav-big-box {
       position: relative;
@@ -59,7 +60,7 @@
     }
 
     .main .main-rg .rg-p2 .rg-p2-order .rg-p2-data .rg-p2-list .li:nth-child(2) {
-      width: 12%;
+      width: 13%;
       display: flex;
       align-items: center;
       justify-content: center !important
@@ -85,10 +86,23 @@
       text-align: center;
       margin-top: 20px
     }
+
+    .ivu-select-dropdown li {
+      width: 100% !important;
+    }
   </style>
 </head>
 <body>
 <div class="main" id="app">
+  <Modal title="微信" v-model="qrcode" :mask-closable="false" :closable="false">
+    <div style="display: flex">
+      <canvas id="canvas"></canvas>
+      <div style="line-height: 100px">扫描左侧二维码付款</div>
+    </div>
+    <div slot="footer">
+      <i-button type="success" size="large" long @click="goOrder">支付完成再点我</i-button>
+    </div>
+  </Modal>
   <div th:replace="mall/common :: commonNav"></div>
   <div class="wrap main-wrap">
     <div class="cont-nav">
@@ -135,15 +149,24 @@
                   <p class="lis">订单编号：{{item.order_no}}</p>
                   <div class="li">
                     <button @click=clear(item.order_id)>取消订单</button>
-                    <button class="pay_btn" @click="payments(item.order_no,item_c.price)">立即付款</button>
+                    <dropdown @on-click="payment(item.order_no,item_c.price,$event)">
+                      <a href="javascript:void(0)" class="pay_btn">
+                        立即付款
+                        <icon type="ios-arrow-down"></icon>
+                      </a>
+                      <dropdown-menu slot="list">
+                        <dropdown-item name="zfb">支付宝支付</dropdown-item>
+                        <dropdown-item name="wx">微信支付</dropdown-item>
+                      </dropdown-menu>
+                    </dropdown>
                   </div>
                 </div>
                 <div class="flex spxx-cont">
                   <div class="li"><img :src="item_c.image" alt="">
-                    <p>{{item_c.brand}}</p></div>
+                    <p>{{item_c.productName}}</p></div>
                   <div class="li"><p>{{item_c.specifications}}</p></div>
                   <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.price}}</div>
                 </div>
               </div>
@@ -181,7 +204,7 @@
                     <p>{{item_c.brand}}</p></div>
                   <div class="li"><p>{{item_c.specifications}}</p></div>
                   <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.price}}</div>
                   <!-- <div class="li"><button class="pay_btn">提醒发货</button></div> -->
                 </div>
@@ -221,7 +244,7 @@
                     <p>{{item_c.brand}}</p></div>
                   <div class="li"><p>{{item_c.specifications}}</p></div>
                   <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.price}}</div>
                 </div>
               </div>
@@ -259,7 +282,7 @@
                     <p>{{item_c.brand}}</p></div>
                   <div class="li"><p>{{item_c.specifications}}</p></div>
                   <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.price}}</div>
                 </div>
               </div>
@@ -292,7 +315,7 @@
                     <p>{{item_c.brand}}</p></div>
                   <div class="li"><p>{{item_c.specifications}}</p></div>
                   <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item_c.create_times)}}</div>
+                  <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.price}}</div>
                   <div class="li">
                     <button v-if='item.order_state==-1'>取消订单</button>
@@ -330,9 +353,43 @@
         quantum: null,
         goodsid: null,
         orderid: null,
+        qrcode: false
       }
     },
     methods: {
+      useqrcode(canvasData) {
+        console.log(canvasData)
+        let canvas = document.getElementById('canvas')
+        QRCode.toCanvas(canvas, canvasData, function (error) {
+          if (error) console.error(error)
+          console.log('QRCode success!');
+        })
+      },
+      goOrder() {
+        window.location.href = '/orderList'
+      },
+      payment(order, money, type) {
+        if (type == 'zfb') {
+          window.location.href = "/alipay/pcPay?order_no=" + order + "&order_money=" + money
+        } else if (type == 'wx') {
+          $.ajax({
+            type: "get",
+            url: "/wXpay_pc",
+            data: {out_trade_no: order, total_money: money * 100},
+            contentType: 'application/json',
+            dataType: "json",
+            success: (res) => {
+              if (res.success) {
+                this.qrcode = true
+                this.useqrcode(res.data.code_url)
+                console.log('====')
+              } else {
+
+              }
+            }
+          });
+        }
+      },
       evaluate(goodsid, orderid) {
         this.goodsid = goodsid;
         this.orderid = orderid;
@@ -392,13 +449,7 @@
         console.log(logistics)
         window.location.href = "/logistics?log=" + logistics;
       },
-      payments(productId, gonum) {
-        //console.log(id+gonum)
-        //	window.location.href = "/OrderOk?id=" + productId ;
-        window.location.href = "/alipay/pcPay?order_no=" + productId + "&order_money=" + gonum
-      },
-
-      qercxjb() {
+      getOrderCount() {
         $.ajax({
           type: "post",
           url: "/t_order/qercxjb",
@@ -437,21 +488,6 @@
           }
         });
       },
-      getOrderCount() {
-        $.ajax({
-          type: "post",
-          url: "/t_order/qercxjb",
-          data: {user_id: sessionStorage.getItem("SkyUserId")},
-          dataType: "json",
-          success: (res) => {
-            console.log(123)
-            console.log(res)
-            if (res.code == 1) {
-
-            }
-          }
-        });
-      },
       toggleActive(nums, index) {
         this.active = index;
         $.ajax({
@@ -478,7 +514,6 @@
     mounted() {
       this.getOrder(0)
       this.getOrderCount()
-      this.qercxjb()
     }
   }
 </script>

@@ -37,17 +37,19 @@ public final class MyConfig extends WXPayConfig {
     //不是沙箱环境要要下载证书，开出来
         
 
-        /*String certPath = "/path/to/apiclient_cert.p12";
-
-        File file = new File(certPath);
-
-        InputStream certStream = new FileInputStream(file);
-
-        this.certData = new byte[(int) file.length()];
-
-        certStream.read(this.certData);
-
-        certStream.close();*/
+      //  String certPath = "/path/to/apiclient_cert.p12";
+		/*
+		 * String path=this.getClass().getClassLoader().getResource("/").getPath();
+		 * String certPath=path+ "apiclient_cert.p12"; File file = new File(certPath);
+		 * 
+		 * InputStream certStream = new FileInputStream(file);
+		 * 
+		 * this.certData = new byte[(int) file.length()];
+		 * 
+		 * certStream.read(this.certData);
+		 * 
+		 * certStream.close();
+		 */
 
     }
 
@@ -80,7 +82,7 @@ public final class MyConfig extends WXPayConfig {
     @Override
     String getAppID() {
         // TODO Auto-generated method stub
-        return "wx2f0c6481e3a39def";
+        return "wxb7e49e3a0bc42a51";
     }
 
     /* (non-Javadoc)
@@ -89,7 +91,7 @@ public final class MyConfig extends WXPayConfig {
     @Override
     String getMchID() {
         // TODO Auto-generated method stub
-        return "1514947161";
+        return "1530971811";
     }
 
     /* (non-Javadoc)
@@ -98,7 +100,7 @@ public final class MyConfig extends WXPayConfig {
     @Override
     String getKey() {
         // TODO Auto-generated method stub
-        return "D2883F7B896D1EAC93945C12BD7D046F";
+        return "1qaz2wsx3edc4rfv5tgb6yhn7ujm8ikk";
     }
 
     /* (non-Javadoc)

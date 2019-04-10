@@ -2,8 +2,6 @@ package com.websit.service.impl;
 
 import com.websit.entity.T_order;
 import com.websit.entity.T_product;
-import com.websit.entityvo.T_orderVo;
-import com.websit.entityvo.youhui;
 import com.websit.mapper.T_orderMapper;
 import com.websit.service.IT_orderService;
 
@@ -11,7 +9,9 @@ import io.lettuce.core.dynamic.annotation.Param;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 		return T_orderMapper.ordercancelled(order_id, order_state);
 	}
 	@Override
-	public List<com.websit.entityvo.order_list> order_list(String user_id, String order_state,RowBounds RowBounds,String id) {
+	public ArrayList<order_list> order_list(String user_id, String order_state,RowBounds RowBounds,String id) {
 		
 		return T_orderMapper.order_list(user_id, order_state,RowBounds,id);
 	}
@@ -189,6 +189,11 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 	public int updatenqux(Integer number, String product_id) {
 		// TODO Auto-generated method stub
 		return T_orderMapper.updatenqux(number,product_id);
+	}
+	@Override
+	public T_order selectbyout_trade_no(String order) {
+		
+		return T_orderMapper.selectbyout_trade_no(order);
 	}
 
 }

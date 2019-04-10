@@ -38,6 +38,7 @@ public class T_wxpay_notifyServiceImpl extends ServiceImpl<T_wxpay_notifyMapper,
 	public T_wxpay_notifyMapper wxpayNotifyMapper;
 	@Autowired
 	public com.websit.service.IT_orderService IT_orderService;
+	
 
 	/**
 	 * 
@@ -77,6 +78,7 @@ public class T_wxpay_notifyServiceImpl extends ServiceImpl<T_wxpay_notifyMapper,
 		String returnCode = null;
 		String total_fee = null;
 		String transaction_id = null;
+		String userId=null;
 		if (map != null) {
 			cash_fee = (String) map.get("cash_fee");
 
@@ -84,7 +86,11 @@ public class T_wxpay_notifyServiceImpl extends ServiceImpl<T_wxpay_notifyMapper,
 
 			// 订单号
 			out_trade_no = (String) map.get("out_trade_no");
-
+			
+			T_order t=new T_order();
+            t.setOrder_no(out_trade_no);
+            T_order t1=IT_orderService.selectbyout_trade_no(out_trade_no);
+            userId=t1.getUser_id();
 			result_code = (String) map.get("result_code");
 			returnCode = (String) map.get("return_code");
 			total_fee = (String) map.get("total_fee");
@@ -102,10 +108,10 @@ public class T_wxpay_notifyServiceImpl extends ServiceImpl<T_wxpay_notifyMapper,
 		if (record == null) {
 			record = new T_wxpay_notify();
 
-			record.setUser_id(Integer.parseInt(openid));
+			record.setUser_id(Integer.parseInt(userId));
 
 			record.setCash_fee(cash_fee);
-			record.setOpenid(openid);
+			
 			record.setOut_trade_no(out_trade_no);
 			record.setResult_code(result_code);
 			record.setReturn_code(returnCode);

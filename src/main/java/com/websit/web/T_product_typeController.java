@@ -197,8 +197,7 @@ public String selectAllproductation() {
 		Map<String,Object> map=new HashMap<>();
 		
 		List<Classification>list=classificationService.selectClassification();
-		System.out.println(list);
-		System.out.println(list.get(0));
+	
 		for(int i=0;i<list.size();i++){
 			List<T_product_type>lists=product_typeService.selectproduct(list.get(i));
 			map.put(list.get(i).getName(), lists);
@@ -240,13 +239,13 @@ public String findBpproduc(Integer page,Integer limit) {
 				result.setProductTotal(productTotal);
 				
 				if(result!=null){
-					System.out.println("result"+result);
+				
 					lista.add(result);
 				}
 				
 		}
 	
-	System.out.println("lista"+lista);
+	
 		return JsonUtil.getResponseJson(1, "查询成功", list.size(), lista);
 } catch (Exception e) {
 	e.printStackTrace();
@@ -260,14 +259,13 @@ public String findBpproduc(Integer page,Integer limit) {
 @RequestMapping(value = "/findBpproducs", produces = "application/json; charset=utf-8")
 @ResponseBody
 public String findBpproduc(Long id) {
-	System.out.println("id"+id);
+
 	try{
 		T_product_type t=new T_product_type();
 		t.setId(id);
-		System.out.println("t"+t);
+		
 		List<T_product> listone=productService.findBpproduc(t);
-		System.out.println("listone"+listone);
-	 /*String json = JSONObject.toJSONString(map);
+			 /*String json = JSONObject.toJSONString(map);
 		System.out.println("map"+json);*/
 		return JsonUtil.getResponseJson(1, "查询成功", null, listone);
 } catch (Exception e) {

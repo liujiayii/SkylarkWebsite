@@ -79,8 +79,9 @@ public class PayController {
 
 		Json json = new Json();
 		try {
-			json = wxpayUnifiedOrderService.wxPay(out_trade_no, total_money, status, request);
-
+			json = wxpayUnifiedOrderService.wxPay(out_trade_no, total_money, 1, request);
+			json.setSuccess(true);
+			json.setMsg("发起成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			json.setSuccess(false);
@@ -105,6 +106,7 @@ public class PayController {
 	@RequestMapping(value = "/wxNotify")
 	@ResponseBody
 	public String wxNotify(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("过来");
 		String str;
 		try {
 			String wxpayNotify = wxpayNotifyService.wxNotify(request, response);

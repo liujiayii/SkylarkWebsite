@@ -565,10 +565,11 @@
 }
 
 .detail-goods-list {
+	transition: all .4s;
+    position: relative;
     padding: 5px;
     width: 300px;
-    float: left;
-}
+}   
 
 .detail-area-A {
     display: inline-block;
