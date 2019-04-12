@@ -103,6 +103,30 @@
       <i-button type="success" size="large" long @click="goOrder">支付完成再点我</i-button>
     </div>
   </Modal>
+  <Drawer title="退款" v-model="drawerShow" width="720" :mask-closable="false" :styles="styles">
+    <i-form :model="formItem" :label-width="80">
+      <form-item label="退款原因">
+        <radio-group v-model="formItem.radio">
+          <Radio label="male">多拍/拍错/不想要</Radio>
+          <Radio label="female">缺货</Radio>
+        </radio-group>
+      </form-item>
+      <form-item label="退款金额">
+        <i-input v-model="formItem.input"></i-input>
+      </form-item>
+      <form-item label="退款说明">
+        <i-input v-model="formItem.textarea" type="textarea" :autosize="{minRows: 2,maxRows: 5}"></i-input>
+      </form-item>
+      <form-item label="上传图片">
+        <Upload action="">
+          <i-button icon="ios-cloud-upload-outline">上传图片</i-button>
+        </Upload>
+      </form-item>
+    </i-form>
+    <div style="width: 100%;position: absolute;bottom: 0;left: 0;border-top: 1px solid #e8e8e8; padding: 10px 16px;text-align: right;background: #fff;">
+      <i-button type="primary" @click="drawerShow = false">提交</i-button>
+    </div>
+  </Drawer>
   <div th:replace="mall/common :: commonNav"></div>
   <div class="wrap main-wrap">
     <div class="cont-nav">
@@ -138,7 +162,7 @@
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">下单时间</div>
-                <div class="li">货款金额</div>
+                <div class="li">订单金额</div>
                 <!-- <div class="li">操作</div> -->
               </div>
             </div>
@@ -187,7 +211,7 @@
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">下单时间</div>
-                <div class="li">货款金额</div>
+                <div class="li">订单金额</div>
               </div>
             </div>
             <p v-if="daf==0" class="nullcont">暂无信息</p>
@@ -226,7 +250,7 @@
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">下单时间</div>
-                <div class="li">货款金额</div>
+                <div class="li">订单金额</div>
               </div>
             </div>
             <p v-if="dsh==0" class="nullcont">暂无信息</p>
@@ -265,7 +289,7 @@
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">下单时间</div>
-                <div class="li">货款金额</div>
+                <div class="li">订单金额</div>
               </div>
             </div>
             <p v-if="ysh==0" class="nullcont">暂无信息</p>
@@ -275,6 +299,7 @@
                   <p class="lis">订单编号：{{item.order_no}}</p>
                   <div class="li">
                     <button @click="evaluate(item_c.productId,item.order_no)">评价</button>
+                    <button class="pay_btn" @click="drawerShow=true">申请退款</button>
                   </div>
                 </div>
                 <div class="flex spxx-cont">
@@ -303,7 +328,7 @@
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">下单时间</div>
-                <div class="li">货款金额</div>
+                <div class="li">订单金额</div>
                 <div class="li">操作</div>
               </div>
             </div>
@@ -353,7 +378,15 @@
         quantum: null,
         goodsid: null,
         orderid: null,
-        qrcode: false
+        qrcode: false,
+        drawerShow: false,
+        styles: {
+          height: 'calc(100% - 55px)',
+          overflow: 'auto',
+          paddingBottom: '53px',
+          position: 'static'
+        },
+        formItem:{}
       }
     },
     methods: {

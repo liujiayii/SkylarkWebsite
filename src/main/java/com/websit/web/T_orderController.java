@@ -73,24 +73,24 @@ public class T_orderController {
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		boolean fig = false;
-		System.out.println(trolley_id);
+	
 		String order_no = OrderCodeFactory.getOrderCode(8L);
 		/**
 		 * 如果加密的数据解密
 		 */
 		Date cause_time = new Date();
-	    System.out.println(cause_time);	
+
 		if (is_des != null) {
 			user_id = Security.decode(user_id);
 
-			System.out.println(user_id);
+
 
 			if (id != null) {
 				id = (Security.decode(id));
 
 			}
 		}
-		///try {
+		try {
 			if (user_id == null || user_id.equals(" ")) {
 				msg = "请重新登录";
 				return JsonUtil.getResponseJson(cood, msg, null, null);
@@ -142,20 +142,20 @@ public class T_orderController {
 				double total = 0;
 				
 				for (int i = 0; i < str1.length; i++) {
-		           System.out.println(Security.decode(str1[i])+"777777777777777777777777");
+		          
 					T_trolley T_trolley = new T_trolley();
-					 System.out.println(is_des+"deshgjkdhgklgghfjgjhgjkhglfgjg");
+				
 					if(is_des != null) {
 					T_trolley = T_trolleyService.selectById(Security.decode(str1[i]));
 					}else {
 						T_trolley = T_trolleyService.selectById(str1[i]);
 					}
 					//;
-					System.out.println(T_trolley.toString()+"666666666666666666666666");
+			
 					T_product product = new T_product();
-					System.out.println(T_trolley.getProduct_id().toString()+"6666666666666666");
+					
 					product = T_trolleyService.T_produc(T_trolley.getProduct_id().toString());
-					System.out.println(product+"6666666666666666");
+				
 					zongjia = product.getPrice().doubleValue() * T_trolley.getNumber();
 					int mum = IT_orderService.selectpase(T_trolley.getProduct_id().toString().toString(), zongjia);// 查询优惠价格
 					double jine = (zongjia - mum);
@@ -190,9 +190,9 @@ public class T_orderController {
 				msg = "商品购买失败";
 			}
 			return JsonUtil.getResponseJson(cood, msg, null, order_no);
-//		} catch (Exception e) {
-//			return JsonUtil.getResponseJson(cood, msg, null, null);
-//		}
+		} catch (Exception e) {
+		return JsonUtil.getResponseJson(cood, msg, null, null);
+	}
 
 	}
 
@@ -272,12 +272,11 @@ public class T_orderController {
 		if (is_des != null) {
 			user_id = Security.decode(user_id);
 
-			System.out.println(user_id);
-
+		
 		}
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
-		System.out.println("user_id" + user_id + "order_state" + order_state + "page" + page + "limit" + limit);
+		
 		if (user_id == "" || user_id == "undefined" || page == null || limit == null) {
 			cood = 152369;
 			msg = "用户数据不正确，请重新登录";
@@ -354,8 +353,6 @@ public class T_orderController {
 			List<order_list> orderlist = IT_orderService.order_list1(order_state, page, limit, date);
 			for (int i = 0; i < orderlist.size(); i++) {
 				orderlist.get(i).setT_goods(goodsService.selectById(orderlist.get(i).getOrder_mode()));
-				System.out.println(
-						goodsService.selectById(orderlist.get(i).getOrder_mode()) + "9999999999999999999999999");
 				orderlist.get(i).setShping(IT_orderService.shopinglist(orderlist.get(i).getOrder_no(), order_state));
 			}
 
@@ -368,7 +365,7 @@ public class T_orderController {
 
 			}
 
-			System.out.println(num2);
+			
 			return JsonUtil.getResponseJson(cood, msg, num2, orderlist);
 
 		} catch (Exception e) {
@@ -455,7 +452,7 @@ public class T_orderController {
 	@RequestMapping("/uporderpayment")
 	@ResponseBody
 	public String updatete(String order_id, String order_payment) {
-		System.out.println(order_id + order_payment + "00000000000000000000000000000000000000000");
+		
 
 		int fig = IT_orderService.ordercancelled(order_id, "1");
 		IT_orderService.updateorderpayment(order_id, order_payment);
@@ -471,7 +468,7 @@ public class T_orderController {
 //	@Scheduled(fixedDelay = 5000) //启动后每隔5秒运行一次
 	public void timer() { // 获取当前时间
 		LocalDateTime localDateTime = LocalDateTime.now();
-		System.out.println("执行定时开始:" + localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
 		Map<String, Object> columnMap = new HashMap<String, Object>();
 
 		columnMap.put("order_state", 0);
@@ -480,12 +477,11 @@ public class T_orderController {
 
 		for (int i = 0; i < T_order.size(); i++) {
 			Date cause_time = new Date();
-			System.out.println(cause_time.getMonth());
+
 			int hours = cause_time.getHours() - T_order.get(i).getOrder_time().getHours();
 			int day = cause_time.getDay() - T_order.get(i).getOrder_time().getDate();
 			int mose = cause_time.getMonth() - T_order.get(i).getOrder_time().getMonth();
-			System.out.println(
-					T_order.get(i).getOrder_time().getDate() + "t000000000000000000000000" + cause_time.getDay());
+			
 			if (hours > 2 || day > 0 || mose > 0) {
 
 				Map<String, Object> mnMap = new HashMap<String, Object>();
@@ -493,8 +489,8 @@ public class T_orderController {
 
 				List<T_shopping> T_shopping = T_shoppingService.selectByMap(mnMap);
 				for (int j = 0; j < T_shopping.size(); j++) {
-					System.out.println(T_shopping.get(i).getNumber() + "           " + T_shopping.get(i).getProduct_id()
-							+ "gjhrklglrk");
+					
+						
 					int u = IT_orderService.updatenqux(T_shopping.get(i).getNumber(),
 							T_shopping.get(i).getProduct_id());
 				}
@@ -503,7 +499,7 @@ public class T_orderController {
 			}
 		}
 
-		System.out.println("执行定时任务完成:" + localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
 
 	}
 

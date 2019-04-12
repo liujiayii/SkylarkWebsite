@@ -26,7 +26,7 @@ public interface T_wxpay_refundMapper extends BaseMapper<T_wxpay_refund> {
 	 * @author HanMeng
 	 * @createDate 2019年3月26日-下午3:13:46
 	 */
-	T_wxpay_refundMapper findByOrderId(String out_trade_no);
+	T_wxpay_refundMapper findByOrderIds(String out_trade_no);
 	/**
 	 * 
 	 * @Title: insert
@@ -38,5 +38,5 @@ public interface T_wxpay_refundMapper extends BaseMapper<T_wxpay_refund> {
 	 * @author HanMeng
 	 * @createDate 2019年3月26日-下午4:14:38
 	 */
-	public int insert(Map<String, String> record);
+	public int insertSome(Map<String, String> record);
 }

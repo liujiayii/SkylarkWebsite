@@ -1,29 +1,21 @@
 package com.websit.web;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.websit.constant.ReturnCode;
-
 import com.websit.entity.T_wxpay_notify;
 import com.websit.mapper.T_wxpay_refundMapper;
 import com.websit.pay.Json;
-import com.websit.pay.utils.PayUtil;
 import com.websit.pay.utils.RefundUtil;
 import com.websit.service.IT_wxpay_notifyService;
 import com.websit.service.IT_wxpay_refundService;
@@ -50,9 +42,7 @@ public class PayController {
 	private IT_wxpay_notifyService wxpayNotifyService;
 	@Autowired
 	private IT_wxpay_refundService wxpayRefundService;
-	@Autowired
-	private T_wxpay_refundMapper wxpayRefundMapper;
-	
+
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
@@ -75,11 +65,11 @@ public class PayController {
 	 */
 	@RequestMapping(value = "/wxPay")
 	@ResponseBody
-	public Json wxPay(String out_trade_no, String total_money, Integer status, HttpServletRequest request) {
+	public Json wxPay(String user_id, String out_trade_no, String total_money, HttpServletRequest request) {
 
 		Json json = new Json();
 		try {
-			json = wxpayUnifiedOrderService.wxPay(out_trade_no, total_money, 1, request);
+			json = wxpayUnifiedOrderService.wxPay(user_id, out_trade_no, total_money, request);
 			json.setSuccess(true);
 			json.setMsg("发起成功");
 		} catch (Exception e) {
@@ -90,6 +80,7 @@ public class PayController {
 		}
 		return json;
 	}
+
 	/**
 	 * 
 	 * @Title: wxNotify
@@ -97,8 +88,8 @@ public class PayController {
 	 *
 	 * @param request
 	 * @param response
-	 * @return    
-	 * @return String   
+	 * @return
+	 * @return String
 	 *
 	 * @author HanMeng
 	 * @createDate 2019年3月25日-下午3:49:59
@@ -123,21 +114,26 @@ public class PayController {
 		return str;
 
 	}
+
 	/**
 	 * 
 	 * @Title: doPost
 	 * @description: 微信申请退款
 	 *
-	 * @param out_trade_no  商户订单编号
-	 * @param transaction_id  微信订单编号
-	 * @param total_fee   支付总金额
-	 * @param refund_fee  退款金额
+	 * @param out_trade_no
+	 *            商户订单编号
+	 * @param transaction_id
+	 *            微信订单编号
+	 * @param total_fee
+	 *            支付总金额
+	 * @param refund_fee
+	 *            退款金额
 	 * @param req
 	 * @param resp
 	 * @return
 	 * @throws ServletException
-	 * @throws IOException    
-	 * @return Map<String,Object>   
+	 * @throws IOException
+	 * @return Map<String,Object>
 	 *
 	 * @author HanMeng
 	 * @createDate 2019年3月26日-上午11:09:13
@@ -146,7 +142,7 @@ public class PayController {
 	@ResponseBody
 	public String doPost(String out_trade_no, String transaction_id, String total_fee, String refund_fee,
 			HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		// 在回调表中根据商户单号查找出微信单号 T_wxpay_notify findByOrderId()
 		T_wxpay_notify wxpayNotify = wxpayNotifyService.findByOrderId(out_trade_no);
 		if (wxpayNotify != null) {
@@ -154,22 +150,21 @@ public class PayController {
 		} else {
 			System.out.println("微信账单暂未回调");
 		}
-		Map<String, Object> maps =null; 
+		Map<String, Object> maps = null;
 		try {
 			maps = doGet(out_trade_no, transaction_id, total_fee, refund_fee, req, resp);
 			maps.put("return_code", maps.get("return_code"));
-			if (maps.get("return_code") == "SUCCESS" ) {
+			if (maps.get("return_code") == "SUCCESS") {
 				maps.put("result_code", maps.get("result_code"));
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, ReturnCode.EXCEPTION_MSG, null, null);
 		}
-		
-		return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG,maps.size(), maps);
-		
-		
+
+		return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, maps.size(), maps);
+
 	}
 
 	public Map<String, Object> doGet(String out_trade_no, String transaction_id, String total_fee, String refund_fee,
@@ -179,22 +174,22 @@ public class PayController {
 		RefundUtil refundUtil = new RefundUtil();
 		// 微信支付单号,总金额,退款总金额(可以分期退款)
 		Map<String, String> record = null;
+
 		try {
 			record = refundUtil.wechatRefund(out_trade_no, transaction_id, total_fee, refund_fee, request);
-			System.out.println("退款:"+record);
-			wxpayRefundMapper.insert(record);
-			
+			System.out.println("退款:" + record);
+			wxpayRefundService.insertSome(record);
+			// wxpayRefundMapper.insert(entity)
 			map.put("return_code", record.get("return_code"));
-			if (record.get("return_code") == "SUCCESS" ) {
+			if (record.get("return_code") == "SUCCESS") {
 				map.put("result_code", record.get("result_code"));
 			}
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			
+
 		}
 		return map;
-		
 
 	}
 }

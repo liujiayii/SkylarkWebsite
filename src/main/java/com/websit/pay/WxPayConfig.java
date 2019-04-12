@@ -14,11 +14,11 @@ public class WxPayConfig {
 
 	
 	// 正式app
-	//public static final String appid = "wx3428aa056dcad137";
-	//public static final String appSecret = "3d5a76eb7972eb4dd069df510811d267";
+	public static final String appid = "wx3428aa056dcad137";
+	public static final String appSecret = "3d5a76eb7972eb4dd069df510811d267";
 	//pc
-	public static final String appid = "wxb7e49e3a0bc42a51";
-	public static final String appSecret = "80c58e8cb1deb44708e6f4dad0aa6fc4";
+	//public static final String appid = "wxb7e49e3a0bc42a51";
+	//public static final String appSecret = "80c58e8cb1deb44708e6f4dad0aa6fc4";
 	// 微信支付的商户id ==证书密码
 
 	public static final String mch_id = "1530971811"; //正式
@@ -32,7 +32,7 @@ public class WxPayConfig {
 	// 签名方式
 	public static final String SIGNTYPE = "MD5";
 	// 交易类型
-	public static final String TRADETYPE = "NATIVE";
+	public static final String TRADETYPE = "APP";
 	// 微信统一下单接口地址 
 	public static final String pay_url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 	// 微信查询订单状态地址 没用到

@@ -61,6 +61,7 @@ public class UpdateFile {
         try {  
         //    ossClient = new OSSClient(config.ENDPOINT, config.ACCESSKEYID, config.ACCESSKEYSECRET); 
              ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+             System.out.println("ossClient"+ossClient);
 	         // 设置断点续传请求
 	         UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, fileName);
 	         // 指定上传的本地文件
@@ -71,9 +72,12 @@ public class UpdateFile {
 	         uploadFileRequest.setPartSize(1 * 1024 * 1024);
 	         // 开启断点续传
 	         uploadFileRequest.setEnableCheckpoint(true);
+	         System.out.println("uploadFileRequest"+uploadFileRequest);
 	         // 断点续传上传
 	         try {
 				ossClient.uploadFile(uploadFileRequest);
+				
+				
 			} catch (Throwable e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -93,7 +97,7 @@ public class UpdateFile {
             Date expiration = new Date(new Date().getTime() + 3600l * 1000 * 24 * 365 * 20);
             // 生成URL
             urls = ossClient.generatePresignedUrl(bucketName, fileName, expiration);
-            
+           System.out.println("urls"+urls);
         } catch (OSSException oe) {  
             oe.printStackTrace();  
             return null;  
@@ -135,6 +139,7 @@ public class UpdateFile {
     	//System.out.println("filename"+file.getOriginalFilename());   	
     
 		  OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+		  System.out.println("ossClient"+ossClient);
 		// 距最后修改时间3650天后文件删除。
 		  SetBucketLifecycleRequest request = new SetBucketLifecycleRequest(bucketName);
 		  request.AddLifecycleRule(new LifecycleRule(ruleId0, matchPrefix0, RuleStatus.Enabled, 36500));

@@ -174,8 +174,8 @@
     <select id="listProductByProductId" resultMap="productAndImage">
        SELECT DISTINCT
                     p.id productId,
-                    pt. name producttypename,
-                    pt. id producttypeid, 
+                    pt.name producttypename,
+                    pt.id producttypeid, 
                     p.name productName,
                     p.image image,
                     p.color color,

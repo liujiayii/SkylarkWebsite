@@ -40,13 +40,13 @@ public class T_wxpay_refundServiceImpl extends ServiceImpl<T_wxpay_refundMapper,
 	 * @date 2019年3月26日-下午3:25:26
 	 */
 	@Override
-	public T_wxpay_refundMapper findByOrderId(String out_trade_no) {
-		return wxpayRefundMapper.findByOrderId(out_trade_no);
+	public T_wxpay_refundMapper findByOrderIds(String out_trade_no) {
+		return wxpayRefundMapper.findByOrderIds(out_trade_no);
 
 	}
 
 	@Override
-	public int insert(Map<String, String> record) {
+	public int insertSome(Map<String, String> record) {
 		
 		
 		

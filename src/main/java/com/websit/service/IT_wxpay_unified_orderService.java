@@ -33,5 +33,5 @@ public interface IT_wxpay_unified_orderService extends IService<T_wxpay_unified_
 	 * @author HanMeng
 	 * @createDate 2019年3月24日-下午6:38:35
 	 */
-	Json wxPay( String out_trade_no, String total_money,  Integer status,HttpServletRequest request) throws Exception;
+	Json wxPay( String user_id,String out_trade_no, String total_money,HttpServletRequest request) throws Exception;
 }

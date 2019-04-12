@@ -58,6 +58,7 @@ public class T_indesController {
 	public ModelAndView index() {
 
 		Long c = userService.slectCount();
+		
 		ModelAndView mv = new ModelAndView();
 
 		mv.addObject("count", c);

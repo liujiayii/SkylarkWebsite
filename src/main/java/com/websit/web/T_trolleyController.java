@@ -66,13 +66,13 @@ public class T_trolleyController {
 				if(t_trolley.getNumber()==null) {
 					t_trolley.setNumber(1);
 				}
-				System.out.println(t_trolley.getProduct_id()+"555555555555555555555555555");
+		
 				    boolean fig=false;
 					int number = IT_orderService.Queryinginventory(t_trolley.getProduct_id().toString());
 					
 					//
 					T_product product = IT_orderService.Querysteda(t_trolley.getProduct_id().toString());
-					System.out.println(T_trolleyService.number(t_trolley.getProduct_id().toString()));
+				
 					 int numbers=T_trolleyService.number(t_trolley.getProduct_id().toString());
 					if (number<=0) {
 						cood = -1;
@@ -157,20 +157,20 @@ public class T_trolleyController {
 		if(is_des!=null) {
 		user_id=(Security.decode(user_id));
 		}
-		System.out.println(page+limit+"6666666666666666666666666");
+	
 		
 		try { 
 			List <lt_trolleylst> lt_trolleylst=T_trolleyService.lt_trolleylst(user_id,new RowBounds(page,limit));
 			        
 			for(int i=0;i<lt_trolleylst.size();i++) {
 			        	 Double  num=new Double(lt_trolleylst.get(i).getNumber());
-			        	System.out.println("11111111111111111111111111111111");
+			        	
 			        	 double danjia=lt_trolleylst.get(i).getPrice().doubleValue();
 			        	 Double  zongjia=num*danjia;
-			        	 System.out.println("2222222222222222222222222222222222");
+			        
 			        	 double mum=IT_orderService.selectpase(lt_trolleylst.get(i).getId().toString(),zongjia);//查询优惠价格
 			        	 Double mums=mum;
-			        	 System.out.println(mum+"3333333333333333333333333333333333333");
+			        	 
 			        	 lt_trolleylst.get(i).setYouhuijine(mums.toString());
 			        	 numbers = IT_orderService.Queryinginventory(lt_trolleylst.get(i).getId().toString());;
 			        	 lt_trolleylst.get(i).setNumbers(numbers);
@@ -250,7 +250,7 @@ public class T_trolleyController {
 	@ResponseBody
 	public  String  gouwuchegoumai(String []str,String order_mode,String user_id) {
 		String [] str1= str;
-		System.out.println(str+"9999999999999999999999999999999999999");
+
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		boolean fig=false;
@@ -261,7 +261,7 @@ public class T_trolleyController {
 	    double ddzongjia=0;
 		for(int i=0;i<str1.length;i++) {
 			T_trolley=T_trolleyService.selectById(str1[i]);
-			System.out.println(T_trolley);
+	
 			T_product T_product=new T_product();
 			T_product=T_trolleyService.T_produc(T_trolley.getProduct_id().toString());
 			T_shopping T_shopping=new T_shopping();
@@ -321,9 +321,6 @@ public class T_trolleyController {
 	@ResponseBody
 	public  String  gouwuchegoumai(String trolley_id) {
 		String[] str = trolley_id.split(","); 
-		for(int i=0;i<str.length;i++) {
-			System.out.println(str[i]+"9999999999999999999999999999999999999");
-		}
 		
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
@@ -334,7 +331,7 @@ public class T_trolleyController {
 		for(int i=0;i<str.length;i++) {
 			T_trolley T_trolley=new T_trolley();
 			T_trolley=T_trolleyService.selectById(str[i]);
-			System.out.println(str[i]);
+			
 			Integer numbers = IT_orderService.Queryinginventory(T_trolley.getProduct_id().toString());
 			
 			
@@ -354,7 +351,7 @@ public class T_trolleyController {
 				msg = "库存足够";
 				
 			}
-			System.out.println(trolley_id+" 666666666666666666666666666666");
+			
 			return JsonUtil.getResponseJson(cood, msg, null, trolley_id);
 		}   
 		
@@ -381,10 +378,7 @@ public class T_trolleyController {
 	public  String  quernumnemre(String trolley_id) {
 		String[] str = trolley_id.split(","); 
 		T_trolley T_trolley=new T_trolley();
-		for(int i=0;i<str.length;i++) {
-			System.out.println(str[i]+"9999999999999999999999999999999999999");
-		}
-		
+
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		boolean fig=true;
@@ -394,7 +388,7 @@ public class T_trolleyController {
 		for(int i=0;i<str.length;i++) {
 			
 			T_trolley=T_trolleyService.selectById(str[i]);
-			System.out.println(T_trolley);
+	
 			trolley.add(T_trolley);
 	
 				
@@ -408,7 +402,7 @@ public class T_trolleyController {
 				msg = "库存足够";
 				
 			}
-			System.out.println(trolley_id+" 666666666666666666666666666666");
+		
 			return JsonUtil.getResponseJson(cood, msg, null, T_trolley);
 		  
 		

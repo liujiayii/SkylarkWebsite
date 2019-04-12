@@ -558,6 +558,8 @@
 }
 
 .detail-area {
+	display:flex;
+	flex-wrap:wrap;
     width: 100%;
     overflow: hidden;
     height: auto;

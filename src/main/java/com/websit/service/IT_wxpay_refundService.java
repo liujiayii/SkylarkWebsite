@@ -27,7 +27,7 @@ public interface IT_wxpay_refundService extends IService<T_wxpay_refund> {
 	 * @author HanMeng
 	 * @createDate 2019年3月26日-下午3:23:29
 	 */
-	T_wxpay_refundMapper findByOrderId(String out_trade_no);
+	T_wxpay_refundMapper findByOrderIds(String out_trade_no);
 	
-	public int insert(Map<String, String> record);
+	public int insertSome(Map<String, String> record);
 }
