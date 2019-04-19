@@ -36,17 +36,18 @@ public class T_product implements Serializable {
      * 图片
      */
     public String image;
-
     /**
      * 商品价格
      */
     public BigDecimal price;
-
     /**
-     * 颜色
+     * 商品成本价
      */
-    public String color;
-
+    public BigDecimal cost_price;
+    /**
+     * 商品折扣价
+     */
+    public BigDecimal discount_price;
     /**
      * 状态(1:上架,2:下架)
      */
@@ -63,11 +64,6 @@ public class T_product implements Serializable {
     public String brand;
 
     /**
-     * 规格
-     */
-    public String specifications;
-
-    /**
      * 商品描述
      */
     public String describion;
@@ -79,6 +75,10 @@ public class T_product implements Serializable {
      * 专区名称
      */
     public Long zone_name;
+    /**
+     * 售后信息
+     */
+    private String after_information;
 	public Long getId() {
 		return id;
 	}
@@ -109,11 +109,17 @@ public class T_product implements Serializable {
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-	public String getColor() {
-		return color;
+	public BigDecimal getCost_price() {
+		return cost_price;
 	}
-	public void setColor(String color) {
-		this.color = color;
+	public void setCost_price(BigDecimal cost_price) {
+		this.cost_price = cost_price;
+	}
+	public BigDecimal getDiscount_price() {
+		return discount_price;
+	}
+	public void setDiscount_price(BigDecimal discount_price) {
+		this.discount_price = discount_price;
 	}
 	public Integer getState() {
 		return state;
@@ -133,12 +139,6 @@ public class T_product implements Serializable {
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
-	public String getSpecifications() {
-		return specifications;
-	}
-	public void setSpecifications(String specifications) {
-		this.specifications = specifications;
-	}
 	public String getDescribion() {
 		return describion;
 	}
@@ -157,30 +157,25 @@ public class T_product implements Serializable {
 	public void setZone_name(Long zone_name) {
 		this.zone_name = zone_name;
 	}
+	public String getAfter_information() {
+		return after_information;
+	}
+	public void setAfter_information(String after_information) {
+		this.after_information = after_information;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-	/**  
-	
-	* <p>Title: </p>  
-	
-	* <p>Description: </p>  
-	  
-	
-	*/  
-	public T_product() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("T_product [id=").append(id).append(", name=").append(name).append(", product_type_id=")
 				.append(product_type_id).append(", image=").append(image).append(", price=").append(price)
-				.append(", color=").append(color).append(", state=").append(state).append(", create_times=")
-				.append(create_times).append(", brand=").append(brand).append(", specifications=")
-				.append(specifications).append(", describion=").append(describion).append(", zone_id=").append(zone_id)
-				.append(", zone_name=").append(zone_name).append("]");
+				.append(", cost_price=").append(cost_price).append(", discount_price=").append(discount_price)
+				.append(", state=").append(state).append(", create_times=").append(create_times).append(", brand=")
+				.append(brand).append(", describion=").append(describion).append(", zone_id=").append(zone_id)
+				.append(", zone_name=").append(zone_name).append(", after_information=").append(after_information)
+				.append("]");
 		return builder.toString();
 	}
 	

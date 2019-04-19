@@ -89,10 +89,7 @@
 .home .download .downloadlist .btn {
     transition: all .4s;
     width: 165px;
-    height: 35px;
-    line-height: 35px;
     border: 1px solid #258ffc;
-    border-radius: 50px;
     margin-top: 10px;
     font-size: 14px
 }

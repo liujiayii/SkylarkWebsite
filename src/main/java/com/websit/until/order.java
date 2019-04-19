@@ -34,5 +34,12 @@ public class order {
 	   return T_shopping;
 	   
    }
+   public  String sales() {
+	   
+	   
+	   
+	   return null;
+	   
+   }
    
 }

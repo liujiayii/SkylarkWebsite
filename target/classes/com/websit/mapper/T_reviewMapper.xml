@@ -216,12 +216,10 @@
 			re.product_id=pr.id
 			AND
 			re.user_id=u.id
-			<if test="nickname != null and nickname != ''">
-				AND u.nickname = #{nickname}
+			<if test="name != null and name != ''">
+				AND pr.name like "%"#{name}"%"
 			</if>
-			<if test="id != null and id != ''">
-				AND re.id = #{id}
-			</if>
+			
 		</where>
 		ORDER BY re.review_time DESC
 		limit #{page},#{limit}

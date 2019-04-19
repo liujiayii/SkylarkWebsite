@@ -4,6 +4,7 @@ import com.websit.entity.T_product;
 import com.websit.entity.T_product_type;
 import com.websit.entity.Zone;
 import com.websit.entityvo.ProductDetails;
+import com.websit.entityvo.ProductSpecificationsVo;
 import com.websit.entityvo.ProductTypeVo;
 import com.websit.entityvo.ProductVo;
 import com.websit.entityvo.t_productVo;
@@ -33,6 +34,21 @@ public interface IT_productService extends IService<T_product> {
 	 * @createDate 2019年3月21日
 	 */
 	public String listProductByTypeId(Long productTypeId,Integer page,Integer limit);
+	
+	/**
+	 * 根据大分类id查询二级分类及每个种类下所有商品
+	 *
+	 * @Title: listProductByClassTypeId
+	 * @description 
+	 * @param classification_id
+	 * @param page
+	 * @param limit
+	 * @return  
+	 * List<ProductTypeVo>    
+	 * @author lujinpeng
+	 * @createDate 2019年4月17日-下午4:29:52
+	 */
+	public List<ProductTypeVo> listProductByClassTypeId(Long classification_id, Integer page, Integer limit);
 
 	/**
 	 * @description 查询商品
@@ -79,7 +95,10 @@ public interface IT_productService extends IService<T_product> {
 	 * @author pangchong
 	 * @createDate 2019年3月24日
 	 */
-	public List<ProductVo> listProductByProductTypeId(String productName);
+	public List<ProductVo> listProductByProductTypeId(String productName,Integer page,Integer limit);
+	public List<ProductVo> listProductByCount(String productName,Integer page,Integer limit);
+	
+
 	/**
 	 * @description 根据商品名称查询颜色
 	 * @param 
@@ -124,5 +143,16 @@ public interface IT_productService extends IService<T_product> {
 	 * @return
 	 */
 	public Integer selectCountByState();
-	
+	/**
+	 * 根据商品名称查询商品规格及选项
+	 * @param productId
+	 * @return
+	 */
+	public List<ProductSpecificationsVo>findSpecificationsByProduct(@Param("productId")Long productId);
+	/**
+	 * 
+	 * @param product
+	 * @return
+	 */
+	public Integer insertSpecificationService(T_product product);
 }

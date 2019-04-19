@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.websit.mapper.T_product_specificationMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap"
+		type="com.websit.entity.T_product_specification">
+		<id column="id" property="id" />
+		<result column="product_id" property="product_id" />
+		<result column="specificationName" property="specificationName" />
+		<result column="cost_price" property="cost_price" />
+		<result column="discount_price" property="discount_price" />
+		<result column="price" property="price" />
+	</resultMap>
+
+	<!-- 查询 -->
+	<select id="selectAllspecification"
+		resultType="com.websit.entity.T_product_specification"
+		parameterType="com.websit.entity.T_product_specification">
+
+		select  *  from t_product_specification where specificationName=#{specificationName} and product_id=#{product_id}
+	</select>
+		<!-- 查询商品的价格 -->
+	<select id="selectlstspecification" resultType="com.websit.entity.T_product_specification">
+
+		select  *  from t_product_specification where product_id=#{product_id}
+	</select>
+
+
+
+</mapper>

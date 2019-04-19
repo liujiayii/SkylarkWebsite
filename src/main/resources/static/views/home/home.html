@@ -7,7 +7,6 @@
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1, minimum-scale=1,user-scalable=no">
   <div th:replace="/home/common :: commonHeader(云阙首页)"></div>
-
   <link rel="stylesheet" href="/assets/css/home.css">
 </head>
 <body>
@@ -21,14 +20,24 @@
         <img src="/assets/image/index/downloadA.png" alt="">
         <div class="cont">
           <p>android客户端下载</p>
-          <p data-method="confirmTrans" class="btn confirmTrans">立即下载</p>
+          <poptip trigger="hover" placement="bottom" width="300">
+            <i-button class="btn" shape="circle">立即下载</i-button>
+            <div class="api" slot="content">
+              <canvas id="android"></canvas>
+            </div>
+          </poptip>
         </div>
       </div>
       <div class="downloadlist">
         <img src="/assets/image/index/downloadIos.png" alt="">
         <div class="cont">
           <p>ios客户端下载</p>
-          <p class="btn">立即下载</p>
+          <poptip trigger="hover" placement="bottom" width="300">
+            <i-button class="btn" shape="circle">立即下载</i-button>
+            <div class="api" slot="content">
+              <canvas id="ios"></canvas>
+            </div>
+          </poptip>
         </div>
       </div>
     </div>
@@ -179,8 +188,7 @@
           dataType: "json",
           data: {page: this.currPage, limit: 3},
           success: (res) => {
-            console.log(res)
-            if (res.code == 1) {
+            if (res.code === 1) {
               for (let i = 0; i < res.data.length; i++) {
                 res.data[i].dynamic_time = this.dateFormat(res.data[i].dynamic_time)
                 this.newsList.push(res.data[i])
@@ -190,14 +198,35 @@
             }
           }
         })
-      }
+      },
+      getAppCode(app_name, app_type) {
+        $.ajax({
+          type: "post",
+          url: "/t_app/seletapp",
+          dataType: "json",
+          data: {app_name, app_type},
+          success: (res) => {
+            if (res.code === 1) {
+              this.showCode(res.data, app_type === 0 ? 'android' : 'ios')
+            } else {
+              this.error(res.msg)
+            }
+          }
+        })
+      },
+      showCode(canvasData, id) {
+        let canvas = document.getElementById(id)
+        QRCode.toCanvas(canvas, canvasData, (error) => {
+        })
+      },
     },
     mounted() {
       this.pageChange()
+      this.getAppCode('容易购', 0)
+      this.getAppCode('容易购', 1)
     }
   }
   $(function () {
-    console.log($(".businesscont>img").height())
     var top = $(".businesscont>img").height() - 80;
     $(".businesslist").eq(1).css("top", top)
     $(".businesslist").eq(3).css("top", top * 1.2)
@@ -242,7 +271,6 @@
       stompClient.disconnect();
     }
     setConnected(false);
-    console.log('Disconnected');
   }
 
   function showResponse(message) {

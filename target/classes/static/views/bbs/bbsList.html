@@ -114,7 +114,6 @@
           dataType: "json",
           data: {id: this.getHrefParam('id')},
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.intro = res.data
             }
@@ -131,7 +130,6 @@
             plate_id: this.getHrefParam('id'),
           },
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               for (let i = 0; i < res.data.length; i++) {
                 res.data[i].new_time = this.timeFormat(res.data[i].new_time)
@@ -153,7 +151,6 @@
             limit: 10
           },
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               for (let i = 0; i < res.data.length; i++) {
                 res.data[i].new_time = this.timeFormat(res.data[i].new_time)
@@ -166,12 +163,10 @@
       },
       /*分页*/
       pageChange(page) {
-        console.log(page)
         window.location.href = '/forum?id=' + this.getHrefParam('id') + '&page=' + page
       },
       /*发表帖子*/
       getContent() {
-        console.log(this.editorContent)
         if (this.newTitle == '') {
           this.error('标题不能为空')
         } else {
@@ -187,7 +182,6 @@
               plate_id: this.getHrefParam('id')
             }),
             success: (res) => {
-              console.log(res)
               if (res.code == 1) {
                 this.success(res.msg)
                 this.getList(this.currPage)

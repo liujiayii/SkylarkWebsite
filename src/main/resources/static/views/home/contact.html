@@ -107,7 +107,6 @@
               data: this.form,
               dataType: "json",
               success: (res) => {
-                console.log(res)
                 if (res.code == 1) {
                   this.success(res.msg)
                   this.form = {}

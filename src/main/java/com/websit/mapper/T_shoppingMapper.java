@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
  * <p>
- * 商品订单表 Mapper 接口
+ * 订单商品表 Mapper 接口
  * </p>
  *
  * @author lichangchun
- * @since 2019-03-23
+ * @since 2019-04-17
  */
 public interface T_shoppingMapper extends BaseMapper<T_shopping> {
 

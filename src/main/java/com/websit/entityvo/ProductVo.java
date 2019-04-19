@@ -36,17 +36,6 @@ public class ProductVo extends Model<ProductVo>{
      * 图片
      */
     private String image;
-
-    /**
-     * 商品价格
-     */
-    private BigDecimal price;
-
-    /**
-     * 颜色
-     */
-    private String color;
-
     /**
      * 状态(1:上架,2:下架)
      */
@@ -56,17 +45,22 @@ public class ProductVo extends Model<ProductVo>{
      * 创建时间
      */
     private Date create_times;
-
+    /**
+     * 价格
+     */
+    private BigDecimal price;
+    /**
+     * 商品成本价
+     */
+    public BigDecimal cost_price;
+    /**
+     * 商品折扣价
+     */
+    public BigDecimal discount_price;
     /**
      * 品牌
      */
     private String brand;
-
-    /**
-     * 规格
-     */
-    private String specifications;
-
     /**
      * 商品描述
      */
@@ -79,12 +73,21 @@ public class ProductVo extends Model<ProductVo>{
      * 商品专区名称
      */
     private String zonename;
+    /**
+     * 售后信息
+     */
+    private String after_information;
     /** 页数 */
  		private int page;
  		/** 分页条数 */
  		private int limit;
  		/** 数据条数 */
  		private Integer count;
+		@Override
+		protected Serializable pkVal() {
+			
+			return this.id;
+		}
 		public Long getId() {
 			return id;
 		}
@@ -115,18 +118,6 @@ public class ProductVo extends Model<ProductVo>{
 		public void setImage(String image) {
 			this.image = image;
 		}
-		public BigDecimal getPrice() {
-			return price;
-		}
-		public void setPrice(BigDecimal price) {
-			this.price = price;
-		}
-		public String getColor() {
-			return color;
-		}
-		public void setColor(String color) {
-			this.color = color;
-		}
 		public Integer getState() {
 			return state;
 		}
@@ -139,17 +130,29 @@ public class ProductVo extends Model<ProductVo>{
 		public void setCreate_times(Date create_times) {
 			this.create_times = create_times;
 		}
+		public BigDecimal getPrice() {
+			return price;
+		}
+		public void setPrice(BigDecimal price) {
+			this.price = price;
+		}
+		public BigDecimal getCost_price() {
+			return cost_price;
+		}
+		public void setCost_price(BigDecimal cost_price) {
+			this.cost_price = cost_price;
+		}
+		public BigDecimal getDiscount_price() {
+			return discount_price;
+		}
+		public void setDiscount_price(BigDecimal discount_price) {
+			this.discount_price = discount_price;
+		}
 		public String getBrand() {
 			return brand;
 		}
 		public void setBrand(String brand) {
 			this.brand = brand;
-		}
-		public String getSpecifications() {
-			return specifications;
-		}
-		public void setSpecifications(String specifications) {
-			this.specifications = specifications;
 		}
 		public String getDescribion() {
 			return describion;
@@ -168,6 +171,12 @@ public class ProductVo extends Model<ProductVo>{
 		}
 		public void setZonename(String zonename) {
 			this.zonename = zonename;
+		}
+		public String getAfter_information() {
+			return after_information;
+		}
+		public void setAfter_information(String after_information) {
+			this.after_information = after_information;
 		}
 		public int getPage() {
 			return page;
@@ -190,36 +199,20 @@ public class ProductVo extends Model<ProductVo>{
 		public static long getSerialversionuid() {
 			return serialVersionUID;
 		}
-		/**  
-		
-		* <p>Title: </p>  
-		
-		* <p>Description: </p>  
-		  
-		
-		*/  
-		public ProductVo() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append("ProductVo [id=").append(id).append(", productName=").append(productName)
 					.append(", producttypeid=").append(producttypeid).append(", producttypename=")
-					.append(producttypename).append(", image=").append(image).append(", price=").append(price)
-					.append(", color=").append(color).append(", state=").append(state).append(", create_times=")
-					.append(create_times).append(", brand=").append(brand).append(", specifications=")
-					.append(specifications).append(", describion=").append(describion).append(", zoneid=")
-					.append(zoneid).append(", zonename=").append(zonename).append(", page=").append(page)
-					.append(", limit=").append(limit).append(", count=").append(count).append("]");
+					.append(producttypename).append(", image=").append(image).append(", state=").append(state)
+					.append(", create_times=").append(create_times).append(", price=").append(price)
+					.append(", cost_price=").append(cost_price).append(", discount_price=").append(discount_price)
+					.append(", brand=").append(brand).append(", describion=").append(describion).append(", zoneid=")
+					.append(zoneid).append(", zonename=").append(zonename).append(", after_information=")
+					.append(after_information).append(", page=").append(page).append(", limit=").append(limit)
+					.append(", count=").append(count).append("]");
 			return builder.toString();
 		}
-		@Override
-		protected Serializable pkVal() {
-		
-			return this.id;
-		}
-
+	
 	
 }

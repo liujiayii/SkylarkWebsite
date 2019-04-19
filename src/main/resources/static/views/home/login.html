@@ -34,12 +34,12 @@
         <div class="loginBox">
           <i-form :model="form" action="" :rules="ruleValidate" ref="form">
             <form-item prop="phone">
-              <i-input v-model="form.phone" type="text" placeholder="请输入手机号" name="phone" required/>
+              <i-input v-model="form.phone" type="text" placeholder="请输入手机号" name="phone" required maxlength="11"/>
             </form-item>
             <template v-if="type === 'reg'">
               <form-item style="margin-bottom: 0"><!--iview在输入框内部插入元素和v-if、v-show疑似冲突--></form-item>
               <form-item prop="code">
-                <i-input v-model="form.code" type="text" placeholder="请输入图文验证码" name="code" required>
+                <i-input v-model="form.code" type="text" placeholder="请输入图文验证码" name="code" required maxlength="4">
                   <img slot="append" alt="验证码" id="code" style="cursor: pointer" src="/createValicode"
                        @click="getCode"/>
                 </i-input>
@@ -62,9 +62,8 @@
                 <i-input v-model="form.password" type="password" placeholder="请输入密码" name="password" required/>
               </form-item>
               <form-item prop="code">
-                <i-input v-model="form.code" type="text" placeholder="请输入图文验证码" name="code" required>
-                  <img slot="append" alt="验证码" id="code" style="cursor: pointer" src="/createValicode"
-                       @click="getCode"/>
+                <i-input v-model="form.code" type="text" placeholder="请输入图文验证码" name="code" required maxlength="4">
+                  <img slot="append" alt="验证码" id="code" style="cursor: pointer" src="/createValicode" @click="getCode"/>
                 </i-input>
               </form-item>
             </template>
@@ -139,7 +138,6 @@
             data: {phone: this.form.phone, code: this.form.code},
             dataType: "json",
             success: (res) => {
-              console.log(res)
               if (res.code == 1) {
                 let timer = setInterval(() => {
                   this.msgError = this.msgError - 1
@@ -172,7 +170,6 @@
                 contentType: 'application/json',
                 dataType: "json",
                 success: (res) => {
-                  console.log(res)
                   if (res.code == 1) {
                     var c = res.data.count;
                     var socket = new SockJS('/endpointSang');
@@ -194,7 +191,6 @@
               });
             }
           } else {
-            console.log('error')
           }
         })
       },
@@ -204,12 +200,11 @@
           if (valid) {
             $.ajax({
               type: "post",
-              url: "/login",
+              url: "/doLogin",
               data: JSON.stringify(this.form),
               contentType: 'application/json',
               dataType: "json",
               success: (res) => {
-                console.log(res)
                 if (res.code == 1) {
                   sessionStorage.setItem("SkyUserName", (res.data.nickname == undefined ? res.data.phone : res.data.nickname))
                   sessionStorage.setItem("SkyUserId", res.data.id)
@@ -221,7 +216,6 @@
               }
             });
           } else {
-            console.log('error')
           }
         })
       },

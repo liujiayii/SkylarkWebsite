@@ -7,15 +7,20 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 商品订单表
+ * 订单商品表
  * </p>
  *
  * @author lichangchun
- * @since 2019-03-23
+ * @since 2019-04-17
  */
 public class T_shopping extends Model<T_shopping> {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 优惠金额
+     */
+    private Integer youhuijine;
 
     /**
      * 商品订单
@@ -23,6 +28,9 @@ public class T_shopping extends Model<T_shopping> {
     @TableId(value = "shoping_id", type = IdType.AUTO)
     private Integer shoping_id;
 
+    /**
+     * 商品id
+     */
     private String product_id;
 
     /**
@@ -31,35 +39,34 @@ public class T_shopping extends Model<T_shopping> {
     private Integer number;
 
     /**
-     * 订单id
+     * 商品编号
      */
     private String order_id;
 
     /**
-     * 是否点评
+     * 是否点评(1.未评论  2.已评论)
      */
     private String is_dianpng;
 
+    /**
+     * 商品单价
+     */
     private Double danjia;
 
     /**
-     * 0
+     * 单种商品的总价
      */
     private Double zongjia;
-    /**
-     * 优惠金额
-     * @return
-     */
-    public int getYouhuijine() {
-		return youhuijine;
-	}
 
-	public void setYouhuijine(int youhuijine) {
-		this.youhuijine = youhuijine;
-	}
+    private String state;
 
-	private int youhuijine;
+    public Integer getYouhuijine() {
+        return youhuijine;
+    }
 
+    public void setYouhuijine(Integer youhuijine) {
+        this.youhuijine = youhuijine;
+    }
     public Integer getShoping_id() {
         return shoping_id;
     }
@@ -109,6 +116,13 @@ public class T_shopping extends Model<T_shopping> {
     public void setZongjia(Double zongjia) {
         this.zongjia = zongjia;
     }
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     @Override
     protected Serializable pkVal() {
@@ -116,9 +130,17 @@ public class T_shopping extends Model<T_shopping> {
     }
 
     @Override
-	public String toString() {
-		return "T_shopping [shoping_id=" + shoping_id + ", product_id=" + product_id + ", number=" + number
-				+ ", order_id=" + order_id + ", is_dianpng=" + is_dianpng + ", danjia=" + danjia + ", zongjia="
-				+ zongjia + ", youhuijine=" + youhuijine + "]";
-	}
+    public String toString() {
+        return "T_shopping{" +
+        "youhuijine=" + youhuijine +
+        ", shoping_id=" + shoping_id +
+        ", product_id=" + product_id +
+        ", number=" + number +
+        ", order_id=" + order_id +
+        ", is_dianpng=" + is_dianpng +
+        ", danjia=" + danjia +
+        ", zongjia=" + zongjia +
+        ", state=" + state +
+        "}";
+    }
 }

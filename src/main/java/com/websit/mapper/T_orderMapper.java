@@ -104,6 +104,8 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	int  yifahuo(String  user_id);
 	int  yishouhuo(String  user_id);
 	int  quantum(String  user_id);
+	int  sales(String  user_id);
+	
 	int updateorderpayment(@Param("order_id")String order_id,@Param("order_payment")String order_payment);
 	int updatenqux(@Param("number")Integer number, @Param("product_id")String product_id);
 	/**
@@ -112,6 +114,15 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	 * @return
 	 */
 	T_order selectbyout_trade_no(@Param("order_no")String order_no);
+	/**
+	 * 查询订单
+	 * @param user_id
+	 * @param order_state
+	 * @param RowBounds
+	 * @param id
+	 * @return
+	 */
+	ArrayList<order_list> order_list2(@Param("user_id")String user_id,RowBounds RowBounds);
 
 
 }

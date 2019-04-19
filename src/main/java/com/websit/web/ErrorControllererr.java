@@ -2,7 +2,7 @@ package com.websit.web;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 /**
@@ -19,11 +19,11 @@ public class ErrorControllererr implements ErrorController {
     public String error(HttpServletRequest request) {
     	Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");//获取错误码
     	System.out.println(statusCode);
-        return "/home/error.html";//返回错误页面
+        return "/home/error";//返回错误页面
     }
 
 
-    @Override
+    @Override 
     public String getErrorPath() {
         return PATH;
     }

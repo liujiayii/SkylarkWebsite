@@ -26,15 +26,18 @@ public class InventoryController {
 	 */
 	@RequestMapping(value = "/listAllInventoryById", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String listAllInventoryById(Inventory inventory, Integer page, Integer limit) {
+	public String listAllInventoryById(String productName, Integer page, Integer limit) {
+		System.out.println("inventory" + productName+"page"+page+"limit");
+		System.out.println("inventoryService.listAllInventoryById(page, limit, productName)"
+				+ inventoryService.listAllInventoryById((page - 1) * limit, limit, productName));
 		try {
-			String productName = inventory.getProductName();
-			List<Inventory> result = inventoryService.listAllInventoryById(page, limit,productName);
-			int count = inventoryService.findInventoryCount(inventory);
+
+			List<Inventory> result = inventoryService.listAllInventoryById((page - 1) * limit, limit, productName);
+			inventoryService.findInventoryCount(productName);
 			if (result.size() >= 1) {
-				return JsonUtil.getResponseJson(1, "查看成功", count, result);
+				return JsonUtil.getResponseJson(1, "查看成功", inventoryService.findInventoryCount(productName), result);
 			} else {
-				return JsonUtil.getResponseJson(1, "无数据", null, null);
+				return JsonUtil.getResponseJson(1, "无数据", inventoryService.findInventoryCount(productName), result);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,14 +76,14 @@ public class InventoryController {
 	 */
 	@RequestMapping(value = "/updateInventory", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String updateInventory(int number,Long products_id,Long id) {
+	public String updateInventory(int number, Long products_id, Long id) {
 		System.out.println(number);
 		Inventory inventory = new Inventory();
 		inventory.setNumber(number);
 		inventory.setProducts_id(products_id);
 		inventory.setId(id);
 		try {
-			
+
 			int result = inventoryService.updateInventory(inventory);
 
 			if (result > 0) {

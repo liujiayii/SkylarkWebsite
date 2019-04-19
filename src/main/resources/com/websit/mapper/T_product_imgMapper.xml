@@ -27,4 +27,5 @@
                     t_product_img
                     WHERE product_id=#{productId}
     </select>
+    
 </mapper>

@@ -2,9 +2,11 @@ package com.websit.mapper;
 
 import com.websit.entity.T_admin;
 
-import io.lettuce.core.dynamic.annotation.Param;
+
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.baomidou.mybatisplus.plugins.pagination.Pagination;
@@ -43,5 +45,17 @@ public interface T_adminMapper extends BaseMapper<T_admin> {
 	 * @createDate 2019年4月2日-下午2:17:50
 	 */
 	public List<T_admin> findAdminList(Pagination page);
+	
+	/**
+	 * 通过登录名称获取管理员信息
+	 *
+	 * @Title: findByUserName
+	 * @description 
+	 * @param name
+	 * @return T_admin    
+	 * @author lujinpeng
+	 * @createDate 2019年4月11日-上午9:30:53
+	 */
+	public T_admin findByUserName (String name);
 
 }

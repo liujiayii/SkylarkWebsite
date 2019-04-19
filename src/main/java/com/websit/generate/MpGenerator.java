@@ -28,8 +28,8 @@ public class MpGenerator {
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
         gc.setAuthor("lichangchun");
-        gc.setOutputDir("E:\\workspqce1\\SkylarkWebsite\\src\\main\\java");
-        gc.setFileOverride(false);// 是否覆盖同名文件，默认是false
+        gc.setOutputDir("C:/Users/Administrator/eclipse-workspace/SkylarkWebsite/src/main/java");
+        gc.setFileOverride(true);// 是否覆盖同名文件，默认是false
         gc.setActiveRecord(true);// 不需要ActiveRecord特性的请改为false
         gc.setEnableCache(false);// XML 二级缓存
         gc.setBaseResultMap(true);// XML ResultMap
@@ -66,7 +66,7 @@ public class MpGenerator {
       //  strategy.setTablePrefix(new String[] { "tb_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.nochange);// 表名生成策略
         //  strategy.setInclude(new String[] { "tb_user" }); // 需要生成的表
-        strategy.setInclude(new String[] {"t_pay_success"}); // 需要生成的表
+        strategy.setInclude(new String[] {"t_shopping"}); // 需要生成的表
        
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类

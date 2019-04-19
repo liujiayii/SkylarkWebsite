@@ -73,10 +73,7 @@ public class wXpayController {
 		 	        
 		 	        json.setMsg("请求失败");
 	    	}
-	        
-	        
-	       
-	        return json;
+	         return json;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

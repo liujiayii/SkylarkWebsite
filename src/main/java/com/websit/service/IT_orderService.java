@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.websit.entityvo.*;
 
-import io.lettuce.core.dynamic.annotation.Param;
+
 /**
  * <p>
  * 订单表 服务类
@@ -120,5 +121,9 @@ public interface IT_orderService extends IService<T_order> {
 	 * @return
 	 */
 	T_order selectbyout_trade_no(String order_no);
+	/**
+	 * 商品单个退货
+	 */
+	public String sales(String order_id,String productid); 
 	
 }

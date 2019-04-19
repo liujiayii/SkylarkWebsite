@@ -11,11 +11,12 @@ import com.websit.mapper.T_postingMapper;
 import com.websit.service.IT_postingService;
 import com.websit.until.JsonUtil;
 
-import io.netty.util.internal.StringUtil;
+//import io.netty.util.internal.StringUtil;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.toolkit.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -201,7 +202,7 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 	 * @createDate 2019年3月15日-下午12:02:34
 	 */
 	public Wrapper<T_posting> selectPostCounts(String param1, String param2) {
-		if (StringUtil.isNullOrEmpty(param1) || StringUtil.isNullOrEmpty(param2)) {
+		if (StringUtils.isEmpty(param1) || StringUtils.isEmpty(param2)) {
 			return null;
 		}
 		

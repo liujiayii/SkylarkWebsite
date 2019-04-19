@@ -5,7 +5,6 @@ import com.websit.entity.T_product;
 import com.websit.mapper.T_orderMapper;
 import com.websit.service.IT_orderService;
 
-import io.lettuce.core.dynamic.annotation.Param;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
@@ -60,8 +59,12 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 	}
 	@Override
 	public ArrayList<order_list> order_list(String user_id, String order_state,RowBounds RowBounds,String id) {
+		if(order_state!=null&&order_state.equals("5")) {
+			return T_orderMapper.order_list2(user_id,RowBounds);
+		}else {
 		
 		return T_orderMapper.order_list(user_id, order_state,RowBounds,id);
+		}
 	}
 	@Override
 	/**
@@ -177,7 +180,7 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 		jiaobiao.setDsh(T_orderMapper.yifahuo(user_id));
 		jiaobiao.setYsh((T_orderMapper.  yishouhuo(user_id)));
 		jiaobiao.setQuantum(T_orderMapper.quantum(user_id));
-		
+		jiaobiao.setSales(T_orderMapper.sales(user_id));
 		return jiaobiao;
 	}
 	@Override
@@ -194,6 +197,14 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 	public T_order selectbyout_trade_no(String order) {
 		
 		return T_orderMapper.selectbyout_trade_no(order);
+	}
+	@Override
+	/**
+	 *按商品退货
+	 */
+	public String sales(String order_id, String productid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

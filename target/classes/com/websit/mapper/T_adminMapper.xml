@@ -30,5 +30,24 @@
 		select * from t_admin   	    
    	</select>
    
+   	<!-- 通过用户登录名称查询用户信息 -->
+	<resultMap id="findByUserName" type="com.websit.entity.T_admin" extends="BaseResultMap">
+        <!-- 角色集合 -->
+        <collection property="roles" ofType="com.websit.entity.T_role">
+            <id column="r_id" property="id" />
+        	<result column="r_name" property="name" />
+        	<result column="description" property="description" />
+        	<result column="r_status" property="status" />
+        	<result column="role_key" property="role_key" />
+        </collection>
+    </resultMap>
+	<select id="findByUserName"  resultMap="findByUserName">
+        select u.*
+        ,r.id as r_id, r.name as r_name, r.description, r.status r_status, r.role_key
+        from t_admin u
+        LEFT JOIN t_role_admin ur on u.id= ur.admin_id
+        LEFT JOIN t_role r on ur.role_id=r.id
+        where username= #{username}
+    </select>
    
 </mapper>

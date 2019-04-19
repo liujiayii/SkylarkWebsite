@@ -2,9 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  
   <div th:replace="/mall/common  :: commonHeader(商品列表)"></div>
-  <link rel="stylesheet" href="/assets/css/goods.css">
   <style>
     .nav-span {
       display: none
@@ -56,19 +54,19 @@
 
 <body>
 
-<div class="container" id="app">
-  <div th:replace="mall/common :: commonNav"></div>
+<div class="container goods" id="app">
+  <div th:replace="/mall/common :: commonNav"></div>
   <div class="detailCont">
     <breadcrumb>
       <breadcrumb-item to="/mall">商城</breadcrumb-item>
-      <breadcrumb-item>{{getSearchKeyWord('class_one') || getSearchKeyWord('type') ? '专区' : '搜索'}}</breadcrumb-item>
+      <breadcrumb-item>{{getSearchKeyWord('class_one') || getSearchKeyWord('type') ? getSearchKeyWord('class_one') : '搜索'}}</breadcrumb-item>
       <breadcrumb-item>{{getSearchKeyWord('class_two') || getSearchKeyWord('type') || getSearchKeyWord('search')}}
       </breadcrumb-item>
     </breadcrumb>
     <Divider v-if="!(goodsData.length>0)">暂时没有更多了</Divider>
     <div v-else class="detail-area">
       <div class="detail-goods-list" v-for="(items,index) in goodsData">
-        <a :href="'/goodDetails?id='+items.id" class="detail-area-A">
+        <a :href="'/goodDetails?id='+items.id" class="detail-area-A" target="_blank">
           <div class="goods-list-Img">
             <img :src="items.image"/>
           </div>
@@ -83,7 +81,7 @@
       <page :total="pageCount" :page-size="40" size="small" show-elevator show-total @on-change="pageChange"/>
     </div>
   </div>
-  <div th:replace="mall/common :: commonFooter"></div>
+  <div th:replace="/mall/common :: commonFooter"></div>
 </div>
 </body>
 <script type="text/javascript">
@@ -108,7 +106,6 @@
               number: 1
             },
             success: (res) => {
-              console.log(res)
               if (res.code == 1) {
                 this.$Message.info(res.msg)
               } else {
@@ -126,10 +123,8 @@
           url: "/selectAllproductation",
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.classData = res.data
-              console.log(this.classData)
             }
           }
         });
@@ -144,11 +139,9 @@
           dataType: "json",
           data,
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.getHrefParam('zone') ? this.goodsData = res.data.productLists : this.goodsData = res.data
               this.pageCount = res.count
-              console.log(this.goodsData)
             }
           }
         });
@@ -162,9 +155,11 @@
         this.getGoods("/listProductByProductTypeId", {productName: this.getSearchKeyWord('search')})
       } else if (this.getHrefParam('zone')) {
         this.getGoods("/listZoneByTypeIdPage", {zoneId: this.getHrefParam('zone'), page: 1, limit: 40})
+      } else if(this.getHrefParam('class_cont')){
+        this.getGoods("/listProductByClassTypeId", {classification_id: this.getHrefParam('class_cont'), page: 1, limit: 40})
       }
     }
   }
 </script>
-<div th:replace="mall/common :: commonFooterjs"></div>
+<div th:replace="/mall/common :: commonFooterjs"></div>
 </html>

@@ -44,15 +44,43 @@
 	
 	<!-- 查询订单列表 -->
 	<select id="order_list" resultType="com.websit.entityvo.order_list">
-		SELECT t.yunfei,t.order_money as
-		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_product_id,order_state,order_shouhuo_id,order_time,order_payment
+		SELECT t.yunfei,t.order_money as zongjia,
+		t.order_product_id,
+		t.order_number,
+		t.order_money,
+		t.Order_no,
+		order_mode,
+		order_id,
+		order_product_id,
+		order_state,
+		order_shouhuo_id,
+		order_time,
+		order_payment
 		from t_order t where 1=1 and  t.user_id=#{user_id}
 		<if test="id != null and id != ''">
 		and  t.order_id=#{id}   
 		</if>
-		<if test=" order_state != null and order_state != ''">
+	<if test=" order_state != null and order_state != ''">
+	
 			and t.order_state=#{order_state}
-		</if>
+			
+	</if>
+	<if test="order_state != null and order_state != '' and order_state==5">
+	or  t.order_state=6 or  t.order_state=7 or t.order_state=8
+	 
+	 </if>
+	
+		order by order_time desc
+	</select>
+	
+		<!-- 查询订单列表 -->
+	<select id="order_list2" resultType="com.websit.entityvo.order_list">
+		SELECT t.yunfei,t.order_money as
+		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_product_id,order_state,order_shouhuo_id,order_time,order_payment
+		from t_order t where 1=1 and  t.user_id=#{user_id} and  t.order_state in (5,6,7,8)
+	 
+	 
+	
 		order by order_time desc
 	</select>
 	<!--  查询商品列表-->
@@ -63,12 +91,12 @@
                     pt. id producttypeid, 
                     p.name productName,
                     p.image image,
-                    p.color color,
+                   
                     p.price price,
                     p.brand brand,
                     p.create_time create_times,
                     p.state state,
-                    p.specifications specifications,
+                   
                     p.describes describion,
                     t.*
                
@@ -152,8 +180,10 @@
 	<select id="order_list1" resultType="com.websit.entityvo.order_list">
 		SELECT t.yunfei,t.order_money as
 		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_shouhuo_id,order_state
-		from t_order t where 1=1 or Order_no=#{date}
-	
+		from t_order t where 1=1 
+		<if test=" date != null and date != ''">
+		and  Order_no=#{date}
+		</if>
 		<if test=" order_state != null and order_state != ''">
 			and t.order_state=#{order_state}
 			
@@ -176,11 +206,14 @@
 		<select id="quantum" resultType="Integer">
 	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id  where  t_order.user_id=#{user_id}
 	</select>
+	<select id="sales" resultType="Integer">
+	SELECT   count(*)    FROM   t_order   JOIN    t_shopping     ON  t_order.order_no=t_shopping.order_id  where  t_order.user_id=#{user_id}  and t_order.order_state  in(5,6,7,8)
+	</select>
 <!-- 支付宝回调改状态 -->
 <update id="updateorderpayment" >
 		UPDATE  t_order
-		SET order_payment=#{order_payment}
-		WHERE  order_id=#{order_id}
+		SET order_payment=#{order_payment},order_state=1
+		WHERE  order_no=#{order_id}
 	   
 	</update>
 		<!-- 取消订单加库存 -->

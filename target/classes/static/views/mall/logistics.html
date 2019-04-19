@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="UTF-8">
-  
   <title></title>
   <div th:replace="/mall/common  :: commonHeader(物流详情)"></div>
   <style>
@@ -16,10 +14,9 @@
     }
   </style>
 </head>
-
 <body>
 <div class="container" id="app">
-  <div th:replace="mall/common :: commonNav"></div>
+  <div th:replace="/mall/common :: commonNav"></div>
   <div class="detailCont">
     <p><a href="/mall">首页</a>-<a href=" #" onclick="javascript :history.back(-1)">返回</a>-物流详情</p>
     <div class="logisticsDom">
@@ -44,7 +41,7 @@
       </div>
     </div>
   </div>
-  <div th:replace="mall/common :: commonFooter"></div>
+  <div th:replace="/mall/common :: commonFooter"></div>
 </div>
 </body>
 <script>
@@ -74,10 +71,8 @@
           url: "/selectAllproductation",
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.classData = res.data
-              console.log(this.classData);
             }
           }
         });
@@ -89,10 +84,8 @@
           dataType: "json",
           data: {number: this.getHrefParam('log')},
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.logisticsData = res.data
-              console.log(this.logisticsData)
               this.issignsData = res.data.expressDetail
               if (res.data.issign == 0) {
                 this.issigns = "未签收";
@@ -111,6 +104,5 @@
   }
 
 </script>
-<div th:replace="mall/common :: commonFooterjs"></div>
-
+<div th:replace="/mall/common :: commonFooterjs"></div>
 </html>

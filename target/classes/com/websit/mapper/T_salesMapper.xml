@@ -19,7 +19,50 @@
     </update>
     <select id="th_list"  resultType="com.websit.entityvo.th_list">
     select  t.sales_no,t.order_id,t.cause_time,dd.order_money as zongjia,t.cause_type,t.sales_cause,t.cause_explain,dd.order_state,dd.user_id,US.nickname  from T_sales   t   join   t_order dd  ON  dd.order_id=t.order_id  join  t_user US  ON  US.id=dd.user_id 
-   
+  
+    </select>
+    
+        <select id="seleth_list"  resultType="com.websit.entityvo.shopinglist">
+     SELECT             s.*,t.*,
+                   
+                    pt. name producttypename,
+                    pt. id producttypeid, 
+                    p.name productName,
+                    p.image image,
+                    
+                  
+                   
+                    p.create_time create_times,
+                    p.state state,
+                    
+                    p.describes describion
+
+                 
+               
+                FROM
+                    t_product p 
+                    join t_product_type pt on p.product_type_id = pt.id
+
+                    join t_classification tc on pt.classification_id = tc.id
+                    join t_shopping  t on t.product_id=p.id
+                    JOIN  t_order    r  on r.order_no=t.order_id
+                    JOIN  t_sales   s  on s.order_id=r.order_id
+                    where s.stele=#{stale} and s.user_id=#{user_id}
+                    and sales_no=#{no}
+                    
+  
+    </select>
+    
+            <select id="order_listr"  resultType="com.websit.entityvo.order_listr">
+     SELECT             *
+
+                 
+               
+                FROM
+         
+                     t_sales
+                    where stele=#{stale} and  user_id=#{user_id}
+                    
   
     </select>
     

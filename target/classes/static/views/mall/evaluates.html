@@ -221,7 +221,6 @@
           formData.append('product_id', this.productid)
           formData.append('order_id', this.orderid)
           formData.append('order_no', this.orderid)
-          console.log(formData.pic)
           $.ajax({
             type: "post",
             url: "/t_review/insertReview",
@@ -231,7 +230,6 @@
             processData: false,
             data: formData,
             success: (res) => {
-              console.log(res)
             }
           });
           this.$Message.info('评论成功！');
@@ -240,8 +238,6 @@
         } else {
           this.$Message.info('评价内容不能为空！');
         }
-
-
       }
     },
     mounted() {

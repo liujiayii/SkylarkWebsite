@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.SpecificationOptionsMapper">
+ <!-- 规格选项列表 分页 -->
+    <select id="listAllSpecificationOptions" resultType="com.websit.entity.SpecificationOptions">
+       SELECT DISTINCT
+                    id id,
+                    name name,
+                    specifications_id specificationsId
+                FROM
+                    t_specification_options 
+           	   GROUP BY
+					id DESC
+            	limit #{page},#{limit} 
+    </select>
+      <!-- 查询商品规格选项数量 -->
+	<select id="findSpecificationsOptionsCount"  resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM (select id from  t_specification_options 
+		)as tb
+	</select>
+    <!-- 根据规格id查询规格选项 -->
+    <select id="listAllSpecificationOptionsBySpecificationId" resultType="com.websit.entity.SpecificationOptions">
+       SELECT DISTINCT
+                    id id,
+                    name name,
+                    specifications_id specificationsId
+                FROM
+                    t_specification_options 
+               where specifications_id = #{specificationsId}
+    </select>
+	  <!-- 增加规格选项 -->
+	<insert id="saveSpecificationOptions" parameterType="com.websit.entity.SpecificationOptions">
+		insert into
+		  t_specification_options(name,specifications_id)
+		values
+		(#{name},#{specificationsId})
+	</insert>
+	<!-- 修改规格选项 -->
+	<update id="updateSpecificationOptions" parameterType="com.websit.entity.SpecificationOptions">
+		update  t_specification_options
+		<set>
+			<if test="name != null and name != ''">
+				name = #{name},
+			</if>
+			<if test="specificationsId != null and specificationsId != ''">
+				specifications_id = #{specificationsId}
+			</if>
+		</set>
+		where id= #{id}
+	</update>
+	 <!-- 根据专区id删除规格选项 -->
+    <delete id="deleteSpecificationOptionsById" parameterType="BigInteger">
+		delete
+		   from
+		 t_specification_options
+		   where specifications_id= #{specificationsId}
+	</delete>
+</mapper>

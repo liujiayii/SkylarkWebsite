@@ -12,6 +12,7 @@ import com.websit.entity.T_product;
 import com.websit.entity.T_product_type;
 import com.websit.entity.Zone;
 import com.websit.entityvo.ProductDetails;
+import com.websit.entityvo.ProductSpecificationsVo;
 import com.websit.entityvo.ProductTypeVo;
 import com.websit.entityvo.ProductVo;
 import com.websit.mapper.T_productMapper;
@@ -125,9 +126,9 @@ public class T_productServiceImpl extends ServiceImpl<T_productMapper, T_product
 	 * @createDate 2019年3月24日
 	 */
 	@Override
-	public List<ProductVo> listProductByProductTypeId(String productName) {
+	public List<ProductVo> listProductByProductTypeId(String productName,Integer page,Integer limit) {
 		
-		return productMapper.listProductByProductTypeId(productName);
+		return productMapper.listProductByProductTypeId(productName,page,limit);
 	}
 	/**
 	 * @description 根据商品名称查询颜色
@@ -181,5 +182,37 @@ public class T_productServiceImpl extends ServiceImpl<T_productMapper, T_product
 		
 		return productMapper.selectCountByState();
 	}
+
+	/**
+	 * 根据商品名称查询商品规格及选项
+	 * @param productId
+	 * @return
+	 */
+	@Override
+	public List<ProductSpecificationsVo> findSpecificationsByProduct(Long productId) {
+		
+		return productMapper.findSpecificationsByProduct(productId);
+	}
+
+	@Override
+	public List<ProductVo> listProductByCount(String productName, Integer page, Integer limit) {
+	
+		return productMapper.listProductByCount(productName, page, limit);
+	}
+	
+	/**
+	 * 通过大分类id查询所有二级分类下商品信息
+	 */
+	@Override
+	public List<ProductTypeVo> listProductByClassTypeId(Long classification_id, Integer page, Integer limit) {
+		
+		return productMapper.listProductByClassTypeId(classification_id, page, limit);
+	}
+	@Override
+	public Integer insertSpecificationService(T_product product) {
+		// TODO Auto-generated method stub
+		return productMapper.insertSpecificationService(product);
+	}
+
 
 }

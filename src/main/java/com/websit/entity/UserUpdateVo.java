@@ -101,19 +101,11 @@ public class UserUpdateVo {
 			this.signature = signature;
 		}
 
-		public UserUpdateVo(Long id, String nickname, String sex, String email, String avatar, Date birthday,
-				String signature) {
-			super();
-			this.id = id;
-			this.nickname = nickname;
-			this.sex = sex;
-			this.email = email;
-			this.avatar = avatar;
-			this.birthday = birthday;
-			this.signature = signature;
+		@Override
+		public String toString() {
+			return "UserUpdateVo [id=" + id + ", nickname=" + nickname + ", sex=" + sex + ", email=" + email
+					+ ", avatar=" + avatar + ", birthday=" + birthday + ", signature=" + signature + "]";
 		}
-	    
-	    
-	    
 
+	
 }

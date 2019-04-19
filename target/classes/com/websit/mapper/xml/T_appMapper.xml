@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_appMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_app">
+        <id column="app_id" property="app_id" />
+        <result column="app_version" property="app_version" />
+        <result column="app_url" property="app_url" />
+        <result column="app_cood" property="app_cood" />
+        <result column="app_name" property="app_name" />
+        <result column="app_type" property="app_type" />
+    </resultMap>
+
+</mapper>

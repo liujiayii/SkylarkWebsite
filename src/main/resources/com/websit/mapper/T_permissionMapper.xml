@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_permissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_permission">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="url" property="url" />
+        <result column="pid" property="pid" />
+        <result column="perms" property="perms" />
+        <result column="order_num" property="order_num" />
+        <result column="menu_type" property="menu_type" />
+        <result column="visible" property="visible" />
+        <result column="icon" property="icon" />
+        <result column="component" property="component" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, description, url, pid, perms, order_num, menu_type, visible, icon, component
+    </sql>
+
+    <!-- 通过用户id查询权限信息 -->
+    <select id="selectPermsByUserId" resultMap="BaseResultMap">
+        select p.* 
+        from t_admin u       
+        LEFT JOIN t_role_admin tur on u.id = tur.admin_id
+        LEFT JOIN t_role r on tur.role_id = r.id
+        LEFT JOIN t_role_permission trp on trp.role_id = r.id
+        LEFT JOIN t_permission p on p.id = trp.permission_id
+        where u.id=#{userId}
+    </select>
+    
+    <!-- 查询所有权限 -->
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from t_permission
+    </select>
+    
+    <!-- 添加权限 -->
+    <insert id="insertPermission" parameterType="com.websit.entity.T_permission">
+        insert into t_permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="url != null">url,</if>
+            <if test="pid != null">pid,</if>
+            <if test="perms != null">perms,</if>
+            <if test="order_num != null">order_num,</if>
+            <if test="menu_type != null">menu_type,</if>
+            <if test="visible != null">visible,</if>
+            <if test="icon != null">icon,</if>
+            <if test="component != null">component,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+		    <if test="id != null">
+		        #{id,jdbcType=BIGINT},
+		    </if>
+		    <if test="name != null">
+		        #{name,jdbcType=VARCHAR},
+		    </if>
+		    <if test="description != null">
+		        #{description,jdbcType=VARCHAR},
+		    </if>
+		    <if test="url != null">
+		        #{url,jdbcType=VARCHAR},
+		    </if>
+		    <if test="pid != null">
+		        #{pid,jdbcType=BIGINT},
+		    </if>
+		    <if test="perms != null">
+		        #{perms,jdbcType=VARCHAR},
+		    </if>
+		    <if test="order_num != null">
+		        #{order_num,jdbcType=INTEGER},
+		    </if>
+		    <if test="menu_type != null">
+		        #{menu_type,jdbcType=VARCHAR},
+		    </if>
+		    <if test="visible != null">
+		        #{visible,jdbcType=INTEGER},
+		    </if>
+		    <if test="icon != null">
+		        #{icon,jdbcType=VARCHAR},
+		    </if>
+		    <if test="component != null">
+		        #{component,jdbcType=VARCHAR},
+		    </if>
+		</trim>       
+    </insert>
+    
+    <!-- 修改权限 -->
+    <update id="updatePermission" parameterType="com.websit.entity.T_permission">
+        update t_permission
+        <set>
+	      <if test="name != null">
+	          name = #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="description != null">
+	          description = #{description,jdbcType=VARCHAR},
+	      </if>
+	      <if test="url != null">
+	          url = #{url,jdbcType=VARCHAR},
+	      </if>
+	      <if test="pid != null">
+	          pid = #{pid,jdbcType=BIGINT},
+	      </if>
+	      <if test="perms != null">
+	          perms = #{perms,jdbcType=VARCHAR},
+	      </if>
+	      <if test="order_num != null">
+		      order_num = #{order_num,jdbcType=INTEGER},
+		  </if>
+		  <if test="menu_type != null">
+		      menu_type = #{menu_type,jdbcType=VARCHAR},
+		  </if>
+		  <if test="visible != null">
+		      visible = #{visible,jdbcType=INTEGER},
+		  </if>
+		  <if test="icon != null">
+		      icon = #{icon,jdbcType=VARCHAR},
+		  </if>
+		  <if test="component != null">
+		      component = #{component,jdbcType=VARCHAR},
+		  </if>
+	    </set>
+	    where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <!-- 删除权限 -->
+    <delete id="deletePermission">
+        delete 
+        from t_permission
+        where id=#{id,jdbcType=BIGINT}
+        
+    </delete>
+    
+    
+</mapper>

@@ -74,14 +74,14 @@ public class ContactUs implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("ContactUs [id=").append(id).append(", address=").append(address).append(", phone=")
-				.append(phone).append(", enterprise_email=").append(enterprise_email).append(", record=").append(record)
-				.append("]");
-		return builder.toString();
-	}
+	/*
+	 * @Override public String toString() { StringBuilder builder = new
+	 * StringBuilder();
+	 * builder.append("ContactUs [id=").append(id).append(", address=").append(
+	 * address).append(", phone=")
+	 * .append(phone).append(", enterprise_email=").append(enterprise_email).
+	 * append(", record=").append(record) .append("]"); return builder.toString(); }
+	 */
 	
 	
 	

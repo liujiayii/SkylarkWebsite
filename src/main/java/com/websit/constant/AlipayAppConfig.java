@@ -13,7 +13,8 @@ public class AlipayAppConfig {
 	// 商户appid
 	public static final String APPID = "2019032763691457";
 	// app端支付宝支付异步通知结果；服务器异步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static final String notify_url = "http://www.yunquekeji.com/aliPayApp/notify_url";
+	// http://www.yunquekeji.com
+	public static final String notify_url = "http://wuchi.free.idcfengye.com/aliPayApp/notify_url";
 	// 支付完成跳转页面
 	public static final String return_url = "";
 	// 请求网关地址

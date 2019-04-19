@@ -6,12 +6,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.websit.entity.T_order;
 import com.websit.entity.T_sales;
+import com.websit.entityvo.order_list;
+import com.websit.entityvo.order_listr;
 import com.websit.entityvo.th_list;
 import com.websit.service.IT_alipay_refundService;
 import com.websit.service.IT_salesService;
+import com.websit.service.impl.T_alipay_refundServiceImpl;
 import com.websit.until.JsonUtil;
+import com.websit.until.Security;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +59,7 @@ public class T_salesController {
 			//fig1=alipay_refundService.refund("9566","200",null);
 			fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_money().toString(),null);
 			}else if(T_order.getOrder_payment().equals("1")) {//支付宝app
-				
+			fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_money().toString(),null);
 			}
                 else if(T_order.getOrder_payment().equals("2")) {//微信web
 				
@@ -68,8 +75,10 @@ public class T_salesController {
 			}
 		}else{
 			IT_orderService.ordercancelled(order_id, "7");
+			IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
 			if(upstale.equals(5)) {
 			fig=T_salesService.updatestale(stale,sales_id);
+			IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
 			}
 		}
        }
@@ -99,8 +108,10 @@ public class T_salesController {
 				fig=T_salesService.updatestale(stale,sales_id);
 			}else {
 		     IT_orderService.ordercancelled(order_id, "7");
+		     IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
 		 	if(upstale.equals("5")) {
 				fig=T_salesService.updatestale(stale,sales_id);
+				IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
 				}
 		 
 	 }
@@ -132,9 +143,10 @@ public class T_salesController {
 		page=(page-1)*limit;
 		try {
 			//cent=1T_salesService;
-	    cent=T_salesService.selectCount(null);
+	   
 	    
 		ter=T_salesService.th_list(date, new RowBounds(page,limit));
+		 cent=ter.size();
 		 if (ter.size()>0) {
 			 msg="查询成功"; 
 			 cood=1;
@@ -150,7 +162,55 @@ public class T_salesController {
 		
 		return JsonUtil.getResponseJson(cood, msg, cent, ter);
 	}
+	/**
+	 * 退货审核列表
+	 */
+	@RequestMapping("/appthlist")
+	@ResponseBody
 	
+	public  String  appsthshlist(String stale,String user_id,RowBounds RowBounds,Integer page,Integer limit) {
+		String msg = "系统异常，请稍后再试";
+		List<th_list> ter=null;
+		int  cent=0;
+		Integer cood = 1;
+		page=(page-1)*limit;
+		String order_state="",id="";
+		//try {
+			//cent=1T_salesService;
+	     user_id =(Security.decode(user_id));
+	        
+	
+	    List<order_listr> order_listr = T_salesService.rder_listr(stale, user_id, new RowBounds(page,limit), "");
+	    
+	  
+	    for (int i = 0; i < order_listr.size(); i++) {
+	    	
+	    	
+	    	
+		
+//
+	    	order_listr.get(i).setShopinglist(((T_salesService.seleth_list(stale, user_id, new RowBounds(page,limit),order_listr.get(i).getSales_no()))));
+
+		}
+	
+		 cent=order_listr.size();
+		 if (order_listr.size()>0) {
+			 msg="查询成功"; 
+			 cood=1;
+		 }else {
+			 msg="查询成功"; 
+			 cood=1; 
+		 }
+		//} catch (Exception e) {
+			// msg="查询失敗"; 
+			// cood=-1;
+		//}
+		
+		
+		return JsonUtil.getResponseJson(cood, msg, cent, order_listr);
+	}
+
+
 	
 	
 }

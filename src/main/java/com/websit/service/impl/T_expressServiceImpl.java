@@ -36,7 +36,7 @@ public class T_expressServiceImpl extends ServiceImpl<T_expressMapper, T_express
 	private T_expressMapper t_expressMapper;
 	
 	@Autowired
-	RedisUtil redisUtil;
+	private RedisUtil redisUtil;
 	
 	/**
 	 * 通过快递单号查询快递信息

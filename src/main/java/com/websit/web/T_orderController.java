@@ -1,7 +1,5 @@
 package com.websit.web;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -10,10 +8,10 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.websit.entity.T_order;
 import com.websit.entity.T_product;
 import com.websit.entity.T_sales;
@@ -27,7 +25,6 @@ import com.websit.service.IT_productService;
 import com.websit.service.IT_salesService;
 import com.websit.service.IT_shoppingService;
 import com.websit.service.IT_trolleyService;
-import com.websit.until.DesUtil;
 import com.websit.until.JsonUtil;
 import com.websit.until.OrderCodeFactory;
 import com.websit.until.Security;
@@ -126,6 +123,7 @@ public class T_orderController {
 					fig = IT_orderService.insert(T_order);
 					T_shopping T_shopping = order.shopping(order_no, order_number, jine, mum,
 							product.getPrice().doubleValue(), id.toString());
+					T_shopping.setState("0");
 					fig = T_shoppingService.insert(T_shopping);
 					/*
 					 * 减去库存
@@ -162,6 +160,7 @@ public class T_orderController {
 					
 					T_shopping T_shopping = order.shopping(order_no, T_trolley.getNumber(), jine, mum,
 							product.getPrice().doubleValue(), T_trolley.getProduct_id().toString());// 将所有值给对象
+					T_shopping.setState("0");
 					fig = T_shoppingService.insert(T_shopping);
 					number = T_trolley.getNumber() + number;
 					ddzongjia = ddzongjia + zongjia - mum;
@@ -197,12 +196,13 @@ public class T_orderController {
 	}
 
 	/**
-	 * 订单取消,发货，签收，
+	 * 订单取消,发货，签收，退货
+	 * @throws Exception 
 	 */
 	@RequestMapping("/ordercan")
 	@ResponseBody
 	public String ordercancelled(String order_id, String order_state, String cause_explain, String cause_type,
-			String sales_cause, String order_shouhuo_id) {// 主键,订单状态,退货原因,退货类型,退货说明
+			String sales_cause, String order_shouhuo_id) throws Exception {// 主键,订单状态,退货原因,退货类型,退货说明
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		int fig = 0;
@@ -228,6 +228,9 @@ public class T_orderController {
 			fig = IT_orderService.ordercancelled(order_id, order_state);
 			break;
 		case "5":
+			Map<String, Object> Map = new HashMap<String, Object>();
+			Map.put("order_id", order_id);
+			List<T_order> order=IT_orderService.selectByMap(Map);
 			Date cause_time = new Date();
 			T_sales T_sales = new T_sales();
 			T_sales.setCause_explain(cause_explain);
@@ -237,9 +240,22 @@ public class T_orderController {
 			T_sales.setCause_time(cause_time);
 			T_sales.setSales_no(sales_no);
 			T_sales.setStele("0");
-			T_salesService.insert(T_sales);
+			T_sales.setUser_id(order.get(0).getUser_id());
+			T_sales.setSales_stes(order.get(0).getOrder_state());
+			Map<String, Object> lumnMap=new HashMap<String,Object>();
+			lumnMap.put("order_id", order_id);
+			lumnMap.put("stele", "0");
+			
+			if(T_salesService.selectByMap(lumnMap).size()>0){
+				msg="已经在审核中，请稍等";
+				return JsonUtil.getResponseJson(cood, msg, null, null);
+			}else {
+	
+		    boolean	ig=T_salesService.insert(T_sales);
 			fig = IT_orderService.ordercancelled(order_id, order_state);
+
 			break;
+			}
 		case "8":
 			fig = IT_orderService.ordercancelled(order_id, "5");
 			break;
@@ -273,17 +289,22 @@ public class T_orderController {
 			user_id = Security.decode(user_id);
 
 		
+		}else {
+			page=page-1;
 		}
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
-		
+		int num2=0;
 		if (user_id == "" || user_id == "undefined" || page == null || limit == null) {
 			cood = 152369;
 			msg = "用户数据不正确，请重新登录";
 		} else if (user_id == null || user_id.equals(" ")) {
 			msg = "请重新登录";
 			return JsonUtil.getResponseJson(cood, msg, null, null);
-		} else {
+			
+		}
+		
+		else {
 			ArrayList<order_list> orderlist = IT_orderService.order_list(user_id, order_state, new RowBounds(page, limit),id);
 			for (int i = 0; i < orderlist.size(); i++) {
 
@@ -298,7 +319,12 @@ public class T_orderController {
 			if (order_state != null) {
 				columnMap.put("order_state", order_state);
 			}
-			int num2 = IT_orderService.selectByMap(columnMap).size();
+			if(order_state.equals("5")) {
+				 num2 = orderlist.size();
+			}else {
+				 num2 = IT_orderService.selectByMap(columnMap).size();
+			}
+			
 			if (orderlist.size() > 0) {
 				cood = 1;
 				msg = "查询成功";
@@ -351,6 +377,7 @@ public class T_orderController {
 
 			int num2 = IT_orderService.selectCount(null);
 			List<order_list> orderlist = IT_orderService.order_list1(order_state, page, limit, date);
+			num2=orderlist.size();
 			for (int i = 0; i < orderlist.size(); i++) {
 				orderlist.get(i).setT_goods(goodsService.selectById(orderlist.get(i).getOrder_mode()));
 				orderlist.get(i).setShping(IT_orderService.shopinglist(orderlist.get(i).getOrder_no(), order_state));
@@ -451,11 +478,11 @@ public class T_orderController {
 	 */
 	@RequestMapping("/uporderpayment")
 	@ResponseBody
-	public String updatete(String order_id, String order_payment) {
+	public String updatete(String order_no, String order_payment) {
 		
 
-		int fig = IT_orderService.ordercancelled(order_id, "1");
-		IT_orderService.updateorderpayment(order_id, order_payment);
+		int fig = IT_orderService.ordercancelled(order_no, "1");
+		IT_orderService.updateorderpayment(order_no, order_payment);
 		if (fig > 0) {
 			return JsonUtil.getResponseJson(1, "查询成功", null, null);
 		}
@@ -465,9 +492,9 @@ public class T_orderController {
 	/**
 	 * 定时任务
 	 */
-//	@Scheduled(fixedDelay = 5000) //启动后每隔5秒运行一次
+   @Scheduled(fixedDelay = 5000) //启动后每隔5秒运行一次
 	public void timer() { // 获取当前时间
-		LocalDateTime localDateTime = LocalDateTime.now();
+	
 
 		Map<String, Object> columnMap = new HashMap<String, Object>();
 
@@ -498,9 +525,23 @@ public class T_orderController {
 
 			}
 		}
-
-
+	
 
 	}
+	/**
+	 * 商品单个退货
+	 * @param order_id
+	 * @param productid
+	 * @return
+	 */
+	@RequestMapping("/sales")
+	@ResponseBody
+	public String sales(String order_id,String productid) {
+		
+		
+		return JsonUtil.getResponseJson(1, "查询成功", null, null);
+		
+	}
+
 
 }

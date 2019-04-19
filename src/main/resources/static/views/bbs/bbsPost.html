@@ -93,12 +93,9 @@
     methods: {
       replyShow(index) {
         this.post.map[index].show_c = !this.post.map[index].show_c
-        console.log(index)
       },
       /*楼中楼分页*/
       replyPage(index, page) {
-        console.log(page)
-        console.log(index)
         $.ajax({
           type: "post",
           url: "/t_reply/t_replylist",
@@ -109,7 +106,6 @@
             limit: page * 5
           },
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.post.map[index].t_replylist = res.data
             } else {
@@ -133,7 +129,6 @@
               user_id: this.userInfo.id
             }),
             success: (res) => {
-              console.log(res)
               if (res.code == 1) {
                 this.form = {}
                 this.success(res.msg)
@@ -158,7 +153,6 @@
             limit: 10
           },
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               res.data[0].create_time = this.timeFormat(res.data[0].create_time)
               for (let i = 0; i < res.data[0].map.length; i++) {
@@ -183,8 +177,6 @@
             user_id: 21
           }),
           success: (res) => {
-        	  
-            console.log(res)
             if(res.code == 1){
             	
             		 var socket = new SockJS('/endpointSang');
@@ -276,21 +268,6 @@
 	   
         });
 	  
-   /* function disconnect() {
-	    if (stompClient != null) {
-	      stompClient.disconnect();
-	    }
-	    setConnected(false);
-	    console.log('Disconnected');
-	  }
-
-	  function showResponse(message) {
-	    $("#num1").html(message);
-	  }
-
-	  function showResponse1(message) {
-	    $("#num").html(message);
-	  } */
 </script>
 <div th:replace="/home/common :: commonFooterjs"></div>
 </body>

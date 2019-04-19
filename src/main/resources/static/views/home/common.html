@@ -4,13 +4,14 @@
 <head th:fragment="commonHeader(title)">
   <title th:text="${title}"></title>
   <meta name="referrer" content="no-referrer">
-  <link rel="stylesheet" href="/assets/css/reset.css">
   <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/iview@3/dist/iview.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/stompjs@2/lib/stomp.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1/build/qrcode.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iview@3/dist/styles/iview.min.css">
+  <link rel="stylesheet" href="/assets/css/public.css">
 </head>
 <body>
 <div th:fragment="commonNav">
@@ -90,8 +91,7 @@
             data:{page:1,limit:100},
             dataType: "json",
             success: (res) => {
-              console.log(res)
-              if (res.code == 1) {
+              if (res.code === 1) {
                 this.getFriendsLinkData = res.data
               }
             }
@@ -117,7 +117,6 @@
           let h = time.getHours();
           let mm = time.getMinutes();
           let s = time.getSeconds();
-          console.log(y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s)
           return y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s;
         },
         /*格式化时间戳*/
@@ -129,7 +128,6 @@
           let h = time.getHours();
           let mm = time.getMinutes();
           let s = time.getSeconds();
-          console.log(y + '-' + m + '-' + d + ' ' + h + ':' + mm + ':' + s)
           return y + '-' + m + '-' + d;
         },
         /*提示信息*/
@@ -149,8 +147,7 @@
             url: "/selectAllContactUsList",
             dataType: "json",
             success: (res) => {
-              console.log(res)
-              if (res.code == 1) {
+              if (res.code === 1) {
                 this.info = res.data[0]
               } else {
                 this.error(res.msg)

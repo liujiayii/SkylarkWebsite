@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.SpecificationsMapper">
+
+<!--  规格列表   分页 -->
+    <select id="listAllSpecifications" resultType="com.websit.entityvo.SpecificationsVo">
+				SELECT DISTINCT
+					ts.id specificationsId,
+					ts. NAME specificationsName,
+					ts.product_type_id producttypeid,
+					tpt. NAME productTypeName
+				FROM
+					t_specifications ts,
+					t_product_type tpt
+				WHERE
+					ts.product_type_id = tpt.id
+				GROUP BY
+					ts.id DESC
+            	limit #{page},#{limit} 
+    </select>
+    <!--  根据商品类型id查询规格 app-->
+    <select id="listSpecificationsByproducttypeid" resultMap="specificationsAndOptionsVo">
+       SELECT DISTINCT
+                   ts.id specificationsId,
+                   ts.name specificationsName,
+                   tpt.id producttypeid,
+                   tpt.name producttypename,
+                   tso. id id,
+                   tso.name name
+                FROM
+                   t_specifications ts,
+                   t_product_type tpt,
+                    t_specification_options tso
+                   WHERE ts.product_type_id = tpt.id
+                   and  ts.id = tso.specifications_id
+            and tpt.id = #{producttypeid}
+    </select>
+     <resultMap type="com.websit.entityvo.ProductTypeSpecifications" id="specificationsAndOptionsVo">
+       <id column="producttypeid" property="producttypeid"/>
+            <result column="producttypename" property="producttypename"/>
+       <collection property="SpecificationOptionsListss" ofType="com.websit.entityvo.SpecificationsVo">
+           <id column="specificationsId" property="specificationsId"/>
+           <result column="specificationsName" property="specificationsName"/>
+             <collection property="SpecificationOptionsList" ofType="com.websit.entity.SpecificationOptions">
+              <id column="id" property="id"/>
+           <result column="name" property="name"/>
+             </collection>
+       </collection>
+    </resultMap>
+    
+      <!-- 查询当前商品规格及各个规格下规格选项集合 -->
+    <select id="listSpecificationsBySpecificationsId" resultMap="specificationsAndOptions">
+       SELECT DISTINCT
+                    ts.id specificationsId,
+                    ts. name specificationsName,
+                    tso. id id,
+                    tso.name name
+                FROM
+                   t_specifications ts,
+                    t_specification_options tso
+         WHERE
+                   ts.id = tso.specifications_id
+                and ts.id = #{specificationsId}
+     
+    </select>
+    <resultMap type="com.websit.entityvo.SpecificationsVo" id="specificationsAndOptions">
+       <id column="specificationsId" property="specificationsId"/>
+        <result column="specificationsName" property="specificationsName"/>
+       <collection property="SpecificationOptionsList" ofType="com.websit.entity.SpecificationOptions">
+           <id column="id" property="id"/>
+           <result column="name" property="name"/>
+       </collection>
+    </resultMap>
+    
+    <!-- 查询商品规格数量 -->
+	<select id="findSpecificationsVoCount"  resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM (select id from t_specifications
+		)as tb
+	</select>
+	  <!-- 增加商品规格 -->
+	<insert id="saveSpecificationsVo" parameterType="com.websit.entityvo.SpecificationsVo">
+		insert into
+		 t_specifications(name,product_type_id)
+		values
+		(#{specificationsName},#{producttypeid})
+	</insert>
+	
+	<!-- 修改商品规格 -->
+	<update id="updateSpecificationsVo" parameterType="com.websit.entityvo.SpecificationsVo">
+		update t_specifications
+		<set>
+			<if test="specificationsName != null and specificationsName != ''">
+				name = #{specificationsName},
+			</if>
+			<if test="producttypeid != null and producttypeid != ''">
+				product_type_id = #{producttypeid}
+			</if>
+		</set>
+		where id= #{specificationsId}
+	</update>
+	 <!-- 根据专区id删除商品规格 -->
+    <delete id="deleteSpecificationsVoById" parameterType="BigInteger">
+		delete
+		   from
+		t_specifications
+		   where id=#{specificationsId}
+		
+	</delete>
+	
+    <!-- 按专区id查询商品条数 -->
+<!-- 	<select id="findBpiListByZoneId" resultType="Integer">
+		SELECT COUNT(DISTINCT tb.id) count
+		FROM
+		(
+		select
+		p.id
+		from
+		 t_product p
+        WHERE 
+        p.zone_id =  #{zoneId}
+      
+		)as tb
+	</select> -->
+</mapper>

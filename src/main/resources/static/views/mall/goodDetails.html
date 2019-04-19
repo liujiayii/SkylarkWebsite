@@ -1,60 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <div th:replace="/mall/common  :: commonHeader(商品详情)"></div>
-  <link rel="stylesheet" href="/assets/css/goods.css">
   <style>
     .nav-span {
       display: none
-    }
-
-    .navli {
-      cursor: pointer;
-    }
-
-    .goodsForm {
-      float: right
-    }
-
-    .goodsState .describion {
-      margin-top: 5px;
-      font-size: 14px;
-      color: #e60012;
-    }
-
-    .goodsState .name {
-      color: #222;
-      font-size: 20px;
-      line-height: 22px;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .goodsState .price span {
-      font-size: 24px;
-      color: #e60012;
-      font-weight: bold;
-      position: relative;
-      top: 3px;
-    }
-
-    /*  .gg{letter-spacing: 16px;} */
-    .classs {
-      position: relative;
-      top: 2px;
     }
   </style>
 </head>
 
 <body>
-<div id="app">
+<div id="app" class="goods">
   <div class="container">
-    <div th:replace="mall/common :: commonNav"></div>
+    <div th:replace="/mall/common :: commonNav"></div>
     <hr class="contHr"/>
     <div class="detailCont" v-for="(goods,index) in goodsData">
       <div class="goodsMall">
@@ -97,7 +59,7 @@
               </dl>
               <dl>
                 <dt>数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量：</dt>
-                <dd style="overflow: hidden;position: relative; top: -8px;">
+                <dd>
                   <div class="number" v-html="num[0]" id="num">1</div>
                   <div class="calculate">
                     <a href="javascript:;" id="adds" @click="add(0)">+</a>
@@ -110,7 +72,7 @@
               <dl>
                 <dt>所属分类：</dt>
                 <dd>
-                  <ul class="classs">
+                  <ul>
                     <li>{{goods.classificationNames}}>{{goods.producttypename}}</li>
                   </ul>
                 </dd>
@@ -121,8 +83,6 @@
               </dl>
             </div>
             <div class="form-btn">
-              <!-- <input type="button" value="立即购买" />
-                <input type="button" value="加入购物车" /> -->
               <a @click="orderOk(goods.productId)">立即购买</a>
               <a @click="orderCart(goods.productId)">加入购物车</a>
             </div>
@@ -138,11 +98,11 @@
           </h2>
           <div class="detailsDiv" v-if="type === 'detail'">
             <div class="detailsDiv-top">
-              <p>品牌名称 ： <span>{{goods.brand}}</span></p>
-              <p><span>商品描述：{{goods.describion}}</span></p>
+              <p>品牌名称：{{goods.brand}}</p>
+              <p>商品描述：{{goods.describion}}</p>
             </div>
             <div class="detailsDiv-last">
-              <p>模特展示</p>
+              <p>图片详情</p>
               <div class="detailImgs" v-for="(goodsImg,indexs) in goods.productImage">
                 <img :src="goodsImg.img"/>
               </div>
@@ -154,11 +114,11 @@
                 <dt><img :src="item.avatar">
                   <p>{{item.nickname}}</p>
                 </dt>
-                <dd>{{item.review_content}}</dd>
                 <dd>
-                  <img :src="itemSrc.picture" v-for="(itemSrc,num) in item.picture_video"></dd>
-                <dd class="times">{{formatData(item.review_time)}}</dd>
-                <!-- 商家回复<dd>{{item.reply}}</dd>  -->
+                  <p>{{item.review_content}}</p>
+                  <p><img :src="itemSrc.picture" v-for="(itemSrc,num) in item.picture_video"></p>
+                  <p class="times">{{formatData(item.review_time)}}</p>
+                </dd>
               </dl>
             </div>
             <div v-if="!Clases">暂无评价</div>
@@ -167,10 +127,8 @@
       </div>
     </div>
   </div>
-  <div th:replace="mall/common :: commonFooter"></div>
+  <div th:replace="/mall/common :: commonFooter"></div>
 </div>
-</div>
-
 </body>
 
 <script>
@@ -191,8 +149,8 @@
     methods: {
       orderOk(productId) {
         if (this.userInfo.name != null) {
-          var nums = this.num[0];
-          window.location.href = "/OrderOk?id=" + productId + "&num=" + nums;
+          let nums = this.num[0];
+          window.open("/OrderOk?id=" + productId + "&num=" + nums);
         } else {
           this.$Message.info('请先登录');
           setTimeout("window.location.href = '/toLogin?type=login'", 1500)
@@ -238,7 +196,6 @@
         }
 
       },
-
       getClass() {
         $.ajax({
           type: "post",
@@ -273,21 +230,16 @@
           type: "post",
           url: "/t_review/selectAllSome",
           dataType: "json",
-          data: {"product_id": this.getHrefParam("id"),
-        	  "page":1,
-        	  "limit": 100
-        	    
-          
-          
-                       },
+          data: {
+            "product_id": this.getHrefParam("id"),
+            "page": 1,
+            "limit": 100
+          },
           success: (res) => {
             if (res.code == 1) {
               this.countSum = res.count || 0
               this.classDatas = res.data == 'null' ? [] : res.data
             } else {
-              //alert(123)
-
-              // this.$Message.info(res.msg)
             }
           }
         });
@@ -321,6 +273,5 @@
     }
   }
 </script>
-<div th:replace="mall/common :: commonFooterjs"></div>
-
+<div th:replace="/mall/common :: commonFooterjs"></div>
 </html>

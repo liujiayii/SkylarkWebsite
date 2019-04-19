@@ -60,7 +60,6 @@
           url: "/selectAllOurAdvantagesList",
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.advantageList = res.data
             }
@@ -93,7 +92,6 @@
 
   let num = 1
   window.onscroll = function () {
-    console.log(scroll().top)
 
     let list = document.querySelectorAll(".list")
     if (scroll().top > 700 && num == 1) {

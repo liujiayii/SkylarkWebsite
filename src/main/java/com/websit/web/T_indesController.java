@@ -63,14 +63,14 @@ public class T_indesController {
 
 		mv.addObject("count", c);
 
-		mv.setViewName("home/home.html");
+		mv.setViewName("home/home");
 		return mv;
 	}
 
 	@RequestMapping("/about")
 	public ModelAndView about() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/home/about.html");
+		mv.setViewName("/home/about");
 
 		return mv;
 	}
@@ -78,14 +78,14 @@ public class T_indesController {
 	@RequestMapping("/contact")
 	public ModelAndView guanyu() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/home/contact.html");
+		mv.setViewName("/home/contact");
 
 		return mv;
 	}
 	@RequestMapping("/searchs")
 	public ModelAndView searchs() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/searchs.html");
+		mv.setViewName("/mall/searchs");
 
 		return mv;
 	}
@@ -94,7 +94,7 @@ public class T_indesController {
 	@RequestMapping("/toLogin")
 	public ModelAndView toLogin() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/home/login.html");
+		mv.setViewName("/home/login");
 
 		return mv;
 	}
@@ -102,7 +102,7 @@ public class T_indesController {
 	@RequestMapping("/club")
 	public ModelAndView club() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/bbs/bbsIndex.html");
+		mv.setViewName("/bbs/bbsIndex");
 
 		return mv;
 	}
@@ -110,7 +110,7 @@ public class T_indesController {
 	@RequestMapping("/forum")
 	public ModelAndView forum() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/bbs/bbsList.html");
+		mv.setViewName("/bbs/bbsList");
 
 		return mv;
 	}
@@ -118,7 +118,7 @@ public class T_indesController {
 	@RequestMapping("/post")
 	public ModelAndView post() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/bbs/bbsPost.html");
+		mv.setViewName("/bbs/bbsPost");
 
 		return mv;
 	}
@@ -126,7 +126,7 @@ public class T_indesController {
 	@RequestMapping("/space")
 	public ModelAndView space() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/bbs/bbsSpace.html");
+		mv.setViewName("/bbs/bbsSpace");
 
 		return mv;
 	}
@@ -134,7 +134,7 @@ public class T_indesController {
 	@RequestMapping("/mall")
 	public ModelAndView mall() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/index.html");
+		mv.setViewName("/mall/index");
 
 		return mv;
 	}
@@ -143,7 +143,7 @@ public class T_indesController {
 	@RequestMapping("/backer/")
 	public ModelAndView backer() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/backer/index.html");
+		mv.setViewName("/backer/index");
 
 		return mv;
 	}
@@ -152,7 +152,7 @@ public class T_indesController {
 	public ModelAndView goodList() {
 
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/goodsList.html");
+		mv.setViewName("/mall/goodsList");
 
 		return mv;
 	}
@@ -160,7 +160,7 @@ public class T_indesController {
 	@RequestMapping("/goodDetails")
 	public ModelAndView goodDetails() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/goodDetails.html");
+		mv.setViewName("/mall/goodDetails");
 
 		return mv;
 	}
@@ -168,7 +168,7 @@ public class T_indesController {
 	@RequestMapping("/userDetails")
 	public ModelAndView userDetails() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/userDetails.html");
+		mv.setViewName("/mall/userDetails");
 
 		return mv;
 	}
@@ -176,7 +176,7 @@ public class T_indesController {
 	@RequestMapping("/ShoppingCart")
 	public ModelAndView ShoppingCart() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/ShoppingCart.html");
+		mv.setViewName("/mall/ShoppingCart");
 
 		return mv;
 	}
@@ -184,7 +184,7 @@ public class T_indesController {
 	@RequestMapping("/OrderOk")
 	public ModelAndView OrderOk() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/OrderOk.html");
+		mv.setViewName("/mall/OrderOk");
 
 		return mv;
 	}
@@ -192,7 +192,7 @@ public class T_indesController {
 	@RequestMapping("/orderList")
 	public ModelAndView orderList() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/orderList.html");
+		mv.setViewName("/mall/orderList");
 
 		return mv;
 	}
@@ -200,7 +200,7 @@ public class T_indesController {
 	@RequestMapping("/newaddress")
 	public ModelAndView newaddress() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/newaddress.html");
+		mv.setViewName("/mall/newaddress");
 
 		return mv;
 	}
@@ -208,7 +208,7 @@ public class T_indesController {
 	@RequestMapping("/logistics")
 	public ModelAndView logistics() {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/logistics.html");
+		mv.setViewName("/mall/logistics");
 
 		return mv;
 	}
@@ -216,7 +216,7 @@ public class T_indesController {
 	public ModelAndView demo() {
 
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/demo.html");
+		mv.setViewName("/mall/demo");
 
 		return mv;
 	}
@@ -224,7 +224,7 @@ public class T_indesController {
 	public ModelAndView evaluates() {
 
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/mall/evaluates.html");
+		mv.setViewName("/mall/evaluates");
 
 		return mv;
 	}

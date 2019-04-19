@@ -1,5 +1,6 @@
 package com.websit.web;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,9 +45,11 @@ public class T_cooperationController {
 			 * cooperationService.selectMapsPage(new Page<>(), new
 			 * EntityWrapper<T_cooperation>());
 			 */
-			Page<T_cooperation> selectPage = cooperationService.selectPage(new Page<>(page, limit),
-					new EntityWrapper<T_cooperation>());
-			List<T_cooperation> records = selectPage.getRecords();
+//			Page<T_cooperation> selectPage = cooperationService.selectPage(new Page<>(page, limit),
+//					new EntityWrapper<T_cooperation>());
+			Map<String, Object> columnMap = new HashMap<String, Object>();
+
+			List<T_cooperation> records = cooperationService.selectByMap(columnMap);
 			int selectCount = cooperationService.selectCount(null);
 			if (records.size() >= 1) {
 				return JsonUtil.getResponseJson(1, "查看成功", selectCount, records);

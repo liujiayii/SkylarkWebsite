@@ -115,7 +115,6 @@
     methods: {
       /*获取图片并转换base64格式*/
       uploadPhoto(file) {
-        console.log(file)
         if (file.size > 224000) {
           this.error('图片不能超过200K')
         } else if (!file.type.match('image')) {
@@ -126,7 +125,6 @@
           reader.onload = (e) => {
             // 读取到的图片base64 数据编码 将此编码字符串传给后台即可
             let imgCode = e.target.result;
-            console.log(imgCode);
             this.form.avatar = imgCode
           }
         }
@@ -134,7 +132,6 @@
       },
       /*修改资料*/
       submit(form) {
-        console.log(this.form)
         this.$refs[form].validate((valid) => {
           if (valid) {
             $.ajax({
@@ -143,7 +140,6 @@
               data: this.form,
               dataType: "json",
               success: (res) => {
-                console.log(res)
                 if (res.code == 1) {
                   this.success(res.msg)
                   this.tabActive = '个人资料'
@@ -155,7 +151,6 @@
               }
             });
           } else {
-            console.log('error')
           }
         })
       },
@@ -167,7 +162,6 @@
           data: {id: this.getHrefParam('id')||sessionStorage.getItem("SkyUserId")},
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               res.data[0].userBirthday = this.dateFormat(res.data[0].userBirthday)
               this.detail = res.data[0]
@@ -190,7 +184,6 @@
           data: {id: this.getHrefParam('id')||sessionStorage.getItem("SkyUserId")},
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.reply = res.data
             }
@@ -206,7 +199,6 @@
           data: {id: this.getHrefParam('id')||sessionStorage.getItem("SkyUserId")},
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.date = res.data
             }
@@ -222,7 +214,6 @@
           data: {id: this.getHrefParam('id')||sessionStorage.getItem("SkyUserId"), page, limit: 10},
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.postList.list = res.data
               this.postList.count = res.count
@@ -233,7 +224,6 @@
       ,
       /*分页*/
       pageChange(page) {
-        console.log(page)
         this.getList(page)
       }
       ,

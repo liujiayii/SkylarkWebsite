@@ -2,7 +2,6 @@ package com.websit.service;
 
 import com.websit.entity.T_goods;
 
-import io.lettuce.core.dynamic.annotation.Param;
 
 import java.math.BigInteger;
 import java.util.List;

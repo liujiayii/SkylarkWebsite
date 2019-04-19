@@ -3,14 +3,12 @@
 
 <head th:fragment="commonHeader(title)">
   <title th:text="${title}"></title>
-  <meta name="referrer" content="no-referrer">
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <!-- <meta name="referrer" content="no-referrer"> -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/iview@3/dist/iview.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iview@3/dist/styles/iview.min.css">
-  <link rel="stylesheet" type="text/css" href="/assets/css/cont.css">
-  <link rel="stylesheet" type="text/css" href="/assets/css/mallreset.css">
-  <script src="/assets/js/header.js"></script>
+  <link rel="stylesheet" href="/assets/css/mall.css">
   <style>
     .input-bigbox {
       font-size: 12px;
@@ -30,16 +28,16 @@
       cursor: pointer;
     }
 
-    .ivu-input-search, .ivu-input-search:hover {
+    .search-box .ivu-input-search, .ivu-input-search:hover {
       background: #e60012 !important;
       border-color: #e60012 !important;
     }
 
-    .ivu-input:focus {
+    .search-box .ivu-input:focus {
       border-color: #e60012;
     }
 
-    .ivu-input-with-search:hover .ivu-input {
+    .search-box .ivu-input-with-search:hover .ivu-input {
       border-color: #e60012;
     }
 
@@ -103,8 +101,9 @@
       <div class="wrap">
         <div class="nav-span">
           <ul class="nav-ul">
-            <li v-for="(item,key,index) in classData" class="nav-ullibox"><a href="" class="nav-ulli"><img
-                    src="/assets/image/mall/nav1.png" alt=""><span>{{key}}</span></a>
+            <li v-for="(item,key,index) in classData" class="nav-ullibox">
+              <a :href="'/goodList?class_cont='+ (item[0] ? item[0].classificationId:'')+'&class_one='+key"
+                 class="nav-ulli">{{key}}</a>
               <div class="nav-bigbox">
                 <div class="inner">
                   <a v-for="(item_c,index) in classData[key]"
@@ -245,6 +244,50 @@
     $(".navli").click(function () {
       $(".nav-span").slideToggle();
     });
+    $(document).ready(function () {
+      $("#no-nav").click(function () {
+        $("#nav-some1").slideToggle("slow");
+      });
+    });
+
+    $(".side-nav .moitem").click(function () {
+      $(this).toggleClass("active").siblings(".side-nav>a").removeClass("active");
+      $(this).next(".hiden_div").slideToggle(500).siblings(".hiden_div").slideUp(500);
+    });
+
+    $(function () {
+      $(document).ready(function () {
+        $(".nav .nav-box").on("mouseenter", "li", function () {
+          $(this).children(".catebox").slideDown(100);
+          $(this).toggleClass("active").siblings(".nav_b1").removeClass("active");
+          $(this).siblings("li").children(".catebox").slideUp(100);
+        });
+        $(".nav .nav-box").on("mouseleave", "li", function () {
+          $(this).children(".catebox").slideUp(100);
+        });
+      });
+    });
+
+    function nav() {
+      //alert(1);
+      var navli2 = document.querySelectorAll(".navli2");
+      var navact = document.querySelector(".navact");
+      var chicks = document.querySelector(".chicks");
+      var chicksleft = chicks.offsetLeft;
+      var width = navli2[0].offsetWidth;
+      var navactwidth = navact.offsetWidth;
+      //alert(width)
+      navact.style.left = width * 0.5 + chicksleft - navactwidth * 0.5 + "px";
+      for (let nav = 0; nav < navli2.length; nav++) {
+        navli2[nav].onmouseover = function () {
+          navact.style.left = 230 + nav * width - navactwidth * 0.5 + width * 0.5 + "px";
+        }
+        navli2[nav].onmouseout = function () {
+          navact.style.left = width * 0.5 + chicksleft - navactwidth * 0.5 + "px";
+          ;
+        }
+      }
+    }
   </script>
 </div>
 </body>

@@ -11,8 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.websit.constant.ReturnCode;
 import com.websit.entity.T_admin;
+import com.websit.mapper.T_adminMapper;
 import com.websit.service.IT_adminService;
+import com.websit.service.IT_permissionService;
 import com.websit.until.JsonUtil;
 import com.websit.until.MD5Utils;
 
@@ -30,6 +33,12 @@ public class T_adminController {
 	@Autowired
 	private IT_adminService adminService;
 
+	@Autowired
+	private IT_permissionService permissionService;
+
+	@Autowired
+	private T_adminMapper adminMapper;
+
 	/**
 	 * 登录
 	 * 
@@ -37,18 +46,31 @@ public class T_adminController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping("/admin")
+	@RequestMapping("/login")
 	@ResponseBody
 	public String admin(T_admin t, HttpSession session) {
+		System.out.println("laillaodi");
 		String str;
 		// MD5密码
 		try {
 
 			String hash = MD5Utils.hash(t.getPassword() + "KwX3jBV5hOmTSUdc");
 			t.setPassword(hash);
-			Integer a = adminService.selectby(t);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("password", t.getPassword());
+			map.put("username", t.getUsername());
+			Integer a = adminService.selectByMap(map).size();
+
+			System.out.println(a + "kljjklj;jlllllj;k");
 			if (a == 1) {
-				str = JsonUtil.getResponseJson(1, "查询成功", null, null);
+				System.out.println("登录成功");
+				// str = JsonUtil.getResponseJson(1, "查询成功", null, null);
+				Map<String, Object> res = new HashMap<String, Object>();
+				res.put("code", ReturnCode.SUCCSEE_CODE);
+				res.put("msg", "登录成功");
+				res.put("data", permissionService.ListMenu());
+				// res.put("amdin", adminMapper.findByUserName("liujiayi"));
+				str = JsonUtil.getResponseJson(1, "查询成功", null, res.get("data"));
 			} else {
 				T_admin ts = adminService.selectbyName(t.getUsername());
 				if (ts == null) {
@@ -83,6 +105,7 @@ public class T_adminController {
 			t.setPassword(hash);
 			boolean a = adminService.insert(t);
 			if (a == true) {
+
 				str = JsonUtil.getResponseJson(1, "增加成功", null, null);
 			} else {
 				str = JsonUtil.getResponseJson(-1, "增加失败", null, null);
@@ -216,22 +239,19 @@ public class T_adminController {
 	 * 修改管理员账号信息
 	 *
 	 * @Title: updateAdminById
-	 * @description 
+	 * @description
 	 * @param admin
-	 * @return  
-	 * String    
+	 * @return String
 	 * @author lujinpeng
 	 * @createDate 2019年4月3日-下午5:19:20
 	 */
 	@RequestMapping("/updateAdminById")
 	@ResponseBody
 	public String updateAdminById(T_admin admin) {
-		
+
 		return adminService.updateAdminById(admin);
 	}
-	
-	
-	
+
 	public static void main(String[] args) {
 		String hash = MD5Utils.hash(12345678 + "KwX3jBV5hOmTSUdc");
 		System.out.println(hash);

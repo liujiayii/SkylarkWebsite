@@ -44,12 +44,12 @@
                     p.name name,
                     z.image images,
                     p.image image,
-                    p.color color,
+                  
                     p.price price,
                     p.brand brand,
                     p.create_time create_times,
                     p.state state,
-                    p.specifications specifications,
+                  
                     p.describes describion
                 FROM
                     t_product p,
@@ -67,12 +67,12 @@
                     p.name name,
                     z.image images,
                     p.image image,
-                    p.color color,
+                  
                     p.price price,
                     p.brand brand,
                     p.create_time create_times,
                     p.state state,
-                    p.specifications specifications,
+                 
                     p.describes describion
                 FROM
                     t_product p,
@@ -92,12 +92,12 @@
                     p.name name,
                     z.image images,
                     p.image image,
-                    p.color color,
+                 
                     p.price price,
                     p.brand brand,
                     p.create_time create_times,
                     p.state state,
-                    p.specifications specifications,
+                  
                     p.describes describion
                 FROM
                     t_product p,
@@ -222,4 +222,6 @@
       
 		)as tb
 	</select>
+	
+	
 </mapper>

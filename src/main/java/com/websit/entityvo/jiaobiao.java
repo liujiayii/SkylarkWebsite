@@ -8,6 +8,13 @@ public class jiaobiao {
 	private int daf;//代发货
 	private int ysh;//待收货
 	private int quantum;//待收货
+	private int sales ;//退货
+	public int getSales() {
+		return sales;
+	}
+	public void setSales(int sales) {
+		this.sales = sales;
+	}
 	public int getQuantum() {
 		return quantum;
 	}
@@ -40,7 +47,8 @@ public class jiaobiao {
 	}
 	@Override
 	public String toString() {
-		return "jiaobiao [dfk=" + dfk + ", dsh=" + dsh + ", daf=" + daf + ", ysh=" + ysh + ", quantum=" + quantum + "]";
+		return "jiaobiao [dfk=" + dfk + ", dsh=" + dsh + ", daf=" + daf + ", ysh=" + ysh + ", quantum=" + quantum
+				+ ", sales=" + sales + "]";
 	}
 	
 }

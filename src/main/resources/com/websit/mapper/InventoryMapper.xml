@@ -18,14 +18,17 @@
                     ti.number number,
                     ti.create_time create_time,
                     ti.product_id products_id,
-                    tp.name productName
+                    tp.name productName,
+                    ti.attribute attribute,
+                   tps.specificationName specificationName
+                    
                 FROM
-                    t_inventory ti,t_product tp
+                    t_inventory ti,t_product tp,t_product_specification tps
                 WHERE
                 ti.product_id = tp.id
-               
+               and ti.attribute = tps.id
 			<if test="productName != null and productName != ''">
-				and tp.name like "%"#{productName}"%"
+				and tp.name like "%"#{p.productName}"%"
 			</if>
 		
                  group by ti.id
@@ -50,9 +53,9 @@
     <!-- 增加库存-->
 	<insert id="saveInventoryById" parameterType="com.websit.entity.Inventory">
 		insert into
-		t_inventory(number,create_time,product_id)
+		t_inventory(number,create_time,product_id,attribute)
 		values
-		(#{number},now(),#{products_id})
+		(#{number},now(),#{products_id},#{attribute})
 	</insert>
 	
 	<!-- 修改商品 -->
@@ -67,6 +70,9 @@
 			</if> 
 			<if test="products_id != null and products_id != ''">
 				product_id = #{products_id}
+			</if>
+			<if test="attribute != null and attribute != ''">
+				attribute = #{attribute}
 			</if>
 		</set>
 		where id= #{id}

@@ -3,6 +3,7 @@ package com.websit.web;
 import java.awt.image.BufferedImage;
 
 import java.io.OutputStream;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,14 +54,14 @@ import com.websit.until.VerifyUtil;
 
 @Controller
 public class LoginController {
-String key="12345678";
+	String key = "12345678";
 	@Autowired
 	private IT_userService userService;
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	@Autowired
 	private IT_accessService accessService;
-	Security  DesUtilt=new Security();
+	Security DesUtilt = new Security();
 
 	/**
 	 * 
@@ -137,30 +138,31 @@ String key="12345678";
 		// 将手机号码加密
 		String encode = DesUtil.encode("yunquekj", phone);
 		// 调用验证接口正式
-		String doPost="";
-        try {
-	
-		 doPost = HttpClientUtil
-			.doPost("https://www.ouyepuhui.com/loginAndRegiste/isExistMobile?params=" + encode);
-        } catch (Exception e) {
-			return JsonUtil.getResponseJson(1, "请求异常", null, null);
-		}
-		// 测试
-		
-		  /*String doPost = HttpClientUtil
-		  
-		  .doPost(
-		 "http://192.168.1.101:8000/loginAndRegiste/isExistMobile?params=" +
-		  encode);*/
-		 
-		// 解析验证信息
-        JSONObject parse =null;
-        try {
-        	 parse = (JSONObject) JSONObject.parse(doPost);
+		String doPost = "";
+		try {
+
+			doPost = HttpClientUtil.doPost("https://www.ouyepuhui.com/loginAndRegiste/isExistMobile?params=" + encode);
 		} catch (Exception e) {
 			return JsonUtil.getResponseJson(1, "请求异常", null, null);
 		}
-		
+		// 测试
+
+		/*
+		 * String doPost = HttpClientUtil
+		 * 
+		 * .doPost(
+		 * "http://192.168.1.101:8000/loginAndRegiste/isExistMobile?params=" +
+		 * encode);
+		 */
+
+		// 解析验证信息
+		JSONObject parse = null;
+		try {
+			parse = (JSONObject) JSONObject.parse(doPost);
+		} catch (Exception e) {
+			return JsonUtil.getResponseJson(1, "请求异常", null, null);
+		}
+
 		// 获取返回信息
 		Integer Pcode = (Integer) parse.get("code");
 		// -200 代表已经注册过 终止程序返回信息
@@ -230,12 +232,11 @@ String key="12345678";
 		String encode = DesUtil.encode("yunquekj", phone);
 		// 调用验证接口正式
 
-		String doPost="";
-        try {
-	
-		 doPost = HttpClientUtil
-			.doPost("https://www.ouyepuhui.com/loginAndRegiste/isExistMobile?params=" + encode);
-        } catch (Exception e) {
+		String doPost = "";
+		try {
+
+			doPost = HttpClientUtil.doPost("https://www.ouyepuhui.com/loginAndRegiste/isExistMobile?params=" + encode);
+		} catch (Exception e) {
 			return JsonUtil.getResponseJson(1, "请求异常", null, null);
 		}
 		// 测试
@@ -249,9 +250,9 @@ String key="12345678";
 		 */
 
 		// 解析验证信息
-        JSONObject parse =null;
-        try {
-        	 parse = (JSONObject) JSONObject.parse(doPost);
+		JSONObject parse = null;
+		try {
+			parse = (JSONObject) JSONObject.parse(doPost);
 		} catch (Exception e) {
 			return JsonUtil.getResponseJson(1, "请求异常", null, null);
 		}
@@ -340,7 +341,7 @@ String key="12345678";
 		// String hash = MD5Utils.hash(user.getPassword() + "KwX3jBV5hOmTSUdc");
 
 		// 正式
-		// KwX3jBV5hOmTSUdc
+		// 测试KwX3jBV5hOmTSUdc
 		String hash = MD5Utils.hash(user.getPassword() + "Ht3aZQ1EuyhbgPu7");
 		try {
 			// 验证改手机号有没有存在于自己的数据库
@@ -455,7 +456,7 @@ String key="12345678";
 	@RequestMapping("/mRegister")
 	@ResponseBody
 	public String mRegister(/* @RequestBody */ UserRegister user, HttpSession session) {
-		
+
 		// 校验手机号码格式是否正确
 		String regularp = "^((13[0-9])|(14[0-9])|(19[0-9])|(16[0-9])|(15[^4,\\D])|(17[0-9])|(18[0-9]))(\\d{8})$";
 		String phone = user.getPhone();
@@ -583,9 +584,34 @@ String key="12345678";
 	 * @author lishaozhang
 	 * @createDate 2019年3月13日
 	 */
-	@RequestMapping("/login")
+	@RequestMapping("/doLogin")
 	@ResponseBody
 	public String login(@RequestBody Logivo log, HttpSession session) {
+		// 校验5分钟之内有没有登陆过 登陆过 几次
+		String num = null;
+		Long time = null;
+		try {
+			num = redisTemplate.opsForValue().get("log" + log.getPhone());
+
+			time = redisTemplate.getExpire("log" + log.getPhone(), TimeUnit.SECONDS);
+		} catch (Exception e) {
+			return JsonUtil.getResponseJson(-1, "redis连接异常", null, null);
+		}
+
+		if (null == num || "".equals(num)) {
+			// 5分钟之内没登陆过
+			num = "1";
+			time =300l;
+		} else {
+
+			// 5分之内登陆错误超过3次 15分钟内无法登录
+			if (Integer.parseInt(num) >= 3) {
+				
+				return JsonUtil.getResponseJson(-1, "多次登陆失败请" + (time/60) + "分钟后重试", null, null);
+			}
+
+			num = (Integer.parseInt(num) + 1) + "";
+		}
 
 		// MD5密码
 		// String hash = MD5Utils.hash(log.getPassword() + "KwX3jBV5hOmTSUdc");
@@ -597,10 +623,13 @@ String key="12345678";
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("phone", log.getPhone());
 		// 先在商城数据库中查询信息
-		Page<T_user> selectPage = userService.selectPage(new Page<>(),
-				new EntityWrapper<T_user>().eq("phone", log.getPhone()).eq("password", hash));
+	
+		Map<String, Object> columnMap = new HashMap<String, Object>();
+		columnMap.put("phone", log.getPhone());
+		columnMap.put("password", log.getPassword());
+		List<T_user> records = userService.selectByMap(columnMap);
 
-		List<T_user> records = selectPage.getRecords();
+		// List<T_user> records = user.get(0).getRecords();
 		// 如果没有去普惠查询
 		if (records.isEmpty()) {
 
@@ -642,7 +671,16 @@ String key="12345678";
 				}
 
 			} else {
-				// 没有则返回没有用户信息
+				// 没有则登陆失败 返回没有用户信息
+
+				// 记录当前次数和过期时间
+				redisTemplate.opsForValue().set("log" + log.getPhone(), num, time, TimeUnit.SECONDS);
+
+				// 如果超过三次 则将时间设为 15分钟
+				if (Integer.parseInt(num) >= 3) {
+					redisTemplate.opsForValue().set("log" + log.getPhone(), num, 15, TimeUnit.MINUTES);
+				}
+
 				String msge = (logjson.get("message") + "" + logjson.get("msg")).replaceAll("null", "");
 				return JsonUtil.getResponseJson(-1, msge, null, null);
 			}
@@ -650,7 +688,6 @@ String key="12345678";
 
 		// 如果有则将用户信息存入session
 		T_user t_user = records.get(0);
-
 		String Scode = (String) session.getAttribute("imageCode");
 
 		if (Scode.equalsIgnoreCase(log.getCode())) {
@@ -680,16 +717,43 @@ String key="12345678";
 	 *
 	 * 
 	 * @author lishaozhang
-	 * @throws Exception 
+	 * @throws Exception
 	 * @createDate 2019年3月21日
 	 */
 	@RequestMapping("/mLogin")
 	@ResponseBody
 	public String login(Logivo log) throws Exception {
-		System.out.println(log.getPassword());
-		log.setPassword(Security.decode(log.getPassword()));
-		System.out.println("解密之后"+log.getPassword());
 		
+		// 校验5分钟之内有没有登陆过 登陆过 几次
+				String num = null;
+				Long time = null;
+				try {
+					num = redisTemplate.opsForValue().get("log" + log.getPhone());
+
+					time = redisTemplate.getExpire("log" + log.getPhone(), TimeUnit.SECONDS);
+				} catch (Exception e) {
+					return JsonUtil.getResponseJson(-1, "redis连接异常", null, null);
+				}
+
+				if (null == num || "".equals(num)) {
+					// 5分钟之内没登陆过
+					num = "1";
+					time =300l;
+				} else {
+
+					// 5分之内登陆错误超过3次 15分钟内无法登录
+					if (Integer.parseInt(num) >= 3) {
+						
+						return JsonUtil.getResponseJson(-1, "多次登陆失败请" + (time/60) + "分钟后重试", null, null);
+					}
+
+					num = (Integer.parseInt(num) + 1) + "";
+				}
+		
+		
+		
+		log.setPassword(Security.decode(log.getPassword()));
+
 		// MD5密码
 		// String hash = MD5Utils.hash(log.getPassword() + "KwX3jBV5hOmTSUdc");
 
@@ -700,10 +764,15 @@ String key="12345678";
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("phone", log.getPhone());
 		// 先在商城数据库中查询信息
-		Page<T_user> selectPage = userService.selectPage(new Page<>(),
-				new EntityWrapper<T_user>().eq("phone", log.getPhone()).eq("password", hash));
+		// Page<T_user> selectPage = userService.selectPage(new Page<>(),
+		// new EntityWrapper<T_user>().eq("phone",
+		// log.getPhone()).eq("password", hash));
+		Map<String, Object> columnMap = new HashMap<String, Object>();
+		columnMap.put("phone", log.getPhone());
+		columnMap.put("password", log.getPassword());
+		List<T_user> records = userService.selectByMap(columnMap);
 
-		List<T_user> records = selectPage.getRecords();
+		// List<T_user> records = selectPage.getRecords();
 		// 如果没有去普惠查询
 		if (records.isEmpty()) {
 
@@ -745,7 +814,16 @@ String key="12345678";
 				}
 
 			} else {
-				// 没有则返回没有用户信息
+				// 没有则登陆失败 返回没有用户信息
+
+				// 记录当前次数和过期时间
+				redisTemplate.opsForValue().set("log" + log.getPhone(), num, time, TimeUnit.SECONDS);
+
+				// 如果超过三次 则将时间设为 15分钟
+				if (Integer.parseInt(num) >= 3) {
+					redisTemplate.opsForValue().set("log" + log.getPhone(), num, 15, TimeUnit.MINUTES);
+				}
+				
 				String msge = (logjson.get("message") + "" + logjson.get("msg")).replaceAll("null", "");
 				return JsonUtil.getResponseJson(-1, msge, null, null);
 			}
@@ -755,11 +833,11 @@ String key="12345678";
 		T_user t_user = records.get(0);
 
 		Map<String, Object> resault = new HashMap<String, Object>();
-		resault.put("id", Security.encode(t_user.getId().toString()));//加密userid
+		resault.put("id", Security.encode(t_user.getId().toString()));// 加密userid
 		resault.put("phid", t_user.getPhid());
 		// 返回加密userid
 		System.out.println(Security.encode(JsonUtil.getResponseJson(1, "登陆成功", null, resault)));
-		
+
 		return JsonUtil.getResponseJson(1, "登陆成功", null, resault);
 
 	}

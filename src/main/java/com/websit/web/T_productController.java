@@ -18,6 +18,7 @@ import com.websit.entity.Inventory;
 import com.websit.entity.T_product_img;
 import com.websit.entityvo.Discount;
 import com.websit.entityvo.ProductDetails;
+import com.websit.entityvo.ProductTypeVo;
 import com.websit.entityvo.ProductVo;
 import com.websit.service.IT_discount_productService;
 import com.websit.service.IT_productService;
@@ -87,15 +88,15 @@ public class T_productController {
 	@ResponseBody
 	public String listAllProductById(Integer page, Integer limit, ProductVo productVo) {
 		try {
-			
+
 			productVo.setPage((page - 1) * limit);
 			productVo.setLimit(limit);
 			// Integer star = (page - 1) * limit;
 			List<ProductVo> result = productService.listAllProductById(productVo);
-		
+
 			ProductVo selectCount = productService.findBpiLists(productVo);
 			Integer count = selectCount.getCount();
-			
+
 			if (result.size() >= 1 && count != null) {
 				return JsonUtil.getResponseJson(1, "查看成功", count, result);
 			} else {
@@ -125,10 +126,10 @@ public class T_productController {
 			// //商品添加优惠
 			discount.setProductid(productVo.getId());
 			discountService.saveDiscountById(discount);
-			
+
 			// System.out.println("我去保存图片");
 			String file = request.getParameter("file");
-			System.out.println("file"+file);
+			System.out.println("file" + file);
 			String result1[] = file.split(",");
 			T_product_img product_img = new T_product_img();
 			product_img.setProduct_id(productVo.getId());
@@ -137,7 +138,7 @@ public class T_productController {
 				productImgService.insert(product_img);
 			}
 			if (result > 0 && results > 0) {
-			
+
 				return JsonUtil.getResponseJson(1, "增加成功", null, result);
 			} else {
 				return JsonUtil.getResponseJson(1, "无数据", null, null);
@@ -156,41 +157,36 @@ public class T_productController {
 	 */
 	@RequestMapping(value = "/updateProduct")
 	@ResponseBody
-	public String updateProduct(HttpServletRequest request,BigInteger productId,BigInteger id) {
-		//System.out.println("==l来啦===");
+	public String updateProduct(HttpServletRequest request, BigInteger productId, BigInteger id) {
+		// System.out.println("==l来啦===");
 		int deleteProductImageByProductId = productImgService.deleteProductImageByProductId(productId);
 		try {
 			ProductVo productVo = new ProductVo();
-		/*	Long id1 = null;
-			if(productVo.getZoneid() == id1){
-				System.out.println("id1+++++:"+id1);
-		zoneService.selectZoneByProductId(id);
-			}*/
+			/*
+			 * Long id1 = null; if(productVo.getZoneid() == id1){
+			 * System.out.println("id1+++++:"+id1);
+			 * zoneService.selectZoneByProductId(id); }
+			 */
 			String file = request.getParameter("file");
-		//	String productId = request.getParameter("productId");
+			// String productId = request.getParameter("productId");
 			String productName = request.getParameter("productName");
 			String producttypeid = request.getParameter("producttypeid");
 			String image = request.getParameter("image");
 			String price = request.getParameter("price");
-			String color = request.getParameter("color");
 			String state = request.getParameter("state");
 			String brand = request.getParameter("brand");
-			String specifications = request.getParameter("specifications");
 			String describion = request.getParameter("describion");
 			String zoneid = request.getParameter("zoneid");
-		//	System.out.println(productName);
-			productVo.setId(Long.parseLong(productId+""));
+			// System.out.println(productName);
+			productVo.setId(Long.parseLong(productId + ""));
 			productVo.setProductName(productName);
 			productVo.setProducttypeid(Long.parseLong(producttypeid));
 			productVo.setImage(image);
-			productVo.setPrice(new BigDecimal(price));
-			productVo.setColor(color);
 			productVo.setState(Integer.valueOf(state));
 			productVo.setBrand(brand);
-			productVo.setSpecifications(specifications);
 			productVo.setDescribion(describion);
-			 productVo.setZoneid(Long.parseLong(zoneid));
-            //System.out.println(zoneid);
+			productVo.setZoneid(Long.parseLong(zoneid));
+			// System.out.println(zoneid);
 			// productImgService.deleteImgById(productVo.getId());
 			String result1[] = file.split(",");
 			T_product_img product_img = new T_product_img();
@@ -201,9 +197,9 @@ public class T_productController {
 			}
 			product_img.getProduct_id();
 			productImgService.updateAllColumnById(product_img);
-		
+
 			int result = productService.updateProduct(productVo);
-			
+
 			if (result > 0) {
 				return JsonUtil.getResponseJson(1, "修改成功", null, result);
 			} else {
@@ -247,10 +243,9 @@ public class T_productController {
 	@RequestMapping(value = "/listProductByProductId", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String listProductByProductId(BigInteger productId) {
-		
+
 		try {
-	        List<ProductDetails> result = productService.listProductByProductId(productId);
-	      
+			List<ProductDetails> result = productService.listProductByProductId(productId);
 
 			if (result.size() >= 1) {
 				return JsonUtil.getResponseJson(1, "查看成功", null, result);
@@ -293,22 +288,26 @@ public class T_productController {
 	 */
 	@RequestMapping(value = "/listProductByProductTypeId", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String listProductByProductTypeId(String productName) {
+	public String listProductByProductTypeId(String productName, Integer page, Integer limit) {
 		try {
 
-			List<ProductVo> result = productService.listProductByProductTypeId(productName);
+			List<ProductVo> result = productService.listProductByProductTypeId(productName, (page - 1) * limit, limit);
+			List<ProductVo> result1 = productService.listProductByCount(productName, (page - 1) * limit, limit);
+			System.out.println("result" + result.size());
+			if (result.size() >= 1 && result1.size() >= 1) {
+				return JsonUtil.getResponseJson(1, "查看成功", result1.get(0).getCount(), result);
 
-			if (result.size() >= 1) {
-				return JsonUtil.getResponseJson(1, "查看成功", null, result);
 			} else {
-				return JsonUtil.getResponseJson(1, "无数据", null, null);
+				System.out.println("*****");
+				return JsonUtil.getResponseJson(1, "无数据", result1.get(0).getCount(), result);
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
 		}
 	}
-	
+
 	@RequestMapping("/pageOfProductByState")
 	@ResponseBody
 	public String listProductByProductState(Integer page, Integer limit) {
@@ -331,6 +330,7 @@ public class T_productController {
 
 		return res;
 	}
+
 	/**
 	 * 根据类型id查询当前商品种类及每个种类下所有商品
 	 * 
@@ -346,8 +346,53 @@ public class T_productController {
 		if (StringUtils.isNotEmpty(productTypeId)) {
 			productTypeIds = Long.valueOf(productTypeId);
 		}
-		
-		return productService.listProductByTypeId(productTypeIds,1,10);
+
+		return productService.listProductByTypeId(productTypeIds, 1, 10);
 
 	}
+	
+	/**
+	 * 根据大分类id查询大分类下所有商品
+	 *
+	 * @Title: listProductByClassTypeId
+	 * @description 
+	 * @param classification_id
+	 * @param page
+	 * @param limit
+	 * @return  
+	 * String    
+	 * @author lujinpeng
+	 * @createDate 2019年4月17日-下午4:48:34
+	 */
+	@RequestMapping(value = "/listProductByClassTypeId", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String listProductByClassTypeId(Long classification_id, Integer page, Integer limit) {
+		List<ProductTypeVo> listProduct = null;
+		int code = ReturnCode.SUCCSEE_CODE;
+		// 总条数
+		int count = 0;
+		String msg = ReturnCode.SUCCESS_SELECT_MSG;
+		page = (page <= 0) ? 1 : limit * (page - 1);
+		
+		if (classification_id == null || page == null || limit == null) {
+			return JsonUtil.getResponseJson(0, "参数缺失", null, null);
+		}
+		
+		try {
+			listProduct = productService.listProductByClassTypeId(classification_id, page, limit);
+			count = productService.listProductByClassTypeId(classification_id, null, null).size();
+			if (listProduct == null || listProduct.size() == 0) {
+				msg = ReturnCode.NORESULT_SELECT_MSG;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			code = ReturnCode.EXCEPTION_CODE;
+			msg = ReturnCode.FAILED_SELECT_MSG;
+		}
+		
+		return JsonUtil.getResponseJson(code, msg, count, listProduct);
+	}
+	
+	
+	
 }

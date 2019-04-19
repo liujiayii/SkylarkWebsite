@@ -44,7 +44,7 @@ public class shopinglist  extends T_shopping {
 	public String toString() {
 		return "shopinglist [name=" + name + ", image=" + image + ", productId=" + productId + ", productName="
 				+ productName + ", producttypeid=" + producttypeid + ", producttypename=" + producttypename + ", price="
-				+ price + ", color=" + color + ", state=" + state + ", create_times=" + create_times + ", brand="
+				+ price + ", color=" + color + ""+ ", create_times=" + create_times + ", brand="
 				+ brand + ", specifications=" + specifications + ", describion=" + describion + ", classificationIds="
 				+ classificationIds + ", classificationNames=" + classificationNames + ", zoneIds=" + zoneIds
 				+ ", zoneNames=" + zoneNames + "]";
@@ -84,12 +84,6 @@ public class shopinglist  extends T_shopping {
 	}
 	public void setColor(String color) {
 		this.color = color;
-	}
-	public Integer getState() {
-		return state;
-	}
-	public void setState(Integer state) {
-		this.state = state;
 	}
 	public Date getCreate_times() {
 		return create_times;
@@ -144,10 +138,8 @@ public class shopinglist  extends T_shopping {
      */
     private String color;
 
-    /**
-     * 状态(1:上架,2:下架)
-     */
-    private Integer state;
+
+
 
     /**
      * 创建时间

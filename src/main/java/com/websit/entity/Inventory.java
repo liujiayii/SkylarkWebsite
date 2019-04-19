@@ -1,13 +1,18 @@
 package com.websit.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
 
-public class Inventory extends Model<Inventory>{
+public class Inventory extends Model<Inventory> {
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	/**
 	 * 序列化
@@ -15,27 +20,35 @@ public class Inventory extends Model<Inventory>{
 	private static final long serialVersionUID = 1L;
 
 	/**
-     * 库存id
-     */
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+	 * 库存id
+	 */
+	@TableId(value = "id", type = IdType.AUTO)
+	private Long id;
 
-    /**
-     * 商品库存数量
-     */
-    private int number;
-    /**
-     * 商品id
-     */
-    private Long products_id;
-    /**
-     * 商品名称
-     */
-    private String productName;
-    /**
-     * 创建时间
-     */
-    private Date create_time;
+	/**
+	 * 商品库存数量
+	 */
+	private int number;
+	/**
+	 * 商品id
+	 */
+	private Long products_id;
+	/**
+	 * 商品名称
+	 */
+	private String productName;
+	/**
+	 * 创建时间
+	 */
+	private Date create_time;
+	/**
+	 * 商品规格id
+	 */
+	private Long attribute;
+	/**
+	 * 商品规格名称
+	 */
+	private String specificationName;
 	public Long getId() {
 		return id;
 	}
@@ -66,33 +79,32 @@ public class Inventory extends Model<Inventory>{
 	public void setCreate_time(Date create_time) {
 		this.create_time = create_time;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public Long getAttribute() {
+		return attribute;
 	}
-	/**  
-	
-	* <p>Title: </p>  
-	
-	* <p>Description: </p>  
-	  
-	
-	*/  
-	public Inventory() {
-		super();
-		// TODO Auto-generated constructor stub
+	public void setAttribute(Long attribute) {
+		this.attribute = attribute;
+	}
+	public String getSpecificationName() {
+		return specificationName;
+	}
+	public void setSpecificationName(String specificationName) {
+		this.specificationName = specificationName;
 	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Inventory [id=").append(id).append(", number=").append(number).append(", products_id=")
 				.append(products_id).append(", productName=").append(productName).append(", create_time=")
-				.append(create_time).append("]");
+				.append(create_time).append(", attribute=").append(attribute).append(", specificationName=")
+				.append(specificationName).append("]");
 		return builder.toString();
 	}
 	@Override
 	protected Serializable pkVal() {
-	
+		
 		return this.id;
 	}
+	
 	
 }

@@ -3,12 +3,10 @@
 
 <head>
   <meta charset="UTF-8">
-  
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <div th:replace="/mall/common  :: commonHeader(云阙商城)"></div>
-  <link rel="stylesheet" href="/assets/css/mallindex.css">
   <style>
     .nav-big-box-top {
       display: block !important;
@@ -17,7 +15,7 @@
 </head>
 <body>
 <div id="app">
-  <div th:replace="mall/common :: commonNav"></div>
+  <div th:replace="/mall/common :: commonNav"></div>
   <div class="banner">
     <div class="banners">
       <carousel autoplay loop :height="500" :autoplay-speed="4000">
@@ -40,7 +38,7 @@
             </h1>
           </div>
           <div class="sec2-top-right flex">
-            <a :href="'/goodList?zone='+item.zoneId+'&type='+item.zoneName">更多></a>
+            <a :href="'/goodList?zone='+item.zoneId+'&type='+item.zoneName" target="_blank">更多></a>
           </div>
         </div>
         <div class="sec2-box flex">
@@ -53,7 +51,7 @@
             <div class="sec2ltrt-bot">
               <div class="sec2-cont-1 sec-conts">
                 <div class="sec-contswpsimg" v-for="(item_c,index_c) in item.productLists">
-                  <a :href="'/goodDetails?id='+item_c.id">
+                  <a :href="'/goodDetails?id='+item_c.id" target="_blank">
                     <div class="img">
                       <img :src="item_c.image" alt="">
                     </div>
@@ -75,7 +73,7 @@
           <span> 较新商品</span>
         </div>
         <div class="sec3-box flex">
-          <a v-for="(item,index) in newList" class="sec3-list" :href="'goodDetails?id='+item.id">
+          <a v-for="(item,index) in newList" class="sec3-list" target="_blank" :href="'goodDetails?id='+item.id">
             <div class="img"><img :src="item.image" alt=""></div>
             <p class="name">{{item.name}}</p>
             <p class="money">
@@ -86,13 +84,47 @@
       </div>
     </div>
   </div>
-  <div th:replace="mall/common :: commonFooter"></div>
+  <i-Menu mode="vertical" active-name="1-2" :open-names="['哈哈']">
+    <Submenu name="哈哈">
+      <template slot="title">
+        <Icon type="ios-paper" />
+        内容管理
+      </template>
+      <Menu-item name="1-1">文章管理</Menu-item>
+      <Menu-item name="1-2">评论管理</Menu-item>
+      <Menu-item name="1-3">举报管理</Menu-item>
+    </Submenu>
+    <Submenu name="2">
+      <template slot="title">
+        <Icon type="ios-people" />
+        用户管理
+      </template>
+      <Menu-item name="2-1">新增用户</Menu-item>
+      <Menu-item name="2-2">活跃用户</Menu-item>
+    </Submenu>
+    <Submenu name="3">
+      <template slot="title">
+        <Icon type="ios-stats" />
+        统计分析
+      </template>
+      <Menu-group title="使用">
+        <Menu-item name="3-1">新增和启动</Menu-item>
+        <Menu-item name="3-2">活跃分析</Menu-item>
+        <Menu-item name="3-3">时段分析</Menu-item>
+      </Menu-group>
+      <Menu-group title="留存">
+        <Menu-item name="3-4">用户留存</Menu-item>
+        <Menu-item name="3-5">流失用户</Menu-item>
+      </Menu-group>
+    </Submenu>
+  </i-Menu>
+  <div th:replace="/mall/common :: commonFooter"></div>
 </div>
 <script>
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?fb97013250e2161f3582cf67132bb44d";
+  hm.src = "https://hm.baidu.com/hm.js?14366f6f0993261f9a63b6eb35e0af9b";
   var s = document.getElementsByTagName("script")[0]; 
   s.parentNode.insertBefore(hm, s);
 })();
@@ -115,10 +147,8 @@ var _hmt = _hmt || [];
           url: "/selectAllproductation",
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.classData = res.data
-              console.log(this.classData)
             }
           }
         });
@@ -130,10 +160,8 @@ var _hmt = _hmt || [];
           data: {page: 1, limit: 12},
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.classList = res.data
-              console.log(this.classList)
             }
           }
         });
@@ -145,10 +173,8 @@ var _hmt = _hmt || [];
           data: {page: 1, limit: 8},
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.newList = res.data
-              console.log(this.classLists)
             }
           }
         });
@@ -160,10 +186,8 @@ var _hmt = _hmt || [];
           data: {page: 1, limit: 10},
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
               this.slideList = res.data
-              console.log(this.classLists)
             }
           }
         });
@@ -201,5 +225,5 @@ var _hmt = _hmt || [];
     }
   }
 </script>
-<div th:replace="mall/common :: commonFooterjs"></div>
+<div th:replace="/mall/common :: commonFooterjs"></div>
 </html>

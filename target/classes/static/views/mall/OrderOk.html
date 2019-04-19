@@ -9,7 +9,7 @@
   <title>订单确认</title>
   <div th:replace="/mall/common  :: commonHeader(云阙商城)"></div>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1/build/qrcode.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="/assets/css/2Order.css">
+  <script src="https://cdn.jsdelivr.net/npm/iview-area@1/dist/iview-area.min.js"></script>
   <script src="/assets/layui/layui.js" charset="utf-8"></script>
   <style>
     .nav-big-box {
@@ -21,17 +21,8 @@
 </head>
 
 <body id="mallorder ">
-<div id="app">
-  <Modal title="微信" v-model="qrcode" :mask-closable="false" :closable="false">
-    <div style="display: flex">
-      <canvas id="canvas"></canvas>
-      <div style="line-height: 100px">扫描左侧二维码付款</div>
-    </div>
-    <div slot="footer">
-      <i-button type="success" size="large" long @click="goOrder">支付完成再点我</i-button>
-    </div>
-  </Modal>
-  <div th:replace="mall/common :: commonNav"></div>
+<div id="app" class="order">
+  <div th:replace="/mall/common :: commonNav"></div>
   <div class="wrap">
     <div class="main_wrap ddmx">
       <div class="lcbox">
@@ -64,21 +55,19 @@
           <span v-show="show">还没有地址请先添加地址</span>
           <div :class="{on: (index == indexs)}" @click="mapon(index,items.goods_id)" class="shdz1 ons" data-index="1"
                v-for="(items,index) in mapList">
-            <!--   <input  v-model="goodsidon">{{items.goods_ster}} -->
             <div class="userinfo">
               <img src="/assets/image/mall/na.png" class="users-img"><span class="user-name">
 									{{items.goods_name}}</span><span class="user-tell">{{items.goods_tel}}</span>
             </div>
             <div class="userinfo">
 								<span class="hd-name"><img src="/assets/image/mall/address.png" class="users-img">地址：
-
 								</span>
               <div class="addr">{{items.goods_address}}</div>
             </div>
             <div class="dele clearfix" style="">
               <div class="dele-box de-left">
                 <img src="/assets/image/mall/xg.png" class="users-img"><span class="de-span"
-                                                                             @click="edit(items.goods_id)">编辑</span>
+                                                                             @click="edit(items)">编辑</span>
               </div>
               <div class="dele-box">
                 <img src="/assets/image/mall/de.png" class="users-img"><span class="de-span"
@@ -88,13 +77,10 @@
             <div class="clear"></div>
             <p class="mrdz" v-if="items.goods_ster=='1'">默认地址</p>
           </div>
-
-
         </div>
         <div class="adddz">
-          <a @click="newaddress();" href="javascript:"> 添加新地址 </a>
+          <a @click="newAddress" href="javascript:"> 添加新地址 </a>
         </div>
-
         <div class="sestion sestion3">
           <h1>商品信息</h1>
           <div class="flex spxx-title">
@@ -110,7 +96,7 @@
               <p>{{item.productName}}</p>
             </div>
             <div class="li">
-              <p>{{item.producttypename}}{{item.specifications}}</p>
+              <p class="ligg">{{item.producttypename}}{{item.specifications}}</p>
             </div>
             <div class="li">¥{{item.price}}</div>
             <div class="li" v-if="numshow">
@@ -128,12 +114,12 @@
       </div>
       <div class="mallinput sestion">
         <h1>订单备注：</h1>
-        <textarea rows="3" cols="30" id="KS_advice" name="KS_advice"></textarea>
+        <i-input type="textarea"/>
       </div>
       <div class=" pay sestion">
         <h1>支付方式：</h1>
-        <span class="pay-list" :class="{ active: type=='wx' }" @click="toggleType('wx')">微信支付</span> <span
-              class="pay-list" :class="{ active: type=='zfb' }" @click="toggleType('zfb')">支付宝支付</span>
+        <p class="pay-list" :class="{ active: type=='wx' }" @click="toggleType('wx')">微信支付</p>
+        <p class="pay-list" :class="{ active: type=='zfb' }" @click="toggleType('zfb')">支付宝支付</p>
       </div>
       <div class="sestion sestion5">
         <div class="sestion5-left">
@@ -166,12 +152,55 @@
         <span class="btn" @click="paymentOrder()">立即支付</span>
         <div class="clear"></div>
       </div>
-
     </div>
     <div class="clear"></div>
   </div>
   <input id="state" v-model="goodsid">
-  <div th:replace="mall/common :: commonFooter"></div>
+  <div th:replace="/mall/common :: commonFooter"></div>
+  <Modal title="微信" v-model="qrcode" :mask-closable="false" :closable="false">
+    <div style="display: flex">
+      <canvas id="canvas"></canvas>
+      <div style="line-height: 100px">扫描左侧二维码付款</div>
+    </div>
+    <div slot="footer">
+      <i-button type="success" size="large" long @click="goOrder">支付完成再点我</i-button>
+    </div>
+  </Modal>
+  <Drawer
+          title="收货地址"
+          v-model="editAddress"
+          width="720"
+          :mask-closable="false"
+          :styles="{ height: 'calc(100% - 55px)', overflow: 'auto',paddingBottom: '53px', position: 'static' }"
+          @on-close="closeAddress"
+  >
+    <i-form :model="formData">
+      <Row :gutter="32">
+        <i-col span="12">
+          <form-item label="收货人" label-position="top">
+            <i-input v-model="formData.goods_name"/>
+          </form-item>
+        </i-col>
+        <i-col span="12">
+          <form-item label="手机号" label-position="top">
+            <i-input v-model="formData.goods_tel"/>
+          </form-item>
+        </i-col>
+      </Row>
+      <form-item label-position="top">
+        <al-cascader data-type="name" v-model="addressArr" level="2"/>
+      </form-item>
+      <form-item label="详细地址" label-position="top">
+        <i-input type="textarea" v-model="formData.goods_address" :rows="4"/>
+      </form-item>
+      <form-item label="" label-position="top">
+        <Checkbox v-model="formData.goods_ster" true-value="1" false-value="2">是否设置为默认地址</Checkbox>
+      </form-item>
+    </i-form>
+    <div class="demo-drawer-footer">
+      <i-button type="primary" @click="saveAddress">保存</i-button>
+    </div>
+  </Drawer>
 </div>
 </body>
 <script>
@@ -187,7 +216,7 @@
         classData: [],
         goodscont: [],
         indexs: 0,
-        type: null,
+        type: 'zfb',
         mapId: null,
         pricebig: null,
         freights: null,
@@ -199,16 +228,20 @@
           order_mode: "",
           user_id: sessionStorage.getItem("SkyUserId")
         },
-        qrcode: false
+        qrcode: false,
+        editAddress: false,
+        formData: {},
+        addressArr: []
       }
     },
     methods: {
+      closeAddress() {
+        this.formData = {}
+        this.addressArr = []
+      },
       useqrcode(canvasData) {
-        console.log(canvasData)
         let canvas = document.getElementById('canvas')
         QRCode.toCanvas(canvas, canvasData, function (error) {
-          if (error) console.error(error)
-          console.log('QRCode success!');
         })
       },
       goOrder() {
@@ -217,11 +250,9 @@
       //支付方式
       toggleType(types) {
         this.type = types
-        console.log(sessionStorage.getItem("SkyUserId"))
       },
       //支付
       paymentOrder() {
-        console.log(this.type)
         //生成订单
         $.ajax({
           type: "get",
@@ -257,7 +288,6 @@
                     if (res_.success) {
                       this.qrcode = true
                       this.useqrcode(res_.data.code_url)
-                      console.log('====')
                     } else {
 
                     }
@@ -286,7 +316,6 @@
                     if (loclist[1].split(",")[i] == res.data[n].trolley_id) {
                       this.goodscont.push(res.data[n])
                       for (let j = 0; j < this.goodscont.length; j++) {
-                        console.log(res.data[j].name)
                         this.goodscont[j].productName = res.data[j].name
                       }
                       this.pricebig += res.data[n].number * res.data[n].price
@@ -294,7 +323,6 @@
                   }
                 }
                 this.getExpress()
-                console.log(this.goodscont)
                 //this.goodscont =res.data;
               } else {
                 this.$Message.info(res.msg)
@@ -310,7 +338,6 @@
             success: (res) => {
               this.goodscont = res.data
               this.pricebig = this.getHrefParam("num") * res.data[0].price
-              console.log(res)
               this.orders.id = res.data[0].productId
               $.ajax({
                 type: "post",
@@ -323,7 +350,6 @@
                 success: (res) => {
                   this.discounts = res.count
                   this.freights = res.data
-                  console.log(res)
                 }
               })
             }
@@ -338,9 +364,7 @@
           data: {trolley_id: window.location.href.split('=')[1]},
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
-              console.log(res.data)
               this.discounts = res.data
               this.freights = res.count
             } else {
@@ -354,57 +378,60 @@
         this.indexs = item;
         this.orders.order_mode = id
       },
-      newaddress() {
-        layui.use('layer', function () {
-          var layer = layui.layer;
-          layer.open({
-            title: '新增收货地址',
-            type: 2,
-            id: 2,
-            scrollbar: false,
-            area: ['720px', '600px'],
-            content: ['/newaddress', 'no'],
-            end: function () {
-              window.location.reload();
+      //修改地址
+      edit(item) {
+        this.formData = item
+        let arr = []
+        arr.push(item.goods_sheng)
+        arr.push(item.goods_shi)
+        arr.push(item.goods_xian)
+        this.addressArr = arr
+        this.newAddress()
+      },
+      newAddress() {
+        this.editAddress = true
+      },
+      saveAddress() {
+        this.formData.user_id = this.userInfo.id
+        this.formData.goods_sheng = this.addressArr[0]
+        this.formData.goods_shi = this.addressArr[1]
+        this.formData.goods_xian = this.addressArr[2]
+        $.ajax({
+          type: "post",
+          url: this.formData.goods_id ? "/t_goods/updateGoods" : "/t_goods/addGoods",
+          data: JSON.stringify(this.formData),
+          contentType: 'application/json',
+          dataType: "json",
+          success: (res) => {
+            if (res.code === 1) {
+              this.editAddress = false
+              this.$Message.success(res.msg);
+              this.closeAddress()
+              this.getselectGoods()
             }
-          });
+          }
         });
       },
       //删除地址
-      dele(goodsid) {
-        layui.use('layer', function () {
-          var layer = layui.layer;
-          layer.confirm('确认删除地址？', {
-            btn: ['确认', '取消'] //按钮
-          }, function () {
+      dele(goods_id) {
+        this.$Modal.confirm({
+          title: '提示',
+          content: '<p>是否删除</p>',
+          onOk: () => {
             $.ajax({
               type: "post",
               url: "t_goods/deletGoods",
-              data: {goods_id: goodsid},
+              data: {goods_id},
               dataType: "json",
               success: (res) => {
-                window.location.reload();
+                if (res.code === 1) {
+                  this.getselectGoods()
+                }
               }
             });
-          }, function () {
-            layer.closeAll();
-          });
-        });
-
-      },
-      //修改地址
-      edit(goodsid) {
-        console.log(goodsid)
-        $.ajax({
-          type: "post",
-          url: "/t_goods/selectFindIds",
-          data: {goods_id: goodsid},
-          dataType: "json",
-          success: (res) => {
-            this.goodsid = goodsid
-            this.orders.order_mode = goodsid
-            console.log(res.data)
-            this.newaddress()
+          },
+          onCancel: () => {
+            this.$Message.info('已取消');
           }
         });
       },
@@ -432,9 +459,7 @@
           url: "t_order/Generateorder",
           dataType: "json",
           success: (res) => {
-            console.log(res)
             if (res.code == 1) {
-              console.log(res.data)
             }
           }
         });
@@ -454,7 +479,6 @@
           success: (res) => {
             this.discounts = res.count
             this.freights = res.data
-            console.log(res.data)
           }
         })
       },
@@ -482,11 +506,8 @@
       this.mapon(0)
       this.getgoodscont()
       this.getselectGoods()
-      this.getHrefParam("id")
-      this.getHrefParam("num")
     }
   }
-
 </script>
 <script>
   var userinfo = document.getElementById('shdz');
@@ -530,6 +551,6 @@
   }
 </script>
 
-<div th:replace="mall/common :: commonFooterjs"></div>
+<div th:replace="/mall/common :: commonFooterjs"></div>
 
 </html>

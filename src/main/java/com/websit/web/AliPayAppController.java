@@ -90,6 +90,7 @@ private static final Logger logger = Logger.getLogger(AliPayAppController.class)
 			}
 			// 乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
 			// valueStr = new String(valueStr.getBytes("ISO-8859-1"), "uft-8");
+			System.out.println("key=="+key+" valueStr=="+valueStr);
 			conversionParams.put(key, valueStr);
 		}
 		logger.info("==================返回参数集合：" + conversionParams);

@@ -51,7 +51,9 @@ public class T_userServiceImpl extends ServiceImpl<T_userMapper, T_user> impleme
 		try {
 			//将字符串转为日期
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+			System.out.println("personal"+personal);
 			Date dstr = userMapper.selectUserCreateTimeById(personal);
+			System.out.println("dstr"+dstr);
 			//String dstr="2008-08-08 08:08:08 ";
 			//Date date=sdf.parse(dstr);
 			long s1=dstr.getTime();//将时间转为毫秒

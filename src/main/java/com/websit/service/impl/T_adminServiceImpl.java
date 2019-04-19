@@ -2,7 +2,6 @@ package com.websit.service.impl;
 
 import com.websit.constant.ReturnCode;
 import com.websit.entity.T_admin;
-import com.websit.mapper.T_accessMapper;
 import com.websit.mapper.T_adminMapper;
 import com.websit.service.IT_adminService;
 import com.websit.until.JsonUtil;
@@ -10,13 +9,15 @@ import com.websit.until.MD5Utils;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.websit.mapper.T_permissionMapper;
+import com.websit.entity.T_permission;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * <p>
@@ -31,6 +32,10 @@ public class T_adminServiceImpl extends ServiceImpl<T_adminMapper, T_admin> impl
 
 	@Autowired
 	private T_adminMapper adminMapper;
+	
+	@Autowired
+	private T_permissionMapper permissionMapper;
+	
 	@Override
 	public T_admin selectbyName(String name) {
 		
@@ -161,7 +166,7 @@ public class T_adminServiceImpl extends ServiceImpl<T_adminMapper, T_admin> impl
 			String password = (adminMapper.selectById(admin.getId())).getPassword();
 			
 			if (!admin.getPassword().equals(password)) {
-				admin.setPassword(MD5Utils.hash(admin.getPassword() + "KwX3jBV5hOmTSUdc"));
+				admin.setPassword(MD5Utils.encryptPassword(admin.getPassword(), "KwX3jBV5hOmTSUdc"));
 			} 
 			
 			Integer updateById = adminMapper.updateById(admin);

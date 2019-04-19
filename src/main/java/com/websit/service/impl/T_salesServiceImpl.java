@@ -1,6 +1,8 @@
 package com.websit.service.impl;
 
 import com.websit.entity.T_sales;
+import com.websit.entityvo.order_listr;
+import com.websit.entityvo.shopinglist;
 import com.websit.mapper.T_salesMapper;
 import com.websit.service.IT_salesService;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
@@ -36,6 +38,16 @@ public class T_salesServiceImpl extends ServiceImpl<T_salesMapper, T_sales> impl
 	public List<com.websit.entityvo.th_list> th_list(String date,RowBounds RowBounds) {
 		// TODO Auto-generated method stub
 		return T_salesMapper.th_list(date,RowBounds);
+	}
+	@Override
+	public List<shopinglist> seleth_list(String stale, String user_id, RowBounds RowBounds,String order_no) {
+		// TODO Auto-generated method stub
+		return T_salesMapper.seleth_list(stale, user_id, RowBounds,order_no);
+	}
+	@Override
+	public List<order_listr> rder_listr(String stale, String user_id, RowBounds rowBounds, String order_no) {
+		// TODO Auto-generated method stub
+		return T_salesMapper.order_listr(stale, user_id, rowBounds, order_no);
 	}
   
 }

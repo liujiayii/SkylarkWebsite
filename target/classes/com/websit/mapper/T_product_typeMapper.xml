@@ -81,7 +81,7 @@
 	
 	<select id="selectproduct" parameterType="com.websit.entity.Classification" resultType="com.websit.entity.T_product_type">
 	
-	select * from t_product_type where  classification_id = #{id}
+	select id,ioc,name,create_time,classification_id classificationId from t_product_type where  classification_id = #{id}
 	</select>
 	
 

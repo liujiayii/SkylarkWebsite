@@ -8,14 +8,17 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.3.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<version>1.5.9.RELEASE</version>
+		<relativePath /> 
 	</parent>
+	
 	<!-- <packaging>war</packaging> -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
+		<java.version>1.7</java.version>
+		<thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
+        <thymeleaf-layout-dialect.version>2.0.5</thymeleaf-layout-dialect.version>
 	</properties>
 	
 	<dependencies>
@@ -149,6 +152,7 @@
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>webjars-locator-core</artifactId>
+			<version>0.32</version>
 		</dependency>
 		<dependency>
 			<groupId>org.webjars</groupId>
@@ -174,12 +178,22 @@
 			<version>2.2</version>
 
 		</dependency>
+		<dependency>
+<groupId>net.sourceforge.nekohtml</groupId>
+<artifactId>nekohtml</artifactId>
+<version>1.9.22</version>
+</dependency>
 		<!-- 支付宝支付依赖jar包 -->
 		<dependency>
 			<groupId>com.alipay.sdk</groupId>
 			<artifactId>alipay-sdk-java</artifactId>
 			<version>3.3.87.ALL</version>
 		</dependency>
+		<dependency>
+    <groupId>commons-lang</groupId>
+    <artifactId>commons-lang</artifactId>
+    <version>2.6</version>
+</dependency>
 		<!-- 日志依赖 -->
 		<dependency>
 		    <groupId>commons-logging</groupId>
@@ -187,14 +201,27 @@
 		    <version>1.1.1</version>
 		</dependency>
 		<!-- 错误页面 -->
-		 <dependency>
+		 <!-- <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
+        </dependency> -->
+        
+        <!-- spring-security  -->
+        <!-- <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency> -->
+        <!--Thymeleaf Spring Security依赖-->
+		<!-- <dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+		</dependency> -->
+        
 		<!--因配置外部TOMCAT 而配置 -->
-		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId> 
+	<!-- 	<dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-tomcat</artifactId> 
 			<scope>provided</scope> </dependency> -->
 	</dependencies>
+	
 
 	<developers>
 		<developer>
@@ -221,14 +248,19 @@
 		<developerConnection></developerConnection>
 	</scm>
 	<build>
+		
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
 					<mainClass>com.websit.Application</mainClass>
+                  <source>1.7</source>
+			       <target>1.7</target>
+				<encoding>utf-8</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
+
 	</build>
 </project>
