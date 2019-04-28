@@ -196,6 +196,14 @@ public class T_indesController {
 
 		return mv;
 	}
+	
+	@RequestMapping("/orderDetails")
+	public ModelAndView orderDetails() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/mall/orderDetails");
+
+		return mv;
+	}
 
 	@RequestMapping("/newaddress")
 	public ModelAndView newaddress() {

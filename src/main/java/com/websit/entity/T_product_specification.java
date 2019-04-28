@@ -8,11 +8,11 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 商品规格表(pc)
+ * 商品详情表(pc)
  * </p>
  *
  * @author lichangchun
- * @since 2019-04-18
+ * @since 2019-04-20
  */
 public class T_product_specification extends Model<T_product_specification> {
 
@@ -30,7 +30,7 @@ public class T_product_specification extends Model<T_product_specification> {
     private Long product_id;
 
     /**
-     * 商品规格选项表id
+     * 商品规格选项表数组
      */
     private String specificationName;
 
@@ -48,6 +48,11 @@ public class T_product_specification extends Model<T_product_specification> {
      * 销售价
      */
     private BigDecimal price;
+
+    /**
+     * 商品规格选项表id
+     */
+    private Long t_spectId;
 
     public Long getId() {
         return id;
@@ -91,6 +96,13 @@ public class T_product_specification extends Model<T_product_specification> {
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+    public Long getT_spectId() {
+        return t_spectId;
+    }
+
+    public void setT_spectId(Long t_spectId) {
+        this.t_spectId = t_spectId;
+    }
 
     @Override
     protected Serializable pkVal() {
@@ -106,6 +118,7 @@ public class T_product_specification extends Model<T_product_specification> {
         ", cost_price=" + cost_price +
         ", discount_price=" + discount_price +
         ", price=" + price +
+        ", t_spectId=" + t_spectId +
         "}";
     }
 }

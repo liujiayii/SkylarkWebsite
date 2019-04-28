@@ -35,7 +35,11 @@ public class UpdateFile {
 	    private static String ruleId0 = "rule0";
 	    private static String matchPrefix0 = "A0/";
 	    
-	    
+	/*
+	 * endpoint=http://oss-cn-beijing.aliyuncs.com bucketName=system-im
+	 * picLocation=data/attachments/ accessKeyId=LTAIvnDBZYK3DLbL
+	 * accessKeySecret=MI2LRjW5RQqolPzUBdkjSaRDDPOLpG
+	 */
 	    
 	
     public UpdateFile() {

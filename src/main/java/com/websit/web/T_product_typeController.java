@@ -255,7 +255,11 @@ public String findBpproduc(Integer page,Integer limit) {
 }
 
 
-
+/**
+ * 根据类型id查询所有商品 默认显示价格最低的配置
+ * @param id
+ * @return
+ */
 @RequestMapping(value = "/findBpproducs", produces = "application/json; charset=utf-8")
 @ResponseBody
 public String findBpproduc(Long id) {

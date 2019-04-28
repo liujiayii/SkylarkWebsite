@@ -8,45 +8,10 @@
       display: none
     }
 
-    .navli {
-      cursor: pointer;
-    }
-
-    .detail-area-A .h2s {
-      line-height: 1.6;
-      font-size: 16px;
-      box-sizing: border-box;
-      word-break: break-all;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      margin-top: 7px;
-
-    }
-
     .gwc {
-      position: absolute;
       bottom: 20px;
       right: 20px;
-      width: 28px;
-      height: 28px;
-      background-color: #de5c66;
-      border-radius: 100%;
-      padding: 2px;
       cursor: pointer;
-    }
-
-    .gwc img {
-      display: block;
-      width: 70%;
-      margin-left: 15%;
-      margin-top: 15%
-    }
-
-    .detail-goods-list:hover {
-      transform: translate3d(0, -3px, 0);
-      box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.15);
     }
 
   </style>
@@ -152,7 +117,7 @@
       if (this.getHrefParam('id')) {
         this.getGoods("/findBpproducs", {id: this.getHrefParam("id")})
       } else if (this.getSearchKeyWord('search')) {
-        this.getGoods("/listProductByProductTypeId", {productName: this.getSearchKeyWord('search')})
+        this.getGoods("/listProductByProductTypeIds", {productName: this.getSearchKeyWord('search'),page:1,limit:2})
       } else if (this.getHrefParam('zone')) {
         this.getGoods("/listZoneByTypeIdPage", {zoneId: this.getHrefParam('zone'), page: 1, limit: 40})
       } else if(this.getHrefParam('class_cont')){

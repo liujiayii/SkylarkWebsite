@@ -1,6 +1,8 @@
 package com.websit.web;
 
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,11 +56,37 @@ private IT_discount_productService discount_productService;
 	 */
 	@RequestMapping(value = "/selectDiscountListByProductId", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String selectDiscountListByProductId(Long productid) {
+	public String selectDiscountListByProductId(BigInteger productId) {
 		try{
-		Discount result = discount_productService.selectDiscountListByProductId(productid);
+		Discount result = discount_productService.selectDiscountListByProductId(productId);
 
 		if (result != null) {
+			return JsonUtil.getResponseJson(1, "查看成功", null, result);
+		} else {
+			return JsonUtil.getResponseJson(1, "无数据", null, null);
+		}
+	} catch (Exception e) {
+		e.printStackTrace();
+		return JsonUtil.getResponseJson(-1, "程序异常", null, null);
+	}
+	}
+	
+	/**
+	 * 修改满减优惠
+	 * @author pangchong
+	 * @createDate 2019年3月21日 下午2:00
+	 */
+	@RequestMapping(value = "/updateDiscount", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String updateDiscount(Long discountid,BigDecimal price,BigDecimal money) {
+		Discount discount = new Discount();
+		discount.setDiscountid(discountid);
+		discount.setPrice(price);
+		discount.setMoney(money);
+		try{
+		int result = discount_productService.updateDiscount(discount);
+
+		if (result>0) {
 			return JsonUtil.getResponseJson(1, "查看成功", null, result);
 		} else {
 			return JsonUtil.getResponseJson(1, "无数据", null, null);

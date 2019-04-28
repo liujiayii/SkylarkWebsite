@@ -586,6 +586,7 @@ public class LoginController {
 	 */
 	@RequestMapping("/doLogin")
 	@ResponseBody
+	
 	public String login(@RequestBody Logivo log, HttpSession session) {
 		// 校验5分钟之内有没有登陆过 登陆过 几次
 		String num = null;

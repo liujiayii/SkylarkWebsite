@@ -66,6 +66,7 @@ public class Security {
 	public static void main(String[] args) {
 		Security  Securit=new Security();
 		Security.encode("12345678");
+		System.out.println();
 		System.out.println(Securit.encode("12345678"));
 	}
 	}

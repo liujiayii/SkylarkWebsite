@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_couponMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_coupon">
+        <id column="id" property="id" />
+        <result column="icon" property="icon" />
+        <result column="title" property="title" />
+        <result column="used" property="used" />
+        <result column="type" property="type" />
+        <result column="with_special" property="with_special" />
+        <result column="with_sn" property="with_sn" />
+        <result column="with_amount" property="with_amount" />
+        <result column="used_amount" property="used_amount" />
+        <result column="quota" property="quota" />
+        <result column="take_count" property="take_count" />
+        <result column="used_coun" property="used_coun" />
+        <result column="start_time" property="start_time" />
+        <result column="end_time" property="end_time" />
+        <result column="valid_type" property="valid_type" />
+        <result column="valid_start_time" property="valid_start_time" />
+        <result column="valid_end_time" property="valid_end_time" />
+        <result column="valid_days" property="valid_days" />
+        <result column="status" property="status" />
+        <result column="create_user" property="create_user" />
+        <result column="create_time" property="create_time" />
+        <result column="update_user" property="update_user" />
+        <result column="update_time" property="update_time" />
+        <result column="get_number" property="get_number" />
+    </resultMap>
+
+ <update id="updateStatusById">
+   update t_coupon set status = #{status} where id =#{id}
+ </update>
+</mapper>

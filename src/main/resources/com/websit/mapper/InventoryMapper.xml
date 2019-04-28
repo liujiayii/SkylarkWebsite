@@ -55,7 +55,7 @@
 		insert into
 		t_inventory(number,create_time,product_id,attribute)
 		values
-		(#{number},now(),#{products_id},#{attribute})
+		(#{number},now(),#{product_id},#{attribute})
 	</insert>
 	
 	<!-- 修改商品 -->
@@ -103,4 +103,10 @@
 		   where id=#{id}
 		
 	</delete>
+	
+	<select id="listInventoryById" resultType="Integer">
+	
+	select number from t_inventory where attribute=#{attribute} and product_id =#{product_id}
+	
+	</select>
 </mapper>

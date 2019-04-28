@@ -3,7 +3,11 @@ package com.websit.mapper;
 import com.websit.entity.T_discount_product;
 import com.websit.entityvo.Discount;
 import com.websit.entityvo.DiscountVo;
+import com.websit.entityvo.ProductVo;
 import com.websit.entityvo.ProductVos;
+
+import java.math.BigInteger;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -35,5 +39,12 @@ public interface T_discount_productMapper extends BaseMapper<T_discount_product>
 	 * @author pangchong
 	 * @createDate 2019年3月27日
 	 */
-	public Discount selectDiscountListByProductId(Long productid);
+	public Discount selectDiscountListByProductId(BigInteger productId);
+	/**
+	 * 修改满减优惠
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	public int updateDiscount(Discount discount);
 }

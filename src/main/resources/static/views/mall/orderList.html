@@ -11,6 +11,7 @@
     .nav-big-box {
       display: none !important;
     }
+    .listli{line-height: 2}
   </style>
 </head>
 <body>
@@ -83,9 +84,10 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-                <div class="li">品名</div>
+                 <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
+                <div class="li">单价</div>
                 <div class="li">下单时间</div>
                 <div class="li">订单金额</div>
                 <!-- <div class="li">操作</div> -->
@@ -96,8 +98,10 @@
               <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
                 <div class="spxx-conttop flex">
                   <p class="lis">订单编号：{{item.order_no}}</p>
+                  
                   <div class="li">
                     <button @click=clear(item.order_id)>取消订单</button>
+                    <a class="detail" :href="'/orderDetails?id='+item.order_id">订单详情</a>
                     <dropdown @on-click="payment(item.order_no,item_c.price,$event)">
                       <a href="javascript:void(0)" class="pay_btn">
                         立即付款
@@ -113,13 +117,22 @@
                 <div class="flex spxx-cont">
                   <div class="li"><img :src="item_c.image" alt="">
                     <p>{{item_c.productName}}</p></div>
-                  <div class="li"><p>{{item_c.specifications}}</p></div>
-                  <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item.order_time)}}</div>
+                  <div class="li">
+                    <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
+<!--                      {{item_s}}-->
+                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                    </p>
+<!--                    <p>{{item_c.shoping_specifications}}</p>-->
+                  </div>
+            <div class="li"><p>{{item.order_number}}</p></div>
                   <div class="li">¥{{item_c.price}}</div>
+              
+                  <div class="li">{{formatData(item.order_time)}}</div>
+                  <div class="li">¥{{item_c.zongjia}}</div>
                 </div>
               </div>
             </div>
+        <!--     <Page :total="dfk" size="small" @on-change="pageChange" /> -->
           </div>
         </div>
         <div v-if="active==1" class="rg-p2list">
@@ -132,9 +145,10 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-                <div class="li">品名</div>
+                  <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
+                <div class="li">单价</div>
                 <div class="li">下单时间</div>
                 <div class="li">订单金额</div>
               </div>
@@ -145,16 +159,31 @@
                 <div class="spxx-conttop flex">
                   <p class="lis">订单编号：{{item.order_no}}</p>
                   <div class="li">
+                  <a class="detail" :href="'/orderDetails?id='+item.order_id">订单详情</a>
                     <button class="pay_btn" @click="shipment()">提醒发货</button>
                   </div>
                 </div>
                 <div class="flex spxx-cont">
                   <div class="li"><img :src="item_c.image" alt="">
                     <p>{{item_c.brand}}</p></div>
-                  <div class="li"><p>{{item_c.specifications}}</p></div>
-                  <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item.order_time)}}</div>
+                  <div class="li">
+                    <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
+                      <!--                      {{item_s}}-->
+                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                    </p>
+<!--                    <p>{{item_c.specifications}}</p>-->
+                  </div>
+                       <div class="li"><p>{{item.order_number}}</p></div>
                   <div class="li">¥{{item_c.price}}</div>
+                  
+                  <div class="li">{{formatData(item.order_time)}}</div>
+
+                  
+
+
+                  <div class="li">¥{{item_c.zongjia}}</div>
+
+
                   <!-- <div class="li"><button class="pay_btn">提醒发货</button></div> -->
                 </div>
               </div>
@@ -171,9 +200,10 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-                <div class="li">品名</div>
+          <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
+                <div class="li">单价</div>
                 <div class="li">下单时间</div>
                 <div class="li">订单金额</div>
               </div>
@@ -184,6 +214,7 @@
                 <div class="spxx-conttop flex">
                   <p class="lis">订单编号：{{item.order_no}}</p>
                   <div class="li">
+                  <a class="detail" :href="'/orderDetails?id='+item.order_id">订单详情</a>
                     <button @click="logistics(item.order_shouhuo_id)">查看物流</button>
                     <button class="pay_btn" @click="okOrder(item.order_id)">确认收货</button>
                   </div>
@@ -191,10 +222,18 @@
                 <div class="flex spxx-cont">
                   <div class="li"><img :src="item_c.image" alt="">
                     <p>{{item_c.brand}}</p></div>
-                  <div class="li"><p>{{item_c.specifications}}</p></div>
-                  <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item.order_time)}}</div>
+                  <div class="li">
+                    <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
+                      <!--                      {{item_s}}-->
+                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                    </p>
+<!--                    <p>{{item_c.specifications}}</p>-->
+                  </div>
+                       <div class="li"><p>{{item.order_number}}</p></div>
                   <div class="li">¥{{item_c.price}}</div>
+               
+                  <div class="li">{{formatData(item.order_time)}}</div>
+                  <div class="li">¥{{item_c.zongjia}}</div>
                 </div>
               </div>
             </div>
@@ -210,9 +249,10 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-                <div class="li">品名</div>
+                    <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
+                <div class="li">单价</div>
                 <div class="li">下单时间</div>
                 <div class="li">订单金额</div>
               </div>
@@ -230,10 +270,17 @@
                 <div class="flex spxx-cont">
                   <div class="li"><img :src="item_c.image" alt="">
                     <p>{{item_c.brand}}</p></div>
-                  <div class="li"><p>{{item_c.specifications}}</p></div>
+                  <div class="li">
+                    <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
+                      <!--                      {{item_s}}-->
+                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                    </p>
+                    <p>{{item_c.specifications}}</p>
+                  </div>
                   <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.price}}</div>
+                  <div class="li">{{formatData(item.order_time)}}</div>
+                  <div class="li">¥{{item_c.zongjia}}</div>
                 </div>
               </div>
             </div>
@@ -249,6 +296,7 @@
                 <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
+                <div class="li">单价</div>
                 <div class="li">下单时间</div>
                 <div class="li">订单金额</div>
                 <div class="li">状态</div>
@@ -263,11 +311,18 @@
                 <div class="flex spxx-cont">
                   <div class="li"><img :src="item_c.image" alt="">
                     <p>{{item_c.brand}}</p></div>
-                  <div class="li"><p>{{item_c.specifications}}</p></div>
-                  <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item.order_time)}}</div>
+                  <div class="li">
+                    <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
+                      <!--                      {{item_s}}-->
+                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                    </p>
+<!--                    <p>{{item_c.specifications}}</p>-->
+                  </div>
+               <div class="li"><p>{{item.order_number}}</p></div>
                   <div class="li">¥{{item_c.price}}</div>
-                  <div class="li">{{item.order_state}}</div>
+               
+                  <div class="li">{{formatData(item.order_time)}}</div>
+                  <div class="li">¥{{item_c.zongjia}}</div>
                 </div>
               </div>
             </div>
@@ -283,9 +338,10 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-                <div class="li">品名</div>
+       <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
+                <div class="li">单价</div>
                 <div class="li">下单时间</div>
                 <div class="li">订单金额</div>
                 <div class="li">操作</div>
@@ -297,16 +353,24 @@
                 <div class="flex spxx-cont">
                   <div class="li"><img :src="item_c.image" alt="">
                     <p>{{item_c.brand}}</p></div>
-                  <div class="li"><p>{{item_c.specifications}}</p></div>
+                  <div class="li">
+                    <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
+                      <!--                      {{item_s}}-->
+                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                    </p>
+<!--                    <p>{{item_c.specifications}}</p>-->
+                  </div>
                   <div class="li"><p>{{item.order_number}}</p></div>
-                  <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.price}}</div>
+                  <div class="li">{{formatData(item.order_time)}}</div>
+                  <div class="li">¥{{item_c.zongjia}}</div>
                   <div class="li">
                     <button v-if='item.order_state==-1'>取消订单</button>
                     <button v-if='item.order_state==0'>待付款</button>
                     <button v-if='item.order_state==1'>待发货</button>
                     <button v-if='item.order_state==2'>待收货</button>
-                    <button v-if='item.order_state==3'>已完成</button>
+                    <button v-if='item.order_state>=3'>已完成</button>
+                    
                   </div>
                 </div>
               </div>
@@ -350,6 +414,10 @@
       }
     },
     methods: {
+      pageChange(num,num1){
+
+        return JSON.stringify(data)
+      },
       submitReturn() {
         $.ajax({
           type: "post",
@@ -496,6 +564,13 @@
           success: (res) => {
             this.userInfo.name
             if (res.code == 1) {
+
+              for(let j=0 ;j<res.data.length;j++){
+                for(let s=0;s<res.data[j].shping.length;s++){
+                  console.log(res.data[j].shping[s].shoping_specifications)
+                  res.data[j].shping[s].shoping_specifications=JSON.parse(res.data[j].shping[s].shoping_specifications)
+                }
+              }
               this.orderListPaid = res.data
             }
           }
@@ -528,7 +603,14 @@
                   }
                 }
               }
+              for(let j=0 ;j<res.data.length;j++){
+                for(let s=0;s<res.data[j].shping.length;s++){
+                  console.log(res.data[j].shping[s].shoping_specifications)
+                  res.data[j].shping[s].shoping_specifications=JSON.parse(res.data[j].shping[s].shoping_specifications)
+                }
+              }
               this.orderListPaid = res.data
+             // this.orderListPaid = res.data
             }
           }
         });

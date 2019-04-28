@@ -79,59 +79,32 @@ public class OnlineController {
 				}
 			}
 		 
-		if (file != null) {
+		String fileName = file.getName();
+		String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+		String msgType = null;
+		try {
+			if (isBinary(file)) {
 
-			String fileName = file.getName();
-			String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-			String msgType = null;
-			try {
-				if (isBinary(file)) {
-
-					if (suffix.equals("bmp") || suffix.equals("gif") || suffix.equals("jpg") || suffix.equals("png")) {
-						msgType = "image";
-					} else if (suffix.equals("voi")) {
-						msgType = "voice";
-					} else if (suffix.equals("mpg") || suffix.equals("wmv") || suffix.equals("rmvb")
-							|| suffix.equals("avi") || suffix.equals("asf") || suffix.equals("mpeg")
-							|| suffix.equals("mov")) {
-						msgType = "video";
-					}
-					JSONObject res = uploadFile(file, msgType, "." + suffix);
-					String fileKey = res.getString("fileKey");
-
-					JSONObject json = onlineService.sendMessage(userId, fileKey);
-					System.out.println("json:" + json);
-					return json;
-
+				if (suffix.equals("bmp") || suffix.equals("gif") || suffix.equals("jpg") || suffix.equals("png")) {
+					msgType = "image";
+				} else if (suffix.equals("voi")) {
+					msgType = "voice";
+				} else if (suffix.equals("mpg") || suffix.equals("wmv") || suffix.equals("rmvb")
+						|| suffix.equals("avi") || suffix.equals("asf") || suffix.equals("mpeg")
+						|| suffix.equals("mov")) {
+					msgType = "video";
 				}
+				JSONObject res = uploadFile(file, msgType, "." + suffix);
+				String fileKey = res.getString("fileKey");
 
-			} catch (Exception e) {
-				e.printStackTrace();
+				JSONObject json = onlineService.sendMessage(userId, fileKey);
+				System.out.println("json:" + json);
+				return json;
+
 			}
 
-		} else if (path != null) {
-
-			// String path = "E:/file/www.jpg";
-			// String pathPattern = "^[A-z]:\\\\(.+?\\\\)*$";
-			// if (path.matches(pathPattern)) {
-			String pattern = "[A-Za-z0-9/+]+[=]{0,2}";
-			String base64File = fileToBase64(path);
-			System.out.println("base64File:" + base64File);
-			Boolean isBase64File = base64File.matches(pattern);
-			if (isBase64File) {
-				try {
-					JSONObject res = uploadBase64File(base64File, "image", ".jpg");
-					System.out.println("Base64File结果：" + res);
-					String fileKey = res.getString("fileKey");
-					JSONObject json = onlineService.sendMessage(userId, fileKey);
-					System.out.println("发送结果：" + json);
-					return json;
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				// }
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}

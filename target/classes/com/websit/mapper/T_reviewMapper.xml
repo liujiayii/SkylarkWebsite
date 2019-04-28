@@ -56,10 +56,9 @@
 		re.review_time review_time,
 		re.product_id product_id,
 		pr.name name,
-		pr.color color,
+	
 		pr.image image,
-		pr.price price,
-		pr.specifications specifications,
+	
 		pv.picture picture
 		from t_review re
 		left join t_picture_video pv on re.id= pv.review_id left

@@ -40,8 +40,45 @@ public class T_trolley extends Model<T_trolley> {
      * 时间
      */
     private Date times;
+    /**
+     * 时间
+     */
+    private String  trolley_specifications;
+    /**
+     * 时间
+     */
+    private double trolley_price;
+    /*-*
+     * 规格id
+     */
+    private String T_product_specification_id;
+    
 
-    public Integer getTrolley_id() {
+    public String getT_product_specification_id() {
+		return T_product_specification_id;
+	}
+
+	public void setT_product_specification_id(String t_product_specification_id) {
+		T_product_specification_id = t_product_specification_id;
+	}
+
+	public String getTrolley_specifications() {
+		return trolley_specifications;
+	}
+
+	public void setTrolley_specifications(String trolley_specifications) {
+		this.trolley_specifications = trolley_specifications;
+	}
+
+	public double getTrolley_price() {
+		return trolley_price;
+	}
+
+	public void setTrolley_price(double trolley_price) {
+		this.trolley_price = trolley_price;
+	}
+
+	public Integer getTrolley_id() {
         return trolley_id;
     }
 
@@ -87,13 +124,10 @@ public class T_trolley extends Model<T_trolley> {
     }
 
     @Override
-    public String toString() {
-        return "T_trolley{" +
-        "trolley_id=" + trolley_id +
-        ", user_id=" + user_id +
-        ", product_id=" + product_id +
-        ", number=" + number +
-        ", times=" + times +
-        "}";
-    }
+	public String toString() {
+		return "T_trolley [trolley_id=" + trolley_id + ", user_id=" + user_id + ", product_id=" + product_id
+				+ ", number=" + number + ", times=" + times + ", trolley_specifications=" + trolley_specifications
+				+ ", trolley_price=" + trolley_price + ", T_product_specification_id=" + T_product_specification_id
+				+ "]";
+	}
 }

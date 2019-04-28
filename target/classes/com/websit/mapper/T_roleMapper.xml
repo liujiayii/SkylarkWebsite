@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_roleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_role">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="description" property="description" />
+        <result column="status" property="status" />
+        <result column="role_key" property="role_key" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, description, status, role_key
+    </sql>
+
+    <!-- findAll -->
+    <select id="findAll" resultMap="BaseResultMap">
+	    select * from t_role
+	</select> 
+	
+    <!-- 查询角色 -->
+	<select id="selectRoleByAdminId" resultMap="BaseResultMap">
+	    select r.* from t_role r, t_role_admin ur
+	    where r.id = ur.role_id and ur.admin_id = #{admin_id}
+	</select>  
+	
+	<!-- 添加角色 -->
+    <insert id="insertRole" parameterType="com.websit.entity.T_role">
+        insert into t_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="role_key != null">role_key,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+		    <if test="id != null">
+		        #{id,jdbcType=BIGINT},
+		    </if>
+		    <if test="name != null">
+		        #{name,jdbcType=VARCHAR},
+		    </if>
+		    <if test="description != null">
+		        #{description,jdbcType=VARCHAR},
+		    </if>
+		    <if test="status != null">
+		        #{status,jdbcType=INTEGER},
+		    </if>
+		    <if test="role_key != null">
+		        #{role_key,jdbcType=VARCHAR},
+		    </if>
+		</trim>       
+    </insert>
+	
+    <!-- 修改角色 -->
+    <update id="updateRole" parameterType="com.websit.entity.T_role">
+        update t_role
+        <set>
+	      <if test="name != null">
+	        name = #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="description != null">
+	        description = #{description,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null">
+	        status = #{status,jdbcType=INTEGER},
+	      </if>
+	      <if test="role_key != null">
+		    role_key = #{role_key,jdbcType=VARCHAR},
+		  </if>
+	    </set>
+	    where id = #{id,jdbcType=BIGINT}
+    </update>
+    
+    <!-- 删除角色 -->
+    <delete id="deleteRole">
+        delete 
+        from t_role
+        where id=#{id,jdbcType=BIGINT}
+    </delete>
+   
+    <!-- 为角色批量分配权限 -->
+    <insert id="insertPermsForRole">
+        insert into t_role_permission(role_id, permission_id)
+        values
+        <foreach collection="maps" item="map" separator=",">
+            (#{map.role_id},#{map.permission_id})
+        </foreach>
+    </insert>
+    
+</mapper>

@@ -80,7 +80,7 @@ public class InventoryController {
 		System.out.println(number);
 		Inventory inventory = new Inventory();
 		inventory.setNumber(number);
-		inventory.setProducts_id(products_id);
+		inventory.setProduct_id(products_id);
 		inventory.setId(id);
 		try {
 

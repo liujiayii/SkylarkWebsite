@@ -44,67 +44,77 @@
                     p.name name,
                     z.image images,
                     p.image image,
-                  
-                    p.price price,
                     p.brand brand,
                     p.create_time create_times,
                     p.state state,
-                  
-                    p.describes describion
+                    p.describes describion,
+                    tps.cost_price cost_price,
+                    tps.discount_price discount_price,
+                    tps.price price
                 FROM
+                t_product_specification tps,
                     t_product p,
                     t_zone z
          <where>
-                   p.zone_id = z.id
+                tps.product_id = p.id 
+                and  p.zone_id = z.id
+                and p.state=1
                 and z.id = #{zoneId}
         </where>
+        GROUP BY p.name
     </select>
     <select id="listZoneByTypeIds" resultMap="productsAndZone">
-       SELECT DISTINCT
+        SELECT DISTINCT
                     p.id id,
                     z. name ZoneName,
                     z. id zoneId,
                     p.name name,
                     z.image images,
                     p.image image,
-                  
-                    p.price price,
                     p.brand brand,
                     p.create_time create_times,
                     p.state state,
-                 
-                    p.describes describion
+                    p.describes describion,
+                    pts.cost_price cost_price,
+                    pts.discount_price discount_price,
+                    pts.price price
                 FROM
+                t_product_specification pts,
                     t_product p,
                     t_zone z
          <where>
-                   p.zone_id = z.id
-                and z.id = #{zoneId} and p.state=1
+                pts.product_id = p.id 
+                and  p.zone_id = z.id
+                and p.state=1
+                and z.id = #{zoneId}
         </where>
         	limit #{page},#{limit} 
     </select>
  <!--    根据专区id查询当前商品专区及每个专区下所有商品(分页) -->
      <select id="listZoneByTypeIdPage" resultMap="productsAndZone">
-       SELECT DISTINCT
+        SELECT DISTINCT
                     p.id id,
                     z. name ZoneName,
                     z. id zoneId,
                     p.name name,
                     z.image images,
                     p.image image,
-                 
-                    p.price price,
                     p.brand brand,
                     p.create_time create_times,
                     p.state state,
-                  
-                    p.describes describion
+                    p.describes describion,
+                    tps.cost_price cost_price,
+                    tps.discount_price discount_price,
+                    tps.price price
                 FROM
+                t_product_specification tps,
                     t_product p,
                     t_zone z
-        WHERE
-                   p.zone_id = z.id
-                and z.id = #{zoneId} and p.state=1
+              WHERE
+                tps.product_id = p.id 
+                and  p.zone_id = z.id
+                and p.state=1
+                and z.id = #{zoneId}
        
         	limit #{page},#{limit} 
     </select>
@@ -126,6 +136,8 @@
            <result column="state" property="state"/>
             <result column="specifications" property="specifications"/>
            <result column="color" property="color"/>
+             <result column="cost_price" property="cost_price"/>
+           <result column="discount_price" property="discount_price"/>
        </collection>
     </resultMap>
     
@@ -177,21 +189,26 @@
        SELECT DISTINCT
                     p.id id,
                     z. name ZoneName,
+                    z. id zoneId,
                     p.name name,
-                    z.image zone_image,
+                    z.image images,
                     p.image image,
-                    p.color color,
-                    p.price price,
                     p.brand brand,
-                     p.specifications specifications
- 
+                    p.create_time create_times,
+                    p.state state,
+                    p.describes describion,
+                    tps.cost_price cost_price,
+                    tps.discount_price discount_price,
+                    tps.price price
                 FROM
+                t_product_specification tps,
                     t_product p,
                     t_zone z
-         <where>
-                   p.zone_id = z.id
+              WHERE
+                tps.product_id = p.id 
+                and  p.zone_id = z.id
+                and p.state=1
                 and z.id = #{zoneId}
-        </where>
     </select>
         <!-- 根据商品id查询商品专区 -->
     <select id="selectZoneByProductId" resultType="com.websit.entityvo.ZoneProductVo">

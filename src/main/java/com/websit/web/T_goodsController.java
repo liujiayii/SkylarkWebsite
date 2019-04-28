@@ -39,13 +39,15 @@ public class T_goodsController {
 		
 		String atr;
 		try {
+			
 			String s=t.getGoods_ster();
-			if(s.equals("1")){
-				T_goods t_goods = new T_goods();
-				t_goods.setGoods_ster("2");
-				@SuppressWarnings("unused")
-				boolean update = goodsService.update(t_goods, 
-						new EntityWrapper<T_goods>().eq("user_id", t.getUser_id()).eq("goods_ster", "1"));
+			/*
+			 * if(s==null||s.equals(" ")) { s="1"; }
+			 */
+			if(t.getGoods_xian()==null||t.getGoods_xian().equals(" ")) {
+				atr= JsonUtil.getResponseJson(-1, "请填加地址", null, null);
+				System.out.println("atrrrr"+atr);
+				return atr;
 			}
 			boolean a=goodsService.insert(t);
 			if(a==true){
@@ -70,7 +72,7 @@ public class T_goodsController {
 	@ResponseBody
 	public synchronized String addGoodsScend( T_goods t){
 	
-		System.out.println(t.getUser_id());
+		System.out.println("tttttt"+t);
 		t.setUser_id(((Security.decode(t.getUser_id()))));
 		System.out.println(t.getUser_id());
 		String atr;

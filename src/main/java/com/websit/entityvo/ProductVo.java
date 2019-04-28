@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.activerecord.Model;
-import com.websit.entity.Classification;
+
 
 public class ProductVo extends Model<ProductVo>{
 

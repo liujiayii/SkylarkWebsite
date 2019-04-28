@@ -60,9 +60,39 @@ public class T_sales extends Model<T_sales> {
      * 退货编号
      */
     private String sales_stes;
+    /**
+     * 用户id
+     */
     private String user_id;
+    /**
+     * 退款金额
+     */
+    private String sales_amount;
+    /**
+     * 退款数量
+     */
+    private String sales_nunber;
+    
 
-    public String getUser_id() {
+
+
+	public String getSales_amount() {
+		return sales_amount;
+	}
+
+	public void setSales_amount(String sales_amount) {
+		this.sales_amount = sales_amount;
+	}
+
+	public String getSales_nunber() {
+		return sales_nunber;
+	}
+
+	public void setSales_nunber(String sales_nunber) {
+		this.sales_nunber = sales_nunber;
+	}
+
+	public String getUser_id() {
 		return user_id;
 	}
 
@@ -147,6 +177,6 @@ public class T_sales extends Model<T_sales> {
 		return "T_sales [sales_id=" + sales_id + ", order_id=" + order_id + ", sales_cause=" + sales_cause
 				+ ", cause_type=" + cause_type + ", cause_explain=" + cause_explain + ", cause_time=" + cause_time
 				+ ", stele=" + stele + ", sales_no=" + sales_no + ", sales_stes=" + sales_stes + ", user_id=" + user_id
-				+ "]";
+				+ ", sales_face=" + sales_amount + ", sales_nunber=" + sales_nunber + "]";
 	}
 }

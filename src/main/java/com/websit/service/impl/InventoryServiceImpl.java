@@ -76,4 +76,10 @@ public class InventoryServiceImpl implements InventoryService {
 		return inventoryMapper.deleteInventoryById(id);
 	}
 
+	@Override
+	public Integer listInventoryById(Long attribute,Long product_id) {
+		// TODO Auto-generated method stub
+		return inventoryMapper.listInventoryById(attribute,product_id);
+	}
+
 }

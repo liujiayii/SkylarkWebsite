@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -78,12 +79,18 @@ public class T_freightController {
 		
 	}
 
-	@SuppressWarnings("finally")
+
 	@RequestMapping("/selt_freight")
 	@ResponseBody
-	public String selt_freight(T_freight t_freight) {
+	public String selt_freight(T_freight t_freight,RowBounds RowBounds, Integer page, Integer limit) {
 		List<T_freight> freight=null;
-		try {
+		//try {
+			
+		
+		   	page = (page - 1) * limit;
+					String msg = "系统异常，请稍后再试";
+					Integer cood = -1;
+			System.out.println(page);
 			Map<String, Object> columnMap=new HashMap<String,Object>();
 			
 		   if(t_freight.getPrice()!=null) {
@@ -99,9 +106,11 @@ public class T_freightController {
 			
 		   }
 		
-		//System.out.println(columnMap+"666666666666666666666666666666666666666666666666666666"+t_freight+t_freight.getPrice());
+		
 			
-		       freight=salesService.selectByMap(columnMap);
+		       freight=salesService.T_freight(t_freight, new RowBounds(page,limit));
+		
+		     
 		if(freight.size()>0) {
 			cood=1;
 			msg="查询成功";
@@ -109,10 +118,13 @@ public class T_freightController {
 			cood=1;
 			msg="查询成功";
 		}
-		System.err.println(freight+"+++++++++++++++++++++++++++++++++++++++++++++++");
-		} finally {
-			return JsonUtil.getResponseJson(cood,msg, null, freight);
-		} 
+		return JsonUtil.getResponseJson(cood,msg, freight.size(), freight);
+		
+//		} catch (Exception e) {
+//			return JsonUtil.getResponseJson(cood,msg, 0, null);
+//		}
+//			
+//		
 	}
 	
 

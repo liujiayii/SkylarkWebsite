@@ -3,6 +3,9 @@ package com.websit.mapper;
 import com.websit.entity.T_role;
 
 import java.util.List;
+import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
@@ -77,6 +80,17 @@ public interface T_roleMapper extends BaseMapper<T_role> {
 	 */
 	int deleteRole(Long id);
 	
-	
+	/**
+	 * 为角色批量分配权限
+	 *
+	 * @Title: insertPermsForRole
+	 * @description 
+	 * @param maps
+	 * @return  
+	 * int    
+	 * @author lujinpeng
+	 * @createDate 2019年4月19日-下午2:23:34
+	 */
+	int insertPermsForRole(@Param("maps") List<Map<String, Object>> maps);
 	
 }

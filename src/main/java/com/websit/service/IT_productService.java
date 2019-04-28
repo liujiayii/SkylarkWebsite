@@ -90,6 +90,13 @@ public interface IT_productService extends IService<T_product> {
 	 */
 	public List<ProductDetails> listProductByProductId(BigInteger productId);
 	/**
+	 * @description 根据商品id查询商品详情(后台)
+	 * @param
+	 * @author pangchong
+	 * @createDate 2019年3月21日
+	 */
+	public List<ProductDetails> listProductByProductIds(BigInteger productId);
+	/**
 	 * @description 首页模糊查询
 	 * @param 
 	 * @author pangchong
@@ -154,5 +161,37 @@ public interface IT_productService extends IService<T_product> {
 	 * @param product
 	 * @return
 	 */
-	public Integer insertSpecificationService(T_product product);
+	public Integer insertSpecificationService(ProductVo product);
+    /**
+     * 
+    *
+     * @Title: selecProductTypeIdVotById
+    
+     * @description 
+    *
+     * @param @param product_id
+     * @param @return 
+       
+     * @return Long    
+    
+     *
+     * @author lishaozhang
+     * @createDate 2019年4月24日
+     */
+	public Long selecProductTypeIdVotById(Long product_id);
+	/**
+	 * @description 首页模糊查询(后台)
+	 * @param
+	 * @author pangchong
+	 * @createDate 2019年3月24日
+	 */
+	public List<ProductVo> listProductByProductTypeIds(@Param("productName") String productName,
+			@Param("page") Integer page, @Param("limit") Integer limit);
+	/**
+	 * 查询商品数量(全部上下架)
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	public List<ProductVo> findproductCountAll(@Param("productName") String productName,@Param("page")Integer page,@Param("limit")Integer limit);
 }

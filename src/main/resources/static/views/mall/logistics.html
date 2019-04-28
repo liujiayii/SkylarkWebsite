@@ -44,16 +44,7 @@
   <div th:replace="/mall/common :: commonFooter"></div>
 </div>
 </body>
-<script>
-  window.onload = function () {
-    nav();
-  }
-</script>
 <script type="text/javascript">
-  function navHref(ids) {
-    alert(ids)
-  }
-
   const mixin = {
     data() {
       return {
@@ -84,14 +75,17 @@
           dataType: "json",
           data: {number: this.getHrefParam('log')},
           success: (res) => {
+        	  console.log(res)
             if (res.code == 1) {
-              this.logisticsData = res.data
-              this.issignsData = res.data.expressDetail
-              if (res.data.issign == 0) {
-                this.issigns = "未签收";
-              } else if (res.data.issign == 1) {
-                this.issigns = "已签收"
-              }
+           		this.logisticsData = res.data
+                this.issignsData = res.data.expressDetail
+                if (res.data.issign == 0) {
+                  this.issigns = "未签收";
+                } else if (res.data.issign == 1) {
+                  this.issigns = "已签收"
+                }
+            }else{
+            	this.$Message.info(res.msg);
             }
           }
         });

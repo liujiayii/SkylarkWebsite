@@ -96,9 +96,17 @@ public interface T_productMapper extends BaseMapper<T_product> {
 	 * @createDate 2019年3月21日
 	 */
 	public List<ProductDetails> listProductByProductId(BigInteger productId);
+	
+	/**
+	 * @description 根据商品id查询商品详情(后台)
+	 * @param
+	 * @author pangchong
+	 * @createDate 2019年3月21日
+	 */
+	public List<ProductDetails> listProductByProductIds(BigInteger productId);
 
 	/**
-	 * @description 首页模糊查询
+	 * @description 首页模糊查询(上架)
 	 * @param
 	 * @author pangchong
 	 * @createDate 2019年3月24日
@@ -106,7 +114,12 @@ public interface T_productMapper extends BaseMapper<T_product> {
 	public List<ProductVo> listProductByProductTypeId(@Param("productName") String productName,
 			@Param("page") Integer page, @Param("limit") Integer limit);
 
-	
+	/**
+	 * @description 首页模糊查询商品条数(上架)
+	 * @param
+	 * @author pangchong
+	 * @createDate 2019年3月24日
+	 */
 	public List<ProductVo> listProductByCount(@Param("productName") String productName,@Param("page")Integer page,@Param("limit")Integer limit);
 	/**
 	 * @description 根据商品名称查询颜色
@@ -173,5 +186,23 @@ public interface T_productMapper extends BaseMapper<T_product> {
 	 */
 	public List<ProductSpecificationsVo>findSpecificationsByProduct(@Param("productId")Long productId);
 	
-	public Integer insertSpecificationService(T_product product);
+	public Integer insertSpecificationService(ProductVo product);
+
+	public Long selecProductTypeIdVotById(Long product_id);
+	/**
+	 * @description 首页模糊查询(后台)
+	 * @param
+	 * @author pangchong
+	 * @createDate 2019年3月24日
+	 */
+	public List<ProductVo> listProductByProductTypeIds(@Param("productName") String productName,
+			@Param("page") Integer page, @Param("limit") Integer limit);
+	
+	/**
+	 * 查询商品数量(全部上下架)
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	public List<ProductVo> findproductCountAll(@Param("productName") String productName,@Param("page")Integer page,@Param("limit")Integer limit);
 }

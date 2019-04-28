@@ -51,11 +51,11 @@ public interface T_adminMapper extends BaseMapper<T_admin> {
 	 *
 	 * @Title: findByUserName
 	 * @description 
-	 * @param name
+	 * @param username
 	 * @return T_admin    
 	 * @author lujinpeng
 	 * @createDate 2019年4月11日-上午9:30:53
 	 */
-	public T_admin findByUserName (String name);
+	public T_admin findByUserName (String username);
 
 }

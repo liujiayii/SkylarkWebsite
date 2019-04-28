@@ -57,10 +57,36 @@ public class T_shopping extends Model<T_shopping> {
      * 单种商品的总价
      */
     private Double zongjia;
-
+    /**
+     * 商品状态
+     */
     private String state;
+    /**
+     * 规格
+     */
+    private String shoping_specifications;
+    /**
+     * 物流编号
+     * @return
+     */
+    private String shoping_logistics;
+    public String getShoping_logistics() {
+		return shoping_logistics;
+	}
 
-    public Integer getYouhuijine() {
+	public void setShoping_logistics(String shoping_logistics) {
+		this.shoping_logistics = shoping_logistics;
+	}
+
+	public String getShoping_specifications() {
+		return shoping_specifications;
+	}
+
+	public void setShoping_specifications(String shoping_specifications) {
+		this.shoping_specifications = shoping_specifications;
+	}
+
+	public Integer getYouhuijine() {
         return youhuijine;
     }
 
@@ -130,17 +156,10 @@ public class T_shopping extends Model<T_shopping> {
     }
 
     @Override
-    public String toString() {
-        return "T_shopping{" +
-        "youhuijine=" + youhuijine +
-        ", shoping_id=" + shoping_id +
-        ", product_id=" + product_id +
-        ", number=" + number +
-        ", order_id=" + order_id +
-        ", is_dianpng=" + is_dianpng +
-        ", danjia=" + danjia +
-        ", zongjia=" + zongjia +
-        ", state=" + state +
-        "}";
-    }
+	public String toString() {
+		return "T_shopping [youhuijine=" + youhuijine + ", shoping_id=" + shoping_id + ", product_id=" + product_id
+				+ ", number=" + number + ", order_id=" + order_id + ", is_dianpng=" + is_dianpng + ", danjia=" + danjia
+				+ ", zongjia=" + zongjia + ", state=" + state + ", shoping_specifications=" + shoping_specifications
+				+ ", shoping_logistics=" + shoping_logistics + "]";
+	}
 }

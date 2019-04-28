@@ -9,14 +9,17 @@
         <result column="product_id" property="product_id" />
         <result column="number" property="number" />
         <result column="times" property="times" />
+          <result column="trolley_specifications" property="trolley_specifications" />
+            <result column="trolley_price" property="trolley_price" />
+            <result column="T_product_specification_id" property="T_product_specification_id" />
     </resultMap>
     <select id="lt_trolleylst" resultType="com.websit.entityvo.lt_trolleylst" >
-    		SELECT   s.*,t.number,t.trolley_id  from  t_trolley t  JOIN  T_product s ON  t.product_id=s.id  where t.user_id=#{user_id}
+    		SELECT   s.*,t.*  from  t_trolley t  JOIN  T_product s ON  t.product_id=s.id  where t.user_id=#{user_id}
     
     </select>
     
-     <select id="shppingnum"   resultType="Integer">
-    		SELECT   COUNT(*) as ter from t_trolley  where product_id=#{product_id} and user_id=#{user_id}
+     <select id="shppingnum"   resultType="com.websit.entity.T_trolley">
+    		SELECT   *  from t_trolley  where product_id=#{product_id} and user_id=#{user_id}
     
     </select>
        <update id="updatemnum">
@@ -28,11 +31,11 @@
     
     </select>
           <update id="updatemnum2">
-    		update    t_trolley set number=#{num} where product_id=#{id} and user_id=#{user_id}
+    		update    t_trolley set number=#{num} where product_id=#{id} and user_id=#{user_id}  and trolley_id=#{T_trolley_id}
     
           </update>
               <select id="T_produc"   resultType="com.websit.entity.T_product">
-    		SELECT id,`name`,product_type_id,image,price,color,`state`,create_time,brand,specifications,zone_id FROM t_product where id=#{T_product_id}
+    		SELECT id,`name`,product_type_id,image,`state`,create_time,brand,zone_id FROM t_product where id=#{T_product_id}
     
     </select>
     <select id="querproductname"  resultType="String">

@@ -1,6 +1,8 @@
 package com.websit.entity;
 
 import com.baomidou.mybatisplus.enums.IdType;
+
+import java.util.Calendar;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
@@ -82,7 +84,141 @@ public class T_order extends Model<T_order> {
      * 备注
      */
     private String remarks;
-    public String getRemarks() {
+    /**
+     * 规格
+     */
+    private String order_specifications;
+    /**
+     * 姓名
+     */
+    private String goods_name;
+
+    /**
+     * 电话
+     */
+    private String goods_tel;
+
+    /**
+     * 省
+     */
+    private String goods_Province;
+
+    /**
+     * 市
+     */
+    private String goods_city;
+
+    /**
+     * 县区
+     */
+    private String goods_CountyArea;
+
+    /**
+     * 详细地址
+     */
+    private String goods_address;
+    /**
+    
+               收货时间
+    */
+    private Date order_Receiving;
+    /**
+     * 发货时间
+     */
+    private Date order_Delivery;
+    /**
+               *        支付时间
+     */
+    private Date order_paytime;
+
+
+    public Date getOrder_Receiving() {
+		return order_Receiving;
+	}
+
+	public void setOrder_Receiving(Date order_Receiving) {
+		this.order_Receiving = order_Receiving;
+	}
+
+	public Date getOrder_Delivery() {
+		return order_Delivery;
+	}
+
+	public void setOrder_Delivery(Date order_Delivery) {
+		this.order_Delivery = order_Delivery;
+	}
+
+	public Date getOrder_paytime() {
+		return order_paytime;
+	}
+
+	public void setOrder_paytime(Date order_paytime) {
+		this.order_paytime = order_paytime;
+	}
+
+	public String getGoods_name() {
+		return goods_name;
+	}
+
+	public void setGoods_name(String goods_name) {
+		this.goods_name = goods_name;
+	}
+
+	public String getGoods_tel() {
+		return goods_tel;
+	}
+
+	public void setGoods_tel(String goods_tel) {
+		this.goods_tel = goods_tel;
+	}
+
+	
+
+	public String getGoods_Province() {
+		return goods_Province;
+	}
+
+	public void setGoods_Province(String goods_Province) {
+		this.goods_Province = goods_Province;
+	}
+
+	public String getGoods_city() {
+		return goods_city;
+	}
+
+	public void setGoods_city(String goods_city) {
+		this.goods_city = goods_city;
+	}
+
+	public String getGoods_CountyArea() {
+		return goods_CountyArea;
+	}
+
+	public void setGoods_CountyArea(String goods_CountyArea) {
+		this.goods_CountyArea = goods_CountyArea;
+	}
+
+	public String getGoods_address() {
+		return goods_address;
+	}
+
+	public void setGoods_address(String goods_address) {
+		this.goods_address = goods_address;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public String getOrder_specifications() {
+		return order_specifications;
+	}
+
+	public void setOrder_specifications(String order_specifications) {
+		this.order_specifications = order_specifications;
+	}
+
+	public String getRemarks() {
 		return remarks;
 	}
 
@@ -148,14 +284,18 @@ public class T_order extends Model<T_order> {
     public void setOrder_state(String order_state) {
         this.order_state = order_state;
     }
-    public Date getOrder_time() {
-        return order_time;
-    }
 
-    public void setOrder_time(Date order_time) {
-        this.order_time = order_time;
-    }
-    public String getOrder_payment() {
+
+
+	public Date getOrder_time() {
+		return order_time;
+	}
+
+	public void setOrder_time(Date order_time) {
+		this.order_time = order_time;
+	}
+
+	public String getOrder_payment() {
         return order_payment;
     }
 
@@ -188,6 +328,10 @@ public class T_order extends Model<T_order> {
 				+ order_number + ", order_money=" + order_money + ", order_no=" + order_no + ", order_state="
 				+ order_state + ", order_time=" + order_time + ", order_payment=" + order_payment + ", order_mode="
 				+ order_mode + ", order_shouhuo_id=" + order_shouhuo_id + ", user_id=" + user_id + ", yunfei=" + yunfei
-				+ ", remarks=" + remarks + "]";
+				+ ", remarks=" + remarks + ", order_specifications=" + order_specifications + ", goods_name="
+				+ goods_name + ", goods_tel=" + goods_tel + ", goods_Province=" + goods_Province + ", goods_city="
+				+ goods_city + ", goods_CountyArea=" + goods_CountyArea + ", goods_address=" + goods_address
+				+ ", order_Receiving=" + order_Receiving + ", order_Delivery=" + order_Delivery + ", order_paytime="
+				+ order_paytime + "]";
 	}
 }

@@ -8,13 +8,14 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
  * <p>
- * 商品规格表(pc) Mapper 接口
+ * 商品详情表(pc) Mapper 接口
  * </p>
  *
  * @author lichangchun
- * @since 2019-04-18
+ * @since 2019-04-20
  */
 public interface T_product_specificationMapper extends BaseMapper<T_product_specification> {
+
 	
 	public T_product_specification selectAllspecification(T_product_specification t);
 	/**

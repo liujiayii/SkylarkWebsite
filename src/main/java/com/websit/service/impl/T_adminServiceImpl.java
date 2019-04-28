@@ -10,9 +10,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.websit.mapper.T_permissionMapper;
-import com.websit.entity.T_permission;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +29,7 @@ import org.springframework.stereotype.Service;
 public class T_adminServiceImpl extends ServiceImpl<T_adminMapper, T_admin> implements IT_adminService {
 
 	@Autowired
-	private T_adminMapper adminMapper;
+	private T_adminMapper adminMapper; 
 	
 	@Autowired
 	private T_permissionMapper permissionMapper;
@@ -64,7 +62,7 @@ public class T_adminServiceImpl extends ServiceImpl<T_adminMapper, T_admin> impl
 		
 		try {
 			adminPage.setRecords(adminMapper.findAdminList(adminPage));
-			selectPage = adminMapper.selectPage(adminPage, null);
+			selectPage = adminMapper.findAdminList(adminPage);
 			
 			if (selectPage == null || selectPage.size() == 0) {
 				msg = ReturnCode.NORESULT_SELECT_MSG;

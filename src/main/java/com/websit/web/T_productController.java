@@ -1,8 +1,9 @@
 package com.websit.web;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -120,11 +121,11 @@ public class T_productController {
 		try {
 
 			int result = productService.saveProduct(productVo);
-			inventory.setProducts_id(productVo.getId());
+			inventory.setProduct_id(productVo.getId());
 			// 增加商品时,增加库存
 			int results = inventoryService.saveInventoryById(inventory);
 			// //商品添加优惠
-			discount.setProductid(productVo.getId());
+			discount.setProductId(productVo.getId());
 			discountService.saveDiscountById(discount);
 
 			// System.out.println("我去保存图片");
@@ -162,21 +163,17 @@ public class T_productController {
 		int deleteProductImageByProductId = productImgService.deleteProductImageByProductId(productId);
 		try {
 			ProductVo productVo = new ProductVo();
-			/*
-			 * Long id1 = null; if(productVo.getZoneid() == id1){
-			 * System.out.println("id1+++++:"+id1);
-			 * zoneService.selectZoneByProductId(id); }
-			 */
 			String file = request.getParameter("file");
 			// String productId = request.getParameter("productId");
 			String productName = request.getParameter("productName");
 			String producttypeid = request.getParameter("producttypeid");
 			String image = request.getParameter("image");
-			String price = request.getParameter("price");
+			//String price = request.getParameter("price");
 			String state = request.getParameter("state");
 			String brand = request.getParameter("brand");
 			String describion = request.getParameter("describion");
 			String zoneid = request.getParameter("zoneid");
+			String after_information = request.getParameter("after_information");
 			// System.out.println(productName);
 			productVo.setId(Long.parseLong(productId + ""));
 			productVo.setProductName(productName);
@@ -186,6 +183,7 @@ public class T_productController {
 			productVo.setBrand(brand);
 			productVo.setDescribion(describion);
 			productVo.setZoneid(Long.parseLong(zoneid));
+			productVo.setAfter_information(after_information);
 			// System.out.println(zoneid);
 			// productImgService.deleteImgById(productVo.getId());
 			String result1[] = file.split(",");
@@ -245,8 +243,9 @@ public class T_productController {
 	public String listProductByProductId(BigInteger productId) {
 
 		try {
+			System.out.println("productId"+productId);
 			List<ProductDetails> result = productService.listProductByProductId(productId);
-
+System.out.println("result"+result);
 			if (result.size() >= 1) {
 				return JsonUtil.getResponseJson(1, "查看成功", null, result);
 			} else {
@@ -283,7 +282,7 @@ public class T_productController {
 	/**
 	 * 首页模糊查询
 	 * 
-	 * @author pangchong
+	 * @author xxxxx
 	 * @createDate 2019年3月24日 下午2:00
 	 */
 	@RequestMapping(value = "/listProductByProductTypeId", produces = "application/json; charset=utf-8")
@@ -393,6 +392,61 @@ public class T_productController {
 		return JsonUtil.getResponseJson(code, msg, count, listProduct);
 	}
 	
+	/**
+	 * 根据商品id查询商品详情(后台)
+	 * 
+	 * @author xxxxx
+	 * @createDate 2019年3月21日 下午2:00
+	 */
+	@RequestMapping(value = "/listProductByProductIds", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String listProductByProductIds(BigInteger productId) {
+         Map<String , Object> map = new HashMap<>();
+         Discount s1 = 	null;
+		try {
+			List<ProductDetails> result = productService.listProductByProductIds(productId);
+			if (productId != null) {
+				s1 = 	discountService.selectDiscountListByProductId(productId);
+			}
+			
+			if (result.size() >0) {
+				map.put("result", result.get(0));
+				map.put("s1", s1);
+				return JsonUtil.getResponseJson(1, "查看成功", null, map);
+			} else {
+				return JsonUtil.getResponseJson(1, "无数据", null, null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
+		}
+	}
 	
-	
+	/**
+	 * 首页模糊查询(后台)
+	 * 
+	 * @author xxxxx
+	 * @createDate 2019年3月24日 下午2:00
+	 */
+	@RequestMapping(value = "/listProductByProductTypeIds", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String listProductByProductTypeIds(String productName, Integer page, Integer limit) {
+		try {
+
+			List<ProductVo> result = productService.listProductByProductTypeIds(productName, (page - 1) * limit, limit);
+			List<ProductVo> result1 = productService.findproductCountAll(productName, (page - 1) * limit, limit);
+			System.out.println("result" + result.size());
+			if (result.size() >= 1 && result1.size() >= 1) {
+				return JsonUtil.getResponseJson(1, "查看成功", result1.get(0).getCount(), result);
+
+			} else {
+				System.out.println("*****");
+				return JsonUtil.getResponseJson(1, "无数据", result1.get(0).getCount(), result);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
+		}
+	}
 }

@@ -17,7 +17,7 @@
 		insert into
 		t_opinion(name,phone,address,emaill,create_time,content)
 		values
-		(#{name},#{phone},#{address},#{emaill},#{create_time},#{content})
+		(#{name},#{phone},#{address},#{emaill},now(),#{content})
 	</insert>
 <!-- 查询所有意见 -->
     <select id="listAllOpinion" resultType="com.websit.entity.T_opinion">

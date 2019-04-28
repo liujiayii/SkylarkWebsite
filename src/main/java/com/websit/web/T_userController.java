@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.websit.entity.T_reply;
 import com.websit.entity.T_user;
 import com.websit.entity.UserUpdateVo;
@@ -227,7 +228,9 @@ public class T_userController {
 
 			if (logjson.get("code").toString().equals("200")) {
 				
-				
+				List<T_user> selectList = userService.selectList(new EntityWrapper<T_user>().eq("phid", phid));
+				T_user t_user = selectList.get(0);
+				t_user.setPassword(new_password);
 				return JsonUtil.getResponseJson(1, logjson.get("meaasge").toString(), null, null);
 			}
 			

@@ -32,7 +32,7 @@ public String listSpecificationsByproducttypeid(Integer page,Integer limit,Speci
 	if (result.size() >0) {
 		return JsonUtil.getResponseJson(1, "查看成功", null, result);
 	} else {
-		return JsonUtil.getResponseJson(-1, "无数据", null, null);
+		return JsonUtil.getResponseJson(1, "无数据", null, null);
 	}
 } catch (Exception e) {
 	e.printStackTrace();

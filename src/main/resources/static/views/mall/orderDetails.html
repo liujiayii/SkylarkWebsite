@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <div th:replace="/mall/common  :: commonHeader(订单信息)"></div>
+  <link rel="stylesheet" type="text/css" href="/assets/layui/css/layui.css">
+  <script src="/assets/layui/layui.js" charset="utf-8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1/build/qrcode.min.js"></script>
+  <style>
+    .nav-big-box {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+<div class="main order" id="app">
+	<div th:replace="/mall/common :: commonNav"></div>
+	<div class="detailCont">
+		<div class="detail-top">
+			<breadcrumb>
+		      <breadcrumb-item to="/mall">首页</breadcrumb-item>
+		      <breadcrumb-item>我的订单</breadcrumb-item>
+		      <breadcrumb-item>{{orderListDetails.order_state}}</breadcrumb-item>
+		    </breadcrumb>
+		</div>
+	  	<div class="order-text">
+	  		<div class="order-cont-left">
+	  			<h2>订单信息</h2>
+	  			<div class="order-cont-bot">
+	  				<div class="orderDom">
+	  					<label>收货人：</label>
+	  					<section>{{orderListDetails.goods_name}}</section>
+	  				</div>
+	  				<div class="orderDom">
+	  					<label>收货电话：</label>
+	  					<section>{{orderListDetails.goods_tel}}</section>
+	  				</div>
+	  				<div class="orderDom">
+	  					<label>收货地址：</label>
+	  					<section>{{orderListDetails.goods_Province}}{{orderListDetails.goods_city}}{{orderListDetails.goods_CountyArea}}{{orderListDetails.goods_address}}</section>
+	  				</div>
+	  				<div class="orderDom">
+	  					<label>订单编号：</label>
+	  					<section>{{orderListDetails.order_no}}</section>
+	  				</div>
+	  				<div class="orderDom">
+	  					<label>卖家信息：</label>
+	  					<section></section>
+	  				</div>
+	  			</div>
+	  		</div>
+	  		<div class="order-cont-right">
+	  			<h2>订单状态：<span>{{orderListDetails.order_state}}</span></h2>
+	  		</div>
+	  	</div>
+	  	<div class="orderFoods">
+	  		<ul>
+	  			<li>商品</li>
+	  			<li>单价</li>
+	  			<li>数量</li>
+	  			<li>优惠</li>
+	  			<li>总价</li>
+	  		</ul>
+	  		<ul  v-for="(item_c,index_c) in orderListDetails.shping">
+	  			<li>
+	  				<dl>
+	  					<dt><img :src="item_c.image"></dt>
+	  					<dd>{{item_c.brand}}
+	  					</dd>
+	  				</dl>
+	  			</li>
+	  			<li>{{item_c.price}}</li>
+	  			<li>{{item_c.number}}</li>
+	  			<li>{{item_c.youhuijine}}</li>
+	  			<li>{{item_c.zongjia}}</li>
+	  		</ul>
+	  	</div>
+	  	<div class="orderText">
+	  		<p>商品总价：<span>￥{{orderListDetails.zongjia}}</span></p>
+	  		<p>运费：<span>￥{{orderListDetails.yunfei}}</span></p>
+	  		<h2>实付款：<span>￥{{sMoney}}</span></h2>
+	  	</div>
+    	
+  </div>
+  <div th:replace="/mall/common :: commonFooter"></div>
+</div>
+</body>
+<script>
+  const mixin = {
+    data() {
+      return {
+        classData: [],
+        active: 0,
+        orderCount: {},
+        orderListDetails: [],
+        sMoney:0
+      }
+    },
+    methods: {
+      getOrderDetails() {
+        $.ajax({
+          type: "post",
+          url: "/t_order/orderlist",
+          data: {
+            user_id: sessionStorage.getItem("SkyUserId"),
+            id: this.getHrefParam("id"),
+            page: 1,
+            limit: 10
+          },
+          dataType: "json",
+          success: (res) => {
+        	  console.log(res)
+            if (res.code == 1) {
+              	if(res.data[0].order_state == -1) {
+                  res.data[0].order_state = '订单取消 '
+                } else if (res.data[0].order_state == 0) {
+                  res.data[0].order_state = '待付款'
+                } else if (res.data[0].order_state == 1) {
+                  res.data[0].order_state = '已付款，待发货'
+                } else if (res.data[0].order_state == 2) {
+                  res.data[0].order_state = '已发货'
+                }else if (res.data[0].order_state == 3) {
+                  res.data[0].order_state = '已签收'
+                }else if (res.data[0].order_state == 4) {
+                  res.data[0].order_state = '已完成'
+                }else if (res.data[0].order_state == 5) {
+                  res.data[0].order_state = '退货中'
+                }else if (res.data[0].order_state == 6) {
+                  res.data[0].order_state = '退货审核通过'
+                }else if (res.data[0].order_state == 7) {
+                  res.data[0].order_state = '退货审核不通过'
+                }else if (res.data[0].order_state == 8) {
+                  res.data[0].order_state = '买家发货'
+                }
+              /* for(let i = 0;i<res.data[0].shping.length;i++){
+            	  if(res.data[0].shping[i].state == 1) {
+                      res.data[0].shping[i].state = '退货审核中'
+                    } else if (res.data[0].shping[i].state == 2) {
+                      res.data[0].shping[i].state = '退货审核通过'
+                    } else if (res.data[0].shping[i].state == 3) {
+                      res.data[0].shping[i].state = '退货审核不通过'
+                    } else if (res.data[0].shping[i].state == 4) {
+                      res.data[0].shping[i].state = '退货完成'
+                    }
+              } */
+              this.orderListDetails = res.data[0]
+              this.sMoney = res.data[0].zongjia *1 + res.data[0].yunfei *1
+              console.log(this.orderListDetails)
+              console.log(res.data.goods_name)
+            }
+          }
+        });
+      }
+    },
+    mounted() {
+      this.getOrderDetails()
+    }
+  }
+</script>
+<div th:replace="/mall/common :: commonFooterjs"></div>
+</html>

@@ -3,6 +3,9 @@ package com.websit.service;
 import com.websit.entity.T_discount_product;
 import com.websit.entityvo.Discount;
 import com.websit.entityvo.DiscountVo;
+
+import java.math.BigInteger;
+
 import com.baomidou.mybatisplus.service.IService;
 
 /**
@@ -33,6 +36,13 @@ public interface IT_discount_productService extends IService<T_discount_product>
 	 * @author pangchong
 	 * @createDate 2019年3月27日
 	 */
-	public Discount selectDiscountListByProductId(Long productid);
+	public Discount selectDiscountListByProductId(BigInteger productId);
+	/**
+	 * 修改满减优惠
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	public int updateDiscount(Discount discount);
 	
 }

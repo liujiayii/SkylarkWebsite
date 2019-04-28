@@ -28,10 +28,10 @@ public interface T_trolleyMapper extends BaseMapper<T_trolley> {
 	 * @return
 	 */
 	List <lt_trolleylst> lt_trolleylst(String user_id,RowBounds RowBounds);
-	int shppingnum(@Param("product_id")String product_id,@Param("user_id")String user_id);
+	List<T_trolley> shppingnum(@Param("product_id")String product_id,@Param("user_id")String user_id);
 	int updatemnum(@Param("num")int  num,@Param("product_id")String product_id,@Param("user_id")String user_id);
 	int number(@Param("product_id")String product_id);
-	int updatemnum2(@Param("num")Integer  num,@Param("id")Integer id,@Param("user_id")String user_id);
+	int updatemnum2(@Param("num")Integer  num,@Param("id")Integer id,@Param("user_id")String user_id,@Param("T_trolley_id")String T_trolley_id);
 	T_product T_produc(String T_product_id);
 	/**
 	 * 已添加订单信息

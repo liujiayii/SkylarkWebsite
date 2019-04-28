@@ -66,6 +66,8 @@ public class T_salesController {
 			}
                 else if(T_order.getOrder_payment().equals("3")) {//微信app
     				
+    			}else {
+    				//fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_money().toString(),null);
     			}
 			
 			
@@ -74,23 +76,25 @@ public class T_salesController {
 			fig=T_salesService.updatestale(stale,sales_id);
 			}
 		}else{
-			IT_orderService.ordercancelled(order_id, "7");
+			
 			IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
-			if(upstale.equals(5)) {
 			fig=T_salesService.updatestale(stale,sales_id);
-			IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
-			}
+
+
+		
+			
 		}
        }
 	 }else { 
 		 
-		 if (upstale.equals("8")){
+//		 if (upstale.equals("8")){
+		 if(stale.equals("1")) {
 			 if(T_order.getOrder_payment().equals("0")) {//支付宝web
 					//调用退款方法
 					//fig1=alipay_refundService.refund("9566","200",null);
 					fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_money().toString(),null);
 					}else if(T_order.getOrder_payment().equals("1")) {//支付宝app
-						
+						fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_money().toString(),null);
 					}
 		                else if(T_order.getOrder_payment().equals("2")) {//微信web
 						
@@ -102,21 +106,24 @@ public class T_salesController {
 			           IT_orderService.ordercancelled(order_id, "6");
 			           fig=T_salesService.updatestale("1",sales_id);
 					}
-			
-		 }else if(upstale.equals("5")) {
-			 IT_orderService.ordercancelled(order_id, "8");
-				fig=T_salesService.updatestale(stale,sales_id);
-			}else {
-		     IT_orderService.ordercancelled(order_id, "7");
-		     IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
-		 	if(upstale.equals("5")) {
-				fig=T_salesService.updatestale(stale,sales_id);
+		 }else {
 				IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
-				}
-		 
+				fig=T_salesService.updatestale(stale,sales_id);
+		 }
 	 }
-		    
-	 }
+	 
+//		 }else if(upstale.equals("5")) {
+//			 IT_orderService.ordercancelled(order_id, "8");
+//				fig=T_salesService.updatestale(stale,sales_id);
+//			}else {
+//				fig=T_salesService.updatestale(stale,sales_id);
+//
+//		     IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
+//		
+//		 
+	 
+//		    
+	 
 		if(fig) {
 			cood = 1;
 			msg = "操作成功";
@@ -141,26 +148,37 @@ public class T_salesController {
 		int  cent=0;
 		Integer cood = 1;
 		page=(page-1)*limit;
-		try {
+		//try {
 			//cent=1T_salesService;
 	   
 	    
-		ter=T_salesService.th_list(date, new RowBounds(page,limit));
-		 cent=ter.size();
-		 if (ter.size()>0) {
+		List<order_listr> order_listr = T_salesService.rder_listr(date, null, new RowBounds(page,limit), "");
+		{
+		    for (int i = 0; i < order_listr.size(); i++) {
+		    	
+		    	
+		    	
+		    	System.out.println(order_listr.get(i).getOrder_id()	);
+		    	
+		    order_listr.get(i).setShopinglist(((T_salesService.seleth_list(date, null, new RowBounds(page,limit),order_listr.get(i).getOrder_id()))));
+
+		    			}
+		}
+		 cent=order_listr.size();
+		 if (order_listr.size()>0) {
 			 msg="查询成功"; 
 			 cood=1;
 		 }else {
 			 msg="查询成功"; 
 			 cood=1; 
 		 }
-		} catch (Exception e) {
-			 msg="查询失敗"; 
-			 cood=-1;
-		}
+//		} catch (Exception e) {
+//			 msg="查询失敗"; 
+//			 cood=-1;
+//		}
+//		
 		
-		
-		return JsonUtil.getResponseJson(cood, msg, cent, ter);
+		return JsonUtil.getResponseJson(cood, msg, cent, order_listr);
 	}
 	/**
 	 * 退货审核列表
@@ -189,7 +207,7 @@ public class T_salesController {
 	    	
 		
 //
-	    	order_listr.get(i).setShopinglist(((T_salesService.seleth_list(stale, user_id, new RowBounds(page,limit),order_listr.get(i).getSales_no()))));
+	    	order_listr.get(i).setShopinglist(((T_salesService.seleth_list(stale, user_id, new RowBounds(page,limit),order_listr.get(i).getOrder_id()))));
 
 		}
 	
@@ -210,7 +228,24 @@ public class T_salesController {
 		return JsonUtil.getResponseJson(cood, msg, cent, order_listr);
 	}
 
-
+	/**
+	 * 确认收货退货审核
+	 */
+	@RequestMapping("/upthlist")
+	@ResponseBody
+	public String upthlist(Integer sales_id,String stale,String order_id) {
+		 IT_orderService.ordercancelled(order_id, "5");
+		 return JsonUtil.getResponseJson(1, "确认收获成功", null, null);		
+	}
+	/**
+	 * 
+	 */
+	@RequestMapping("/upthlistr")
+	@ResponseBody
+	public String upthlistr2(Integer sales_id,String stale,String order_id) {
+		 IT_orderService.ordercancelled(order_id, "8");
+		 return JsonUtil.getResponseJson(1, "确认收获成功", null, null);		
+	}
 	
 	
 }

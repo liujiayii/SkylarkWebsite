@@ -21,11 +21,11 @@ import com.baomidou.mybatisplus.service.IService;
 public interface IT_trolleyService extends IService<T_trolley> {
 	List <lt_trolleylst> lt_trolleylst(String user_id,RowBounds RowBounds);
 
-	int shppingnum(String product_id,String user_id);
+	boolean shppingnum(String product_id,String user_id,String getTrolley_specifications);
 	boolean updatemnum(int num,String product_id,String user_id);
 	int number(String product_id);
 	
-	boolean updatemnum2(Integer  num,Integer id,String user_id);
+	boolean updatemnum2(Integer  num,Integer id,String user_id,String T_trolley_id);
 	T_product T_produc(String T_product_id);
 	boolean inslit(String no);
 	/*/*

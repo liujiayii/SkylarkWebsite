@@ -10,23 +10,29 @@
 		<result column="order_money" property="order_money" />
 		<result column="order_no" property="order_no" />
 		<result column="order_state" property="order_state" />
-		<result column="order_time" property="order_time" />
+		<result column="order_time" property="order_time"  />
 		<result column="order_payment" property="order_payment" />
 		<result column="order_mode" property="order_mode" />
 		<result column="order_shouhuo_id" property="order_shouhuo_id" />
 		<result column="user_id" property="user_id" />
 		<result column="remarks" property="remarks" />
+		<result column="goods_name" property="goods_name" />
+        <result column="goods_tel" property="goods_tel" />
+        <result column="goods_Province" property="goods_Province" />
+        <result column="goods_city" property="goods_city" />
+        <result column="goods_CountyArea" property="goods_CountyArea" />
+        <result column="goods_address" property="goods_address" />
 	</resultMap>
 
 	<!-- 购买商品减去库存 -->
 	<update id="updatenumbergoumai">
 		update T_inventory set number=number-#{number} WHERE
-		product_id=#{product_id}
+		product_id=#{product_id} and attribute=#{id}
 
 	</update>
 	<select id="Queryinginventory" resultType="Integer">
 		SELECT number FROM
-		T_inventory WHERE product_id=#{order_product_id}
+		T_inventory WHERE product_id=#{order_product_id}  and attribute=#{id}
 
 	</select>
 	<select id="Querysteda" resultType="com.websit.entity.T_product">
@@ -55,7 +61,13 @@
 		order_state,
 		order_shouhuo_id,
 		order_time,
-		order_payment
+		order_payment,
+		goods_name,
+		goods_tel,
+		goods_Province,
+		goods_city,
+		goods_CountyArea,
+		goods_address
 		from t_order t where 1=1 and  t.user_id=#{user_id}
 		<if test="id != null and id != ''">
 		and  t.order_id=#{id}   
@@ -92,7 +104,7 @@
                     p.name productName,
                     p.image image,
                    
-                    p.price price,
+                    t.danjia price,
                     p.brand brand,
                     p.create_time create_times,
                     p.state state,
@@ -179,7 +191,12 @@
 		<!-- 查询订单列表 -->
 	<select id="order_list1" resultType="com.websit.entityvo.order_list">
 		SELECT t.yunfei,t.order_money as
-		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_shouhuo_id,order_state
+		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_shouhuo_id,order_state,goods_name,
+		goods_tel,
+		goods_Province,
+		goods_city,
+		goods_CountyArea,
+		goods_address
 		from t_order t where 1=1 
 		<if test=" date != null and date != ''">
 		and  Order_no=#{date}
@@ -228,4 +245,25 @@
 	<select id="selectbyout_trade_no" resultType="com.websit.entity.T_order">
 	  select user_id from t_order where order_no=#{order_no}
 	</select>
+       <!--确认收货-->
+		<update id="order_Receiving">
+
+		UPDATE t_order SET order_state =#{order_state},order_Receiving=now() where
+		order_id=#{order_id}
+
+	</update>
+	      <!--发货时间-->
+		<update id="order_Delivery">
+
+		UPDATE t_order SET order_state =#{order_state},order_Delivery=now() where
+		order_id=#{order_id}
+
+	</update>
+		      <!--发货时间-->
+		<update id="order_paytime">
+
+		UPDATE t_order SET order_state =#{order_state},order_paytime=now() where
+		order_id=#{order_id}
+
+	</update>
 </mapper>

@@ -4,10 +4,10 @@
 <head th:fragment="commonHeader(title)">
   <title th:text="${title}"></title>
   <!-- <meta name="referrer" content="no-referrer"> -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/iview@3/dist/iview.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/iview@3/dist/styles/iview.min.css">
+  <script src="//cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/iview@3/dist/iview.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/iview@3/dist/styles/iview.min.css">
   <link rel="stylesheet" href="/assets/css/mall.css">
   <style>
     .input-bigbox {
@@ -45,6 +45,7 @@
       width: 17%
     }
   </style>
+
 </head>
 
 <body>
@@ -138,11 +139,13 @@
       <ul v-for="(item,index) in footList" class="foot-ul">
         <li>{{item.t}}</li>
         <template v-for="(item_c,index_c) in item.c">
-          <li class="flltul-li"><a>{{item_c}}</a></li>
+          <template v-for="(itemss,index_s) in item_c">
+            <li class="flltul-li"><a :href='itemss.hf'>{{itemss.name}}</a></li>
+          </template>
         </template>
       </ul>
     </div>
-    <p class="foot-bot">© 2005-2018 云阙商城 版权所有，并保留所有权利。</p>
+    <p class="foot-bot">© 2018-2019 云阙商城 版权所有，并保留所有权利。</p>
   </div>
 </div>
 
@@ -161,12 +164,36 @@
           searchcont: "",
           classData: [],
           footList: [
-            {t: '会员中心', c: ['注册会员', '密码管理', '地址管理']},
-            {t: '买家帮助', c: ['充值和提现', '退款说明']},
-            {t: '支付方式', c: ['支付宝支付', '余额支付', '微信支付']},
-            {t: '售后服务', c: ['买家接货标准', '交易纠纷处理细则', '活体退换货注意事项']},
-            {t: '商家服务', c: ['入驻资质', '订单结算']},
-            {t: '服务支持', c: ['客服1 18935156337', '客服 QQ 2850671559', '工作时间 9：00-18：30']},
+            {
+              t: '会员中心',
+              c: [[{name: '注册会员', hf: '/toLogin?type=reg'}], [{name: '密码管理', hf: '/toLogin?type=reg'}], [{
+                name: '地址管理',
+                hf: '/toLogin?type=reg'
+              }],]
+            },
+            {t: '买家帮助', c: [[{name: '充值和提现', hf: 'javascript:;'}], [{name: '退款说明', hf: 'javascript:;'}],]},
+            {
+              t: '支付方式',
+              c: [[{name: '支付宝支付', hf: 'javascript:;'}], [{name: '余额支付', hf: 'javascript:;'}], [{
+                name: '微信支付',
+                hf: 'javascript:;'
+              }],]
+            },
+            {
+              t: '售后服务',
+              c: [[{name: '买家接货标准', hf: 'javascript:;'}], [{name: '交易纠纷处理细则', hf: 'javascript:;'}], [{
+                name: '活体退换货注意事项',
+                hf: 'javascript:;'
+              }],]
+            },
+            {t: '商家服务', c: [[{name: '入驻资质', hf: 'javascript:;'}], [{name: '订单结算', hf: 'javascript:;'}],]},
+            {
+              t: '服务支持',
+              c: [[{name: '客服1 18935156337', hf: 'javascript:;'}], [{
+                name: '客服 QQ 2850671559',
+                hf: 'javascript:;'
+              }], [{name: '工作时间 9：00-18：30', hf: 'javascript:;'}],]
+            },
           ]
 
         }
@@ -288,7 +315,17 @@
         }
       }
     }
+   
   </script>
+    <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?14366f6f0993261f9a63b6eb35e0af9b";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 </div>
 </body>
 

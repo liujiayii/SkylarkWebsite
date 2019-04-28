@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.websit.mapper.T_coupon_userMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_coupon_user">
+        <id column="id" property="id" />
+        <result column="coupon_id" property="coupon_id" />
+        <result column="user_id" property="user_id" />
+        <result column="creat_time" property="creat_time" />
+        <result column="star_time" property="star_time" />
+        <result column="expiration_time" property="expiration_time" />
+        <result column="state" property="state" />
+    </resultMap>
+
+</mapper>

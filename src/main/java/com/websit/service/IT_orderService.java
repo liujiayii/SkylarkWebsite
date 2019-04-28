@@ -2,6 +2,7 @@ package com.websit.service;
 
 import com.websit.entity.T_order;
 import com.websit.entity.T_product;
+import com.websit.entity.T_product_specification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,7 @@ public interface IT_orderService extends IService<T_order> {
 	 * 查询库存
 	 * @return
 	 */
-	int   Queryinginventory(String  order_product_id);
+	int   Queryinginventory(String  order_product_id, Long specifications);
 	/**
 	 * 查询商品状态
 	 * @return
@@ -41,7 +42,7 @@ public interface IT_orderService extends IService<T_order> {
 	/**
 	 * 查询订单列表
 	 */
-	ArrayList<order_list> order_list(String user_id,String order_state,RowBounds RowBounds,String id);
+	List<order_list> order_list(String user_id,String order_state,RowBounds RowBounds,String id);
 	/**
 	 * 商品订单
 	 */
@@ -58,7 +59,7 @@ public interface IT_orderService extends IService<T_order> {
 	 * @param jiage
 	 * @return
 	 */
-	int updatenumbergoumai(Integer number,String product_id);
+	int updatenumbergoumai(Integer number,String product_id,Long id);
 	
 	/**
 	 * @Title: selectAllSecond
@@ -125,5 +126,6 @@ public interface IT_orderService extends IService<T_order> {
 	 * 商品单个退货
 	 */
 	public String sales(String order_id,String productid); 
+	public T_product_specification specification(String product_id,String specifications);
 	
 }

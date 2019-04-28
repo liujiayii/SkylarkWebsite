@@ -80,7 +80,7 @@ public class ProductDetails implements Serializable{
     /**
      * 商品专区id
      */
-    private Long zoneIds;
+    private Long zoneid;
     /**
      * 商品专区名称
      */
@@ -181,11 +181,11 @@ public class ProductDetails implements Serializable{
 	public void setClassificationNames(String classificationNames) {
 		this.classificationNames = classificationNames;
 	}
-	public Long getZoneIds() {
-		return zoneIds;
+	public Long getZoneid() {
+		return zoneid;
 	}
-	public void setZoneIds(Long zoneIds) {
-		this.zoneIds = zoneIds;
+	public void setZoneid(Long zoneid) {
+		this.zoneid = zoneid;
 	}
 	public String getZoneNames() {
 		return zoneNames;
@@ -217,11 +217,10 @@ public class ProductDetails implements Serializable{
 				.append(cost_price).append(", discount_price=").append(discount_price).append(", state=").append(state)
 				.append(", create_times=").append(create_times).append(", brand=").append(brand).append(", describion=")
 				.append(describion).append(", classificationIds=").append(classificationIds)
-				.append(", classificationNames=").append(classificationNames).append(", zoneIds=").append(zoneIds)
+				.append(", classificationNames=").append(classificationNames).append(", zoneid=").append(zoneid)
 				.append(", zoneNames=").append(zoneNames).append(", after_information=").append(after_information)
 				.append(", productImage=").append(productImage).append("]");
 		return builder.toString();
 	}
-    
-
+	
 }

@@ -1,14 +1,18 @@
 package com.websit.service.impl;
 
+import com.websit.entity.Inventory;
+import com.websit.entity.T_inventory;
 import com.websit.entity.T_order;
 import com.websit.entity.T_product;
+import com.websit.entity.T_product_specification;
 import com.websit.mapper.T_orderMapper;
+import com.websit.mapper.T_product_specificationMapper;
 import com.websit.service.IT_orderService;
-
-
+import com.websit.until.specificationsuntil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,18 +32,25 @@ import com.websit.entityvo.*;
 public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> implements IT_orderService {
 	@Autowired
 	public T_orderMapper T_orderMapper;
+	@Autowired
+	public T_product_specificationMapper specificationMapper;
     /**
      *        查询库存
      */
 	@Override
-	public int Queryinginventory(String trolley_id) {
+	public int Queryinginventory(String trolley_id,Long id) {
 		int num=0;
+
+		
+			
+	
 		  try {
-			 num= T_orderMapper.Queryinginventory(trolley_id);
+			 num= T_orderMapper.Queryinginventory(trolley_id,id);
+			 return num;
 		} catch (Exception e) {
-			// TODO: handle exception
+			return num;
 		}
-		return num;
+		
 	}
 	/***
 	 * 查询商品状态
@@ -50,15 +61,28 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 	}
 	@Override
 	/**
-	 * 查询订单列表
+	 * 发货，取消
 	 */
 	public int ordercancelled(String order_id,String order_state) {
+		switch (order_state)
+
+		{
+		case "1":
+			return T_orderMapper.order_paytime(order_id, order_state);
+		case "2":
+			return T_orderMapper.order_Delivery(order_id, order_state);
+		case "3":
+			return T_orderMapper.order_Receiving(order_id, order_state);
+		default:
+			return T_orderMapper.ordercancelled(order_id, order_state);
+		}
 		
 		
-		return T_orderMapper.ordercancelled(order_id, order_state);
+		
+		
 	}
 	@Override
-	public ArrayList<order_list> order_list(String user_id, String order_state,RowBounds RowBounds,String id) {
+	public List<order_list> order_list(String user_id, String order_state,RowBounds RowBounds,String id) {
 		if(order_state!=null&&order_state.equals("5")) {
 			return T_orderMapper.order_list2(user_id,RowBounds);
 		}else {
@@ -105,11 +129,7 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 	public List<T_orderVo> selectAllSecond(long user_id) {
 		return T_orderMapper.selectAllSecond(user_id);
 	}
-	@Override
-	public int updatenumbergoumai(Integer number, String product_id) {
-		// TODO Auto-generated method stub
-		return T_orderMapper.updatenumbergoumai(number, product_id);
-	}
+
 	@Override
 	/**
 	 * 更新物流单号
@@ -206,5 +226,39 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 		// TODO Auto-generated method stub
 		return null;
 	}
+	/**
+	 *查寻商品价格
+	 */
+	public T_product_specification specification(String product_id,String specifications) {
+		T_product_specification specification=null;
+	
+		System.out.println(specifications);
+		try {
+			
+		
+		List<T_product_specification> T_product_specification=specificationMapper.selectlstspecification(product_id);
+		
+		for(int i=0;i<T_product_specification.size();i++) {
+			
+			boolean fig=specificationsuntil.specification(specifications, T_product_specification.get(i).getSpecificationName());
+			if(fig) {
+				specification=T_product_specification.get(i);
+				break;
+			}
+		}
+		return specification;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	@Override
+	public int updatenumbergoumai(Integer number, String product_id, Long id) {
+		// TODO Auto-generated method stub
+		return T_orderMapper.updatenumbergoumai(number, product_id,id);
+	}
+	
+
+	
+
 
 }

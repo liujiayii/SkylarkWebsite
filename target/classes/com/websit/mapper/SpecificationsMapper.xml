@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.websit.mapper.SpecificationsMapper">
 
-<!--  规格列表   分页 -->
+ <!--  规格列表   分页 -->
     <select id="listAllSpecifications" resultType="com.websit.entityvo.SpecificationsVo">
 				SELECT DISTINCT
 					ts.id specificationsId,
@@ -18,38 +18,32 @@
 					ts.id DESC
             	limit #{page},#{limit} 
     </select>
-    <!--  根据商品类型id查询规格 app-->
+     <!-- 根据商品类型id查询规格 app -->
     <select id="listSpecificationsByproducttypeid" resultMap="specificationsAndOptionsVo">
        SELECT DISTINCT
                    ts.id specificationsId,
                    ts.name specificationsName,
                    tpt.id producttypeid,
-                   tpt.name producttypename,
-                   tso. id id,
-                   tso.name name
+                   tpt.name producttypename
+                  
                 FROM
                    t_specifications ts,
-                   t_product_type tpt,
-                    t_specification_options tso
+                   t_product_type tpt
                    WHERE ts.product_type_id = tpt.id
-                   and  ts.id = tso.specifications_id
             and tpt.id = #{producttypeid}
-    </select>
-     <resultMap type="com.websit.entityvo.ProductTypeSpecifications" id="specificationsAndOptionsVo">
+    </select> 
+   <resultMap type="com.websit.entityvo.ProductTypeSpecifications" id="specificationsAndOptionsVo">
        <id column="producttypeid" property="producttypeid"/>
             <result column="producttypename" property="producttypename"/>
        <collection property="SpecificationOptionsListss" ofType="com.websit.entityvo.SpecificationsVo">
            <id column="specificationsId" property="specificationsId"/>
            <result column="specificationsName" property="specificationsName"/>
-             <collection property="SpecificationOptionsList" ofType="com.websit.entity.SpecificationOptions">
-              <id column="id" property="id"/>
-           <result column="name" property="name"/>
-             </collection>
+            
        </collection>
     </resultMap>
     
       <!-- 查询当前商品规格及各个规格下规格选项集合 -->
-    <select id="listSpecificationsBySpecificationsId" resultMap="specificationsAndOptions">
+    <!-- <select id="listSpecificationsBySpecificationsId" resultMap="specificationsAndOptions">
        SELECT DISTINCT
                     ts.id specificationsId,
                     ts. name specificationsName,
@@ -57,10 +51,17 @@
                     tso.name name
                 FROM
                    t_specifications ts,
-                    t_specification_options tso
+                    t_specification_options tso,
+                    t_product t,
+                   t_product_specification s,
+                   t_product_type tp
+                    
          WHERE
                    ts.id = tso.specifications_id
-                and ts.id = #{specificationsId}
+                   and ts.product_type_id=tp.id
+                   and s.product_id=t.id
+                   
+                and ts.id = #{product}
      
     </select>
     <resultMap type="com.websit.entityvo.SpecificationsVo" id="specificationsAndOptions">
@@ -71,7 +72,7 @@
            <result column="name" property="name"/>
        </collection>
     </resultMap>
-    
+     -->
     <!-- 查询商品规格数量 -->
 	<select id="findSpecificationsVoCount"  resultType="Integer">
 		SELECT COUNT(DISTINCT tb.id) count

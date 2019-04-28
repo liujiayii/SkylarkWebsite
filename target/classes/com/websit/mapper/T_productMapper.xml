@@ -2,170 +2,173 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.websit.mapper.T_productMapper">
 
-    <!--  通用查询映射结果 -->
-     <resultMap id="BaseResultMap" type="com.websit.entity.T_product">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="product_type_id" property="product_type_id" />
-        <result column="image" property="image" />
-        <result column="price" property="price" />
-        <result column="color" property="color" />
-        <result column="state" property="state" />
-        <result column="create_times" property="create_times" />
-        <result column="brand" property="brand" />
-        <result column="specifications" property="specifications" />
-        <result column="describes" property="describes" />
-        <result column="zone_id" property="zone_id" />
-          <result column="zone_name" property="zone_name" />
-    </resultMap>
-    
-     
-    <!-- 查询当前商品种类及各个种类下商品集合 -->
-    <select id="listProductByTypeId" resultMap="productsAndType">
-       SELECT DISTINCT
-                    p.id id,
-                    pt. name productTypeName,
-                    pt. id productTypeId, 
-                    p.name name,
-                    p.image image,
-                    p.describes describion,
-                    tps.cost_price cost_price,
-                    tps.discount_price discount_price,
-                    tps.price price
-                FROM
-                    t_product p,
-                    t_product_type pt,
-                    t_product_specification tps
-         <where>
-                  tps.product_id = p.id and
-                   p.product_type_id = pt.id
-                and pt.id = #{productTypeId}
-        </where>
-       limit #{page},#{limit} 
-    </select>
-    <resultMap type="com.websit.entityvo.ProductTypeVo" id="productsAndType">
-       <id column="productTypeId" property="productTypeId"/>
-       <result column="productTypeName" property="productTypeName"/>
-       <result column="create_time" property="create_time"/>
-       <collection property="productList" ofType="com.websit.entity.T_product">
-           <id column="id" property="id"/>
-           <result column="name" property="name"/>
-           <result column="image" property="image"/>
-           <result column="price" property="price"/>
-           <result column="brand" property="brand"/>
-           <result column="create_times" property="create_times"/>
-           <result column="describion" property="describion"/>
-           <result column="state" property="state"/>
-            <result column="specifications" property="specifications"/>
-           <result column="color" property="color"/>
-             <result column="cost_price" property="cost_price"/>
-           <result column="discount_price" property="discount_price"/>
-       </collection>
-    </resultMap>
-    
-    <!-- 通过大分类id查询当前商品种类及各个种类下商品集合 -->
-    <select id="listProductByClassTypeId" resultMap="productsAndType">
-       SELECT DISTINCT
-                    p.id id,
-                    pt. name productTypeName,
-                    pt. id productTypeId, 
-                    p.name name,
-                    p.image image,
-                    p.describes describion,
-                    tps.cost_price cost_price,
-                    tps.discount_price discount_price,
-                    tps.price price
-                FROM
-                    t_product p,
-                    t_product_type pt,
-                    t_product_specification tps
-         <where>
-                   tps.product_id = p.id and
-                   p.product_type_id = pt.id
-                and pt.classification_id = #{classification_id}
-        </where>
-        <if test="page != null and limit != null">
-            limit #{page},#{limit} 
-        </if>
-       
-    </select>
-    
-    
-<!-- 查询商品 -->
-    <select id="listAllProductById" resultType="com.websit.entityvo.ProductVo">
-       SELECT DISTINCT
-                    p.id id,
-                    pt. name producttypename,
-                    pt. id producttypeid, 
-                    p.name productName,
-                    p.image image,
-                 
-                    p.price price,
-                    p.brand brand,
-                    p.create_time create_times,
-                    p.state state,
-               
-                    p.describes describion
-                FROM
-                    t_product p,
-                    t_product_type pt
-                WHERE
-                   p.product_type_id = pt.id
-               group by p.id
-         DESC
-                 limit #{page},#{limit}  
-      
-    </select>
-    <!-- 增加商品 -->
-	<insert id="saveProduct" parameterType="com.websit.entityvo.ProductVo" useGeneratedKeys="true" keyProperty="id">
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.websit.entity.T_product">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="product_type_id" property="product_type_id" />
+		<result column="image" property="image" />
+		<result column="price" property="price" />
+		<result column="cost_price" property="cost_price" />
+		<result column="discount_price" property="discount_price" />
+		<result column="state" property="state" />
+		<result column="create_times" property="create_times" />
+		<result column="brand" property="brand" />
+		<result column="describes" property="describes" />
+		<result column="zone_id" property="zone_id" />
+		<result column="zone_name" property="zone_name" />
+	</resultMap>
+
+
+	<!-- 查询当前商品种类及各个种类下商品集合 -->
+	<select id="listProductByTypeId" resultMap="productsAndType">
+		SELECT DISTINCT
+		p.id id,
+		pt. name productTypeName,
+		pt. id productTypeId,
+		p.name name,
+		p.image image,
+		p.describes describion,
+		tps.cost_price cost_price,
+		tps.discount_price discount_price,
+		tps.price price
+		FROM
+		t_product p,
+		t_product_type pt,
+		t_product_specification tps
+		<where>
+			tps.product_id = p.id and
+			p.product_type_id = pt.id
+			and p.state = 1
+			and pt.id = #{productTypeId}
+		</where>
+		GROUP BY p.name
+		limit #{page},#{limit}
+	</select>
+	<resultMap type="com.websit.entityvo.ProductTypeVo" id="productsAndType">
+		<id column="productTypeId" property="productTypeId" />
+		<result column="productTypeName" property="productTypeName" />
+		<result column="create_time" property="create_time" />
+		<collection property="productList" ofType="com.websit.entity.T_product">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="image" property="image" />
+			<result column="price" property="price" />
+			<result column="brand" property="brand" />
+			<result column="create_times" property="create_times" />
+			<result column="describion" property="describion" />
+			<result column="state" property="state" />
+			<result column="specifications" property="specifications" />
+			<result column="color" property="color" />
+			<result column="cost_price" property="cost_price" />
+			<result column="discount_price" property="discount_price" />
+		</collection>
+	</resultMap>
+
+	<!-- 通过大分类id查询当前商品种类及各个种类下商品集合 -->
+	<select id="listProductByClassTypeId" resultMap="productsAndType">
+		SELECT DISTINCT
+		p.id id,
+		pt. name productTypeName,
+		pt. id productTypeId,
+		p.name name,
+		p.image image,
+		p.describes describion,
+		tps.cost_price cost_price,
+		tps.discount_price discount_price,
+		tps.price price
+		FROM
+		t_product p,
+		t_product_type pt,
+		t_product_specification tps
+		<where>
+			tps.product_id = p.id and
+			p.product_type_id = pt.id
+			and p.state = 1
+			and pt.classification_id = #{classification_id}
+		</where>
+		GROUP BY p.name
+		<if test="page != null and limit != null">
+			limit #{page},#{limit}
+		</if>
+
+	</select>
+
+
+	<!-- 查询商品 -->
+	<select id="listAllProductById" resultType="com.websit.entityvo.ProductVo">
+		SELECT DISTINCT
+		p.id id,
+		pt. name producttypename,
+		pt. id producttypeid,
+		p.name productName,
+		p.image image,
+		p.brand brand,
+		p.create_time create_times,
+		p.state state,
+        p.zone_id zoneid,
+		p.describes describion
+		FROM
+		t_product p,
+		t_product_type pt
+		WHERE
+		p.product_type_id = pt.id
+		group by p.id
+		DESC
+		limit #{page},#{limit}
+
+	</select>
+	<!-- 增加商品 -->
+	<insert id="insertSpecificationService" parameterType="com.websit.entityvo.ProductVo"
+		useGeneratedKeys="true" keyProperty="id">
 		insert into
-		t_product(name,product_type_id,image,price,color,state,create_time,brand,specifications,describes,zone_id)
+		t_product(name,product_type_id,image,state,create_time,brand,describes,zone_id,after_information)
 		values
-		(#{productName},#{producttypeid},#{image},#{price},#{color},1,now(),#{brand},#{specifications},#{describion},#{zoneid})
+		(#{productName},#{producttypeid},#{image},1,now(),#{brand},#{describion},#{zoneid},#{after_information})
 	</insert>
-	
+
+<!-- -->
+	<!-- <insert id="insertSpecificationService" parameterType="com.websit.entity.T_product"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into
+		t_product(id,name,product_type_id,image,state,create_time,brand,describes,zone_id,after_information)
+		values
+		(null,#{name},#{product_type_id},#{image},1,now(),#{brand},#{describion},#{zone_id},#{after_information})
+	</insert> -->
+
 	<!-- 修改商品 -->
 	<update id="updateProduct" parameterType="com.websit.entityvo.ProductVo">
 		update t_product
 		<set>
-		<!-- <if test="productId != null and productId != ''">
-				id = #{productId},
-			</if> -->
+			<!-- <if test="productId != null and productId != ''"> id = #{productId}, 
+				</if> -->
 			<if test="productName != null and productName != ''">
 				name = #{productName},
 			</if>
-			 <if test="producttypeid != null and producttypeid != ''">
+			<if test="producttypeid != null and producttypeid != ''">
 				product_type_id = #{producttypeid},
-			</if> 
+			</if>
 			<if test="image != null and image != ''">
 				image = #{image},
-			</if>
-			<if test="price != null and price != ''">
-				price = #{price},
-			</if>
-			<if test="color != null and color != ''">
-				color = #{color},
 			</if>
 			<if test="state != null and state != ''">
 				state = #{state},
 			</if>
-		 	<!--  <if test="create_times != null and create_times != ''">
-				create_time = #{create_times, jdbcType=DATE},
-			</if>  -->
+			<!-- <if test="create_times != null and create_times != ''"> create_time 
+				= #{create_times, jdbcType=DATE}, </if> -->
 			<if test="brand != null and brand != ''">
 				brand = #{brand},
-			</if>
-			<if test="specifications != null and specifications != ''">
-				specifications = #{specifications},
 			</if>
 			<if test="describion != null and describion != ''">
 				describes = #{describion},
 			</if>
-				<if test="zoneid != null and zoneid != ''">
-				zone_id = #{zoneid}
+			<if test="zoneid != null and zoneid != ''">
+				zone_id = #{zoneid},
 			</if>
-			<!-- 	zone_id = #{zoneid} -->
-			
+			<!-- zone_id = #{zoneid} -->
+			<if test="after_information != null and after_information != ''">
+				after_information = #{after_information}
+			</if>
 		</set>
 		where id= #{id}
 	</update>
@@ -178,7 +181,7 @@
 			</if>
 		</set>
 		where id= #{id}
-		</update>
+	</update>
 	<!-- 查询商品数量 -->
 	<select id="findBpiList" resultType="Integer">
 		SELECT COUNT(DISTINCT tb.id) count
@@ -187,228 +190,299 @@
 		select
 		p.id
 		from
-		 t_product p
-        WHERE 
-        p.product_type_id =  #{productTypeId}
-      <!--    WHERE p.id = #{id} -->
-         <!-- and pt.id = #{productTypeId} -->
-		<!-- <where>
-			 <if test="name != null and name != ''">
-				and p.name like "%"#{name}"%"
-			</if> 
-		</where> -->
+		t_product p
+		WHERE
+		p.state = 1 and
+		p.product_type_id = #{productTypeId}
+		<!-- WHERE p.id = #{id} -->
+		<!-- and pt.id = #{productTypeId} -->
+		<!-- <where> <if test="name != null and name != ''"> and p.name like "%"#{name}"%" 
+			</if> </where> -->
 		)as tb
 	</select>
 	<!-- 根据商品id查询商品详情 -->
-    <select id="listProductByProductId" resultMap="productAndImage">
-       SELECT DISTINCT
-                    p.id productId,
-                    pt.name producttypename,
-                    pt.id producttypeid, 
-                    p.name productName,
-                    p.image image,
-                    p.price price,
-                    p.brand brand,
-                    p.create_time create_times,
-                    p.state state,
-                    p.describes describion,
-                    p.after_information after_information,
-                    tc.id classificationIds,
-                    tc.name classificationNames,
-                    tpi.id id,
-                    tpi.product_id product_id,
-                    tpi.img img,
-                    tps.discount_price discount_price,
-                    tps.cost_price cost_price
-                FROM
-                    t_product p,
-                    t_product_type pt,
-                    t_product_img tpi,
-                    t_classification tc,
-                    t_product_specification tps
-                WHERE
-                   p.product_type_id = pt.id
-                   and p.id = tpi.product_id
-                   and pt.classification_id = tc.id
-                   and tps.product_id = p.id
-                  and p.id = #{productId}
-                <!--  GROUP BY p.id -->
-    </select>
-     <resultMap type="com.websit.entityvo.ProductDetails" id="productAndImage">
-       <id column="productId" property="productId"/>
-       <result column="productName" property="productName"/>
-        <result column="producttypeid" property="producttypeid"/>
-         <result column="producttypename" property="producttypename"/>
-         <result column="image" property="image"/>
-           <result column="price" property="price"/>
-           <result column="brand" property="brand"/>
-           <result column="create_times" property="create_times"/>
-           <result column="describion" property="describion"/>
-           <result column="state" property="state"/>
-            <result column="cost_price" property="cost_price"/>
-            <result column="after_information" property="after_information"/>
-           <result column="discount_price" property="discount_price"/>
-            <result column="classificationIds" property="classificationIds"/>
-             <result column="classificationNames" property="classificationNames"/>
-       <collection property="productImage" ofType="com.websit.entityvo.ProductImage">
-           <id column="id" property="id"/>
-           <result column="product_id" property="product_id"/>
-              <result column="product_name" property="product_name"/>
-           <result column="img" property="img"/>
-       </collection>
-       <!--  <collection property="discount" ofType="com.websit.entityvo.Discount">
-           <id column="id" property="id"/>
-           <result column="productid" property="productid"/>
-              <result column="productname" property="productname"/>
-           <result column="price" property="price"/>
-            <result column="money" property="money"/>
-       </collection> -->
-    </resultMap>
-    
-     <!-- 首页模糊查询 -->
-    <select id="listProductByProductTypeId" resultType="com.websit.entityvo.ProductVo">
-       SELECT DISTINCT
-                    p.id id,
-                    pt.name producttypename,
-                    pt.id producttypeid, 
-                    p.name productName,
-                    p.image image,
-                    p.price price,
-                    p.describes describion,
-                    p.after_information after_information,
-                    tps.discount_price discount_price,
-                    tps.cost_price cost_price
-                FROM
-                    t_product p,
-                    t_product_type pt,
-                    t_product_specification tps
-        where
+	<select id="listProductByProductId" resultMap="productAndImage">
+		SELECT DISTINCT
+		p.id productId,
+		pt.name producttypename,
+		pt.id producttypeid,
+		p.name productName,
+		p.image image,
+		p.brand brand,
+		p.create_time create_times,
+		p.state state,
+		p.describes describion,
+		p.after_information after_information,
+		tc.id classificationIds,
+		tc.name classificationNames,
+		tpi.id id,
+		tpi.product_id product_id,
+		tpi.img img,
+		tps.discount_price discount_price,
+		tps.cost_price cost_price,
+		tps.price price
+		FROM
+		t_product p,
+		t_product_type pt,
+		t_product_img tpi,
+		t_classification tc,
+		t_product_specification tps
+		WHERE
+		p.product_type_id = pt.id
+		and p.id = tpi.product_id
+		and pt.classification_id = tc.id
+		and tps.product_id = p.id
+		and p.state = 1
+		and p.id = #{productId}
+		<!-- GROUP BY p.id -->
+		GROUP BY p.name
+	</select>
+	<!-- 根据商品id查询商品详情(后台) -->
+	<select id="listProductByProductIds" resultMap="productAndImage">
+		SELECT DISTINCT
+		p.id productId,
+		pt.name producttypename,
+		pt.id producttypeid,
+		p.name productName,
+		p.image image,
+		p.brand brand,
+		p.create_time create_times,
+		p.state state,
+		p.describes describion,
+		 p.zone_id zoneid,
+		p.after_information after_information,
+		tc.id classificationIds,
+		tc.name classificationNames
+		FROM
+		t_product p,
+		t_product_type pt,
+		t_classification tc
+		WHERE
+		p.product_type_id = pt.id
+		and pt.classification_id = tc.id
+		and p.id = #{productId}
+		GROUP BY p.name
+	</select>
+	<resultMap type="com.websit.entityvo.ProductDetails" id="productAndImage">
+		<id column="productId" property="productId" />
+		<result column="productName" property="productName" />
+		<result column="producttypeid" property="producttypeid" />
+		<result column="producttypename" property="producttypename" />
+		<result column="image" property="image" />
+		<result column="price" property="price" />
+		<result column="brand" property="brand" />
+		<result column="create_times" property="create_times" />
+		<result column="describion" property="describion" />
+		<result column="state" property="state" />
+		<result column="cost_price" property="cost_price" />
+		<result column="zoneid" property="zoneid" />
+		<result column="after_information" property="after_information" />
+		<result column="discount_price" property="discount_price" />
+		<result column="classificationIds" property="classificationIds" />
+		<result column="classificationNames" property="classificationNames" />
+		<collection property="productImage" ofType="com.websit.entityvo.ProductImage">
+			<id column="id" property="id" />
+			<result column="product_id" property="product_id" />
+			<result column="product_name" property="product_name" />
+			<result column="img" property="img" />
+		</collection>
+		<!-- <collection property="discount" ofType="com.websit.entityvo.Discount"> 
+			<id column="id" property="id"/> <result column="productid" property="productid"/> 
+			<result column="productname" property="productname"/> <result column="price" 
+			property="price"/> <result column="money" property="money"/> </collection> -->
+	</resultMap>
 
-                   p.product_type_id = pt.id
-                   and tps.product_id = p.id
-				and p.name like CONCAT('%',#{productName},'%')
+	<!-- 首页模糊查询 -->
+	<select id="listProductByProductTypeId" resultType="com.websit.entityvo.ProductVo">
+		SELECT DISTINCT
+		p.id id,
+		pt.name producttypename,
+		pt.id producttypeid,
+		p.name productName,
+		p.image image,
+		p.describes describion,
+		p.after_information after_information,
+		tps.discount_price discount_price,
+		tps.cost_price cost_price,
+		tps.price price
+		FROM
+		t_product p,
+		t_product_type pt,
+		t_product_specification tps
+		where
+		p.product_type_id = pt.id
+		and tps.product_id = p.id
+		and p.state = 1
+		and p.name like CONCAT('%',#{productName},'%')
+		GROUP BY p.name
+		limit #{page},#{limit}
+	</select>
 
-			limit #{page},#{limit}
-       
-     
-    </select>
-    
-     <select id="listProductByCount" resultType="com.websit.entityvo.ProductVo">
-       SELECT 
-                    COUNT(DISTINCT p.id) count
-                FROM
-                    t_product p,
-                    t_product_type pt
-         where
-                   p.product_type_id = pt.id
-            
-				and p.name like CONCAT('%',#{productName},'%')
-			limit #{page},#{limit}
+<!-- 首页模糊查询(后台) -->
+	<select id="listProductByProductTypeIds" resultType="com.websit.entityvo.ProductVo">
+		SELECT DISTINCT
+		p.id id,
+		pt. name producttypename,
+		pt. id producttypeid,
+		p.name productName,
+		p.image image,
+		p.brand brand,
+		p.create_time create_times,
+		p.state state,
+        p.zone_id zoneid,
+		p.describes describion
+		FROM
+		t_product p,
+		t_product_type pt
+		WHERE
+		p.product_type_id = pt.id
+		and p.name like CONCAT('%',#{productName},'%')
+		GROUP BY p.name
+		limit #{page},#{limit}
+	</select>
+	
+	<select id="listProductByCount" resultType="com.websit.entityvo.ProductVo">
+		SELECT
+		COUNT(DISTINCT p.id) count
+		FROM
+		t_product p,
+		t_product_type pt
+		where
+		p.product_type_id = pt.id
+        and p.state = 1
+		and p.name like CONCAT('%',#{productName},'%')
+		limit #{page},#{limit}
 
-     
-    </select>
-    <!-- 查询商品数量 -->
+
+	</select>
+	<!-- 查询商品数量 -->
 	<select id="findBpiLists" resultType="com.websit.entityvo.ProductVo">
-		SELECT COUNT(DISTINCT tb.id) count
+		SELECT COUNT(DISTINCT
+		tb.id) count
 		FROM
 		(
 		select
 		p.id
 		from
-		 t_product p
-        
+		t_product p
 		)as tb
 	</select>
-	<select id="findBpproduc" resultType="com.websit.entity.T_product"  parameterType="com.websit.entity.T_product_type">
+	<select id="findBpproduc" resultType="com.websit.entity.T_product"
+		parameterType="com.websit.entity.T_product_type">
 		SELECT *
 		FROM
-		 t_product p where p.product_type_id=#{id} and p.state=1
+		t_product p, t_product_specification tps 
+		where
+		 p.product_type_id=#{id} 
+		 and p.state=1
+		 and tps.product_id = p.id
+		 group by p.name
 	</select>
-	
-	 <select id="listProductByProductName" resultMap="productAndImage">
-        SELECT DISTINCT
-                    p.id productId,
-                    pt.name producttypename,
-                    pt.id producttypeid, 
-                    p.name productName,
-                    p.image image,
-                    p.price price,
-                    p.brand brand,
-                    p.create_time create_times,
-                    p.state state,
-                    p.describes describion,
-                    p.after_information after_information,
-                    tc.id classificationIds,
-                    tc.name classificationNames,
-                    tpi.id id,
-                    tpi.product_id product_id,
-                    tpi.img img,
-                    tps.discount_price discount_price,
-                    tps.cost_price cost_price
-                FROM
-                    t_product p,
-                    t_product_type pt,
-                    t_product_img tpi,
-                    t_classification tc,
-                    t_product_specification tps
-                WHERE
-                   p.product_type_id = pt.id
-                   and p.id = tpi.product_id
-                   and pt.classification_id = tc.id
-                   and tps.product_id = p.id
-                  and p.name = #{producttypename}
-                <!--  GROUP BY p.id -->
-    </select>
-    <!-- 根据专区查商品 -->
-    <select id="findBpproducbyZone" resultType="com.websit.entity.T_product"  parameterType="com.websit.entity.Zone">
-		SELECT *
-		FROM
-		 t_product p where p.zone_id=#{id}
-	</select>
-	
-	<select id="selectbyDESC" resultType="com.websit.entity.T_product">
- 
-	SELECT * from t_product p where p.state=1 order by p.create_time DESC  limit #{page},#{limit} 
-	</select>
-	
-	<!--根据商品名称查询商品规格及选项-->
-	 <select id="findSpecificationsByProduct" resultMap="productsAndSpecifications">
-       SELECT DISTINCT
-                    p.id productId,
-                    p.name productName,
-                    
-                FROM
-                    t_product p,
-                    t_product_specification tps
-                WHERE
-                p.id = tps.product_id
-                  and p.id = #{productId}
-    </select>
-	<resultMap type="com.websit.entityvo.ProductSpecificationsVo" id="productsAndSpecifications">
-       <id column="productTypeId" property="productTypeId"/>
-       <result column="productTypeName" property="productTypeName"/>
-       <result column="create_time" property="create_time"/>
-       <collection property="productSpecifications" ofType="com.websit.entity.ProductSpecifications">
-           <id column="id" property="id"/>
-           <result column="name" property="name"/>
-           <result column="image" property="image"/>
-           <result column="price" property="price"/>
-           <result column="brand" property="brand"/>
-           <result column="create_times" property="create_times"/>
-           <result column="describion" property="describion"/>
-           <result column="state" property="state"/>
-            <result column="specifications" property="specifications"/>
-           <result column="color" property="color"/>
-             <result column="cost_price" property="cost_price"/>
-           <result column="discount_price" property="discount_price"/>
-       </collection>
-    </resultMap>
-    <!--  -->
-    <insert id="insertSpecificationService" parameterType="com.websit.entity.T_product"   
-        useGeneratedKeys="true" keyProperty="id">  
-       t_product(id,name,product_type_id,image,state,create_time,brand,describes,zone_id,after_information)
-		values
-		(null,#{name},#{product_type_id},#{image},1,now(),#{brand},#{describes},#{zone_id},#{after_information})
-</insert> 
 
+	<select id="listProductByProductName" resultMap="productAndImage">
+		SELECT DISTINCT
+		p.id productId,
+		pt.name producttypename,
+		pt.id producttypeid,
+		p.name productName,
+		p.image image,
+		p.brand brand,
+		p.create_time create_times,
+		p.state state,
+		p.describes describion,
+		p.after_information after_information,
+		tc.id classificationIds,
+		tc.name classificationNames,
+		tpi.id id,
+		tpi.product_id product_id,
+		tpi.img img,
+		tps.discount_price discount_price,
+		tps.cost_price cost_price
+		FROM
+		t_product p,
+		t_product_type pt,
+		t_product_img tpi,
+		t_classification tc,
+		t_product_specification tps
+		WHERE
+		p.product_type_id = pt.id
+		and p.id = tpi.product_id
+		and pt.classification_id = tc.id
+		and tps.product_id = p.id
+		and p.name = #{producttypename}
+		<!-- GROUP BY p.id -->
+	</select>
+	<!-- 根据专区查商品 -->
+	<select id="findBpproducbyZone" resultType="com.websit.entity.T_product"
+		parameterType="com.websit.entity.Zone">
+		SELECT *
+		FROM
+		t_product p where p.zone_id=#{id}
+	</select>
+
+	<select id="selectbyDESC" resultType="com.websit.entity.T_product">
+
+		SELECT * from t_product p where p.state=1 order by p.create_time DESC limit
+		#{page},#{limit}
+	</select>
+
+	<!--根据商品名称查询商品规格及选项 -->
+	<select id="findSpecificationsByProduct" resultMap="productsAndSpecifications">
+		SELECT DISTINCT
+		p.id productId,
+		p.name productName,
+
+		FROM
+		t_product p,
+		t_product_specification tps
+		WHERE
+		p.id = tps.product_id
+		and p.id = #{productId}
+	</select>
+	<resultMap type="com.websit.entityvo.ProductSpecificationsVo"
+		id="productsAndSpecifications">
+		<id column="productTypeId" property="productTypeId" />
+		<result column="productTypeName" property="productTypeName" />
+		<result column="create_time" property="create_time" />
+		<collection property="productSpecifications"
+			ofType="com.websit.entity.ProductSpecifications">
+			<id column="id" property="id" />
+			<result column="name" property="name" />
+			<result column="image" property="image" />
+			<result column="price" property="price" />
+			<result column="brand" property="brand" />
+			<result column="create_times" property="create_times" />
+			<result column="describion" property="describion" />
+			<result column="state" property="state" />
+			<result column="specifications" property="specifications" />
+			<result column="color" property="color" />
+			<result column="cost_price" property="cost_price" />
+			<result column="discount_price" property="discount_price" />
+		</collection>
+	</resultMap>
+	
+	<select id="selecProductTypeIdVotById" resultType="java.lang.Long">
+		SELECT product_type_id
+		FROM
+		t_product
+		WHERE
+
+		id = #{productId}
+	</select>
+	
+<!-- 查询商品数量(全部:上下架) -->
+	<select id="findproductCountAll" resultType="com.websit.entityvo.ProductVo">
+		SELECT COUNT(DISTINCT
+		tb.id) count
+		FROM
+		(
+		select
+		p.id
+		from
+		t_product p
+		WHERE
+		p.name like CONCAT('%',#{productName},'%')
+		limit #{page},#{limit}
+		)as tb
+	</select>
 </mapper>

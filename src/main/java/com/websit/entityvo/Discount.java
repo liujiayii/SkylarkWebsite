@@ -11,7 +11,7 @@ public class Discount implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	private Long discountid;
-	private Long productid;
+	private Long productId;
 	private String productname;
 	private BigDecimal price;
 	private BigDecimal money;
@@ -21,11 +21,11 @@ public class Discount implements Serializable{
 	public void setDiscountid(Long discountid) {
 		this.discountid = discountid;
 	}
-	public Long getProductid() {
-		return productid;
+	public Long getProductId() {
+		return productId;
 	}
-	public void setProductid(Long productid) {
-		this.productid = productid;
+	public void setProductId(Long productId) {
+		this.productId = productId;
 	}
 	public String getProductname() {
 		return productname;
@@ -48,22 +48,10 @@ public class Discount implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	/**  
-	
-	* <p>Title: </p>  
-	
-	* <p>Description: </p>  
-	  
-	
-	*/  
-	public Discount() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Discount [discountid=").append(discountid).append(", productid=").append(productid)
+		builder.append("Discount [discountid=").append(discountid).append(", productId=").append(productId)
 				.append(", productname=").append(productname).append(", price=").append(price).append(", money=")
 				.append(money).append("]");
 		return builder.toString();

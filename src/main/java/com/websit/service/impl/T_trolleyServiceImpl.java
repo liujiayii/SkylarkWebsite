@@ -4,6 +4,7 @@ import com.websit.entity.T_product;
 import com.websit.entity.T_trolley;
 import com.websit.mapper.T_trolleyMapper;
 import com.websit.service.IT_trolleyService;
+import com.websit.until.specificationsuntil;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 
 import java.util.List;
@@ -31,10 +32,17 @@ public class T_trolleyServiceImpl extends ServiceImpl<T_trolleyMapper, T_trolley
 		
 	}
 	@Override
-	public int shppingnum(String product_id,String user_id) {
-		 System.out.println(product_id+user_id+"66666666666666666666666666666666666");
-		return T_trolleyMapper.shppingnum(product_id,user_id);
+	public boolean shppingnum(String product_id,String user_id,String getTrolley_specifications) {
+		List<T_trolley> T_trolley=T_trolleyMapper.shppingnum(product_id,user_id);
+		for(int i=0;i<T_trolley.size();i++) {
+			boolean fig=specificationsuntil.specification(T_trolley.get(i).getTrolley_specifications(),getTrolley_specifications);
+			if(!fig) {
+				return true;
+			}else
+				return false;
+		}
 		
+		return true;
 	}
 	@Override
 	public boolean updatemnum(int num,String product_id,String user_id) {
@@ -56,8 +64,8 @@ public class T_trolleyServiceImpl extends ServiceImpl<T_trolleyMapper, T_trolley
 		
 	}
 	@Override
-	public boolean updatemnum2(Integer num, Integer id,String user_id) {
-		if(T_trolleyMapper.updatemnum2(num, id,user_id)>0)
+	public boolean updatemnum2(Integer num, Integer id,String user_id,String T_trolley_id) {
+		if(T_trolleyMapper.updatemnum2(num, id,user_id,T_trolley_id)>0)
 		{
 			return true;
 		}

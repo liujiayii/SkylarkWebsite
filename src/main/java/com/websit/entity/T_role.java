@@ -39,7 +39,7 @@ public class T_role extends Model<T_role> {
     private Integer status;
     
     /**
-     * 权限标识
+     * 角色标识
      */
     private String role_key;
     

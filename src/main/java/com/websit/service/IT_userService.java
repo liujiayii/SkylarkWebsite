@@ -86,6 +86,7 @@ public interface IT_userService extends IService<T_user> {
 	public boolean updateUserVoById(UserUpdateVo user);
 
 	public List<Personal> selectT_postingByUserId(Integer id, Integer limit, Integer star);
+
 	
 
 }

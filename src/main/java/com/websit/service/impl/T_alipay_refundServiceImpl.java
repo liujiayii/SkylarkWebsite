@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 public class T_alipay_refundServiceImpl extends ServiceImpl<T_alipay_refundMapper, T_alipay_refund> implements IT_alipay_refundService {
   
 	  @Autowired
-	  private IT_alipay_refundService refundService;
+	  private T_alipay_refundMapper refundService;
 	  /**
 	   * 支付宝pc退款
 	   */

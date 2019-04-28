@@ -3,7 +3,7 @@
 <mapper namespace="com.websit.mapper.T_shoppingMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.websit.entity.T_shopping">
+    <resultMap id="BaseResultMap" type="com.websit.entity.T_freight">
         <id column="shoping_id" property="shoping_id" />
         <result column="youhuijine" property="youhuijine" />
         <result column="product_id" property="product_id" />
@@ -13,6 +13,7 @@
         <result column="danjia" property="danjia" />
         <result column="zongjia" property="zongjia" />
         <result column="state" property="state" />
+        <result column="shoping_specifications" property="shoping_specifications" />
     </resultMap>
 
 </mapper>

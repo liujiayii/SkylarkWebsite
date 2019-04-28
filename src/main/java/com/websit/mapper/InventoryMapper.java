@@ -48,5 +48,14 @@ public interface InventoryMapper {
 	 * @createDate 2019年3月23日 下午2:00
 	 */
 	public int deleteInventoryById(@Param("id") BigInteger id);
+	/**
+	 * description 根据规格id查询库存
+	 *
+	 * @author pangchong
+	 * @createDate 2019年3月23日 下午2:00
+	 */
+	public Integer listInventoryById(@Param("attribute")Long attribute,@Param("product_id")Long product_id);
+	
+	
 
 }

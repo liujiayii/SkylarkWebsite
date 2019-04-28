@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
   <meta name="renderer" content="webkit">
   <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1,user-scalable=no">
@@ -11,8 +9,6 @@
   <div th:replace="/mall/common  :: commonHeader(购物车)"></div>
   <style>
     .nav-big-box {
-      position: relative;
-      font-size: 0;
       display: none !important;
     }
   </style>
@@ -38,8 +34,10 @@
         <div class="sestion sestion3">
           <h1>全部商品</h1>
           <div class="flex spxx-title">
-            <div class="li"><span style="float:left">全选：<input type="checkbox" name="1" v-model="selectAll"
-                                                               class="checkbox" @click="checkboxShows()"></span>品名
+            <div class="li">
+              <span style="float:left">全选：
+                <input type="checkbox" name="1" v-model="selectAll" class="checkbox" @click="checkboxShows()">
+              </span>品名
             </div>
             <div class="li">规格</div>
             <div class="li">价格</div>
@@ -52,14 +50,17 @@
                                    @change="checkboxShow($event,indexs)">
               <img :src="goodsList.image" alt="">
               <p>{{goodsList.name}}</p></div>
-            <div class="li"><p>颜色：{{goodsList.color}}</p>
-              <p>规格：{{goodsList.specifications}}</p></div>
-            <div class="li">¥ {{goodsList.price}}</div>
-            <div class="li"><span @click="changeNum('-1',indexs,goodsList.id)" class="yuns">-</span><span
-                    style="width: 40px;" id="num" disabled="disabled">{{goodsList.number}}</span>
-              <span id="j" @click="changeNum('1',indexs,goodsList.id)" class="yuns">+</span>
+            <div class="li">
+              <p v-for="(item_s,key_s,index_s) in goodsList.trolley_specifications">
+                {{key_s.split('"')[1]}}:{{item_s.split('"')[1]}}</p>
             </div>
-            <div class="li">{{goodsList.price*goodsList.number}}</div>
+            <div class="li">¥ {{goodsList.trolley_price}}</div>
+            <div class="li">
+              <span @click="changeNum('-1',indexs,goodsList.id,goodsList.trolley_id)" class="yuns">-</span><span
+                    style="width: 40px;" id="num" disabled="disabled">{{goodsList.number}}</span>
+              <span id="j" @click="changeNum('1',indexs,goodsList.id,goodsList.trolley_id)" class="yuns">+</span>
+            </div>
+            <div class="li">{{goodsList.trolley_price*goodsList.number}}</div>
             <div class="li" @click="deleteDom(goodsList.trolley_id)">删除</div>
           </div>
         </div>
@@ -142,7 +143,7 @@
         for (let i = 0; i < this.goodsLists.length; i++) {
           if (this.goodsLists[i].select) {
             ids += this.goodsLists[i].trolley_id + ",";
-            this.prices += this.goodsLists[i].price * this.goodsLists[i].number;
+            this.prices += this.goodsLists[i].trolley_price * this.goodsLists[i].number;
           }
         }
         ids = ids.substring(0, ids.lastIndexOf(','));
@@ -172,8 +173,12 @@
           data: {user_id: window.sessionStorage.getItem("SkyUserId"), page: 0, limit: 100},
           dataType: "json",
           success: (res) => {
-            if (res.code == 1) {
+            if (res.code === 1) {
+              for (let i = 0; i < res.data.length; i++) {
+                res.data[i].trolley_specifications = JSON.parse(res.data[i].trolley_specifications)
+              }
               this.goodsLists = res.data;
+              //console.log(JSON.parse(this.goodsLists[0].trolley_specifications))
             } else {
               this.$Message.info(res.msg)
             }
@@ -181,15 +186,16 @@
         });
       },
       //改变购物车数量
-      changeNum(count, index, ids) {
+      changeNum(count, index, ids, T_trolley_id) {
         if (count == 1 || this.goodsLists[index].number > 1) {
           $.ajax({
             type: "post",
             url: "t_trolley/uptate",
             data: {
               user_id: window.sessionStorage.getItem("SkyUserId"),
-              num: this.goodsLists[index].number,
-              id: ids
+              num: this.goodsLists[index].number * 1 + count * 1,
+              id: ids,
+              T_trolley_id
             },
             dataType: "json",
             success: (res) => {
@@ -213,29 +219,15 @@
         }
         //trolleId = trolleId.substr(0,trolleId.Length - 1)
         trolleId = trolleId.substring(0, trolleId.lastIndexOf(","));
-        if (trolleId == "") {
+        if (trolleId === "") {
           this.$Message.info("至少选择一份商品，在进行购买");
         } else {
-          $.ajax({
-            type: "post",
-            url: "t_trolley/chakucun",
-            data: {trolley_id: trolleId},
-            dataType: "json",
-            success: (res) => {
-              if (res.code == 1) {
-                this.$Message.info(res.msg);
-                window.location.href = "/OrderOk?ids=" + trolleId;
-              } else {
-                this.$Message.info(res.msg)
-              }
-            }
-          });
+          window.location.href = "/OrderOk?ids=" + trolleId;
         }
       }
     },
     mounted() {
       this.getgoodsList()
-      //this.getInfo()
     }
   }
 </script>

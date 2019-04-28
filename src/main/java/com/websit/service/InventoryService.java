@@ -47,5 +47,11 @@ public interface InventoryService {
 	 * @createDate 2019年3月23日 下午2:00
 	 */
 	public int deleteInventoryById(@Param("id") BigInteger id);
+	/**根据规格id
+	 * 查询库存
+	 * @param attribute
+	 * @return
+	 */
+	public Integer listInventoryById(Long attribute,Long product_id);
 
 }

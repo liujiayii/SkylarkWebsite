@@ -54,7 +54,7 @@
         <div id="shdz">
           <span v-show="show">还没有地址请先添加地址</span>
           <div :class="{on: (index == indexs)}" @click="mapon(index,items.goods_id)" class="shdz1 ons" data-index="1"
-               v-for="(items,index) in mapList">
+               v-for="(items,index) in mapListarr">
             <div class="userinfo">
               <img src="/assets/image/mall/na.png" class="users-img"><span class="user-name">
 									{{items.goods_name}}</span><span class="user-tell">{{items.goods_tel}}</span>
@@ -81,14 +81,14 @@
         <div class="adddz">
           <a @click="newAddress" href="javascript:"> 添加新地址 </a>
         </div>
-        <div class="sestion sestion3">
+        <div class="sestion sestion3" v-if="listcar">
           <h1>商品信息</h1>
           <div class="flex spxx-title">
             <div class="li">品名</div>
             <div class="li">规格</div>
             <div class="li">价格</div>
             <div class="li">采购数量</div>
-            <div class="li">货款金额</div>
+            <div class="li">订单金额</div>
           </div>
           <div class="flex spxx-cont" v-for="(item,index) in goodscont">
             <div class="li">
@@ -96,25 +96,58 @@
               <p>{{item.productName}}</p>
             </div>
             <div class="li">
-              <p class="ligg">{{item.producttypename}}{{item.specifications}}</p>
+              <p class="listli" v-for="(item_s,key_s,index_s) in ggindexs">
+                <!--                      {{item_s}}-->
+                {{key_s.split('"')[1]}}:{{item_s.split('"')[1]}}
+              </p>
+<!--              this.ggindexs-->
+<!--              <p class="ligg">{{item.producttypename}}{{item.specifications}}</p>-->
             </div>
-            <div class="li">¥{{item.price}}</div>
+            <div class="li">¥{{moneygg}}</div>
             <div class="li" v-if="numshow">
-              <span @click="min(1,item.price)" class="yuns">-</span><span id="num">{{num}}</span><span id="j"
-                                                                                                       @click="add(1,item.price)"
-                                                                                                       class="yuns">+</span>
+              <span @click="min(1,moneygg)" class="yuns">-</span><span id="num">{{num}}</span><span id="j"
+                                                                                                    @click="add(1,moneygg)"
+                                                                                                    class="yuns">+</span>
             </div>
             <div class="li" v-else>
               <span>{{item.number}}</span>
             </div>
-            <div class="li" v-if="numshow">{{pricebig}}</div>
-            <div class="li" v-else>{{item.number*item.price}}</div>
+            <!--            <div class="li">{{moneygg*num}}</div>-->
+            <div class="li">{{moneygg*num}}</div>
+          </div>
+        </div>
+        <div class="sestion sestion3" v-else>
+          <h1>商品信息</h1>
+          <div class="flex spxx-title">
+            <div class="li">品名</div>
+            <div class="li">规格</div>
+            <div class="li">价格</div>
+            <div class="li">采购数量</div>
+            <div class="li">订单金额</div>
+          </div>
+          <div class="flex spxx-cont" v-for="(item,index) in goodscont">
+            <div class="li">
+              <img :src="item.image" alt="">
+              <p>{{item.name }}</p>
+            </div>
+            <div class="li">
+              <p v-for="(item_s,key_s,index_s) in item.trolley_specifications">
+                {{key_s.split('"')[1]}}:{{item_s.split('"')[1]}}
+              </p>
+              <!--              <p class="ligg">{{item.trolley_specifications}}</p>-->
+            </div>
+            <div class="li">¥{{item.trolley_price}}</div>
+            <div class="li">
+              {{item.number }}
+            </div>
+            <div class="li">{{item.trolley_price *item.number}}</div>
+
           </div>
         </div>
       </div>
       <div class="mallinput sestion">
         <h1>订单备注：</h1>
-        <i-input type="textarea"/>
+        <i-input type="textarea" v-model="bztest"/>
       </div>
       <div class=" pay sestion">
         <h1>支付方式：</h1>
@@ -174,15 +207,15 @@
           :styles="{ height: 'calc(100% - 55px)', overflow: 'auto',paddingBottom: '53px', position: 'static' }"
           @on-close="closeAddress"
   >
-    <i-form :model="formData">
+    <i-form ref="formData" :model="formData" :rules="ruleValidate">
       <Row :gutter="32">
         <i-col span="12">
-          <form-item label="收货人" label-position="top">
+          <form-item label="收货人" label-position="top" prop="goods_name">
             <i-input v-model="formData.goods_name"/>
           </form-item>
         </i-col>
         <i-col span="12">
-          <form-item label="手机号" label-position="top">
+          <form-item label="手机号" label-position="top" prop="goods_tel">
             <i-input v-model="formData.goods_tel"/>
           </form-item>
         </i-col>
@@ -190,15 +223,15 @@
       <form-item label-position="top">
         <al-cascader data-type="name" v-model="addressArr" level="2"/>
       </form-item>
-      <form-item label="详细地址" label-position="top">
+      <form-item label="详细地址" label-position="top" prop="goods_address">
         <i-input type="textarea" v-model="formData.goods_address" :rows="4"/>
       </form-item>
-      <form-item label="" label-position="top">
+      <form-item label-position="top">
         <Checkbox v-model="formData.goods_ster" true-value="1" false-value="2">是否设置为默认地址</Checkbox>
       </form-item>
     </i-form>
     <div class="demo-drawer-footer">
-      <i-button type="primary" @click="saveAddress">保存</i-button>
+      <i-button type="primary" @click="saveAddress('formData')">保存</i-button>
     </div>
   </Drawer>
 </div>
@@ -208,6 +241,8 @@
   const mixin = {
     data() {
       return {
+        mapListarr: [],
+        bztest: "",
         checkboxShows: false,
         num: this.getHrefParam("num"),
         show: false,
@@ -222,6 +257,7 @@
         freights: null,
         discounts: null,
         numshow: true,
+        listcar: true,
         orders: {
           id: "",
           order_number: this.getHrefParam("num"),
@@ -231,7 +267,35 @@
         qrcode: false,
         editAddress: false,
         formData: {},
-        addressArr: []
+        addressArr: [],
+        Specifications: [],
+        ggindexs: {},
+        moneygg: null,
+        kccount: null,
+        ruleValidate: {
+          goods_tel: [
+            {
+              validator: (rule, value, callback) => {
+                if (!value) {
+                  return callback(new Error('请填写手机号'));
+                } else if (!/^[1][3,4,5,6,7,8,9][0-9]{9}$/.test(value)) {
+                  callback('手机号格式不正确');
+                } else {
+                  callback();
+                }
+              }, trigger: 'blur'
+            }
+          ],
+          goods_name: [
+            {required: true, message: '请填写姓名', trigger: 'blur'}
+          ],
+          addressArr: [
+            {required: true, message: '请选择位置信息', trigger: 'change'}
+          ],
+          goods_address: [
+            {required: true, message: '请填写详细地址', trigger: 'blur'}
+          ],
+        }
       }
     },
     methods: {
@@ -262,14 +326,20 @@
             order_mode: this.orders.order_mode,
             user_id: sessionStorage.getItem("SkyUserId")
           } : {
+            trolley_id: "",
             id: this.orders.id,
             order_number: this.orders.order_number,
             order_mode: this.orders.order_mode,
-            user_id: sessionStorage.getItem("SkyUserId")
+            specifications: JSON.stringify(this.ggindexs),
+            user_id: sessionStorage.getItem("SkyUserId"),
+            remarks: this.bztest
           },
-          contentType: 'application/json',
+          // contentType: 'application/json',
           dataType: "json",
           success: (res) => {
+            console.log("tes" + 666555)
+            console.log(res)
+
             if (res.code == -1) {
               this.$Message.info(res.msg);
               return false
@@ -298,30 +368,108 @@
           }
         });
       },
+
+
+      //得到商品详情
+      getggmoneys() {
+       // alert(this.getHrefParam("gg"))
+        console.log(this.getHrefParam("gg"))
+        $.ajax({
+          type: "post",
+          url: "selectAllspecificationValue",
+          data: {
+            product_id: this.getHrefParam("id"),
+          },
+          dataType: "json",
+          success: (res) => {
+            this.Specifications = res.data[0]
+            console.log(this.Specifications)
+            console.log(12333)
+            console.log(res.data[0])
+            console.log(this.ggindexs)
+            let ggnum = this.getHrefParam("gg").split("")
+            console.log(res.data) //0210
+            let keyindex=0
+            for (let key in res.data[0]) {
+              this.ggindexs[key]=res.data[0][key][ggnum[keyindex]]
+              keyindex+=1
+             // let idnum=ggnum[keyindex]
+             // console.log(res.data[0][idnum])
+             // console.log(999999)
+              // for (let s = 0; s < ggnum.length; s++) {
+              //  // if(key==)
+              //   //ggnum.s
+              //   //for(let k=0;k<)
+              //   this.ggindexs[key] = res.data[0][key][ggnum[s]]
+              //   console.log(res.data[0][key][ggnum[s]])
+              // }
+             // console.log(key.index)
+              //console.log(res.data[0][key])
+            }
+            console.log(87)
+            console.log(this.ggindexs)
+            $.ajax({
+              type: "post",
+              url: "selectAllspecifications",
+              data: {
+                product_id: this.getHrefParam("id"),
+                specifications: JSON.stringify(this.ggindexs)
+              },
+              dataType: "json",
+              success: (res) => {
+                console.log(res.data.price)
+                this.moneygg = res.data.price;
+                this.getgoodscont();
+                console.log(123321)
+                this.kccount = res.count
+                console.log(res.count)
+              }
+            });
+          }
+        });
+      },
       //得到产品
       getgoodscont() {
+        console.log(8877)
+        console.log("----------------" + this.moneygg)
         if (this.getHrefParam("id") == "") {
-          this.numshow = !this.numshow
+          //  alert(this.getHrefParam("id"))
+          this.numshow = false
+          this.listcar = false
           let loc = window.location.href;
           var loclist = loc.split("=");
           $.ajax({
             type: "post",
             url: "t_trolley/lt_trolleylst",
-            data: {user_id: window.sessionStorage.getItem("SkyUserId"), page: 0, limit: 100},
+            data: {
+              user_id: window.sessionStorage.getItem("SkyUserId"),
+              page: 0, limit: 100
+            },
             dataType: "json",
             success: (res) => {
+              console.log(res.data)
               if (res.code == 1) {
-                for (let i = 0; i < loclist[1].split(",").length; i++) {
-                  for (let n = 0; n < res.data.length; n++) {
-                    if (loclist[1].split(",")[i] == res.data[n].trolley_id) {
-                      this.goodscont.push(res.data[n])
-                      for (let j = 0; j < this.goodscont.length; j++) {
-                        this.goodscont[j].productName = res.data[j].name
-                      }
-                      this.pricebig += res.data[n].number * res.data[n].price
+                //alert(loclist[1].split(",")[1])
+                for (let j = 0; j < loclist[1].split(",").length; j++) {
+                  for (let i = 0; i < res.data.length; i++) {
+                    //alert(res.data[i].trolley_id)
+                    if (res.data[i].trolley_id == loclist[1].split(",")[j]) {
+                      // alert(res.data[i].trolley_id)
+                      // alert(res.data[i].trolley_id==loclist[1].split(",")[j])
+                      res.data[i].trolley_specifications = JSON.parse(res.data[i].trolley_specifications)
+                      // console.log(res.data[i])
+                      this.goodscont.push(res.data[i])
+                      this.pricebig += res.data[i].number * res.data[i].trolley_price
                     }
                   }
+                  // res.data[i].trolley_specifications = JSON.parse(res.data[i].trolley_specifications)
+
+
                 }
+                console.log(this.goodscont)
+                console.log(12366699988852211111)
+                //this.goodscont = res.data;
+                console.log(this.goodscont)
                 this.getExpress()
                 //this.goodscont =res.data;
               } else {
@@ -330,6 +478,7 @@
             }
           });
         } else {
+
           $.ajax({
             type: "post",
             url: "/listProductByProductId",
@@ -337,17 +486,21 @@
             dataType: "json",
             success: (res) => {
               this.goodscont = res.data
-              this.pricebig = this.getHrefParam("num") * res.data[0].price
+              this.pricebig = this.getHrefParam("num") * this.moneygg
               this.orders.id = res.data[0].productId
+              console.log(123)
+              console.log(this.moneygg)
               $.ajax({
                 type: "post",
                 url: "/t_order/queryh",
                 data: {
                   id: res.data[0].productId,
-                  zongjia: this.getHrefParam("num") * res.data[0].price
+                  zongjia: this.pricebig
                 },
                 dataType: "json",
                 success: (res) => {
+                  console.log(1)
+                  console.log(this.pricebig)
                   this.discounts = res.count
                   this.freights = res.data
                 }
@@ -387,30 +540,44 @@
         arr.push(item.goods_xian)
         this.addressArr = arr
         this.newAddress()
+        return
       },
       newAddress() {
         this.editAddress = true
       },
-      saveAddress() {
+      //添加地址													
+      saveAddress(form) {
         this.formData.user_id = this.userInfo.id
         this.formData.goods_sheng = this.addressArr[0]
         this.formData.goods_shi = this.addressArr[1]
         this.formData.goods_xian = this.addressArr[2]
-        $.ajax({
-          type: "post",
-          url: this.formData.goods_id ? "/t_goods/updateGoods" : "/t_goods/addGoods",
-          data: JSON.stringify(this.formData),
-          contentType: 'application/json',
-          dataType: "json",
-          success: (res) => {
-            if (res.code === 1) {
-              this.editAddress = false
-              this.$Message.success(res.msg);
-              this.closeAddress()
-              this.getselectGoods()
-            }
+        if( !this.formData.goods_ster){
+        	this.formData.goods_ster='2'
+        }
+        console.log(this.formData);
+        this.$refs[form].validate((valid) => {
+          if (valid) {
+            $.ajax({
+              type: "post",
+              url: this.formData.goods_id ? "/t_goods/updateGoods" : "/t_goods/addGoods",
+              data: JSON.stringify(this.formData),
+              contentType: 'application/json',
+              dataType: "json",
+              success: (res) => {
+                //alert(123)
+                if (res.code === 1) {
+                  this.editAddress = false
+                  this.$Message.success(res.msg);
+                  this.closeAddress()
+                  this.getselectGoods()
+                }
+              }
+            });
+          } else {
+            this.$Message.error('Fail!');
           }
-        });
+
+        })
       },
       //删除地址
       dele(goods_id) {
@@ -447,8 +614,27 @@
               this.show = !this.show
             }
             if (res.code == 1) {
-              this.orders.order_mode = res.data[0].goods_id
+              // this.orders.order_mode = res.data[0].goods_id
               this.mapList = res.data
+              console.log(9998)
+              console.log(this.mapList)
+
+              this.mapListarr = []
+              this.indexs = 0
+              for (let j = 0; j < this.mapList.length; j++) {
+                if (this.mapList[j].goods_ster == 1) {
+                  //alert(123333)
+                  this.mapListarr.push(this.mapList[j])
+                }
+              }
+              for (let s = 0; s < this.mapList.length; s++) {
+                if (this.mapList[s].goods_ster == 2) {
+                  this.mapListarr.push(this.mapList[s])
+                }
+              }
+              console.log("this.mapList" + 1234567896)
+              console.log(this.mapListarr)
+              this.orders.order_mode = this.mapListarr[0].goods_id
             }
           }
         });
@@ -465,8 +651,16 @@
         });
       },
       add(nums, price) {
-        this.num = this.num * 1 + 1
+        //alert(price)
+        if (this.num >= this.kccount) {
+          this.num = this.kccount
+          this.$Message.info('库存不足');
+        } else {
+          this.num = this.num * 1 + 1
+        }
+
         this.pricebig = price * this.num
+        // alert(this.pricebig)
         this.orders.order_number = this.num
         $.ajax({
           type: "post",
@@ -504,8 +698,14 @@
     },
     mounted() {
       this.mapon(0)
-      this.getgoodscont()
+      if (this.getHrefParam("id") !== "") {
+        this.getggmoneys()
+      }
+      //
       this.getselectGoods()
+      this.getgoodscont()
+      //this.getggmoney()
+
     }
   }
 </script>

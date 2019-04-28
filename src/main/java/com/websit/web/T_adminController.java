@@ -76,7 +76,7 @@ public class T_adminController {
 				if (ts == null) {
 					str = JsonUtil.getResponseJson(-1, "账号不存在", null, null);
 				} else {
-					str = JsonUtil.getResponseJson(1, "密码错误", null, null);
+					str = JsonUtil.getResponseJson(-1, "密码错误", null, null);
 				}
 
 			}

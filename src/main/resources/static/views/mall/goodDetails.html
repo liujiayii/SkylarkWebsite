@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -9,6 +10,38 @@
   <style>
     .nav-span {
       display: none
+    }
+
+    .gg {
+      padding: 10PX 6PX 0 6px;
+    }
+
+    .gg > p {
+      float: left;
+      min-width: 70px;
+      text-align: left;
+      color: #6C6C6C;
+    }
+
+    .listgg {
+      display: inline-block;
+      border: 1px solid #c3c0c0;
+      padding: 0 10px;
+      height:25px;
+      line-height:25px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      cursor: pointer
+    }
+    .goods .contArea dl{padding:12px 6px;}
+    .goods .contArea dl dd .calculate a{line-height: 8px;height:12px}
+.goods .contArea dl dd .number{height:30px;    padding: 2px 10px;}
+    .gglist {
+      width: calc(100% - 80px)
+    }
+
+    .listgg.actives {
+      border: 1px solid #ff0000
     }
   </style>
 </head>
@@ -34,7 +67,7 @@
           <p class="name">{{goods.productName}}</p>
           <p class="describion">{{goods.describion}}</p>
           <div class="price">
-            <p>专柜价：<span>￥{{goods.price}}</span></p>
+            <p>专柜价：<span>￥{{ggmony.price}}</span></p>
           </div>
           <div class="goodsForm">
             <div class="titleArea">
@@ -43,20 +76,14 @@
               </ul>
             </div>
             <div class="contArea">
-              <dl>
-                <dt>规&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格：</dt>
-                <dd>
-                  <ul class="sizeUl">
-                    <li>{{goods.specifications}}</li>
-                  </ul>
-                </dd>
-              </dl>
-              <dl v-if="goods.color">
-                <dt>颜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;色：</dt>
-                <dd class="imgDd">
-                  <span :title="goods.color">{{goods.color}}</span>
-                </dd>
-              </dl>
+              <div class="gg flex" v-for="(item,key,index) in Specifications">
+                <p>{{key.split('"')[1]}}：</p>
+                <div class="gglist">
+                  <span class="listgg" v-for="(items ,indexss) in Specifications[key]"
+                        :class="{actives: (ggindexs[key] == items)}"
+                        @click="activelist(key,indexss,items)">{{items.split('"')[1]}}</span>
+                </div>
+              </div>
               <dl>
                 <dt>数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量：</dt>
                 <dd>
@@ -66,7 +93,7 @@
                     <a href="javascript:;" @click="min(0)">-</a>
                   </div>
                   <div class="unit">件</div>
-                  <div class="unit">库存{{inventory}}件</div>
+                  <div class="unit">库存{{kc}}件</div>
                 </dd>
               </dl>
               <dl>
@@ -136,6 +163,7 @@
     data() {
       return {
         indexs: 0,
+        ggindexs: {},
         type: 'detail',
         classData: [],
         classDatas: [],
@@ -143,14 +171,34 @@
         countSum: 0,
         num: [1],
         inventory: 0,
-        Clases: true
+        Clases: true,
+        actives: 0,
+        ggmony: null,
+        kc: null,
+        ggmonyss: [],
+        ggmonycss: {},
+        Specifications: []
       }
     },
     methods: {
       orderOk(productId) {
         if (this.userInfo.name != null) {
-          let nums = this.num[0];
-          window.open("/OrderOk?id=" + productId + "&num=" + nums);
+          let nums = this.num[0];//数量
+          let inventory = this.kc;//库存
+          let ggs = JSON.stringify(this.ggmonycss).split("\\").join();
+          let ggss = ggs.split("{").join();
+          let ggsss = ggss.split("}").join();
+          let ggc = ggsss.replace(",", "");
+          let ggcc = ggc.replace(/[^0-9]+/g, '');
+		if(this.kc==undefined){
+	 			this.$Message.info("暂无库存");	
+	 			 return false
+			}
+		  if(nums > inventory){
+			  this.$Message.info("库存不足，请对应减少购买数量,在购买！");
+		  }else if(nums <= inventory){
+			  window.open("/OrderOk?id=" + productId + "&num=" + nums + "&gg=" + ggcc);
+		  }
         } else {
           this.$Message.info('请先登录');
           setTimeout("window.location.href = '/toLogin?type=login'", 1500)
@@ -159,24 +207,30 @@
       //加入购物车
       orderCart(productId) {
         if (this.userInfo.name != null) {
-          //window.location.href = "/ShoppingCart?id=" + productId + "&num=" + nums;
-          $.ajax({
-            type: "post",
-            url: "/t_trolley/addt_trolley",
-            dataType: "json",
-            data: {
-              product_id: productId,
-              user_id: this.userInfo.id,
-              number: this.num[0]
-            },
-            success: (res) => {
-              if (res.code == 1) {
-                this.$Message.info(res.msg)
-              } else {
-                this.$Message.info(res.msg)
-              }
-            }
-          });
+        	let nums = this.num[0];//数量
+            let inventory = this.kc;//库存
+        	if(nums > inventory){
+	  			  this.$Message.info("库存不足，请对应减少购买数量,在购买！");
+	  		}else if(nums <= inventory){
+	  			$.ajax({
+	  	            type: "post",
+	  	            url: "/t_trolley/addt_trolley",
+	  	            dataType: "json",
+	  	            data: {
+	  	              product_id: productId,
+	  	              user_id: this.userInfo.id,
+	  	              number: this.num[0],
+	  	              trolley_specifications: JSON.stringify(this.ggindexs)
+	  	            },
+	  	            success: (res) => {
+	  	              if (res.code == 1) {
+	  	                this.$Message.info(res.msg)
+	  	              } else {
+	  	                this.$Message.info(res.msg)
+	  	              }
+	  	            }
+	  	        });
+	  		}
         } else {
           this.$Message.info('请先登录');
           setTimeout("window.location.href = '/toLogin?type=login?type=login'", 1500)
@@ -194,7 +248,6 @@
           var xnum2 = this.num - 1
           Vue.set(this.num, nums, xnum2);
         }
-
       },
       getClass() {
         $.ajax({
@@ -208,6 +261,46 @@
           }
         });
       },
+      //查询所有的规格属性
+      getSpecifications() {
+        $.ajax({
+          type: "post",
+          url: "/selectAllspecificationValue",
+          dataType: "json",
+          data: {
+            product_id: this.getHrefParam("id"),
+          },
+          success: (res) => {
+            this.Specifications = res.data[0]
+            for (let key in res.data[0]) {
+              this.activelist(key, 0, res.data[0][key][0])
+            }
+          }
+        });
+      },
+      //根据id查询商品价格库存
+      getGoodsmoney(ggname) {
+        if (Object.keys(JSON.parse(ggname)).length === Object.keys(this.Specifications).length) {
+          $.ajax({
+            type: "post",
+            url: "/selectAllspecifications",
+            dataType: "json",
+            data: {
+              product_id: this.getHrefParam("id"),
+              specifications: ggname
+            },
+            success: (res) => {
+              this.ggmony = res.data
+              this.kc = res.count             
+              if(this.kc==undefined){
+            	  this.$Message.info('暂无库存');
+              }
+            }
+          });
+        } else {
+          console.log(ggname)
+        }
+      },
       //根据id查询商品信息
       getGoods() {
         $.ajax({
@@ -217,6 +310,7 @@
           data: {productId: this.getHrefParam("id")},
           success: (res) => {
             if (res.code == 1) {
+            	console.log(res.data)
               this.goodsData = res.data
             } else {
               this.$Message.info(res.msg)
@@ -244,32 +338,24 @@
           }
         });
       },
-      //库存
-      getInventory() {
-        $.ajax({
-          type: "post",
-          url: "/t_order/qerkuc",
-          dataType: "json",
-          data: {id: this.getHrefParam("id")},
-          success: (res) => {
-            if (res.code == 1) {
-              this.inventory = res.data
-            } else {
-              this.$Message.info(res.msg)
-            }
-          }
-        });
-      },
       /*切换评论商品详情*/
       toggleType(type) {
         this.type = type
+      },
+      activelist(key, index, val) {
+        this.ggindexs[key] = val
+        this.ggmonycss[key] = index
+        console.log( JSON.stringify(this.ggindexs).replace(/"([^"]*)"/g, ''))
+
+        this.getGoodsmoney(JSON.stringify(this.ggindexs))
       }
     },
     mounted() {
       this.getClases()
       this.getGoods()
       this.getClass()
-      this.getInventory()
+      this.getSpecifications()
+      this.getGoodsmoney()
     }
   }
 </script>

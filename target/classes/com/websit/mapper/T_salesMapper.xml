@@ -23,7 +23,7 @@
     </select>
     
         <select id="seleth_list"  resultType="com.websit.entityvo.shopinglist">
-     SELECT             s.*,t.*,
+SELECT             s.*,t.*,
                    
                     pt. name producttypename,
                     pt. id producttypeid, 
@@ -47,21 +47,28 @@
                     join t_shopping  t on t.product_id=p.id
                     JOIN  t_order    r  on r.order_no=t.order_id
                     JOIN  t_sales   s  on s.order_id=r.order_id
-                    where s.stele=#{stale} and s.user_id=#{user_id}
-                    and sales_no=#{no}
+                    
+                    where 
+                      s.order_id=#{no}
                     
   
     </select>
     
             <select id="order_listr"  resultType="com.websit.entityvo.order_listr">
-     SELECT             *
-
-                 
-               
-                FROM
-         
-                     t_sales
-                    where stele=#{stale} and  user_id=#{user_id}
+      SELECT * FROM `t_sales`  t  join   t_user  US  on US.id=t.user_id  where 1=1
+      <if test=" stale != null and stale != ''">
+	
+		and	 stele=#{stale} 
+			
+	</if>
+	  <if test=" user_id != null and user_id != ''">
+	
+		and  user_id=#{user_id}
+			
+	</if>
+                    
+                   
+                    
                     
   
     </select>

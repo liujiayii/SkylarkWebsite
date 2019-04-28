@@ -3,6 +3,7 @@ package com.websit.service.impl;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -209,9 +210,50 @@ public class T_productServiceImpl extends ServiceImpl<T_productMapper, T_product
 		return productMapper.listProductByClassTypeId(classification_id, page, limit);
 	}
 	@Override
-	public Integer insertSpecificationService(T_product product) {
+	public Integer insertSpecificationService(ProductVo product) {
 		// TODO Auto-generated method stub
 		return productMapper.insertSpecificationService(product);
+	}
+	/**
+	 * @description 根据商品id查询商品详情(后台)
+	 * @param
+	 * @author pangchong
+	 * @createDate 2019年3月21日
+	 */
+	@Override
+	public List<ProductDetails> listProductByProductIds(BigInteger productId) {
+		
+		return productMapper.listProductByProductIds(productId);
+	}
+	/**
+	 * 根据id获取类型id
+	 */
+	@Override
+	public Long selecProductTypeIdVotById(Long product_id) {
+		
+		return productMapper.selecProductTypeIdVotById(product_id);
+	}
+	/**
+	 * @description 首页模糊查询(后台)
+	 * @param
+	 * @author pangchong
+	 * @createDate 2019年3月24日
+	 */
+	@Override
+	public List<ProductVo> listProductByProductTypeIds(String productName, Integer page, Integer limit) {
+	
+		return productMapper.listProductByProductTypeIds(productName, page, limit);
+	}
+	/**
+	 * 查询商品数量(全部上下架)
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	@Override
+	public List<ProductVo> findproductCountAll(String productName, Integer page, Integer limit) {
+		
+		return productMapper.findproductCountAll(productName, page, limit);
 	}
 
 

@@ -1,14 +1,16 @@
 package com.websit.service.impl;
 
+import java.math.BigInteger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.websit.entity.T_discount_product;
 import com.websit.entityvo.Discount;
 import com.websit.entityvo.DiscountVo;
 import com.websit.mapper.T_discount_productMapper;
 import com.websit.service.IT_discount_productService;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -51,9 +53,20 @@ public class T_discount_productServiceImpl extends ServiceImpl<T_discount_produc
 	 * @createDate 2019年3月27日
 	 */
 	@Override
-	public Discount selectDiscountListByProductId(Long productid) {
+	public Discount selectDiscountListByProductId(BigInteger productId) {
 		
-		return discount_productMapper.selectDiscountListByProductId(productid);
+		return discount_productMapper.selectDiscountListByProductId(productId);
+	}
+	/**
+	 * 修改满减优惠
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	@Override
+	public int updateDiscount(Discount discount) {
+	
+		return discount_productMapper.updateDiscount(discount);
 	}
 
 }

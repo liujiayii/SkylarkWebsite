@@ -32,7 +32,7 @@ public class Inventory extends Model<Inventory> {
 	/**
 	 * 商品id
 	 */
-	private Long products_id;
+	private Long product_id;
 	/**
 	 * 商品名称
 	 */
@@ -61,11 +61,11 @@ public class Inventory extends Model<Inventory> {
 	public void setNumber(int number) {
 		this.number = number;
 	}
-	public Long getProducts_id() {
-		return products_id;
+	public Long getProduct_id() {
+		return product_id;
 	}
-	public void setProducts_id(Long products_id) {
-		this.products_id = products_id;
+	public void setProduct_id(Long product_id) {
+		this.product_id = product_id;
 	}
 	public String getProductName() {
 		return productName;
@@ -94,17 +94,16 @@ public class Inventory extends Model<Inventory> {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Inventory [id=").append(id).append(", number=").append(number).append(", products_id=")
-				.append(products_id).append(", productName=").append(productName).append(", create_time=")
+		builder.append("Inventory [id=").append(id).append(", number=").append(number).append(", product_id=")
+				.append(product_id).append(", productName=").append(productName).append(", create_time=")
 				.append(create_time).append(", attribute=").append(attribute).append(", specificationName=")
 				.append(specificationName).append("]");
 		return builder.toString();
 	}
 	@Override
 	protected Serializable pkVal() {
-		
+
 		return this.id;
 	}
-	
 	
 }

@@ -67,7 +67,7 @@ public class T_expressServiceImpl extends ServiceImpl<T_expressMapper, T_express
 				
 				if (status == erc.getIndex()) {
 					
-					return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, erc.getName(), null, null);
+					return JsonUtil.getResponseJson(status, erc.getName(), null, null);
 				}
 			}
 		}

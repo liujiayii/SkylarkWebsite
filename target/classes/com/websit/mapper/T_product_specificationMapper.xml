@@ -19,7 +19,18 @@
 		resultType="com.websit.entity.T_product_specification"
 		parameterType="com.websit.entity.T_product_specification">
 
-		select  *  from t_product_specification where specificationName=#{specificationName} and product_id=#{product_id}
+		select 
+		product_id,
+		specificationName,
+		cost_price,
+		discount_price,
+		price,
+		t_spectId
+		from 
+		t_product_specification 
+		where 
+		specificationName=#{specificationName} 
+		and product_id=#{product_id}
 	</select>
 		<!-- 查询商品的价格 -->
 	<select id="selectlstspecification" resultType="com.websit.entity.T_product_specification">

@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "spring.servlet.multipart.enabled",
-  "type": "java.lang.String",
-  "description": "A description for 'spring.servlet.multipart.enabled'"
-}]}
+{"properties": [
+  {
+    "name": "spring.servlet.multipart.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.servlet.multipart.enabled'"
+  },
+  {
+    "name": "tomcat.util.http.parser.HttpParser.requestTargetAllow",
+    "type": "java.lang.String",
+    "description": "A description for 'tomcat.util.http.parser.HttpParser.requestTargetAllow'"
+  }
+]}

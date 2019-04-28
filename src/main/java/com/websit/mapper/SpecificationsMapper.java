@@ -9,13 +9,13 @@ import com.websit.entityvo.SpecificationsVo;
 
 public interface SpecificationsMapper {
 	/**
-	 * @description 根据规格id查询当前规格及每个规格下所有规格选项
+	 * @description 根据商品id查询当前规格及每个规格下所有规格选项
 	 * @param specificationsId
 	 * @return 规格及每个规格下所有规格选项
 	 * @author pangchong
 	 * @createDate 2019年4月10日
 	 */
-	public List<SpecificationsVo> listSpecificationsBySpecificationsId(@Param("specificationsId") Long specificationsId);
+	public List<SpecificationsVo> listSpecificationsBySpecificationsId(@Param("product") Long product);
 	/**
 	 * @description 根据商品类型id查询规格
 	 * @param producttypeid

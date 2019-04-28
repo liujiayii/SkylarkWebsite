@@ -1,5 +1,7 @@
 package com.websit.mapper;
 
+import com.websit.entity.Inventory;
+import com.websit.entity.T_inventory;
 import com.websit.entity.T_order;
 import com.websit.entity.T_product;
 import com.websit.entityvo.T_orderVo;
@@ -29,7 +31,7 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	 * 查询库存
 	 * @return
 	 */
-	int   Queryinginventory(String  order_product_id);
+	int   Queryinginventory(@Param ("order_product_id")String  order_product_id,@Param ("id")Long id);
 	/**
 	 * <p>
 	 * 查询商品状态
@@ -45,7 +47,7 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	/**
 	 * 查询订单列表
 	 */
-	ArrayList<order_list> order_list(@Param("user_id")String user_id,@Param("order_state")String order_state,RowBounds RowBounds,@Param("id")String id);
+	List<order_list> order_list(@Param("user_id")String user_id,@Param("order_state")String order_state,RowBounds RowBounds,@Param("id")String id);
 	/**
 	 * 商品订单
 	 */
@@ -70,7 +72,7 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	 * @param jiage
 	 * @return
 	 */
-	public int updatenumbergoumai(@Param("number")Integer number, @Param("product_id")String product_id);
+	public int updatenumbergoumai(@Param("number")Integer number, @Param("product_id")String product_id,@Param("id")Long id);
 	/**
 	 * @Title: updateState
 	 * @description 修改是否评价状态
@@ -123,6 +125,19 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	 * @return
 	 */
 	ArrayList<order_list> order_list2(@Param("user_id")String user_id,RowBounds RowBounds);
+	/**
+	 *  收货时间
+	 * @return
+	 */
+	public int order_Receiving(@Param("order_id")String order_id,@Param("order_state")String order_state);
+	/**
+	 *   发货时间
+	 * @return
+	 */
+	public int order_Delivery(@Param("order_id")String order_id,@Param("order_state")String order_state);
+	/**
+	 *  支付时间
+	 */
 
-
+	public int order_paytime(@Param("order_id")String order_id,@Param("order_state")String order_state);
 }

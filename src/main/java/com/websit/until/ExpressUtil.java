@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import com.websit.constant.ReturnCode;
 
 /**
- * 快递信息查询（放弃合作）
+ * 快递信息查询
  *
  * @ClassName: ExpressUtil
 
@@ -27,6 +27,7 @@ public class ExpressUtil {
 	private static final String HIGHAPI_KUAIDI_URL = "http://highapi.kuaidi.com/openapi-querycountordernumber.html?";
 	/** highapiKuaidi身份授权 Key */
 	private static final String HIGHAPI_KUAIDI_KEY = "bc98101ecb03bcd0ecf73c08c7ec7d76";
+	
 	/**
 	 * 以下为阿里云快递物流查询常量
 	 */
@@ -43,6 +44,17 @@ public class ExpressUtil {
 	/** 阿里云快递查询AppSecret */
 	private static final String APPSECRET = "bf09037ab21384313824e8d4d3e6efce";
 	
+	/**
+	 * 阿里云快递物流查询接口：通过快递单号查询快递信息
+	 *
+	 * @Title: fegine
+	 * @description 
+	 * @param map
+	 * @return  
+	 * String    
+	 * @author lujinpeng
+	 * @createDate 2019年4月25日-上午10:08:03
+	 */
 	public static String fegine(Map<String, String> map) {
 		
 		Map<String, String> headers = new HashMap<String, String>();
@@ -61,12 +73,8 @@ public class ExpressUtil {
         return jsonStr;
 	}
 	
-	
-	
-	
-	
 	/**
-	 * highapiKuaidi通过快递单号查询快递信息
+	 * highapiKuaidi通过快递单号查询快递信息（放弃合作）
 	 *
 	 * @Title: highapiKuaidi
 	 * @description 
@@ -95,18 +103,6 @@ public class ExpressUtil {
 		
 		return re.getBody();
 	}
-	
-	
-	
-	/** 测试 */
-	public static void main(String[] args) {
-		//圆通804977008350761269
-		
-		Map<String, String> map = new HashMap<> ();
-		map.put("nu", "804977008350761269");
-		System.out.println(ExpressUtil.highapiKuaidi(map));
-	}
-	
 	
 	
 }

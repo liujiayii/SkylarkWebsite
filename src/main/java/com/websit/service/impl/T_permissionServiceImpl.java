@@ -113,6 +113,13 @@ public class T_permissionServiceImpl extends ServiceImpl<T_permissionMapper, T_p
 		return permissionMapper.deletePermission(id);
 	}
 
-	
+	/**
+	 * 查询权限树状结构
+	 */
+	/*@Override
+	public int selectPermission() {
+		
+		return permissionMapper.deletePermission();
+	}*/
 	
 }

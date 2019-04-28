@@ -67,4 +67,17 @@ public interface IT_permissionService extends IService<T_permission> {
 	 */
 	public int deletePermission(Long id); 
 	
+	/**
+	 * 查询权限
+	 *
+	 * @Title: selectPermission
+	 * @description 
+	 * @return  
+	 * int    
+	 * @author lujinpeng
+	 * @createDate 2019年4月23日-上午10:10:48
+	 */
+	//public int selectPermission();
+	
+	
 }

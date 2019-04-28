@@ -39,21 +39,18 @@
 		insert into
 		 t_discount_product(product_id,discount_id)
 		values
-		(#{productid},#{discountid})
+		(#{productid},#{discountId})
 	</insert>
 	
 	<!-- 修改商品专区 -->
-	<update id="updateZone" parameterType="com.websit.entity.Zone">
-		update  t_zone
+	<update id="updateDiscount" parameterType="com.websit.entityvo.Discount">
+		update  t_discount
 		<set>
-			<if test="name != null and name != ''">
-				name = #{name}
+			<if test="price != null and price != ''">
+				price = #{price}
 			</if>
-			<if test="image != null and image != ''">
-				image = #{image}
-			</if>
-			<if test="create_time != null and create_time != ''">
-				create_time = #{create_time}
+			<if test="money != null and money != ''">
+				money = #{money}
 			</if>
 		</set>
 		where id= #{id}
@@ -72,12 +69,12 @@
                  td.price price,
                   td.money money,
                 tdp.discount_id discountid,
-                  tdp.product_id productid
+                  tdp.product_id productId
                 FROM
                  t_discount td,
                  t_discount_product tdp
          where
                  tdp.discount_id = td.id
-                and  tdp.product_id = #{productid}
+                and  tdp.product_id = #{productId}
     </select>
 </mapper>

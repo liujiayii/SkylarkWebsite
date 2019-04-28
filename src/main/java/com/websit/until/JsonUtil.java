@@ -9,6 +9,7 @@ import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class JsonUtil {
 			count = 0;
 		}
 		if (obj == null) {
-			obj = new Object();
+			obj = new ArrayList<>();
 		}
 		map.put("data", obj);
 		String json = JSONObject.toJSONString(map);
