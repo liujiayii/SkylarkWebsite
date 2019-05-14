@@ -130,9 +130,19 @@ public class T_order extends Model<T_order> {
                *        支付时间
      */
     private Date order_paytime;
+   /**
+    * 应支付金额
+    */
+    private  Double  order_payable;
+    public Double getOrder_payable() {
+	return order_payable;
+}
 
+public void setOrder_payable(Double order_payable) {
+	this.order_payable = order_payable;
+}
 
-    public Date getOrder_Receiving() {
+	public Date getOrder_Receiving() {
 		return order_Receiving;
 	}
 
@@ -332,6 +342,6 @@ public class T_order extends Model<T_order> {
 				+ goods_name + ", goods_tel=" + goods_tel + ", goods_Province=" + goods_Province + ", goods_city="
 				+ goods_city + ", goods_CountyArea=" + goods_CountyArea + ", goods_address=" + goods_address
 				+ ", order_Receiving=" + order_Receiving + ", order_Delivery=" + order_Delivery + ", order_paytime="
-				+ order_paytime + "]";
+				+ order_paytime + ", order_payable=" + order_payable + "]";
 	}
 }

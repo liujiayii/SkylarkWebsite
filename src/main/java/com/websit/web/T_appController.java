@@ -46,11 +46,20 @@ public class T_appController {
 		map3.put("app_type", app.getApp_type());
 		List<T_app> records =appService.selectByMap(map3);
 		boolean fig = false;
-		boolean fig1 = UpdateFile.deleatFile(records.get(0).getApp_url());
-		System.out.println(fig1+"删除结果");
 		MultipartHttpServletRequest multipartRequest =  (MultipartHttpServletRequest)req;
 		List<MultipartFile> files = multipartRequest.getFiles("pic");
-		System.out.println(multipartRequest.getFiles("pic"));
+	    if(files.size()==0) {
+	    	if(records.size()==0) {
+	    	 app.setApp_cood("1");
+	    	 fig=appService.insert(app);
+	    	}else {
+	        	if(app.getApp_type().equals("1")) {
+	        		app.setApp_url(records.get(0).getApp_url());
+	        	}
+	        	fig=appService.uodatevison(app);
+	        }
+	    }else {
+		//System.out.println(multipartRequest.getFiles("pic"));
 		for (MultipartFile multipartFile : files) {
 			Map<String, String> map = UpdateFile.update(multipartFile);
 			String urls = map.get("Path");
@@ -67,6 +76,7 @@ public class T_appController {
 	        	fig=appService.uodatevison(app);
 	        }
 		}
+	    }
 		if(fig) {
 		
 		return JsonUtil.getResponseJson(1, "添加版本成功", null, null);

@@ -13,6 +13,8 @@
 		<result column="reply_time" property="reply_time" />
 		<result column="browse_number" property="browse_number" />
 		<result column="appraise" property="appraise" />
+		<result column="shopping_id" property="shopping_id" />
+		
 	</resultMap>
 	<!-- 添加评论 -->
 	<insert id="insertReview" parameterType="com.websit.entity.T_review"
@@ -23,16 +25,18 @@
 		review_content,
 		review_time,
 		appraise,
-		picture
+		picture,
+		shopping_id
 		)
 		VALUES
 		(
 		#{product_id},
 		#{user_id},
 		#{review_content},
-		#{review_time},
+		now(),
 		#{appraise},
-		#{picture}
+		#{picture},
+		#{shopping_id}
 		)
 	</insert>
 	<!-- 商家回复 -->
@@ -48,7 +52,7 @@
 	<!-- 查询历史评价 -->
 	<select id="seleceUserThin" resultType="com.websit.entityvo.T_reviewVo"
 		resultMap="desksAndCategories">
-		select
+			select
 		re.id id,
 		re.appraise appraise,
 		re.review_content
@@ -56,7 +60,8 @@
 		re.review_time review_time,
 		re.product_id product_id,
 		pr.name name,
-	
+	  s.zongjia  AS  price,
+    s.shoping_specifications  AS   specifications,
 		pr.image image,
 	
 		pv.picture picture
@@ -64,6 +69,7 @@
 		left join t_picture_video pv on re.id= pv.review_id left
 		join t_product
 		pr on pr.id = re.product_id
+        join  t_shopping  s on s.shoping_id=re.shopping_id
 		WHERE
 		re.user_id=#{user_id}
 		ORDER BY

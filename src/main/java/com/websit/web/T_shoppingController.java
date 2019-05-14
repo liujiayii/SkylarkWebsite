@@ -69,7 +69,7 @@ public class T_shoppingController {
 			   for(int i=0;i<T_order.size();i++) {
 				   T_order.get(i).setOrder_state("2");
 				   boolean tr= IT_orderService.updateById(T_order.get(i));
-				   System.out.println();
+				  // System.out.println();
 			   }
 			   
 		   }
@@ -114,7 +114,7 @@ public class T_shoppingController {
 			   for(int i=0;i<T_order.size();i++) {
 				   T_order.get(i).setOrder_state("2");
 				   boolean tr= IT_orderService.updateById(T_order.get(i));
-				   System.out.println();
+				 //  System.out.println();
 			   }
 			   
 		   }
@@ -184,7 +184,7 @@ public class T_shoppingController {
 				  
 				   T_order.get(i).setOrder_state("5");
 				   boolean tr= IT_orderService.updateById(T_order.get(i));
-				   System.out.println();
+				  // System.out.println();
 				   
 					
 			   }

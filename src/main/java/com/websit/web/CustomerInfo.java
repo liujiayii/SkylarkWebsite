@@ -179,8 +179,8 @@ public class CustomerInfo {
 		json.put("code", 1);
 		json.put("msg", "获取在线访客名片埋点成功");
 		json.put("url", mainUrl + url);
-		System.out.println("json::"+json);
-		System.out.println("url::"+mainUrl + url);
+//		System.out.println("json::"+json);
+//		System.out.println("url::"+mainUrl + url);
 		return json.toString();
 	}
 	@ResponseBody
@@ -198,7 +198,7 @@ public class CustomerInfo {
 		PublicKey publicKey = OnlinePubKeyUtil.getPubKey();
 		String cinfo = CustomerInfoCryptoUtil.decryptByPublicKey(URLEncoder.encode(params, "UTF-8"), URLEncoder.encode(key,"UTF-8"), publicKey);
 		JSONObject dataJsonObject = JSONObject.fromObject(cinfo);
-System.out.println("dataJsonObject:"+dataJsonObject);
+//System.out.println("dataJsonObject:"+dataJsonObject);
 
 		
 		JSONObject result = new JSONObject();

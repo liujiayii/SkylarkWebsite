@@ -88,7 +88,7 @@ public class SpecificationsServiceImpl implements SpecificationsService{
 	 * @createDate 2019年3月23日 下午2:00
 	 */
 	@Override
-	public int deleteSpecificationsVoById(BigInteger specificationsId) {
+	public int deleteSpecificationsVoById(Long specificationsId) {
 		
 		return specificationsMapper.deleteSpecificationsVoById(specificationsId);
 	}

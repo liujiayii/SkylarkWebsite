@@ -41,12 +41,12 @@ public interface InventoryService {
 	public Integer findInventoryCount(String inventory);
 
 	/**
-	 * description 根据id删除库存
+	 * description 根据商品规格id删除库存
 	 *
 	 * @author pangchong
 	 * @createDate 2019年3月23日 下午2:00
 	 */
-	public int deleteInventoryById(@Param("id") BigInteger id);
+	public int deleteInventoryByProductSpecificationId(@Param("attribute") Long attribute);
 	/**根据规格id
 	 * 查询库存
 	 * @param attribute

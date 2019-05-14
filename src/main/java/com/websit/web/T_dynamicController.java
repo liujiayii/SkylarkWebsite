@@ -80,7 +80,7 @@ public class T_dynamicController {
 	@ResponseBody
 	public String SelectOneThin(long id) {
 		try {
-			System.out.println(id + "id");
+			//System.out.println(id + "id");
 			T_dynamic selectById = it_dynamicService.selectById(id);
 			if (selectById != null) {
 				return JsonUtil.getResponseJson(1, "查询成功", null, selectById);

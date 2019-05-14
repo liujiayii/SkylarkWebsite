@@ -133,7 +133,7 @@ public class T_discountController {
 			List<T_discount> discountPageList = discountService.pageOfDiscount(start,limit);
 			Integer count = discountService.selectCoount();
 			
-			System.out.println("总数："+count);
+			//System.out.println("总数："+count);
 			if(discountPageList.size() >=1){
 				return JsonUtil.getResponseJson(1, "查询成功", count, discountPageList);
 			}else{

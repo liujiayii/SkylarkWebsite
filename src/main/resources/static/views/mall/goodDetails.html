@@ -13,13 +13,11 @@
     }
 
     .gg {
+      display: flex;
       padding: 10PX 6PX 0 6px;
     }
 
     .gg > p {
-      float: left;
-      min-width: 70px;
-      text-align: left;
       color: #6C6C6C;
     }
 
@@ -36,9 +34,6 @@
     .goods .contArea dl{padding:12px 6px;}
     .goods .contArea dl dd .calculate a{line-height: 8px;height:12px}
 .goods .contArea dl dd .number{height:30px;    padding: 2px 10px;}
-    .gglist {
-      width: calc(100% - 80px)
-    }
 
     .listgg.actives {
       border: 1px solid #ff0000
@@ -76,7 +71,7 @@
               </ul>
             </div>
             <div class="contArea">
-              <div class="gg flex" v-for="(item,key,index) in Specifications">
+              <div class="gg" v-for="(item,key,index) in Specifications">
                 <p>{{key.split('"')[1]}}：</p>
                 <div class="gglist">
                   <span class="listgg" v-for="(items ,indexss) in Specifications[key]"

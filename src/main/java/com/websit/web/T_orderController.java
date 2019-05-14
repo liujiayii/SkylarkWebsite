@@ -1,6 +1,5 @@
 package com.websit.web;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -14,9 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.websit.entity.T_goods;
 import com.websit.entity.T_order;
-import com.websit.entity.T_product;
 import com.websit.entity.T_product_specification;
 import com.websit.entity.T_sales;
 import com.websit.entity.T_shopping;
@@ -29,11 +26,12 @@ import com.websit.service.IT_productService;
 import com.websit.service.IT_salesService;
 import com.websit.service.IT_shoppingService;
 import com.websit.service.IT_trolleyService;
-import com.websit.service.impl.T_orderServiceImpl;
 import com.websit.until.JsonUtil;
 import com.websit.until.OrderCodeFactory;
 import com.websit.until.Security;
 import com.websit.until.order;
+import com.websit.until.purchase;
+
 
 /**
  * <p>
@@ -58,168 +56,25 @@ public class T_orderController {
 	@Autowired
 	public IT_trolleyService T_trolleyService;
 	public IT_productService T_productService;
-	
+
 	order order = new order();
-	
 
 	/**
 	 * 引入加密类
 	 */
-
-	@RequestMapping("/Generateorder")
+	@RequestMapping(value = "/Generateorder", produces = "application/json; charset=utf-8")
 	@ResponseBody
 
 	public String Generateorder(String trolley_id, String id, Integer order_number, String order_mode, String user_id,
-			
-			String remarks, Integer is_des,String specifications) {// 商品id，数量,地址id
+
+			String remarks, Integer is_des, String specifications) {// 商品id，数量,地址id
 
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
-		boolean fig = false;
-	
-		String order_no = OrderCodeFactory.getOrderCode(8L);
-		/**
-		 * 如果加密的数据解密
-		 */
-		Date cause_time = new Date();
-           
-		if (is_des != null) {
-			user_id = Security.decode(user_id);
-			specifications=((((Security.decode(specifications)))));
-			if (id != null) {
-				id = (Security.decode(id));
-
-			}
-		}
-		T_goods T_goods=goodsService.selectById(order_mode);
-		System.out.println(specifications+" 9999999999999999999999999999999999999");
 		try {
-			if (user_id == null || user_id.equals(" ")) {
-				msg = "请重新登录";
-				return JsonUtil.getResponseJson(cood, msg, null, null);
-			} else if (order_mode == null) {
-				msg = "请填写收货地址";
-				return JsonUtil.getResponseJson(cood, msg, null, null);
-			}
-             
-			else if (trolley_id == null || trolley_id.length() == 0) {
-			
-				T_product_specification T_product_specification=IT_orderService.specification(id.toString(),specifications);
-				if(T_product_specification==null) {
-					return JsonUtil.getResponseJson(cood, "此商品无法购买", null, null);
-				}
-				System.out.println(T_product_specification);
-				Integer numbers = IT_orderService.Queryinginventory(id.toString(),T_product_specification.getId());// 查询商品信息
-				
-				T_product product = IT_orderService.Querysteda(id.toString());// 查询商品的信息
-				if (order_number > numbers || order_number == 0) {
-					cood = -1;
-					msg = "库存数量不足，请修改购买数量";
-					return JsonUtil.getResponseJson(cood, msg, null, order_no);
-				} else if (product.getState() == 2) {
-					cood = -1;
-					msg = "商品已下架";
-					return JsonUtil.getResponseJson(cood, msg, null, order_no);
-				} else {
-					
-					Double jiage = T_product_specification.getPrice().doubleValue() * order_number;
-					int mum = IT_orderService.selectpase(id.toString(), jiage);// 查询优惠价格
-					double jine = jiage - mum;
-					/**
-					 * 查询运费
-					 */
-					Integer yongfei = IT_orderService.yunfei(jiage);
-			        
-					T_order T_order = order.T_order(user_id, order_no, order_mode, order_number.toString(), jine,
-							cause_time, remarks, yongfei.toString(),T_goods);
-					fig = IT_orderService.insert(T_order);
-					
-					T_shopping T_shopping = order.shopping(order_no, order_number, jine, mum,
-							T_product_specification.getPrice().doubleValue(), id.toString(),T_product_specification.getSpecificationName());
-					T_shopping.setState("0");
-					fig = T_shoppingService.insert(T_shopping);
-					/*
-					 * 减去库存
-					 */
-					IT_orderService.updatenumbergoumai(order_number, id.toString(),T_product_specification.getId());
-					if(fig) {
-						cood = 1;
-						msg = "商品购买成功";
-						return JsonUtil.getResponseJson(cood, msg, null, order_no);
-					}
-					return JsonUtil.getResponseJson(cood, msg, null, order_no);
-				}
-			} else {
-				String[] str = trolley_id.split(",");
-				String[] str1 = str;
-				double zongjia = 0;
-				Integer number = 0;// 总价，数量
-				double ddzongjia = 0;
-				double total = 0;
-				
-				for (int i = 0; i < str1.length; i++) {
-		          
-					T_trolley T_trolley = new T_trolley();
-				
-				if(is_des != null) {
-					T_trolley = T_trolleyService.selectById(Security.decode(str1[i]));
-					}else {
-						T_trolley = T_trolleyService.selectById(str1[i]);
-					}
-					
-			 System.out.println(T_trolley);
-					T_product product = new T_product();
-					
-      				product = T_trolleyService.T_produc(T_trolley.getProduct_id().toString());//查询商品信息
-      				Integer numbers = IT_orderService.Queryinginventory(T_trolley.getProduct_id().toString(),Long.valueOf(T_trolley.getT_product_specification_id()));
-      				if(numbers<T_trolley.getNumber()) {
-      					cood = -1;
-    					msg = "库存数量不足，请修改购买数量";
-    					return JsonUtil.getResponseJson(cood, msg, null, order_no);
-      				} else if (product.getState() == 2) {
-    					cood = -1;
-    					msg = "商品已下架";
-    					return JsonUtil.getResponseJson(cood, msg, null, order_no);
-    				}else {
-					zongjia = T_trolley.getTrolley_price() * T_trolley.getNumber();
-					int mum = IT_orderService.selectpase(T_trolley.getProduct_id().toString().toString(), zongjia);// 查询优惠价格
-					double jine = (zongjia - mum);
-					
-					T_shopping T_shopping = order.shopping(order_no, T_trolley.getNumber(), jine, mum,
-							T_trolley.getTrolley_price(), T_trolley.getProduct_id().toString(),T_trolley.getTrolley_specifications());// 将所有值给对象
-					T_shopping.setState("0");
-					fig = T_shoppingService.insert(T_shopping);
-					number = T_trolley.getNumber() + number;
-					ddzongjia = ddzongjia + zongjia - mum;
-					total = total + zongjia;
-					fig = T_trolleyService.deleteById(T_trolley.getTrolley_id());
-					/*
-					 * 减去库存
-					 */
 
-			        IT_orderService.updatenumbergoumai(T_trolley.getNumber(),T_trolley.getProduct_id().toString(),Long.valueOf(T_trolley.getT_product_specification_id()));
-				}
-				}		
-				/**
-				 * 查询运费
-				 */
-				Integer yongfei = IT_orderService.yunfei(zongjia);
-				T_order T_order = order.T_order(user_id, order_no, order_mode, number.toString(), total, cause_time,
-						remarks, yongfei.toString(),T_goods);
-				fig = IT_orderService.insert(T_order);
-			}
-
-			if (fig) {
-				cood = 1;
-				msg = "商品购买成功";
-			} else {
-				cood = -1;
-				msg = "商品购买失败";
-			}
-			
-	          
-			return JsonUtil.getResponseJson(cood, msg, null, order_no);
-			
+		String mas=purchase.purchasew(trolley_id, id, order_number, order_mode, user_id, remarks, is_des, specifications);
+		return mas;
 		} catch (Exception e) {
 			return JsonUtil.getResponseJson(cood, msg, null, null);
 		}
@@ -227,7 +82,8 @@ public class T_orderController {
 
 	/**
 	 * 订单取消,发货，签收，退货
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	@RequestMapping("/ordercan")
 	@ResponseBody
@@ -237,7 +93,7 @@ public class T_orderController {
 		Integer cood = -1;
 		int fig = 0;
 		String sales_no = OrderCodeFactory.getOrderCode(8L);// 生产订单编号
-       
+
 		switch (order_state)
 
 		{
@@ -248,9 +104,18 @@ public class T_orderController {
 
 			List<T_shopping> T_shopping = T_shoppingService.selectByMap(columnMap);
 			for (int i = 0; i < T_shopping.size(); i++) {
-				IT_orderService.updatenqux(T_shopping.get(i).getNumber(), T_shopping.get(i).getProduct_id());
+				T_shopping.get(i).setState("-1");
+				T_shoppingService.updateById(T_shopping.get(i));
+				T_product_specification T_product_specification = IT_orderService.specification(T_shopping.get(i).getProduct_id().toString(),
+						T_shopping.get(i).getShoping_specifications());
+				if(T_product_specification!=null) {
+				IT_orderService.updatenqux(T_shopping.get(i).getNumber(), T_shopping.get(i).getProduct_id(),T_product_specification.getId().toString());
+				fig = IT_orderService.ordercancelled(order_id, order_state);
+			}else {
+				fig = IT_orderService.ordercancelled(order_id, order_state);
 			}
-			fig = IT_orderService.ordercancelled(order_id, order_state);
+			
+			}
 			break;
 		case "2":
 			IT_orderService.updatewuliudanhao(order_id, order_shouhuo_id);
@@ -260,34 +125,26 @@ public class T_orderController {
 		case "5":
 			Map<String, Object> Map = new HashMap<String, Object>();
 			Map.put("order_id", order_id);
-			List<T_order> order=IT_orderService.selectByMap(Map);
+			List<T_order> order = IT_orderService.selectByMap(Map);
 			Date cause_time = new Date();
-			T_sales T_sales = new T_sales();
-			T_sales.setCause_explain(cause_explain);
-			T_sales.setCause_type(cause_type);
-			T_sales.setOrder_id(order_id);
-			T_sales.setSales_cause(sales_cause);
-			T_sales.setCause_time(cause_time);
-			T_sales.setSales_no(sales_no);
-			T_sales.setStele("0");
-			T_sales.setUser_id(order.get(0).getUser_id());
-			T_sales.setSales_stes(order.get(0).getOrder_state());
-			T_sales.setSales_nunber(order.get(0).getOrder_number());
-			T_sales.setSales_amount(order.get(0).getOrder_money().toString());
-	
-			Map<String, Object> lumnMap=new HashMap<String,Object>();
+      
+			T_sales T_sales =com.websit.until.order.sale(cause_explain,cause_type,order_id,sales_cause,cause_time,sales_no,order.get(0).getUser_id(),order.get(0).getOrder_state(),order.get(0).getOrder_number(),order.get(0).getOrder_payable());
+			
+
+
+			Map<String, Object> lumnMap = new HashMap<String, Object>();
 			lumnMap.put("order_id", order_id);
 			lumnMap.put("stele", "0");
-			
-			if(T_salesService.selectByMap(lumnMap).size()>0){
-				msg="已经在审核中，请稍等";
-				return JsonUtil.getResponseJson(cood, msg, null, null);
-			}else {
-	
-		   T_salesService.insert(T_sales);
-			fig = IT_orderService.ordercancelled(order_id, order_state);
 
-			break;
+			if (T_salesService.selectByMap(lumnMap).size() > 0) {
+				msg = "已经在审核中，请稍等";
+				return JsonUtil.getResponseJson(cood, msg, null, null);
+			} else {
+
+				T_salesService.insert(T_sales);
+				fig = IT_orderService.ordercancelled(order_id, order_state);
+
+				break;
 			}
 		case "8":
 			fig = IT_orderService.ordercancelled(order_id, "5");
@@ -321,25 +178,25 @@ public class T_orderController {
 		if (is_des != null) {
 			user_id = Security.decode(user_id);
 
-		
-		}else {
-			page=page-1;
+		} else {
+			page = page - 1;
 		}
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
-		int num2=0;
+		int num2 = 0;
 		if (user_id == "" || user_id == "undefined" || page == null || limit == null) {
 			cood = 152369;
 			msg = "用户数据不正确，请重新登录";
 		} else if (user_id == null || user_id.equals(" ")) {
 			msg = "请重新登录";
 			return JsonUtil.getResponseJson(cood, msg, null, null);
-			
+
 		}
-		
+
 		else {
-			List<order_list> orderlist = IT_orderService.order_list(user_id, order_state, new RowBounds(page, limit),id);
-			System.out.println(orderlist.size()+"ttttttttttttttttttttttttttttt");
+			List<order_list> orderlist = IT_orderService.order_list(user_id, order_state, new RowBounds(page, limit),
+					id);
+			//System.out.println(orderlist.size() + "ttttttttttttttttttttttttttttt");
 			for (int i = 0; i < orderlist.size(); i++) {
 				orderlist.get(i).setShping(IT_orderService.shopinglist(orderlist.get(i).getOrder_no(), order_state));
 
@@ -349,11 +206,10 @@ public class T_orderController {
 			columnMap.put("user_id", user_id);
 			if (order_state != null) {
 				columnMap.put("order_state", order_state);
+			} else {
+				num2 = IT_orderService.selectByMap(columnMap).size();
 			}
-			else {
-				 num2 = IT_orderService.selectByMap(columnMap).size();
-			}
-			
+
 			if (orderlist.size() > 0) {
 				cood = 1;
 				msg = "查询成功";
@@ -363,7 +219,7 @@ public class T_orderController {
 
 			}
 
-			return JsonUtil.getResponseJson(cood, msg, num2, orderlist);
+			return JsonUtil.getResponseJson(cood, msg, orderlist.size(), orderlist);
 		}
 		return JsonUtil.getResponseJson(cood, msg, null, null);
 	}
@@ -403,12 +259,18 @@ public class T_orderController {
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		try {
-
-			int num2 = IT_orderService.selectCount(null);
+			Map<String, Object> Map = new HashMap<String, Object>();
+			if(order_state!=null&&order_state.length()!=0) {
+			Map.put("order_state", order_state);
+			}
+			if(date!=null&&date.length()!=0) {
+				Map.put("order_no", date);
+				}
+			int num2 = IT_orderService.selectByMap(Map).size();
 			List<order_list> orderlist = IT_orderService.order_list1(order_state, page, limit, date);
 
 			for (int i = 0; i < orderlist.size(); i++) {
-			
+
 				orderlist.get(i).setShping(IT_orderService.shopinglist(orderlist.get(i).getOrder_no(), order_state));
 			}
 
@@ -421,7 +283,7 @@ public class T_orderController {
 
 			}
 
-			System.out.println(num2);
+			//System.out.println(num2);
 			return JsonUtil.getResponseJson(cood, msg, num2, orderlist);
 
 		} catch (Exception e) {
@@ -446,16 +308,14 @@ public class T_orderController {
 
 		for (int i = 0; i < str1.length; i++) {
 			T_trolley = T_trolleyService.selectById(str1[i]);
-			
-			
-			zongjia = T_trolley.getTrolley_price()* T_trolley.getNumber();
+
+			zongjia = T_trolley.getTrolley_price() * T_trolley.getNumber();
 			int mum = IT_orderService.selectpase(T_trolley.getProduct_id().toString(), zongjia);// 查询优惠价格
 			number = T_trolley.getNumber() + number;
 
 			total = total + zongjia;
 			ddzongjia = mum + ddzongjia;
 		}
-
 
 		Integer yongfei = IT_orderService.yunfei(total);
 
@@ -508,19 +368,18 @@ public class T_orderController {
 	@RequestMapping("/uporderpayment")
 	@ResponseBody
 	public String updatete(String order_no, String order_payment) {
-		
-        
-		int fig = IT_orderService.ordercancelled(order_no, "1");
+		int fig=0;
+		fig = IT_orderService.ordercancelled(order_no, "1");
 		Map<String, Object> column = new HashMap<String, Object>();
 		column.put("order_id", order_no);
-		
-		List<T_shopping>  T_shopping=T_shoppingService.selectByMap(column);
-		for(int i=0;i<T_shopping.size();i++) {
+
+		List<T_shopping> T_shopping = T_shoppingService.selectByMap(column);
+		for (int i = 0; i < T_shopping.size(); i++) {
 			T_shopping.get(i).setState("1");
 			T_shoppingService.updateById(T_shopping.get(i));
 		}
-		
-		IT_orderService.updateorderpayment(order_no, order_payment);
+
+  	IT_orderService.updateorderpayment(order_no, order_payment);
 		if (fig > 0) {
 			return JsonUtil.getResponseJson(1, "查询成功", null, null);
 		}
@@ -530,79 +389,180 @@ public class T_orderController {
 	/**
 	 * 定时任务
 	 */
-   //@Scheduled(fixedDelay = 6000) //启动后每隔5秒运行一次
+	@Scheduled(fixedDelay = 6000) //启动后每隔5秒运行一次
 	public void timer() { // 获取当前时间
-	   //System.out.println("执行了");
-
+		// System.out.println("执行了");
+		Calendar s = Calendar.getInstance();
 		Map<String, Object> columnMap = new HashMap<String, Object>();
 
 		columnMap.put("order_state", 0);
-		long diffDay=0L;
+		long diffDay = 0L;
 		List<T_order> T_order = IT_orderService.selectByMap(columnMap);
 
 		for (int i = 0; i < T_order.size(); i++) {
 			Calendar now = Calendar.getInstance();
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(T_order.get(i).getOrder_time());
-			 diffDay = (now.getTimeInMillis() - calendar.getTimeInMillis())
-		                / (1000 * 60 * 60);
-			
-			if (diffDay > 2) {
+			diffDay = (now.getTimeInMillis() - calendar.getTimeInMillis()) / (1000 * 60 * 60);
+			/*
+			 * // System.out.println(diffDay+"时间");
+			 */			if (diffDay >= 2) {
 
 				Map<String, Object> mnMap = new HashMap<String, Object>();
 				columnMap.put("order_id", T_order.get(i).getOrder_no());
 
 				List<T_shopping> T_shopping = T_shoppingService.selectByMap(mnMap);
 				for (int j = 0; j < T_shopping.size(); j++) {
-					
-						
-					IT_orderService.updatenqux(T_shopping.get(i).getNumber(),
-							T_shopping.get(i).getProduct_id());
+					T_shopping.get(i).setState("-1");
+					T_shoppingService.updateById(T_shopping.get(i));
+					T_product_specification T_product_specification = IT_orderService.specification(T_shopping.get(j).getProduct_id().toString(),
+							T_shopping.get(j).getShoping_specifications());
+					if(T_product_specification==null) {
+						System.out.println(T_product_specification);
+					}else {
+					IT_orderService.updatenqux(T_shopping.get(j).getNumber(), T_shopping.get(j).getProduct_id(),T_product_specification.getId().toString());
+					}
 				}
 				IT_orderService.ordercancelled(T_order.get(i).getOrder_id().toString(), "-1");
 
 			}
 		}
-	
-   /**
-    * 定时
-    */
-			Map<String, Object> columnMap2 = new HashMap<String, Object>();
 
-			columnMap.put("order_state", 2);
-			long diffDays=0L;
-			List<T_order> T_order2 = IT_orderService.selectByMap(columnMap);
+		/**
+		 * 定时
+		 */
+		Map<String, Object> columnMap2 = new HashMap<String, Object>();
 
-			for (int i = 0; i < T_order2.size(); i++) {
-				Calendar now = Calendar.getInstance();
-				Calendar calendare = Calendar.getInstance();
-				System.out.println(T_order2.get(i).getOrder_time());
-				if(T_order2.get(i).getOrder_time()==null) {
-					diffDays=0L;
-				}else {
+		columnMap2.put("order_state", 2);
+		long diffDays = 0L;
+		List<T_order> T_order2 = IT_orderService.selectByMap(columnMap2);
+
+		for (int i = 0; i < T_order2.size(); i++) {
+			Calendar now = Calendar.getInstance();
+			Calendar calendare = Calendar.getInstance();
+//			System.out.println(T_order2.get(i).getOrder_time());
+			if (T_order2.get(i).getOrder_time() == null) {
+				diffDays = 0L;
+			} else {
 				calendare.setTime(T_order2.get(i).getOrder_time());
+
 				
-				System.out.println(now.getTimeInMillis()+"ttttttttt"+calendare.getTimeInMillis());
-				 diffDays = (now.getTimeInMillis() - calendare.getTimeInMillis())
-		                / (1000 * 60 * 60 * 24);
-		
-				}
-				if (diffDays > 15) {
+				diffDays = (now.getTimeInMillis() - calendare.getTimeInMillis()) / (1000 * 60 * 60 * 24);
 
-					IT_orderService.ordercancelled(T_order2.get(i).getOrder_id().toString(), "3");
-
-				}
 			}
-		    System.out.println("执行成功");
+			if (diffDays > 15) {
+
+				IT_orderService.ordercancelled(T_order2.get(i).getOrder_id().toString(), "3");
+
+			}
+		}
+//		System.out.println("执行成功");
+		Calendar t = Calendar.getInstance();
+//		System.out.println("执行成功时间"+(t.getTimeInMillis()-s.getTimeInMillis()));
+	}
+	@RequestMapping("/updateddjg")
+	@ResponseBody
+	public String updateddjg(Double order_payable, String order_id) {
 
 		
+
+		T_order T_order = IT_orderService.selectById(order_id);
+		T_order.setOrder_payable(order_payable);
+		boolean  fig=IT_orderService.updateAllColumnById(T_order);
+		if(fig) {
+			return JsonUtil.getResponseJson(1, "修改成功", null, null);
+		}else{
+			return JsonUtil.getResponseJson(-1, "修改失败", null, null);
+		}
+	}
 	
+	
+	/**
+	 * 订单取消,发货，签收，退货
+	 * 
+	 * @throws Exception
+	 */
+	@RequestMapping("/ordercant")
+	@ResponseBody
+	public String ordercancelledt(String order_id, String order_state, String cause_explain, String cause_type,
+			String sales_cause, String order_shouhuo_id) throws Exception {// 主键,订单状态,退货原因,退货类型,退货说明
+		String msg = "系统异常，请稍后再试";
+		Integer cood = -1;
+		int fig = 0;
+		String sales_no = OrderCodeFactory.getOrderCode(8L);// 生产订单编号
+
+		switch (order_state)
+
+		{
+		case "-1":
+			T_order T_order = IT_orderService.selectById(order_id);// 取消订单查询购买量
+			Map<String, Object> columnMap = new HashMap<String, Object>();
+			columnMap.put("order_id", T_order.getOrder_no());
+
+			List<T_shopping> T_shopping = T_shoppingService.selectByMap(columnMap);
+			for (int i = 0; i < T_shopping.size(); i++) {
+				T_shopping.get(i).setState("-1");
+				T_shoppingService.updateById(T_shopping.get(i));
+				T_product_specification T_product_specification = IT_orderService.specification(T_shopping.get(i).getProduct_id().toString(),
+						T_shopping.get(i).getShoping_specifications());
+				if(T_product_specification!=null) {
+				IT_orderService.updatenqux(T_shopping.get(i).getNumber(), T_shopping.get(i).getProduct_id(),T_product_specification.getId().toString());
+				fig = IT_orderService.ordercancelled(order_id, order_state);
+			}else {
+				fig = IT_orderService.ordercancelled(order_id, order_state);
+			}
+			
+			}
+			break;
+		case "2":
+			IT_orderService.updatewuliudanhao(order_id, order_shouhuo_id);
+
+			fig = IT_orderService.ordercancelled(order_id, order_state);
+			break;
+		case "5":
+			Map<String, Object> Map = new HashMap<String, Object>();
+			Map.put("order_id", order_id);
+			List<T_order> order = IT_orderService.selectByMap(Map);
+			Date cause_time = new Date();
+      
+			T_sales T_sales =com.websit.until.order.sale(cause_explain,cause_type,order_id,sales_cause,cause_time,sales_no,order.get(0).getUser_id(),order.get(0).getOrder_state(),order.get(0).getOrder_number(),order.get(0).getOrder_payable());
+			
+
+
+			Map<String, Object> lumnMap = new HashMap<String, Object>();
+			lumnMap.put("order_id", order_id);
+			lumnMap.put("stele", "0");
+
+			if (T_salesService.selectByMap(lumnMap).size() > 0) {
+				msg = "已经在审核中，请稍等";
+				return JsonUtil.getResponseJson(cood, msg, null, null);
+			} else {
+
+				T_salesService.insert(T_sales);
+				fig = IT_orderService.ordercancelled(order_id, order_state);
+
+				break;
+			}
+		case "8":
+			fig = IT_orderService.ordercancelled(order_id, "5");
+			break;
+		default:
+			fig = IT_orderService.ordercancelled(order_id, order_state);
+
+			break;
+		}
+
+		if (fig > 0) {
+			cood = 1;
+			msg = "操作成功";
+		} else {
+			cood = -1;
+			msg = "操作失败";
+		}
+
+		return JsonUtil.getResponseJson(cood, msg, null, sales_no);
 
 	}
-
-
-
-
 
 
 }

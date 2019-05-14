@@ -1,6 +1,7 @@
 package com.websit.web;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +10,11 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -20,13 +22,13 @@ import com.websit.entity.T_reply;
 import com.websit.entity.T_user;
 import com.websit.entity.UserUpdateVo;
 import com.websit.entityvo.Personal;
-import com.websit.entityvo.T_postingVo;
 import com.websit.service.IT_postingService;
 import com.websit.service.IT_userService;
 import com.websit.until.DesUtil;
 import com.websit.until.HttpClientUtil;
 import com.websit.until.JsonUtil;
 import com.websit.until.MD5Utils;
+import com.websit.until.UpdateFile;
 
 /**
  * <p>
@@ -43,6 +45,28 @@ public class T_userController {
 	private IT_userService userService;
 	@Autowired
 	private IT_postingService T_postingService;
+	
+	
+	@RequestMapping(value = "/selectUserById/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public String selectUserByIdR(@PathVariable Long id) {
+		try {
+			
+		
+		T_user user = userService.selectById(id);
+		user.setPassword(null);
+		user.setOnline(null);
+		user.setLastdate(null);
+		user.setFanscount(null);
+		user.setFollowcount(null);
+		user.setAddress(null);
+		user.setPhid(null);
+		user.setPhone(null);
+		return JsonUtil.getResponseJson(1, "查询成功", 1, user);
+		} catch (Exception e) {
+			return JsonUtil.getResponseJson(1, "用户不存在", null, null);
+		}
+	}
 
 	/**
 	 * 
@@ -63,18 +87,48 @@ public class T_userController {
 	 */
 	@RequestMapping("/updateUser")
 	@ResponseBody
-	public String updateUser(UserUpdateVo user) {
-		System.out.println("user" + user);
-		try {
+	public String updateUser(UserUpdateVo user,Long dateLong, MultipartFile file) {
+		//System.out.println("user" + user);
 
-			userService.updateUserVoById(user);
-			T_user selectById = userService.selectById(user.getId());
-			selectById.setPassword(null);
-			return JsonUtil.getResponseJson(1, "修改成功", null, selectById);
+				Map<String, String> update;
+				try {
+					// 如果之前有你照片删掉
+					if (null != user.getAvatar()) {
+						String avatar = user.getAvatar();
+						// 即使路径不对也不会抛异常
+						UpdateFile.deleatFile(avatar);
+					}
+					// 上传新头像
+					user.setAvatar(null);
+					if (null != file) {
+						System.out.println(file.getName());
+						update = UpdateFile.update(file);
+						String string = update.get("Path");
+		                user.setAvatar(string);
+		                System.out.println("null !+ file"+string);
+					}
 
-		} catch (Exception e) {
-			return JsonUtil.getResponseJson(-1, "修改失败", null, null);
-		}
+				} catch (Exception e) {
+					e.printStackTrace();
+					// 没有带头片
+				}
+
+				try {
+
+					if (null != dateLong) {
+						Date birthdayDate = new Date(dateLong);
+						user.setBirthday(birthdayDate);
+					}
+					
+					userService.updateUserVoById(user);
+					T_user selectById = userService.selectById(user.getId());
+					selectById.setPassword(null);
+					return JsonUtil.getResponseJson(1, "修改成功", null, selectById);
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					return JsonUtil.getResponseJson(-1, "修改失败", null, null);
+				}
 
 	}
 
@@ -86,13 +140,13 @@ public class T_userController {
 	 */
 	@RequestMapping(value = "/selectUserById", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String selectUserById(Personal personal, HttpSession session) {
+	public String selectUserById(BigInteger id,HttpSession session) {
 		/*
 		 * // 获得当前用户id BigInteger id = new BigInteger(session.getAttribute("id")
 		 * + ""); personal.setId(id);
 		 */
 		try {
-			List<Personal> result = userService.selectUserById(personal);
+			List<Personal> result = userService.selectUserById(id);
 
 			if (result.size() >= 1) {
 				return JsonUtil.getResponseJson(1, "查看成功", null, result);
@@ -152,7 +206,7 @@ public class T_userController {
 	@RequestMapping(value = "/selectT_postingByUserId", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String selectT_postingByUserId(Integer page, Integer limit, Integer id) {
-		System.out.println(page + limit);
+		//System.out.println(page + limit);
 		try {
 			Integer star = (page - 1) * limit;
 			List<Personal> result = userService.selectT_postingByUserId(id, star, limit);
@@ -191,7 +245,9 @@ public class T_userController {
 	 */
 	@RequestMapping(value = "/user/updatePassworld",method=RequestMethod.POST)
 	@ResponseBody
-	public String updatePassworld(Long phid, String password, String new_password) {
+	public String updatePassworld( Long phid, String password, 
+			String new_password) {
+		//System.out.println(phid+password+new_password);
      //验证前台传输的数据是否有空值
 		try {
 
@@ -221,11 +277,13 @@ public class T_userController {
 			String msg = json.toString();
 			// 加密
 			String encode = DesUtil.encode("yunquekeji", msg);
-			System.out.println(encode);
+			
 			String doPost = HttpClientUtil.doPost(
+					
 					"https://www.ouyepuhui.com/account/rongyi/restYongyiPassword?encode="+ encode);
+					/*"http://192.168.1.101:8001/account/rongyi/restYongyiPassword?encode="+ encode);*/
 			JSONObject logjson = JSONObject.parseObject(doPost);
-
+			
 			if (logjson.get("code").toString().equals("200")) {
 				
 				List<T_user> selectList = userService.selectList(new EntityWrapper<T_user>().eq("phid", phid));

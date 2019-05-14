@@ -1,6 +1,7 @@
 package com.websit.web;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.vdurmont.emoji.EmojiParser;
 import com.websit.entity.T_order;
 import com.websit.entity.T_picture_video;
 import com.websit.entity.T_revert;
 import com.websit.entity.T_review;
+import com.websit.entity.T_shopping;
 import com.websit.entityvo.T_orderVo;
 import com.websit.entityvo.T_reviewVo;
 import com.websit.mapper.T_reviewMapper;
@@ -25,6 +28,7 @@ import com.websit.service.IT_orderService;
 import com.websit.service.IT_picture_videoService;
 import com.websit.service.IT_revertService;
 import com.websit.service.IT_reviewService;
+import com.websit.service.IT_shoppingService;
 import com.websit.until.JsonUtil;
 import com.websit.until.Security;
 import com.websit.until.UpdateFile;
@@ -50,7 +54,8 @@ public class T_reviewController {
 	private IT_revertService it_revertService;
 	@Autowired
 	private IT_picture_videoService it_picture_videoService;
-
+	@Autowired
+	public IT_shoppingService T_shoppingService;
 	/**
 	 * @Title: insertReview
 	 * @description 添加添加评论
@@ -74,12 +79,16 @@ public class T_reviewController {
 			T_picture_video t_picture_video = new T_picture_video();
 			Date sdf = new Date();
 			t_review.setReview_time(sdf);
+			t_review.getReview_content();
+			String str = t_review.getReview_content();
+			String result = EmojiParser.parseToAliases(str);
+			t_review.setReview_content(result);
 			int insertReview = it_reviewService.insertReview(t_review);
 			if (insertReview != 0) {
 				long id = t_review.getId();
 				MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) req;
 				List<MultipartFile> files = multipartRequest.getFiles("pic");
-				System.out.println(multipartRequest.getFiles("pic"));
+				//System.out.println(multipartRequest.getFiles("pic"));
 				for (MultipartFile multipartFile : files) {
 					Map<String, String> map = UpdateFile.update(multipartFile);
 					String urls = map.get("Path");
@@ -88,11 +97,20 @@ public class T_reviewController {
 					it_picture_videoService.insert(t_picture_video);
 				}
 				// 修改商品是否评价状态
-				product_id = t_review.getProduct_id().toString();
+				//product_id = t_review.getProduct_id().toString();
+				T_shopping T_shopping=T_shoppingService.selectById(t_review.getShopping_id());
+				T_shopping.setIs_dianpng("2");
+				T_shoppingService.updateById(T_shopping);
 				System.out.println("order_id" + order_id + "product_id" + product_id);
-				it_orderService.updateState(order_id, product_id);
-				List<T_orderVo> seleceOne = it_reviewService.seleceOne(order_id);
-				if (seleceOne == null || seleceOne.size() == 0) {
+				//it_orderService.updateState(order_id, product_id);
+				Map<String, Object> Map = new HashMap<String, Object>();
+				Map.put("order_id", order_id);
+				Map.put("is_dianpng", "1");
+				List<T_shopping> T_orderVo=T_shoppingService.selectByMap(Map);
+				
+				//List<T_orderVo> seleceOne = it_reviewService.seleceOne(order_id);
+				
+				if (T_orderVo == null || T_orderVo.size() == 0) {
 					it_reviewService.updateState(order_no);
 				}
 				return JsonUtil.getResponseJson(1, "添加成功", null, null);
@@ -208,11 +226,11 @@ public class T_reviewController {
 	@ResponseBody
 	public String seleceUserThin(T_reviewVo reviewVo, Integer page, Integer limit, Integer is_des) {
 		try {
-			System.out.println(reviewVo.getUser_id());
+			//System.out.println(reviewVo.getUser_id());
 			if (is_des != null) {
 				reviewVo.setUser_id((Security.decode(reviewVo.getUser_id())));
 			}
-			System.out.println(page);
+			//System.out.println(page);
 			// 如果没有分页的情况直接显示前十条数据
 			if (page == null) {
 				page = 1;
@@ -223,6 +241,11 @@ public class T_reviewController {
 			// reviewVo.setPage(page);
 			// reviewVo.setLimit(limit);
 			List<T_reviewVo> post = it_reviewService.seleceUserThin(reviewVo);
+			for(int i=0;i<post.size();i++) {
+				String str=post.get(i).getReview_content();
+				String result = EmojiParser.parseToUnicode(str);
+				post.get(i).setReview_content(result);
+			}
 
 			if (post != null && !post.isEmpty()) {
 
@@ -249,13 +272,25 @@ public class T_reviewController {
 	@RequestMapping(value = "/selectAllSome", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String selectAllSome(T_reviewVo reviewVo, Integer page, Integer limit) {
-		System.out.println("page" + page + "limit" + limit);
+		//System.out.println("page" + page + "limit" + limit);
 		try {
+			System.out.println(page);
+			if(page.equals("")||page==null||page==0) {
+				return JsonUtil.getResponseJson(-1, "分页page不能为0", null, null);
+			}
+		
 			reviewVo.setPage((page - 1) * limit);
 			reviewVo.setLimit(limit);
 			// reviewVo.setPage(0);
 			// reviewVo.setLimit(10);
 			List<T_reviewVo> some = it_reviewService.selectAllSome(reviewVo);
+			for(int i=0;i<some.size();i++) {
+				String str=some.get(i).getReview_content();
+				String result = EmojiParser.parseToUnicode(str);
+				some.get(i).setReview_content(result);
+			}
+
+			
 			long id = reviewVo.getProduct_id();
 			int count = t_reviewMapper.selectCounts(id);
 			if (some.size() > 0) {
@@ -285,11 +320,11 @@ public class T_reviewController {
 	public String seleceFirstThin(long id) {
 		try {
 			T_reviewVo some = it_reviewService.seleceFirstThin(id);
-			if (some != null) {
-				return JsonUtil.getResponseJson(1, "查询成功", null, some);
-			} else {
-				return JsonUtil.getResponseJson(2, "暂时无评价", null, null);
-			}
+			String str=some.getReview_content();
+			String result = EmojiParser.parseToUnicode(str);
+			some.setReview_content(result);
+			
+			return JsonUtil.getResponseJson(1, "查询成功", null, some);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
@@ -343,8 +378,7 @@ public class T_reviewController {
 			reviewVo.setName(name);
 			reviewVo.setPage((page - 1) * limit);
 			reviewVo.setLimit(limit);
-			// reviewVo.setPage(0);
-			// reviewVo.setLimit(10);
+		
 			List<T_reviewVo> review = it_reviewService.selectAllEvery(reviewVo);
 			if (review.size() > 0) {
 				int count = it_reviewService.selectAllEveryCount(reviewVo);

@@ -5,6 +5,7 @@ import com.websit.entity.T_admin;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -57,5 +58,43 @@ public interface T_adminMapper extends BaseMapper<T_admin> {
 	 * @createDate 2019年4月11日-上午9:30:53
 	 */
 	public T_admin findByUserName (String username);
-
+	
+	/**
+	 * 通过自定义条件查询
+	 *
+	 * @Title: selectListSelective
+	 * @description 
+	 * @return  
+	 * List<T_admin>    
+	 * @author lujinpeng
+	 * @createDate 2019年5月7日-上午10:14:51
+	 */
+	public List<T_admin> selectListSelective (T_admin admin);
+	
+	/**
+	 * 通过自定义属性修改
+	 *
+	 * @Title: updateByIdSelective
+	 * @description 
+	 * @param admin
+	 * @return  
+	 * int    
+	 * @author lujinpeng
+	 * @createDate 2019年5月7日-上午10:35:23
+	 */
+	public int updateByIdSelective(T_admin admin);
+	
+	/**
+	 * 通过姓名和电话模糊查询
+	 *
+	 * @Title: findAdminListByNameOrPhone
+	 * @description 
+	 * @param map
+	 * @return  
+	 * List<T_admin>    
+	 * @author lujinpeng
+	 * @createDate 2019年5月7日-下午12:59:02
+	 */
+	public List<T_admin> findAdminListByNameOrPhone(Map<String, Object> map);
+ 
 }

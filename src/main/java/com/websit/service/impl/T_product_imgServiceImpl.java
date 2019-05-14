@@ -59,12 +59,13 @@ public class T_product_imgServiceImpl extends ServiceImpl<T_product_imgMapper, T
 				productImgMapper.deleteById(id);
 				res =JsonUtil.getResponseJson(1, "删除成功", null, null);
 			}else{
-				res =JsonUtil.getResponseJson(-1, "删除失败", null, null);
+				productImgMapper.deleteById(id);
+				res =JsonUtil.getResponseJson(1, "删除成功", null, null);
 			}
 		} catch (Exception e) {
 			
 			e.printStackTrace();
-			res =JsonUtil.getResponseJson(1, "系统异常", null, null);
+			res =JsonUtil.getResponseJson(-1, "系统异常", null, null);
 		}
 		return res;
 	}

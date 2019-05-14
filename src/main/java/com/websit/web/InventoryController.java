@@ -27,9 +27,9 @@ public class InventoryController {
 	@RequestMapping(value = "/listAllInventoryById", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String listAllInventoryById(String productName, Integer page, Integer limit) {
-		System.out.println("inventory" + productName+"page"+page+"limit");
-		System.out.println("inventoryService.listAllInventoryById(page, limit, productName)"
-				+ inventoryService.listAllInventoryById((page - 1) * limit, limit, productName));
+//		System.out.println("inventory" + productName+"page"+page+"limit");
+//		System.out.println("inventoryService.listAllInventoryById(page, limit, productName)"
+//				+ inventoryService.listAllInventoryById((page - 1) * limit, limit, productName));
 		try {
 
 			List<Inventory> result = inventoryService.listAllInventoryById((page - 1) * limit, limit, productName);
@@ -46,16 +46,16 @@ public class InventoryController {
 	}
 
 	/**
-	 * 根据id删除库存
+	 * 根据商品规格id删除库存
 	 * 
 	 * @author pangchong
 	 * @createDate 2019年3月22日 下午2:00
 	 */
 	@RequestMapping(value = "/deleteInventoryById", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String deleteInventoryById(BigInteger id) {
+	public String deleteInventoryByProductSpecificationId(Long attribute) {
 		try {
-			int result = inventoryService.deleteInventoryById(id);
+			int result = inventoryService.deleteInventoryByProductSpecificationId(attribute);
 
 			if (result > 0) {
 				return JsonUtil.getResponseJson(1, "删除成功", null, result);
@@ -74,7 +74,7 @@ public class InventoryController {
 	 * @author pangchong
 	 * @createDate 2019年3月22日 下午2:00
 	 */
-	@RequestMapping(value = "/updateInventory", produces = "application/json; charset=utf-8")
+	/*@RequestMapping(value = "/updateInventory", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String updateInventory(int number, Long products_id, Long id) {
 		System.out.println(number);
@@ -96,5 +96,5 @@ public class InventoryController {
 			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
 		}
 	}
-
+*/
 }

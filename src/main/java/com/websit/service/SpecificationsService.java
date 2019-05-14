@@ -57,5 +57,5 @@ public interface SpecificationsService {
 	 * @author pangchong
 	 * @createDate 2019年3月23日 下午2:00
 	 */
-	public int deleteSpecificationsVoById(@Param("specificationsId") BigInteger specificationsId);
+	public int deleteSpecificationsVoById(@Param("specificationsId") Long specificationsId);
 }

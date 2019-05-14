@@ -70,6 +70,7 @@ public class T_shopping extends Model<T_shopping> {
      * @return
      */
     private String shoping_logistics;
+    
     public String getShoping_logistics() {
 		return shoping_logistics;
 	}

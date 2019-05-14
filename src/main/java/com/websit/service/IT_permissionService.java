@@ -3,6 +3,9 @@ package com.websit.service;
 import com.websit.entity.T_permission;
 
 import java.util.List;
+import java.util.Map;
+
+import org.springframework.security.core.Authentication;
 
 import com.baomidou.mybatisplus.service.IService;
 
@@ -15,7 +18,18 @@ import com.baomidou.mybatisplus.service.IService;
  * @since 2019-04-04
  */
 public interface IT_permissionService extends IService<T_permission> {
-
+	
+	/**
+	 * 通过角色查询左侧菜单列表
+	 *
+	 * @Title: ListMenusByRoleId
+	 * @description 
+	 * @param role_id
+	 * @return List<Object>    
+	 * @author lujinpeng
+	 * @createDate 2019年5月1日-上午8:55:33
+	 */
+	public List<Object> ListMenusByRoleId(Long role_id);
 	/**
 	 * 左侧菜单列表
 	 *
@@ -68,16 +82,17 @@ public interface IT_permissionService extends IService<T_permission> {
 	public int deletePermission(Long id); 
 	
 	/**
-	 * 查询权限
+	 * 将对象中的属性以及属性值添加到map集合中
 	 *
-	 * @Title: selectPermission
+	 * @Title: getAttribute
 	 * @description 
-	 * @return  
-	 * int    
+	 * @param obj
+	 * @param map  
+	 * void    
 	 * @author lujinpeng
-	 * @createDate 2019年4月23日-上午10:10:48
+	 * @createDate 2019年4月29日-下午3:03:32
 	 */
-	//public int selectPermission();
+	public void getAttribute(Object obj, Map<String, Object> map);
 	
 	
 }

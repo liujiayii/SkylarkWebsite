@@ -12,8 +12,12 @@
 				FROM
 					t_specifications ts,
 					t_product_type tpt
-				WHERE
+				<where>
 					ts.product_type_id = tpt.id
+					<!-- <if test="specificationsName != null and specificationsName != ''">
+				AND ts.NAME like "%"#{specificationsName}"%"
+			        </if> -->
+					</where>
 				GROUP BY
 					ts.id DESC
             	limit #{page},#{limit} 
@@ -76,7 +80,12 @@
     <!-- 查询商品规格数量 -->
 	<select id="findSpecificationsVoCount"  resultType="Integer">
 		SELECT COUNT(DISTINCT tb.id) count
-		FROM (select id from t_specifications
+		FROM (select id from t_specifications ts
+		<!-- <where>
+		<if test="specificationsName != null and specificationsName != ''">
+				AND ts.NAME like "%"#{specificationsName}"%"
+	    </if>
+</where> -->
 		)as tb
 	</select>
 	  <!-- 增加商品规格 -->
@@ -101,7 +110,7 @@
 		where id= #{specificationsId}
 	</update>
 	 <!-- 根据专区id删除商品规格 -->
-    <delete id="deleteSpecificationsVoById" parameterType="BigInteger">
+    <delete id="deleteSpecificationsVoById">
 		delete
 		   from
 		t_specifications

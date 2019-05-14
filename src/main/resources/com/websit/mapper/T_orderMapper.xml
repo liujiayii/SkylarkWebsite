@@ -22,6 +22,7 @@
         <result column="goods_city" property="goods_city" />
         <result column="goods_CountyArea" property="goods_CountyArea" />
         <result column="goods_address" property="goods_address" />
+         <result column="order_payable" property="order_payable" />
 	</resultMap>
 
 	<!-- 购买商品减去库存 -->
@@ -67,7 +68,8 @@
 		goods_Province,
 		goods_city,
 		goods_CountyArea,
-		goods_address
+		goods_address,
+		order_payable
 		from t_order t where 1=1 and  t.user_id=#{user_id}
 		<if test="id != null and id != ''">
 		and  t.order_id=#{id}   
@@ -88,7 +90,7 @@
 		<!-- 查询订单列表 -->
 	<select id="order_list2" resultType="com.websit.entityvo.order_list">
 		SELECT t.yunfei,t.order_money as
-		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_product_id,order_state,order_shouhuo_id,order_time,order_payment
+		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_product_id,order_state,order_shouhuo_id,order_time,order_payment,order_payable
 		from t_order t where 1=1 and  t.user_id=#{user_id} and  t.order_state in (5,6,7,8)
 	 
 	 
@@ -191,7 +193,7 @@
 		<!-- 查询订单列表 -->
 	<select id="order_list1" resultType="com.websit.entityvo.order_list">
 		SELECT t.yunfei,t.order_money as
-		zongjia,t.order_product_id,t.order_number,t.order_money,t.Order_no,order_mode,order_id,order_shouhuo_id,order_state,goods_name,
+		zongjia,t.order_product_id,t.order_number,t.order_money,t.order_time,t.Order_no,order_mode,order_id,order_shouhuo_id,order_state,goods_name,
 		goods_tel,
 		goods_Province,
 		goods_city,
@@ -205,7 +207,7 @@
 			and t.order_state=#{order_state}
 			
 		</if>
-		 limit #{page},#{limit}
+		   order by order_time desc limit #{page},#{limit}
 	</select>
 	<!-- 查询角标的数字 -->
 	<select id="querdfk"  resultType="Integer">
@@ -236,7 +238,7 @@
 		<!-- 取消订单加库存 -->
 	<update id="updatenqux">
 		update T_inventory set number=number+#{number} WHERE
-		product_id=#{product_id}
+		product_id=#{product_id} and  attribute=#{attribute}
 
 	</update>
 	
@@ -263,7 +265,7 @@
 		<update id="order_paytime">
 
 		UPDATE t_order SET order_state =#{order_state},order_paytime=now() where
-		order_id=#{order_id}
+		order_no=#{order_id}
 
 	</update>
 </mapper>

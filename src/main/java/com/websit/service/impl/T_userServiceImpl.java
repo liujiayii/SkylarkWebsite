@@ -36,9 +36,9 @@ public class T_userServiceImpl extends ServiceImpl<T_userMapper, T_user> impleme
 	 * @createDate 2019年3月13日 下午2:00
 	 */
 	@Override
-	public List<Personal> selectUserById(Personal personal) {
+	public List<Personal> selectUserById(BigInteger id) {
 	
-		return userMapper.selectUserById(personal);
+		return userMapper.selectUserById(id);
 	}
 	/**
 	 * 根据用户id查询会员天数
@@ -51,9 +51,9 @@ public class T_userServiceImpl extends ServiceImpl<T_userMapper, T_user> impleme
 		try {
 			//将字符串转为日期
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-			System.out.println("personal"+personal);
+//			System.out.println("personal"+personal);
 			Date dstr = userMapper.selectUserCreateTimeById(personal);
-			System.out.println("dstr"+dstr);
+//			System.out.println("dstr"+dstr);
 			//String dstr="2008-08-08 08:08:08 ";
 			//Date date=sdf.parse(dstr);
 			long s1=dstr.getTime();//将时间转为毫秒

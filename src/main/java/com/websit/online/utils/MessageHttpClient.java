@@ -86,7 +86,7 @@ public class MessageHttpClient {
      * @throws Exception 异常抛出
      */
     public JSONObject sendMessage(String message, String url) throws Exception {
-    	System.out.println("message:"+message+",url:"+url);
+//    	System.out.println("message:"+message+",url:"+url);
         RequestEntity requestEntity = new StringRequestEntity(message, CONTENT_TYPE, CHARSET);
         PostMethod postMethod = new PostMethod(url);
         try {

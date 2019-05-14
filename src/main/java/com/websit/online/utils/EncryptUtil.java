@@ -62,7 +62,7 @@ public class EncryptUtil {
      * @return 加密后的字符串
      */
     public static String hmac_sha1(String value, String key) {
-    	System.out.println("hmac_sha1"+value+",key"+key);
+//    	System.out.println("hmac_sha1"+value+",key"+key);
         try {
             byte[] keyBytes = key.getBytes("utf-8");
             SecretKeySpec signingKey = new SecretKeySpec(keyBytes, "HmacSHA1");

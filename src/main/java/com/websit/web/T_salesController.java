@@ -11,14 +11,21 @@ import com.websit.entityvo.order_listr;
 import com.websit.entityvo.th_list;
 import com.websit.service.IT_alipay_refundService;
 import com.websit.service.IT_salesService;
+import com.websit.service.IT_wxpay_refundService;
 import com.websit.service.impl.T_alipay_refundServiceImpl;
+import com.websit.service.impl.T_wxpay_refundServiceImpl;
 import com.websit.until.JsonUtil;
 import com.websit.until.Security;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +48,12 @@ public class T_salesController {
 	public com.websit.service.IT_orderService IT_orderService;
 	@Autowired
 	public IT_alipay_refundService alipay_refundService;
+	@Autowired
+	public  IT_wxpay_refundService refundService;
+	
 	@RequestMapping("/upodate")
 	@ResponseBody
-	public String updatestale(Integer sales_id,String stale,String order_id,String upstale) {//主键，更新的状态，订单主键，订单状态
+	public String updatestale(Integer sales_id,String stale,String order_id,String upstale, HttpServletRequest req, HttpServletResponse resp) {//主键，更新的状态，订单主键，订单状态
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		boolean fig=false;
@@ -57,15 +67,30 @@ public class T_salesController {
 			if(T_order.getOrder_payment().equals("0")) {//支付宝web
 			//调用退款方法
 			//fig1=alipay_refundService.refund("9566","200",null);
-			fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_money().toString(),null);
-			}else if(T_order.getOrder_payment().equals("1")) {//支付宝app
-			fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_money().toString(),null);
-			}
+			fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_payable().toString(),null);
+					} else if (T_order.getOrder_payment().equals("1")) {// 支付宝app
+						fig1 = alipay_refundService.refund(T_order.getOrder_no().toString(),
+								T_order.getOrder_money().toString(), null);
+					}
                 else if(T_order.getOrder_payment().equals("2")) {//微信web
-				
+                	try {
+                		System.out.println("状态"+T_order.getOrder_no().toString());
+                		Integer Order_money=(int) (T_order.getOrder_payable()*100);
+						fig1=refundService.doPost(T_order.getOrder_no().toString(),T_order.getOrder_payable().toString(), Order_money.toString(), req, resp);
+					//System.out.println("fig1"+fig1);
+                	} catch (ServletException | IOException e) {
+						fig1=false;
+						e.printStackTrace();
+					}
 			}
                 else if(T_order.getOrder_payment().equals("3")) {//微信app
-    				
+                	try {
+                		Integer Order_money=(int) (T_order.getOrder_payable()*100);
+						fig1=refundService.doPost(T_order.getOrder_no().toString(),Order_money.toString(), Order_money.toString(), req, resp);
+					} catch (ServletException | IOException e) {
+						fig1=false;
+						e.printStackTrace();
+					}
     			}else {
     				//fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_money().toString(),null);
     			}
@@ -97,10 +122,23 @@ public class T_salesController {
 						fig1=alipay_refundService.refund(T_order.getOrder_no().toString(),T_order.getOrder_money().toString(),null);
 					}
 		                else if(T_order.getOrder_payment().equals("2")) {//微信web
-						
+		                	try {
+		                		Integer Order_money=(int) (T_order.getOrder_money()*100);
+								fig1=refundService.doPost(T_order.getOrder_no().toString(),Order_money.toString(), Order_money.toString(), req, resp);
+						//System.out.println("fig1"+fig1);
+	                	} catch (ServletException | IOException e) {
+							fig1=false;
+							e.printStackTrace();
+						}
 					}
 		                else if(T_order.getOrder_payment().equals("3")) {//微信app
-		    				
+		                	try {
+		                		Integer Order_money=(int) (T_order.getOrder_money()*100);
+								fig1=refundService.doPost(T_order.getOrder_no().toString(),Order_money.toString(), Order_money.toString(), req, resp);
+							} catch (ServletException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}	
 		    		}
 					if(fig1) {
 			           IT_orderService.ordercancelled(order_id, "6");
@@ -111,19 +149,7 @@ public class T_salesController {
 				fig=T_salesService.updatestale(stale,sales_id);
 		 }
 	 }
-	 
-//		 }else if(upstale.equals("5")) {
-//			 IT_orderService.ordercancelled(order_id, "8");
-//				fig=T_salesService.updatestale(stale,sales_id);
-//			}else {
-//				fig=T_salesService.updatestale(stale,sales_id);
-//
-//		     IT_orderService.ordercancelled(order_id,T_sales.getSales_stes());
-//		
-//		 
-	 
-//		    
-	 
+	  
 		if(fig) {
 			cood = 1;
 			msg = "操作成功";
@@ -148,23 +174,23 @@ public class T_salesController {
 		int  cent=0;
 		Integer cood = 1;
 		page=(page-1)*limit;
-		//try {
+		try {
 			//cent=1T_salesService;
 	   
-	    
+			List<order_listr> order_listr1 = T_salesService.rder_listr(date, null, new RowBounds(0,999999999), "");
 		List<order_listr> order_listr = T_salesService.rder_listr(date, null, new RowBounds(page,limit), "");
 		{
 		    for (int i = 0; i < order_listr.size(); i++) {
 		    	
 		    	
 		    	
-		    	System.out.println(order_listr.get(i).getOrder_id()	);
+		    	//System.out.println(order_listr.get(i).getOrder_id()	);
 		    	
 		    order_listr.get(i).setShopinglist(((T_salesService.seleth_list(date, null, new RowBounds(page,limit),order_listr.get(i).getOrder_id()))));
 
 		    			}
 		}
-		 cent=order_listr.size();
+		 cent=order_listr1.size();
 		 if (order_listr.size()>0) {
 			 msg="查询成功"; 
 			 cood=1;
@@ -172,13 +198,15 @@ public class T_salesController {
 			 msg="查询成功"; 
 			 cood=1; 
 		 }
-//		} catch (Exception e) {
-//			 msg="查询失敗"; 
-//			 cood=-1;
-//		}
-//		
+		 return JsonUtil.getResponseJson(cood, msg, cent, order_listr);
+			
+		} catch (Exception e) {
+			 msg="查询失敗"; 
+			 cood=-1;
+			 return JsonUtil.getResponseJson(cood, msg, 0, null);
+		}
 		
-		return JsonUtil.getResponseJson(cood, msg, cent, order_listr);
+		
 	}
 	/**
 	 * 退货审核列表
@@ -197,7 +225,7 @@ public class T_salesController {
 			//cent=1T_salesService;
 	     user_id =(Security.decode(user_id));
 	        
-	
+	     List<order_listr> order_listr1 = T_salesService.rder_listr(stale, user_id, new RowBounds(0,999999999), "");
 	    List<order_listr> order_listr = T_salesService.rder_listr(stale, user_id, new RowBounds(page,limit), "");
 	    
 	  
@@ -211,7 +239,7 @@ public class T_salesController {
 
 		}
 	
-		 cent=order_listr.size();
+		 cent=order_listr1.size();
 		 if (order_listr.size()>0) {
 			 msg="查询成功"; 
 			 cood=1;
@@ -224,7 +252,7 @@ public class T_salesController {
 			// cood=-1;
 		//}
 		
-		
+		//System.out.println(order_listr);
 		return JsonUtil.getResponseJson(cood, msg, cent, order_listr);
 	}
 

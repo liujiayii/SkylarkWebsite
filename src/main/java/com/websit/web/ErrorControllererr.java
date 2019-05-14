@@ -18,7 +18,7 @@ public class ErrorControllererr implements ErrorController {
     @RequestMapping(value = PATH)
     public String error(HttpServletRequest request) {
     	Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");//获取错误码
-    	System.out.println(statusCode);
+   	System.out.println(statusCode);
         return "/home/error";//返回错误页面
     }
 

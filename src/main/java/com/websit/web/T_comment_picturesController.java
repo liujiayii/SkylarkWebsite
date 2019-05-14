@@ -32,7 +32,7 @@ public class T_comment_picturesController{
  
             String type ="png";// 文件类型
             String fileName = file.getOriginalFilename();// 文件原名称
-            System.out.println("上传的文件原名称:"+fileName);
+            //System.out.println("上传的文件原名称:"+fileName);
             if ("GIF".equals(type.toUpperCase())||"PNG".equals(type.toUpperCase())||"JPG".equals(type.toUpperCase())) {
 			    // 项目在容器中实际发布运行的根路径
 			    String realPath = request.getSession().getServletContext().getRealPath("/");
@@ -44,10 +44,10 @@ public class T_comment_picturesController{
 			    System.out.println("项目在容器中实际发布运行的根路径:"+realPath);
 			    // 转存文件到指定的路径
 			    file.transferTo(new File(path));
-			    System.out.println("文件成功上传到指定目录下");                  
+			    //System.out.println("文件成功上传到指定目录下");                  
 			    }
             }else {
-                System.out.println("文件类型为空");
+                //System.out.println("文件类型为空");
                 
             }
           //return JsonUtil.getResponseJson(1, msg, null, null);

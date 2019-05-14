@@ -19,7 +19,7 @@
     </update>
     <select id="th_list"  resultType="com.websit.entityvo.th_list">
     select  t.sales_no,t.order_id,t.cause_time,dd.order_money as zongjia,t.cause_type,t.sales_cause,t.cause_explain,dd.order_state,dd.user_id,US.nickname  from T_sales   t   join   t_order dd  ON  dd.order_id=t.order_id  join  t_user US  ON  US.id=dd.user_id 
-  
+  order by cause_time desc
     </select>
     
         <select id="seleth_list"  resultType="com.websit.entityvo.shopinglist">
@@ -69,7 +69,7 @@ SELECT             s.*,t.*,
                     
                    
                     
-                    
+        order by cause_time desc             
   
     </select>
     

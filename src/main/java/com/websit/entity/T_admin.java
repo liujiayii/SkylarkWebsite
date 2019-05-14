@@ -1,7 +1,16 @@
 package com.websit.entity;
 
 import com.baomidou.mybatisplus.enums.IdType;
+import com.websit.entity.T_role;
+
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.annotation.Transient;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.activerecord.Model;
 import java.io.Serializable;
@@ -14,7 +23,7 @@ import java.io.Serializable;
  * @author lichangchun
  * @since 2019-03-24
  */
-public class T_admin extends Model<T_admin> {
+public class T_admin extends Model<T_admin> implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
@@ -59,6 +68,19 @@ public class T_admin extends Model<T_admin> {
      */
     private Date create_time;
 
+    /**
+     * 角色对象
+     */
+    private List<T_role> roles;
+
+    public List<T_role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<T_role> roles) {
+		this.roles = roles;
+	}
+    
     public Long getId() {
         return id;
     }
@@ -121,17 +143,43 @@ public class T_admin extends Model<T_admin> {
         return this.id;
     }
 
-    @Override
-    public String toString() {
-        return "T_admin{" +
-        "id=" + id +
-        ", name=" + name +
-        ", phone=" + phone +
-        ", username=" + username +
-        ", password=" + password +
-        ", post=" + post +
-        ", status=" + status +
-        ", create_time=" + create_time +
-        "}";
-    }
+	@Override
+	public String toString() {
+		return "T_admin [id=" + id + ", name=" + name + ", phone=" + phone + ", username=" + username + ", password="
+				+ password + ", post=" + post + ", status=" + status + ", create_time=" + create_time + ", roles="
+				+ roles + "]";
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		
+		return true;
+	}
+
+	// 账号是否锁定
+	@Override
+	public boolean isAccountNonLocked() {
+		
+		return this.getStatus() == 0 ? true : false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		
+		return true;
+	}
+
+    
 }

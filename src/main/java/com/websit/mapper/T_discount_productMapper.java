@@ -24,7 +24,7 @@ public interface T_discount_productMapper extends BaseMapper<T_discount_product>
 	 * @author pangchong
 	 * @createDate 2019年3月27日 下午2:00
 	 */
-	public int saveDiscountById(Discount discount);
+	public int saveDiscountById(T_discount_product discount);
 	/**
 	 * @description 根据商品id查询商品及每个商品下所有的满减金额(app)
 	 * @param productId
@@ -47,4 +47,12 @@ public interface T_discount_productMapper extends BaseMapper<T_discount_product>
 	 * @createDate 2019年3月22日 下午2:00
 	 */
 	public int updateDiscount(Discount discount);
+	
+	/**
+	 * 修改满减优惠(商品表)
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	public int updateDiscount_product(T_discount_product discount_product);
 }

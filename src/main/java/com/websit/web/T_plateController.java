@@ -50,7 +50,7 @@ public class T_plateController {
 	@RequestMapping("/addT_plate")
 	@ResponseBody
 	public String T_postingController(@RequestBody T_plate T_plate) {
-		System.out.println("请求成功"+T_plate.toString());
+		//System.out.println("请求成功"+T_plate.toString());
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		Date sdf = new Date();

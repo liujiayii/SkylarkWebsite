@@ -94,16 +94,16 @@ public class T_wxpay_unified_orderServiceImpl extends ServiceImpl<T_wxpay_unifie
 		   <trade_type>APP</trade_type>
 		   <sign>0CB01533B8C1EF103065174F50BCA001</sign>
 		</xml>*/
-		System.out.println("调试模式_统一下单接口 请求XML数据xml：" + xml);
+//		System.out.println("调试模式_统一下单接口 请求XML数据xml：" + xml);
 
 		// 调用统一下单接口，并接受返回的结果
 		String result = PayUtil.httpRequest(WxPayConfig.pay_url, "POST", xml);
 
-		System.out.println("调试模式_统一下单接口 返回XML数据result：" + result);
+//		System.out.println("调试模式_统一下单接口 返回XML数据result：" + result);
 
 		// 将解析结果存储在HashMap中
 		Map map = PayUtil.doXMLParse(result);
-		 System.out.println("map:" + map);
+//		 System.out.println("map:" + map);
 		String return_code = (String) map.get("return_code");// 返回状态码
 		String return_msg = (String) map.get("return_msg");// 返回文字信息
 		String result_code = (String) map.get("result_code");
@@ -112,7 +112,7 @@ public class T_wxpay_unified_orderServiceImpl extends ServiceImpl<T_wxpay_unifie
 		if (return_code == "SUCCESS" || return_code.equals(return_code)) {
 			// 业务结果
 			String prepay_id = (String) map.get("prepay_id");// 返回的预付单信息
-			System.out.println("prepay_id:"+prepay_id);
+//			System.out.println("prepay_id:"+prepay_id);
 			response.put("nonceStr", nonce_str);
 			//response.put("package", "prepay_id=" + prepay_id);
 			response.put("prepay_id",prepay_id);

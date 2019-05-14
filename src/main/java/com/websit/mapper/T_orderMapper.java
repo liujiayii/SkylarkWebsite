@@ -109,7 +109,7 @@ public interface T_orderMapper extends BaseMapper<T_order> {
 	int  sales(String  user_id);
 	
 	int updateorderpayment(@Param("order_id")String order_id,@Param("order_payment")String order_payment);
-	int updatenqux(@Param("number")Integer number, @Param("product_id")String product_id);
+	int updatenqux(@Param("number")Integer number, @Param("product_id")String product_id, @Param("attribute")String attribute);
 	/**
 	 * 根据订单号查用户id
 	 * @param t

@@ -9,6 +9,9 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ResourceUtils;
+
 import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -25,11 +28,17 @@ public class ClientCustomSSL {
         /**
          * 注意PKCS12证书 是从微信商户平台-》账户设置-》 API安全 中下载的
          */
-        String path=this.getClass().getClassLoader().getResource("/").getPath();
-        String pathStr=path+ "apiclient_cert.p12";
-       // System.out.println("pathstr-->"+pathStr);
+    	//File file= ResourceUtils.getFile("classpath:apiclient_cert.p12");
+    	ClassPathResource classPathResource = new ClassPathResource("apiclient_cert.p12");
+//    	System.out.println("classPathResource .getFile()"+classPathResource .getFile());
+       // String path=this.getClass().getClassLoader().getResource("/").getPath();
+     //   System.out.println("path:"+path);
+      //  String pathStr=path+ "apiclient_cert.p12";
+//       System.out.println("pathstr--**********>"+classPathResource .getFile().toString());
+    //    System.out.println("pathstr-->"+pathStr);
+        
         KeyStore keyStore  = KeyStore.getInstance("PKCS12");
-        FileInputStream instream = new FileInputStream(new File(pathStr));//P12文件目录
+        FileInputStream instream = new FileInputStream(new File(classPathResource .getFile().toString()));//P12文件目录
         try {
             /**
              * 此处要改

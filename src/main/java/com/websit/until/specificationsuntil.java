@@ -23,11 +23,11 @@ public class specificationsuntil {
 						// System.out.println(((Map.Entry) map).getValue().toString()+"222222222222222"+((Map.Entry) ma).getValue().toString());
 						if (specificationsuntil.tert(((Map.Entry) map).getValue().toString()).equals(specificationsuntil.tert(((Map.Entry) ma).getValue().toString()))) {
 							fig = true;
-							System.out.println("相同");
+							//System.out.println("相同");
 							
 						} else {
 							fig = false;
-							System.out.println("不相同");
+							//System.out.println("不相同");
 							return fig;
 							
 						}

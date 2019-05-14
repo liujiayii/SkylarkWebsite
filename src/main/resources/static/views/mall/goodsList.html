@@ -24,7 +24,9 @@
   <div class="detailCont">
     <breadcrumb>
       <breadcrumb-item to="/mall">商城</breadcrumb-item>
-      <breadcrumb-item>{{getSearchKeyWord('class_one') || getSearchKeyWord('type') ? getSearchKeyWord('class_one') : '搜索'}}</breadcrumb-item>
+      <breadcrumb-item>{{getSearchKeyWord('class_one') || getSearchKeyWord('type') ? getSearchKeyWord('class_one') :
+        '搜索'}}
+      </breadcrumb-item>
       <breadcrumb-item>{{getSearchKeyWord('class_two') || getSearchKeyWord('type') || getSearchKeyWord('search')}}
       </breadcrumb-item>
     </breadcrumb>
@@ -38,11 +40,11 @@
           <h2 class="h2s">{{items.name || items.productName}}</h2>
           <p class="ps-02"><span>售价：</span>￥{{items.price}}</p>
         </a>
-        <span @click="test_click(items.id)" class="gwc"><img src="/assets/image/mall/car.png"
-                                                             alt=""></span>
+        <!-- <span @click="test_click(items.id)" class="gwc"><img src="/assets/image/mall/car.png"
+                                                             alt=""></span> -->
       </div>
     </div>
-    <div v-if="this.getHrefParam('zone')" style="display: flex;margin: 20px;justify-content: center">
+    <div style="display: flex;margin: 20px;justify-content: center">
       <page :total="pageCount" :page-size="40" size="small" show-elevator show-total @on-change="pageChange"/>
     </div>
   </div>
@@ -55,7 +57,9 @@
       return {
         classData: [],
         goodsData: [],
-        pageCount: 0
+        pageCount: 0,
+        url: '',
+        filters: {}
       }
     },
     methods: {
@@ -95,14 +99,14 @@
         });
       },
       pageChange(page) {
-        this.getGoods("/listZoneByTypeIdPage", {zoneId: this.getHrefParam('zone'), page: page, limit: 40})
+        this.getGoods(this.url, {...this.filters, page})
       },
       getGoods(url, data) {
         $.ajax({
           type: "post",
           url,
           dataType: "json",
-          data,
+          data: {...data, limit: 20},
           success: (res) => {
             if (res.code == 1) {
               this.getHrefParam('zone') ? this.goodsData = res.data.productLists : this.goodsData = res.data
@@ -115,14 +119,21 @@
     mounted() {
       this.getClass()
       if (this.getHrefParam('id')) {
-        this.getGoods("/findBpproducs", {id: this.getHrefParam("id")})
+        this.url = 'findProductByProductTypeList'
+        this.filters = {'producttypeid': this.getSearchKeyWord('id')}
       } else if (this.getSearchKeyWord('search')) {
-        this.getGoods("/listProductByProductTypeIds", {productName: this.getSearchKeyWord('search'),page:1,limit:2})
+        this.url = 'listProductByProductTypeId'
+        this.filters = {'productName': this.getSearchKeyWord('search')}
       } else if (this.getHrefParam('zone')) {
-        this.getGoods("/listZoneByTypeIdPage", {zoneId: this.getHrefParam('zone'), page: 1, limit: 40})
-      } else if(this.getHrefParam('class_cont')){
-        this.getGoods("/listProductByClassTypeId", {classification_id: this.getHrefParam('class_cont'), page: 1, limit: 40})
+        this.url = 'listZoneByTypeIdPage'
+        this.filters = {'zoneId': this.getSearchKeyWord('zone')}
+      } else if (this.getHrefParam('class_cont')) {
+        this.url = 'listProductByClassTypeId'
+        this.filters = {'classificationIds': this.getSearchKeyWord('class_cont')}
+      } else if (this.getSearchKeyWord('type')) {
+        this.url = 'selectbyDESC'
       }
+      this.getGoods(this.url, {...this.filters, page: 1})
     }
   }
 </script>

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.websit.entity.Classification;
 import com.websit.entity.T_product;
 import com.websit.entity.T_product_type;
@@ -277,19 +278,21 @@ public String findBpproduc(Long id) {
 	return JsonUtil.getResponseJson(-1, "程序异常", null, null);
 }
 }
-
+/**
+ * 查询较新商品
+ * @param id
+ * @return
+ */
 @RequestMapping(value = "/selectbyDESC", produces = "application/json; charset=utf-8")
 @ResponseBody
-public String selectbyDESC(Integer page,Integer limit) {
+public String selectbyDESC(Integer page,Integer limit,T_product T_product) {
 	
 	try{
 		Integer star = (page - 1) * limit;
 		List<T_product>list=product_typeService.selectbyDESC(star, limit);
-		
-		
-	 /*String json = JSONObject.toJSONString(map);
-		System.out.println("map"+json);*/
-		return JsonUtil.getResponseJson(1, "查询成功", null, list);
+	//	List<T_product> T_product1 =  productService.listProductByCounts(T_product);
+	   int selectCount = productService.selectCount(new EntityWrapper<T_product>().eq("state", 1));
+		return JsonUtil.getResponseJson(1, "查询成功", selectCount, list);
 } catch (Exception e) {
 	e.printStackTrace();
 	return JsonUtil.getResponseJson(-1, "程序异常", null, null);

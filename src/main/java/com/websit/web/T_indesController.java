@@ -3,11 +3,20 @@ package com.websit.web;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.websit.entity.RequestMessage;
@@ -16,9 +25,9 @@ import com.websit.entity.T_access;
 import com.websit.service.IT_accessService;
 import com.websit.service.IT_productService;
 import com.websit.service.IT_userService;
+import com.websit.until.JsonUtil;
 
 @Controller
-
 public class T_indesController {
 	@Autowired
 	private IT_accessService accessService;
@@ -37,7 +46,7 @@ public class T_indesController {
 
 		if (t == null) {
 			Integer a = accessService.insert1();
-			System.out.println("a" + a);
+			//System.out.println("a" + a);
 		} else {
 			Integer b = accessService.updatenumber(format);
 		}
@@ -56,14 +65,21 @@ public class T_indesController {
 
 	@RequestMapping("/")
 	public ModelAndView index() {
-
 		Long c = userService.slectCount();
-		
+
 		ModelAndView mv = new ModelAndView();
 
 		mv.addObject("count", c);
 
-		mv.setViewName("home/home");
+		mv.setViewName("/home/home");
+		return mv;
+	}
+
+	@RequestMapping("/download")
+	public ModelAndView download() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("/home/download");
+
 		return mv;
 	}
 
@@ -82,6 +98,7 @@ public class T_indesController {
 
 		return mv;
 	}
+
 	@RequestMapping("/searchs")
 	public ModelAndView searchs() {
 		ModelAndView mv = new ModelAndView();
@@ -89,7 +106,6 @@ public class T_indesController {
 
 		return mv;
 	}
-	
 
 	@RequestMapping("/toLogin")
 	public ModelAndView toLogin() {
@@ -141,11 +157,11 @@ public class T_indesController {
 
 	/* 后台管理系统 */
 	@RequestMapping("/backer/")
-	public ModelAndView backer() {
+	public ModelAndView backer(HttpServletRequest req, HttpServletResponse resp) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("/backer/index");
-
 		return mv;
+		
 	}
 
 	@RequestMapping("/goodList")
@@ -196,7 +212,7 @@ public class T_indesController {
 
 		return mv;
 	}
-	
+
 	@RequestMapping("/orderDetails")
 	public ModelAndView orderDetails() {
 		ModelAndView mv = new ModelAndView();
@@ -220,6 +236,7 @@ public class T_indesController {
 
 		return mv;
 	}
+
 	@RequestMapping("/demo")
 	public ModelAndView demo() {
 
@@ -228,6 +245,7 @@ public class T_indesController {
 
 		return mv;
 	}
+
 	@RequestMapping("/evaluates")
 	public ModelAndView evaluates() {
 
@@ -235,5 +253,13 @@ public class T_indesController {
 		mv.setViewName("/mall/evaluates");
 
 		return mv;
+	}
+	
+	/** session超时处理 */
+	@RequestMapping("/invalidSessionStrategy")
+	@ResponseBody
+	public String invalidSessionStrategy() {
+		
+		return JsonUtil.getResponseJson(-3, "长时间未操作已自动下线，请重新登录", null, null);
 	}
 }

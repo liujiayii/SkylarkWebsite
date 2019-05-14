@@ -200,13 +200,13 @@
       },
       methods: {
         getUserInfo() {
-          this.userInfo.name = sessionStorage.getItem("SkyUserName");
-          this.userInfo.id = sessionStorage.getItem("SkyUserId");
-          /*  alert(sessionStorage.getItem("SkyUserId")) */
+          this.userInfo.name = localStorage.getItem("SkyUserName");
+          this.userInfo.id = localStorage.getItem("SkyUserId");
+          /*  alert(localStorage.getItem("SkyUserId")) */
         },
         ok() {
-          sessionStorage.removeItem('SkyUserName')
-          sessionStorage.removeItem('SkyUserId')
+          localStorage.removeItem('SkyUserName')
+          localStorage.removeItem('SkyUserId')
           this.userInfo.name = null
           this.userInfo.id = null
         },

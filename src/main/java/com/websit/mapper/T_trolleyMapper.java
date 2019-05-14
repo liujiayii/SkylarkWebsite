@@ -28,8 +28,8 @@ public interface T_trolleyMapper extends BaseMapper<T_trolley> {
 	 * @return
 	 */
 	List <lt_trolleylst> lt_trolleylst(String user_id,RowBounds RowBounds);
-	List<T_trolley> shppingnum(@Param("product_id")String product_id,@Param("user_id")String user_id);
-	int updatemnum(@Param("num")int  num,@Param("product_id")String product_id,@Param("user_id")String user_id);
+	int shppingnum(@Param("product_id")String product_id,@Param("user_id")String user_id,@Param("Trolley_specifications_Id")String Trolley_specifications_Id);
+	int updatemnum(@Param("num")int  num,@Param("product_id")String product_id,@Param("user_id")String user_id,@Param("Trolley_specifications_Id")String Trolley_specifications_Id);
 	int number(@Param("product_id")String product_id);
 	int updatemnum2(@Param("num")Integer  num,@Param("id")Integer id,@Param("user_id")String user_id,@Param("T_trolley_id")String T_trolley_id);
 	T_product T_produc(String T_product_id);

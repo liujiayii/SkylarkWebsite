@@ -3,6 +3,9 @@ package com.websit.entityvo;
 import java.math.BigDecimal;
 
 public class StockVo {
+	private Long id;
+	
+	private Long product_id;
 
 	  /**
      * 商品规格选项表数组
@@ -65,12 +68,32 @@ public class StockVo {
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getProduct_id() {
+		return product_id;
+	}
+
+	public void setProduct_id(Long product_id) {
+		this.product_id = product_id;
+	}
 
 	@Override
 	public String toString() {
-		return "StockVo [specificationName=" + specificationName + ", cost_price=" + cost_price + ", discount_price="
-				+ discount_price + ", price=" + price + ", number=" + number + "]";
+		return "StockVo [id=" + id + ", product_id=" + product_id + ", specificationName=" + specificationName
+				+ ", cost_price=" + cost_price + ", discount_price=" + discount_price + ", price=" + price + ", number="
+				+ number + "]";
 	}
+
+	
     
 	
 

@@ -44,12 +44,12 @@ public class UploadController {
 			// String path ="D:/img";
 			// String image = UploadUtil.uploadFile(file, path);
 			Map<String, String> image = UpdateFile.update(file);
-			System.out.println(image.get("Path"));
-			map.put("code", 0);
+			//System.out.println(image.get("Path"));
+			map.put("code", 1);
 			map.put("message", "上传成功");
 			map.put("data", image.get("Path"));
 		} catch (Exception e) {
-			map.put("code", 1);
+			map.put("code", 0);
 			e.printStackTrace();
 		}
 		return map;

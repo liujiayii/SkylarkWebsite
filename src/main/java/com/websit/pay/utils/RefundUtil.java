@@ -74,7 +74,7 @@ public class RefundUtil {
 				+ transaction_id + "</transaction_id>" + "<out_refund_no>" + out_refund_no + "</out_refund_no>"
 				+ "<total_fee>" + total_fee + "</total_fee>" + "<refund_fee>" + refund_fee + "</refund_fee>"
 				+ "<op_user_id>" + op_user_id + "</op_user_id>" + "</xml>";
-		System.out.println("退款xml" + xml);
+//		System.out.println("退款xml" + xml);
 		// 退款请求路径
 		String createOrderURL = WxPayConfig.refund_url;
 		ClientCustomSSL ccs = new ClientCustomSSL();
@@ -85,7 +85,7 @@ public class RefundUtil {
 		map.put("transaction_id", transaction_id);
 		map.put("out_trade_no", out_trade_no);
 		
-		System.out.println("map:" + map);
+//		System.out.println("map:" + map);
 		/*Json json = new Json();
 		json.setData(map);*/
 		return map;

@@ -14,13 +14,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.websit.constant.ReturnCode;
 import com.websit.entity.Inventory;
+import com.websit.entity.T_discount_product;
+import com.websit.entity.T_product;
 import com.websit.entity.T_product_img;
 import com.websit.entityvo.Discount;
 import com.websit.entityvo.ProductDetails;
 import com.websit.entityvo.ProductTypeVo;
 import com.websit.entityvo.ProductVo;
+import com.websit.entityvo.ProductsVo;
 import com.websit.service.IT_discount_productService;
 import com.websit.service.IT_productService;
 import com.websit.service.IT_product_imgService;
@@ -117,20 +121,22 @@ public class T_productController {
 	 */
 	@RequestMapping(value = "/saveProduct", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String saveProduct(ProductVo productVo, Inventory inventory, Discount discount, HttpServletRequest request) {
+	public String saveProduct(ProductVo productVo, Inventory inventory, T_discount_product discount, HttpServletRequest request,Long discount_id) {
 		try {
-
+System.out.println("fddddddddv");
 			int result = productService.saveProduct(productVo);
 			inventory.setProduct_id(productVo.getId());
 			// 增加商品时,增加库存
-			int results = inventoryService.saveInventoryById(inventory);
+			//int results = inventoryService.saveInventoryById(inventory);
 			// //商品添加优惠
-			discount.setProductId(productVo.getId());
+		
+			discount.setProduct_id(productVo.getId());
+			//discount.setDiscount_id(discount_id);
 			discountService.saveDiscountById(discount);
-
+		
 			// System.out.println("我去保存图片");
 			String file = request.getParameter("file");
-			System.out.println("file" + file);
+			//System.out.println("file" + file);
 			String result1[] = file.split(",");
 			T_product_img product_img = new T_product_img();
 			product_img.setProduct_id(productVo.getId());
@@ -138,7 +144,7 @@ public class T_productController {
 				product_img.setImg(result1[i]);
 				productImgService.insert(product_img);
 			}
-			if (result > 0 && results > 0) {
+			if (result > 0) {
 
 				return JsonUtil.getResponseJson(1, "增加成功", null, result);
 			} else {
@@ -158,7 +164,7 @@ public class T_productController {
 	 */
 	@RequestMapping(value = "/updateProduct")
 	@ResponseBody
-	public String updateProduct(HttpServletRequest request, BigInteger productId, BigInteger id) {
+	public String updateProduct(HttpServletRequest request, BigInteger productId, BigInteger id ,Long discount_id) {
 		// System.out.println("==l来啦===");
 		int deleteProductImageByProductId = productImgService.deleteProductImageByProductId(productId);
 		try {
@@ -182,7 +188,11 @@ public class T_productController {
 			productVo.setState(Integer.valueOf(state));
 			productVo.setBrand(brand);
 			productVo.setDescribion(describion);
-			productVo.setZoneid(Long.parseLong(zoneid));
+			//System.out.println("===="+productVo.getZoneid());
+			if (StringUtils.isNotEmpty(zoneid)) {
+				productVo.setZoneid(Long.parseLong(zoneid));
+			}
+		
 			productVo.setAfter_information(after_information);
 			// System.out.println(zoneid);
 			// productImgService.deleteImgById(productVo.getId());
@@ -195,7 +205,12 @@ public class T_productController {
 			}
 			product_img.getProduct_id();
 			productImgService.updateAllColumnById(product_img);
-
+			
+			T_discount_product discount_product= new T_discount_product();
+			discount_product.setDiscount_id(discount_id);
+			discount_product.setProduct_id(Long.parseLong(productId + ""));
+			discountService.updateDiscount_product(discount_product);
+			//discountService.update(discount_product, new EntityWrapper<T_discount_product>().eq("product_id",productId ));
 			int result = productService.updateProduct(productVo);
 
 			if (result > 0) {
@@ -243,9 +258,9 @@ public class T_productController {
 	public String listProductByProductId(BigInteger productId) {
 
 		try {
-			System.out.println("productId"+productId);
+			//System.out.println("productId"+productId);
 			List<ProductDetails> result = productService.listProductByProductId(productId);
-System.out.println("result"+result);
+///System.out.println("result"+result);
 			if (result.size() >= 1) {
 				return JsonUtil.getResponseJson(1, "查看成功", null, result);
 			} else {
@@ -289,15 +304,15 @@ System.out.println("result"+result);
 	@ResponseBody
 	public String listProductByProductTypeId(String productName, Integer page, Integer limit) {
 		try {
-
+			//System.out.println("productName"+productName);
 			List<ProductVo> result = productService.listProductByProductTypeId(productName, (page - 1) * limit, limit);
 			List<ProductVo> result1 = productService.listProductByCount(productName, (page - 1) * limit, limit);
-			System.out.println("result" + result.size());
+			//System.out.println("result" + result.size());
 			if (result.size() >= 1 && result1.size() >= 1) {
 				return JsonUtil.getResponseJson(1, "查看成功", result1.get(0).getCount(), result);
 
 			} else {
-				System.out.println("*****");
+				//System.out.println("*****");
 				return JsonUtil.getResponseJson(1, "无数据", result1.get(0).getCount(), result);
 			}
 
@@ -365,21 +380,21 @@ System.out.println("result"+result);
 	 */
 	@RequestMapping(value = "/listProductByClassTypeId", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String listProductByClassTypeId(Long classification_id, Integer page, Integer limit) {
-		List<ProductTypeVo> listProduct = null;
+	public String listProductByClassTypeId(Long classificationIds, Integer page, Integer limit) {
+		List<ProductsVo> listProduct = null;
 		int code = ReturnCode.SUCCSEE_CODE;
 		// 总条数
 		int count = 0;
 		String msg = ReturnCode.SUCCESS_SELECT_MSG;
 		page = (page <= 0) ? 1 : limit * (page - 1);
 		
-		if (classification_id == null || page == null || limit == null) {
+		if (classificationIds == null || page == null || limit == null) {
 			return JsonUtil.getResponseJson(0, "参数缺失", null, null);
 		}
 		
 		try {
-			listProduct = productService.listProductByClassTypeId(classification_id, page, limit);
-			count = productService.listProductByClassTypeId(classification_id, null, null).size();
+			listProduct = productService.listProductByClassTypeId(classificationIds, page, limit);
+			count = productService.listProductByClassTypeId(classificationIds, null, null).size();
 			if (listProduct == null || listProduct.size() == 0) {
 				msg = ReturnCode.NORESULT_SELECT_MSG;
 			}
@@ -435,15 +450,63 @@ System.out.println("result"+result);
 
 			List<ProductVo> result = productService.listProductByProductTypeIds(productName, (page - 1) * limit, limit);
 			List<ProductVo> result1 = productService.findproductCountAll(productName, (page - 1) * limit, limit);
-			System.out.println("result" + result.size());
+			//System.out.println("result" + result.size());
 			if (result.size() >= 1 && result1.size() >= 1) {
 				return JsonUtil.getResponseJson(1, "查看成功", result1.get(0).getCount(), result);
 
 			} else {
-				System.out.println("*****");
+				//System.out.println("*****");
 				return JsonUtil.getResponseJson(1, "无数据", result1.get(0).getCount(), result);
 			}
 
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
+		}
+	}
+	
+	/**
+	 * 首页模糊查询(app)
+	 * 
+	 * @author xxxxx
+	 * @createDate 2019年3月24日 下午2:00
+	 */
+	@RequestMapping(value = "/listProductByProductTypeIdsApp", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String listProductByProductTypeIdsApp(String productName, String page, String limit) {
+		Integer limits = null;
+		if (StringUtils.isEmpty(page)) {
+			page = "1";
+		}
+		if (StringUtils.isNotEmpty(limit)) {
+			limits = Integer.valueOf(limit);
+		} else {
+			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, "参数缺失", null, null);
+		}
+		return productService.listProductByProductTypeIdsApp(productName, Integer.valueOf(page), limits);
+	}
+	
+	/**
+	 * 通过商品类型id查询商品---分页(pc端)
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月21日 下午2:00
+	 */
+	@RequestMapping(value = "/findProductByProductTypeList", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String findProductByProductTypeList(Integer page, Integer limit, Long producttypeid) {
+		int count = 0;
+		try {
+			Integer star = (page - 1) * limit;
+			List<ProductVo> result = productService.findProductByProductTypeList(star,limit,producttypeid);
+           // List<ProductVo> selectCount = productService.findProductByProductTypeListCount(producttypeid,star,limit);
+            count = productService.findProductByProductTypeList(star, limit, producttypeid).size();
+            if (result.size() >= 1 && count>0) {
+				
+				return JsonUtil.getResponseJson(1, "查看成功", count, result);
+			} else {
+				return JsonUtil.getResponseJson(1, "无数据", null, null);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.getResponseJson(-1, "程序异常", null, null);

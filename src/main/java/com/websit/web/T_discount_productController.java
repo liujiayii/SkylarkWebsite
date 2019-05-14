@@ -76,11 +76,11 @@ private IT_discount_productService discount_productService;
 	 * @author pangchong
 	 * @createDate 2019年3月21日 下午2:00
 	 */
-	@RequestMapping(value = "/updateDiscount", produces = "application/json; charset=utf-8")
+	/*@RequestMapping(value = "/updateDiscount", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String updateDiscount(Long discountid,BigDecimal price,BigDecimal money) {
+	public String updateDiscount(Long id,BigDecimal price,BigDecimal money) {
 		Discount discount = new Discount();
-		discount.setDiscountid(discountid);
+		discount.setDiscountid(id);
 		discount.setPrice(price);
 		discount.setMoney(money);
 		try{
@@ -95,5 +95,5 @@ private IT_discount_productService discount_productService;
 		e.printStackTrace();
 		return JsonUtil.getResponseJson(-1, "程序异常", null, null);
 	}
-	}
+	}*/
 }

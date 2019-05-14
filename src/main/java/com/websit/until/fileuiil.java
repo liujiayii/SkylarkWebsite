@@ -13,7 +13,7 @@ public class fileuiil {
     public  String upfileuiil(String content) {
     	FileOutputStream fop = null;
     	String trueFileName = String.valueOf(System.currentTimeMillis()) + "." + "txt";
-    	System.out.println(trueFileName);
+//    	System.out.println(trueFileName);
     	String  ld="E:/"+trueFileName;
     	File file = new File(ld);
     	try {
@@ -49,15 +49,15 @@ public class fileuiil {
     	      br.close();
     	      
     	    } else {
-    	      System.out.println("文件不存在!");
+//    	      System.out.println("文件不存在!");
     	    }
     	  } catch (Exception e) {
-    	    System.out.println("文件读取错误!");
+//    	    System.out.println("文件读取错误!");
     	  }
     	  return txt;
     }
-    public static void main(String[] args) {
-        String filePath = "F:/1553134223693.txt";
-        System.out.println(readTxt(filePath));
-      }
+//    public static void main(String[] args) {
+//        String filePath = "F:/1553134223693.txt";
+//        System.out.println(readTxt(filePath));
+//      }
 }

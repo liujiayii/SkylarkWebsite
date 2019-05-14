@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>客户端下载</title>
+  <style>
+    /*reset*/
+    * {
+      font-family: "微软雅黑";
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    body {
+      width: 100%;
+      color: #333;
+      min-width: 320px;
+      background: #F8F7F5;
+      word-break: break-all;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    select {
+      -moz-appearance: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      -webkit-appearance: none;
+    }
+
+    .flex {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+    }
+
+    .flex-v {
+      -webkit-box-orient: vertical;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+    }
+
+    .flex-1 {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      width: 1px;
+    }
+
+    .flex-align-center {
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      -ms-grid-row-align: center;
+      align-items: center;
+    }
+
+    .flex-pack-center {
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+    }
+
+    .flex-pack-justify {
+      -webkit-box-pack: justify;
+      -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+    }
+
+    button {
+      background: none;
+      border: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+      cursor: pointer;
+      outline: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: normal;
+    }
+
+    ul,
+    ol,
+    li {
+      list-style: none;
+    }
+
+    i,
+    em {
+      font-style: normal;
+    }
+
+    input {
+      font-family: Helvetica;
+      outline: none;
+    }
+
+    input[type="button"] {
+      border: none;
+    }
+
+    button,
+    html input[type="button"],
+    input[type="reset"],
+    input[type="submit"] {
+      -webkit-appearance: button;
+      cursor: pointer;
+    }
+
+    select {
+      font-family: Helvetica;
+    }
+
+    .flex-center {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+    }
+
+    .clearfix:after {
+      content: ".";
+      height: 0;
+      display: block;
+      visibility: hidden;
+      clear: both;
+    }
+
+    .block {
+      display: block;
+    }
+
+    img {
+      vertical-align: middle;
+      border: none;
+    }
+
+    .cfff {
+      color: #fff;
+    }
+
+    .bkfff {
+      background: #fff;
+    }
+
+    .cur-pointer {
+      cursor: pointer;
+    }
+
+    .tc {
+      text-align: center;
+    }
+
+    .tl {
+      text-align: left;
+    }
+
+    .tr {
+      text-align: right;
+    }
+
+    .c333 {
+      color: #333;
+    }
+
+    .c666 {
+      color: #999;
+    }
+
+    .c999 {
+      color: #999;
+    }
+
+    .mt10 {
+      margin-top: 0.133333rem;
+    }
+
+    .mt20 {
+      margin-top: 0.266667rem;
+    }
+
+    .mt30 {
+      margin-top: 0.4rem;
+    }
+
+    .mb20 {
+      margin-bottom: 0.266667rem;
+    }
+
+    .mb30 {
+      margin-bottom: 0.4rem;
+    }
+
+    .mb40 {
+      margin-bottom: 0.533333rem;
+    }
+
+    .pt10 {
+      padding-top: 0.133333rem;
+    }
+
+    .pt20 {
+      padding-top: 0.266667rem;
+    }
+
+    .pb20 {
+      padding-bottom: 0.266667rem;
+    }
+
+    .pl20 {
+      padding-left: 0.266667rem;
+    }
+
+    .pr20 {
+      padding-right: 0.266667rem;
+    }
+
+    .f18 {
+      font-size: 18px;
+    }
+
+    [data-dpr="2"] .f18 {
+      font-size: 36px;
+    }
+
+    [data-dpr="3"] .f18 {
+      font-size: 54px;
+    }
+
+    .border {
+      border: 1px solid #ddd;
+    }
+
+    .bor-radius {
+      border-radius: 5px;
+      webkit-border-radius: 5px;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1);
+      -webkit-transform: scale(1);
+      vertical-align: middle;
+      margin-right: 0.133333rem;
+    }
+
+    [data-dpr="2"] input[type="checkbox"] {
+      transform: scale(1.5);
+      -webkit-transform: scale(1.5);
+    }
+
+    [data-dpr="3"] input[type="checkbox"] {
+      transform: scale(2);
+      -webkit-transform: scale(2);
+    }
+
+    .icobg {
+      background-image: url(/assets/images/iconbg.png);
+      display: inline-block;
+      background-size: 5.333333rem 5.333333rem;
+    }
+
+    /*05-17APP下载*/
+    .app-bg {
+      position: relative;
+      margin-bottom: 4.0rem;
+    }
+
+    .app-bg .apptop {
+      width: 100%;
+      display: block;
+    }
+
+    .xflogo {
+      position: absolute;
+      left: 50%;
+      bottom: -2.4rem;
+      transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
+      font-size: 21px;
+      color: #333;
+      text-align: center;
+    }
+
+    .xflogo img {
+      /*width: 2.893333rem;*/
+      /*height: 2.773333rem;*/
+      display: block;
+      margin-bottom: 0.266667rem;
+    }
+
+    [data-dpr="2"] .xflogo {
+      font-size: 42px;
+    }
+
+    [data-dpr="3"] .xflogo {
+      font-size: 63px;
+    }
+
+    .appbto {
+      width: 72%;
+      height: 1.333333rem;
+      line-height: 1.333333rem;
+      border: 1px solid #F29968;
+      color: #ea5503;
+      margin: 0 auto 0.8rem;
+      border-radius: 0.133333rem;
+      -webkit-border-radius: 0.133333rem;
+      text-align: center;
+      display: block;
+      font-size: 16px;
+    }
+
+    [data-dpr="2"] .appbto {
+      font-size: 32px;
+    }
+
+    [data-dpr="3"] .appbto {
+      font-size: 48px;
+    }
+
+    .appbto img {
+      width: 0.533333rem;
+      vertical-align: middle;
+      margin-right: 0.4rem;
+    }
+
+    .appfot {
+      display: block;
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      margin-top: 1.4rem;
+    }
+
+    [data-dpr="2"] .appfot {
+      font-size: 24px;
+    }
+
+    [data-dpr="3"] .appfot {
+      font-size: 36px;
+    }
+
+    /*05-17*/
+    .xf-mask {
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      display: none;
+    }
+
+    .appfot img {
+      width: 5.333333rem;
+      margin: 0 auto 0.266667rem;
+    }
+
+    .iphone-dw {
+      display: block;
+      width: 100%;
+    }
+
+    .androidimg {
+      width: 90%;
+      display: block;
+      margin: 0 auto;
+      position: relative;
+      top: 5%;
+    }
+  </style>
+</head>
+
+<body>
+<div class="app-bg">
+  <img src="/assets/images/apptop.png" class="apptop"/>
+  <div class="xflogo">
+    <img src="/assets/images/logo1.png"/>
+    融易购
+  </div>
+</div>
+<a href="javascript:getPath('融宜购',0);" class="appbto andr-btn"><img
+  src="/assets/images/app-adr.png"/>Android客户端下载</a>
+<a href="javascript:getPath('融宜购',1);" class="appbto"><img
+  src="/assets/images/app-iphone.png"/>iPhone客户端下载</a>
+<div class="appfot">
+  <p>©2019 All rights resered</p>
+</div>
+<!-- 弹窗 -->
+<div class="xf-mask"><img src="/assets/images/android.png" class="androidimg"/></div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+<script language="JavaScript">
+
+  $(".xf-mask").on("touchend", munu_close);
+
+  function getPath(app_name, app_type) {
+    $.ajax({
+      type: "post",
+      url: "/t_app/seletapp",
+      dataType: "json",
+      data: {app_name, app_type},
+      success: (res) => {
+        if (res.code === 1) {
+          download(res.data)
+        } else {
+          this.error(res.msg)
+        }
+      }
+    })
+  }
+
+  function download(path) {
+    var winHeight = typeof window.innerHeight != 'undefined' ? window.innerHeight : document.documentElement.clientHeight; //兼容IOS，不需要的可以去掉
+    var tip = document.getElementById('weixin-tip');
+    var ua = navigator.userAgent.toLowerCase();
+    //如果是微信扫描, 或qq扫描也不能下载并且不是qq浏览器。
+    if (ua.match(/MicroMessenger/i) == "micromessenger" || (!/qqbrowser/.test(ua) && /qq/.test(ua))) {
+      if (/mac|iphone|ipad|ipod/.test(ua)) {
+        window.location.href = "@{app.AppController.iosTip}" + "?path=" + path;
+      } else if (/android/.test(ua)) {
+        showDiv();
+      } else if (/windows/.test(ua)) {
+        showDiv();
+      } else {
+        alert("请在浏览器中打开");
+      }
+    } else { //非微信浏览器
+      window.location.href = path;
+    }
+  }
+
+  function showDiv() {
+    if ($(".xf-mask").is(":hidden")) {
+      $(".xf-mask").show();
+    } else {
+      $(".xf-mask").hide();
+    }
+  }
+
+  function munu_close() {
+    $(".xf-mask").hide();
+  }
+</script>
+
+<script>
+  ;(function (win, lib) {
+    var doc = win.document;
+    var docEl = doc.documentElement;
+    var metaEl = doc.querySelector('meta[name="viewport"]');
+    var flexibleEl = doc.querySelector('meta[name="flexible"]');
+    var dpr = 0;
+    var scale = 0;
+    var tid;
+    var flexible = lib.flexible || (lib.flexible = {});
+
+    if (metaEl) {
+      console.warn('将根据已有的meta标签来设置缩放比例');
+      var match = metaEl.getAttribute('content').match(/initial\-scale=([\d\.]+)/);
+      if (match) {
+        scale = parseFloat(match[1]);
+        dpr = parseInt(1 / scale);
+      }
+    } else if (flexibleEl) {
+      var content = flexibleEl.getAttribute('content');
+      if (content) {
+        var initialDpr = content.match(/initial\-dpr=([\d\.]+)/);
+        var maximumDpr = content.match(/maximum\-dpr=([\d\.]+)/);
+        if (initialDpr) {
+          dpr = parseFloat(initialDpr[1]);
+          scale = parseFloat((1 / dpr).toFixed(2));
+        }
+        if (maximumDpr) {
+          dpr = parseFloat(maximumDpr[1]);
+          scale = parseFloat((1 / dpr).toFixed(2));
+        }
+      }
+    }
+    if (!dpr && !scale) {
+      var isAndroid = win.navigator.appVersion.match(/android/gi);
+      var isIPhone = win.navigator.appVersion.match(/iphone/gi);
+      var devicePixelRatio = win.devicePixelRatio;
+      if (isIPhone) {
+        // iOS下，对于2和3的屏，用2倍的方案，其余的用1倍方案
+        if (devicePixelRatio >= 3 && (!dpr || dpr >= 3)) {
+          dpr = 3;
+        } else if (devicePixelRatio >= 2 && (!dpr || dpr >= 2)) {
+          dpr = 2;
+        } else {
+          dpr = 1;
+        }
+      } else {
+        // 其他设备下，仍旧使用1倍的方案
+        dpr = 1;
+      }
+      scale = 1 / dpr;
+    }
+    docEl.setAttribute('data-dpr', dpr);
+    if (!metaEl) {
+      metaEl = doc.createElement('meta');
+      metaEl.setAttribute('name', 'viewport');
+      metaEl.setAttribute('content', 'initial-scale=' + scale + ', maximum-scale=' + scale + ', minimum-scale=' + scale + ', user-scalable=no');
+      if (docEl.firstElementChild) {
+        docEl.firstElementChild.appendChild(metaEl);
+      } else {
+        var wrap = doc.createElement('div');
+        wrap.appendChild(metaEl);
+        doc.write(wrap.innerHTML);
+      }
+    }
+    function refreshRem() {
+      var width = docEl.getBoundingClientRect().width;
+      if (width / dpr > 540) {
+        width = 540 * dpr;
+      }
+      var rem = width / 10;
+      docEl.style.fontSize = rem + 'px';
+      flexible.rem = win.rem = rem;
+    }
+    win.addEventListener('resize', function () {
+      clearTimeout(tid);
+      tid = setTimeout(refreshRem, 300);
+    }, false);
+    win.addEventListener('pageshow', function (e) {
+      if (e.persisted) {
+        clearTimeout(tid);
+        tid = setTimeout(refreshRem, 300);
+      }
+    }, false);
+    if (doc.readyState === 'complete') {
+      doc.body.style.fontSize = 12 * dpr + 'px';
+    } else {
+      doc.addEventListener('DOMContentLoaded', function (e) {
+        doc.body.style.fontSize = 12 * dpr + 'px';
+      }, false);
+    }
+    refreshRem();
+    flexible.dpr = win.dpr = dpr;
+    flexible.refreshRem = refreshRem;
+    flexible.rem2px = function (d) {
+      var val = parseFloat(d) * this.rem;
+      if (typeof d === 'string' && d.match(/rem$/)) {
+        val += 'px';
+      }
+      return val;
+    }
+    flexible.px2rem = function (d) {
+      var val = parseFloat(d) / this.rem;
+      if (typeof d === 'string' && d.match(/px$/)) {
+        val += 'rem';
+      }
+      return val;
+    }
+  })(window, window['lib'] || (window['lib'] = {}));</script>
+</html>

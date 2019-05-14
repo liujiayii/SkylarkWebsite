@@ -39,7 +39,7 @@ public class T_replyServiceImpl extends ServiceImpl<T_replyMapper, T_reply> impl
 			
 			tre.get(i).setComment(text);
 		}
-		System.out.println(tre.toString()+"1111111111111111111111111111111111111111111111");
+//		System.out.println(tre.toString()+"1111111111111111111111111111111111111111111111");
 		return tre;
 	}
 	
@@ -52,7 +52,7 @@ public class T_replyServiceImpl extends ServiceImpl<T_replyMapper, T_reply> impl
 			
 			tre.get(i).setContext(text);
 		}
-		System.out.println(tre.toString()+"2222222222222222222222222222222222222222222");
+//		System.out.println(tre.toString()+"2222222222222222222222222222222222222222222");
 		 return tre;
 	}
 	@Override

@@ -27,6 +27,7 @@ import com.websit.entity.T_alipayment_order;
 import com.websit.entity.T_order;
 import com.websit.service.AliPayAppService;
 import com.websit.service.IT_alipayment_orderService;
+import com.websit.service.IT_orderService;
 import com.websit.until.DateUtils;
 import com.websit.until.JsonUtil;
 
@@ -47,6 +48,8 @@ public class AliPayAppServiceImpl implements AliPayAppService {
 	
 	@Autowired
 	private IT_alipayment_orderService alipayment_orderService;
+	@Autowired
+	private IT_orderService orderService;
 
 	/** 获取支付宝加签后台的订单信息字符串 */
 	@Override
@@ -173,7 +176,7 @@ public class AliPayAppServiceImpl implements AliPayAppService {
 	public String notify(Map<String, String> conversionParams) {
 		logger.info("==================支付宝异步请求逻辑处理");
 
-		System.out.println("==异步通知参数值=="+conversionParams);
+//		System.out.println("==异步通知参数值=="+conversionParams);
 		
 		// 签名验证(对支付宝返回的数据验证，确定是支付宝返回的)
 		boolean signVerified = false;
@@ -190,7 +193,7 @@ public class AliPayAppServiceImpl implements AliPayAppService {
 
 		// 对验签进行处理
 		if (signVerified) {
-			System.out.println("验签通过");
+			//System.out.println("验签通过");
 			// 验签通过
 			// 获取需要保存的数据
 			String appId = conversionParams.get("app_id");// 支付宝分配给开发者的应用Id
@@ -257,6 +260,11 @@ public class AliPayAppServiceImpl implements AliPayAppService {
 
 				if (tradeStatus.equals("TRADE_SUCCESS")) { // 只处理支付成功的订单:
 															// 修改交易表状态,支付成功
+					// 修改订单表支付方式
+					orderService.updateorderpayment(outTradeNo, "1");
+					// 修改订单表支付成功状态
+					orderService.ordercancelled(outTradeNo, "1");
+					
 					if (returnResult > 0) {
 						logger.info("======更新商户订单表成功======");
 						return "success";

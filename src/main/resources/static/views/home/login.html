@@ -201,13 +201,13 @@
             $.ajax({
               type: "post",
               url: "/doLogin",
-              data: JSON.stringify(this.form),
+              data: JSON.stringify({code: this.form.code,password: this.form.password,phone: this.form.phone}),
               contentType: 'application/json',
               dataType: "json",
               success: (res) => {
-                if (res.code == 1) {
-                  sessionStorage.setItem("SkyUserName", (res.data.nickname == undefined ? res.data.phone : res.data.nickname))
-                  sessionStorage.setItem("SkyUserId", res.data.id)
+                if (res.code === 1) {
+                  localStorage.setItem("SkyUserName", (res.data.nickname == undefined ? res.data.phone : res.data.nickname))
+                  localStorage.setItem("SkyUserId", res.data.id)
                   window.history.go(-1);
                 } else {
                   this.getCode()

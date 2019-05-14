@@ -26,8 +26,8 @@ public class WxPayConfig {
 	// 微信支付的商户密钥
 	public static final String key = "1qaz2wsx3edc4rfv5tgb6yhn7ujm8ikk";
 	// 支付成功后的服务器回调url （测试）
-	//public static final String notify_url = "https://23ce556732.51mypc.cn/wxNotify";
-	// 支付成功后的服务器回调url （测试）
+//	public static final String notify_url = "https://23ce556732.51mypc.cn/wxNotify";
+	// 支付成功后的服务器回调url （正式）
 	public static final String notify_url = "http://www.yunquekeji.com/wxNotify";
 	// 签名方式
 	public static final String SIGNTYPE = "MD5";

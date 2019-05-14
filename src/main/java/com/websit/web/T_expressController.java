@@ -56,16 +56,32 @@ public class T_expressController {
 		
 		JSONObject expressDetails = JSONObject.parseObject(it_expressService.selectExpressDetails(map));
 		
-		if (expressDetails.getIntValue("status") == ExpressReturnCodeEnum.SUCCESS.getIndex()) {
-			JSONObject result = JSONObject.parseObject(expressDetails.getString("result"));
-			result.put("expressDetail", JSONObject.parseArray(result.getString("list")));
-			result.remove("list");
-			returnStr = JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, null, result);
+		// 本地数据库查询
+		if (expressDetails.getIntValue("count") > 0) {
+			return JSONObject.toJSONString(expressDetails);
+		}
+		
+		int status = expressDetails.getIntValue("status");
+		/** 判断状态，如果返回的不是查询成功状态，则将错误消息返回 */
+		if (status == ExpressReturnCodeEnum.SUCCESS.getIndex()) {
+			returnStr = JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, null, dateFormat(expressDetails));
+		} else {
+			for (ExpressReturnCodeEnum erc : ExpressReturnCodeEnum.values()) {
+				if (status == erc.getIndex()) {
+					returnStr = JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, erc.getName(), null, dateFormat(expressDetails));
+				}
+			}
 		}
 		
 		return returnStr;
 	}
 	
-	
-	
+	/** 格式化返回数据 */
+	private JSONObject dateFormat(JSONObject obj) {
+		JSONObject result = JSONObject.parseObject(obj.getString("result"));
+		result.put("expressDetail", JSONObject.parseArray(result.getString("list")));
+		result.remove("list");
+		
+		return result;
+	}
 }

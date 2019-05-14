@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.websit.constant.ReturnCode;
+import com.websit.entity.T_admin;
 import com.websit.entity.T_permission;
 import com.websit.entity.T_role;
+import com.websit.entity.T_role_admin;
 import com.websit.entity.T_role_permission;
+import com.websit.service.IT_adminService;
+import com.websit.service.IT_admin_roleService;
 import com.websit.service.IT_permissionService;
 import com.websit.service.IT_roleService;
 import com.websit.service.IT_role_permissionService;
@@ -22,6 +26,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 /**
@@ -44,6 +49,12 @@ public class T_roleController {
 	
 	@Autowired
 	private IT_permissionService permissionService;
+	
+	@Autowired
+	private IT_adminService adminService;
+	
+	@Autowired
+	private IT_admin_roleService admin_roleService;
 	
 	/**
 	 * 添加角色
@@ -79,8 +90,7 @@ public class T_roleController {
 	 * @description 
 	 * @param role_id 角色id
 	 * @param permission_ids 权限id数组
-	 * @return  
-	 * String    
+	 * @return String    
 	 * @author lujinpeng
 	 * @createDate 2019年4月19日-下午3:15:06
 	 */
@@ -165,17 +175,38 @@ public class T_roleController {
 	 */
 	@RequestMapping("/updateRole")
 	@ResponseBody
+	@Transactional
 	public String updateRole(T_role role) {
 		int code = ReturnCode.SUCCSEE_CODE;
 		String msg = ReturnCode.SUCCESS_UPDATE_MSG;
 		int result = 0;
+		T_role oldRole = roleService.selectById(role.getId());
 		
 		try {
 			result = roleService.updateRole(role);
+			T_role t_role = roleService.selectById(role.getId());
+			if (result > 0) {
+				T_admin adm = new T_admin();
+				adm.setPost(t_role.getName());
+				List<T_admin> adminList = adminService.selectListSelective(adm);
+				if (t_role.getStatus() == 1 && t_role.getStatus() != oldRole.getStatus()) {
+					for (T_admin admin : adminList) {
+						admin.setStatus(1);
+						adminService.updateByIdSelective(admin);
+					}
+					msg = "角色状态锁定成功，该角色所有用户将被锁定";
+				} else if (t_role.getStatus() == 0 && t_role.getStatus() != oldRole.getStatus()) {
+					for (T_admin admin : adminList) {
+						admin.setStatus(0);
+						adminService.updateByIdSelective(admin);
+					}
+					msg = "角色启用成功";
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			code = result = ReturnCode.EXCEPTION_CODE;
-			msg = ReturnCode.FAILED_SELECT_MSG;
+			msg = ReturnCode.FAILED_UPDATE_MSG;
 		}
 		
 		return JsonUtil.getResponseJson(code, msg, result, null);
@@ -194,6 +225,7 @@ public class T_roleController {
 	 */
 	@RequestMapping("/deleteRole")
 	@ResponseBody
+	@Transactional
 	public String deleteRole(Long id) {
 		int code = ReturnCode.SUCCSEE_CODE;
 		String msg = ReturnCode.SUCCESS_DELETE_MSG;
@@ -203,8 +235,12 @@ public class T_roleController {
 			// 删除角色
 			result = roleService.deleteRole(id);
 			if (result > 0) {
-				// 删除角色权限关系表数据
+				// 删除角色权限关系表关联数据
 				role_permissionService.delete(new EntityWrapper<T_role_permission>().eq("role_id", id));
+				// 删除用户与角色关系表关联数据
+				admin_roleService.delete(new EntityWrapper<T_role_admin>().eq("role_id", id));
+				
+				msg = "角色删除成功，请尽快为该角色用户分配新角色，以免影响账号正常使用";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -266,10 +302,7 @@ public class T_roleController {
 			List<T_role_permission> rpList = role_permissionService.selectList(new EntityWrapper<T_role_permission>().eq("role_id", role_id));
 			
 			for (T_role_permission rolePerm : rpList) {
-				
-				if (rolePerm.getPermission_id() >= 1000) {
-					wrapList.add(rolePerm.getPermission_id());
-				}
+				wrapList.add(rolePerm.getPermission_id());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

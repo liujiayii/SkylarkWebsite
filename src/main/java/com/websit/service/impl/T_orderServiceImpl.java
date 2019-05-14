@@ -161,7 +161,7 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 		qujian.setId("0");
 		qujian.setPrice(0);
 		int  yhje=0;
-		System.out.println(mer.toString()+"9999999999999999999999999999");
+//		System.out.println(mer.toString()+"9999999999999999999999999999");
 		try {
 			
 	
@@ -169,18 +169,18 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 			if(mer.get(i).getPrice()<jiage) {
 				if(mer.get(i).getPrice()>qujian.getPrice()) {
 					qujian=mer.get(i);
-					System.out.println("9999999999999999999999999999"+qujian);
+//					System.out.println("9999999999999999999999999999"+qujian);
 				}
 							    
 			}
 		}
-		System.out.println("9999999999999999999999999999"+qujian.getId());
+//		System.out.println("9999999999999999999999999999"+qujian.getId());
 		yhje=T_orderMapper.selectyhjene(qujian.getId());
 		} catch (Exception e) {
 			yhje=0;
 		}
-		System.out.println(yhje+"测试");
-		System.out.println("9999999999999999999999999999"+yhje);
+//		System.out.println(yhje+"测试");
+//		System.out.println("9999999999999999999999999999"+yhje);
 		return yhje;
 	}
 
@@ -209,9 +209,9 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 		return T_orderMapper.updateorderpayment(order_id,order_payment);
 	}
 	@Override
-	public int updatenqux(Integer number, String product_id) {
+	public int updatenqux(Integer number, String product_id,String attribute) {
 		// TODO Auto-generated method stub
-		return T_orderMapper.updatenqux(number,product_id);
+		return T_orderMapper.updatenqux(number,product_id,attribute);
 	}
 	@Override
 	public T_order selectbyout_trade_no(String order) {
@@ -232,14 +232,14 @@ public class T_orderServiceImpl extends ServiceImpl<T_orderMapper, T_order> impl
 	public T_product_specification specification(String product_id,String specifications) {
 		T_product_specification specification=null;
 	
-		System.out.println(specifications);
+//		System.out.println(specifications);
 		try {
 			
 		
-		List<T_product_specification> T_product_specification=specificationMapper.selectlstspecification(product_id);
+		List<T_product_specification> T_product_specification=specificationMapper.selectlstspecification(product_id);//查询规格的id集合
 		
 		for(int i=0;i<T_product_specification.size();i++) {
-			
+			//找到与规格相同的规格
 			boolean fig=specificationsuntil.specification(specifications, T_product_specification.get(i).getSpecificationName());
 			if(fig) {
 				specification=T_product_specification.get(i);

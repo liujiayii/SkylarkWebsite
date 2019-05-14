@@ -62,20 +62,12 @@
 	<update id="updateInventory" parameterType="com.websit.entity.Inventory">
 		update t_inventory
 		<set>
-			<if test="number != null and number != ''">
-				number = #{number},
-			</if>
-			 <if test="create_time != null and create_time != ''">
-				create_time = #{create_time},
-			</if> 
-			<if test="products_id != null and products_id != ''">
-				product_id = #{products_id}
-			</if>
-			<if test="attribute != null and attribute != ''">
-				attribute = #{attribute}
-			</if>
+			
+				number = #{number}
+			
 		</set>
-		where id= #{id}
+		where attribute= #{attribute}
+		and product_id =#{product_id}
 	</update>
 	
     
@@ -95,12 +87,12 @@
 		</where>
 		)as tb
 	</select>
-	<!-- 根据商品一级分类id删除一级分类 -->
-    <delete id="deleteInventoryById" parameterType="BigInteger">
+	<!-- 根据商品规格id删除库存 -->
+    <delete id="deleteInventoryByProductSpecificationId" parameterType="BigInteger">
 		delete
 		   from
 		t_inventory
-		   where id=#{id}
+		   where attribute=#{attribute}
 		
 	</delete>
 	

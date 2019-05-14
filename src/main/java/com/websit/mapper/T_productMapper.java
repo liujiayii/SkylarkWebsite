@@ -13,6 +13,7 @@ import com.websit.entityvo.ProductDetails;
 import com.websit.entityvo.ProductSpecificationsVo;
 import com.websit.entityvo.ProductTypeVo;
 import com.websit.entityvo.ProductVo;
+import com.websit.entityvo.ProductsVo;
 
 /**
  * <p>
@@ -47,7 +48,7 @@ public interface T_productMapper extends BaseMapper<T_product> {
 	 * @author lujinpeng
 	 * @createDate 2019年4月17日-下午4:28:22
 	 */
-	public List<ProductTypeVo> listProductByClassTypeId(@Param("classification_id") Long classification_id,@Param("page") Integer page, @Param("limit") Integer limit);
+	public List<ProductsVo> listProductByClassTypeId(@Param("classificationIds") Long classificationIds,@Param("page") Integer page, @Param("limit") Integer limit);
 	
 	/**
 	 * @description 查询商品
@@ -204,5 +205,29 @@ public interface T_productMapper extends BaseMapper<T_product> {
 	 * @author pangchong
 	 * @createDate 2019年3月22日 下午2:00
 	 */
-	public List<ProductVo> findproductCountAll(@Param("productName") String productName,@Param("page")Integer page,@Param("limit")Integer limit);
+	
+public List<ProductVo> findproductCountAll(@Param("productName") String productName,@Param("page")Integer page,@Param("limit")Integer limit);
+
+/**
+ * 根据商品类型查询商品(pc端)
+ * 
+ * @param product
+ * @return
+ */
+public List<ProductVo> findProductByProductTypeList(@Param("page")Integer page, @Param("limit")Integer limit,@Param("producttypeid") Long producttypeid);
+/**
+ * 根据商品类型查询商品数量
+ * @author pangchong
+ * @createDate 2019年3月22日 下午2:00
+ */
+public  List<ProductVo> findProductByProductTypeListCount(@Param("producttypeid") Long producttypeid,@Param("page") Integer page, @Param("limit") Integer limit);
+
+/**
+ * @description 首页模糊查询商品条数(上架)
+ * @param
+ * @author pangchong
+ * @createDate 2019年3月24日
+ */
+public List<T_product> listProductByCounts(T_product T_product);
 }
+

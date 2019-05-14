@@ -262,7 +262,7 @@
           id: "",
           order_number: this.getHrefParam("num"),
           order_mode: "",
-          user_id: sessionStorage.getItem("SkyUserId")
+          user_id: localStorage.getItem("SkyUserId")
         },
         qrcode: false,
         editAddress: false,
@@ -324,14 +324,14 @@
           data: (this.getHrefParam("id") == "") ? {
             trolley_id: window.location.href.split("=")[1],
             order_mode: this.orders.order_mode,
-            user_id: sessionStorage.getItem("SkyUserId")
+            user_id: localStorage.getItem("SkyUserId")
           } : {
             trolley_id: "",
             id: this.orders.id,
             order_number: this.orders.order_number,
             order_mode: this.orders.order_mode,
             specifications: JSON.stringify(this.ggindexs),
-            user_id: sessionStorage.getItem("SkyUserId"),
+            user_id: localStorage.getItem("SkyUserId"),
             remarks: this.bztest
           },
           // contentType: 'application/json',
@@ -442,7 +442,7 @@
             type: "post",
             url: "t_trolley/lt_trolleylst",
             data: {
-              user_id: window.sessionStorage.getItem("SkyUserId"),
+              user_id: window.localStorage.getItem("SkyUserId"),
               page: 0, limit: 100
             },
             dataType: "json",
@@ -607,7 +607,7 @@
         $.ajax({
           type: "post",
           url: "/t_goods/selectGoods",
-          data: {id: sessionStorage.getItem("SkyUserId")},
+          data: {id: localStorage.getItem("SkyUserId")},
           dataType: "json",
           success: (res) => {
             if (res.code == 2) {

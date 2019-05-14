@@ -38,7 +38,7 @@ public class T_freightController {
 	public String addt_freight(T_freight t_freight) {
 		try {
 			
-			System.out.println(t_freight.toString());
+			//System.out.println(t_freight.toString());
 		if(t_freight.getFreight()==null||t_freight.getPrice()==null||t_freight.getPrices()==null) {
 			cood=0003;
 			msg="填写的内容不能为空";
@@ -90,7 +90,7 @@ public class T_freightController {
 		   	page = (page - 1) * limit;
 					String msg = "系统异常，请稍后再试";
 					Integer cood = -1;
-			System.out.println(page);
+			//System.out.println(page);
 			Map<String, Object> columnMap=new HashMap<String,Object>();
 			
 		   if(t_freight.getPrice()!=null) {

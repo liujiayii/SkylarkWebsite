@@ -64,16 +64,16 @@ public class InventoryServiceImpl implements InventoryService {
 	}
 
 	/**
-	 * description 根据id删除库存
+	 * description 根据商品规格id删除库存
 	 *
 	 * @author pangchong
 	 * @createDate 2019年3月23日 下午2:00
 	 */
 
 	@Override
-	public int deleteInventoryById(BigInteger id) {
+	public int deleteInventoryByProductSpecificationId(Long attribute) {
 
-		return inventoryMapper.deleteInventoryById(id);
+		return inventoryMapper.deleteInventoryByProductSpecificationId(attribute);
 	}
 
 	@Override

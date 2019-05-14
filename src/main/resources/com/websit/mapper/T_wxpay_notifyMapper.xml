@@ -19,7 +19,7 @@
 	<!-- 根据商户号查找是否已经插入用来判断是否已经回调 -->
 	<select id="findByOrderId" resultType="com.websit.entity.T_wxpay_notify">
 
-		SELECT * FROM T_wxpay_notify where transaction_id=#{transaction_id}
+		SELECT * FROM T_wxpay_notify where out_trade_no=#{out_trade_no}
 
 	</select>
 </mapper>

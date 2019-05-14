@@ -38,6 +38,31 @@
 		select  *  from t_product_specification where product_id=#{product_id}
 	</select>
 
-
+ <!--根据id删除商品规格-->
+    <delete id="deleteProductSpecificationById" parameterType="BigInteger">
+		delete
+		   from
+		t_product_specification
+		   where id=#{id}
+	</delete>
+ <!-- 修改商商品规格  -->
+	<update id="updateProductSpecification" parameterType="com.websit.entity.T_product_specification">
+		update  t_product_specification
+		<set>
+			<if test="specificationName != null and specificationName != ''">
+				specificationName = #{specificationName},
+			</if>
+			<if test="cost_price != null and cost_price != ''">
+				cost_price = #{cost_price},
+			</if>
+			<if test="discount_price != null and discount_price != ''">
+				discount_price = #{discount_price},
+			</if>
+				<if test="price != null and price != ''">
+				price = #{price}
+			</if>
+		</set>
+		where id= #{id}
+	</update>
 
 </mapper>

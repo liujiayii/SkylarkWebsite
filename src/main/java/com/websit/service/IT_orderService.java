@@ -114,7 +114,7 @@ public interface IT_orderService extends IService<T_order> {
 	 * @param product_id
 	 * @return
 	 */
-	int updatenqux(Integer number,String product_id);
+	int updatenqux(Integer number,String product_id,String attribute);
 	
 	/**
 	 * 根据订单号查用户id

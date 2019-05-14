@@ -33,7 +33,7 @@ public class T_goodsController {
 	 * @param t
 	 * @return
 	 */
-	@RequestMapping("/addGoods")
+	@RequestMapping(value = "/addGoods", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public synchronized String addGoods(@RequestBody T_goods t){
 		
@@ -46,7 +46,7 @@ public class T_goodsController {
 			 */
 			if(t.getGoods_xian()==null||t.getGoods_xian().equals(" ")) {
 				atr= JsonUtil.getResponseJson(-1, "请填加地址", null, null);
-				System.out.println("atrrrr"+atr);
+				//System.out.println("atrrrr"+atr);
 				return atr;
 			}
 			boolean a=goodsService.insert(t);
@@ -68,13 +68,14 @@ public class T_goodsController {
 	 * @param t
 	 * @return
 	 */
-	@RequestMapping("/addGoodsScend")
+	@RequestMapping(value = "/addGoodsScend", produces = "application/json; charset=utf-8")
+
 	@ResponseBody
 	public synchronized String addGoodsScend( T_goods t){
 	
-		System.out.println("tttttt"+t);
+		//System.out.println("tttttt"+t);
 		t.setUser_id(((Security.decode(t.getUser_id()))));
-		System.out.println(t.getUser_id());
+		//System.out.println(t.getUser_id());
 		String atr;
 		try {
 			String s=t.getGoods_ster();
@@ -109,10 +110,10 @@ public class T_goodsController {
 		Integer ids=0;
 		//加密之后的数据解密，先把id值解密赋值给ids，如果id值没有加密则转化类型
 		if(is_des!=null) {
-		System.out.println(id+"解密之前");
+		//System.out.println(id+"解密之前");
 		id=(Security.decode(id.toString()));  //解密数据将加密的数据解密 
 		 ids=Integer.valueOf(id);   //赋值给ids
-		System.out.println(id+"揭秘之后");
+		//System.out.println(id+"揭秘之后");
 		}else {
 			ids=Integer.valueOf(id);//没有加密直接转化
 		}
@@ -225,7 +226,7 @@ public class T_goodsController {
 	 * @param t
 	 * @return
 	 */
-	@RequestMapping("/updateGoodsScend")
+	@RequestMapping(value = "/updateGoodsScend", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String updateGoodsScend( T_goods t){
 		t.setUser_id(((Security.decode(t.getUser_id().toString()))));

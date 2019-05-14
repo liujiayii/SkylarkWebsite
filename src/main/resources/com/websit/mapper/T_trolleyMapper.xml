@@ -18,12 +18,12 @@
     
     </select>
     
-     <select id="shppingnum"   resultType="com.websit.entity.T_trolley">
-    		SELECT   *  from t_trolley  where product_id=#{product_id} and user_id=#{user_id}
+     <select id="shppingnum"   resultType="Integer">
+    		SELECT  count(*)  from t_trolley  where product_id=#{product_id} and user_id=#{user_id}  and T_product_specification_id=#{Trolley_specifications_Id}
     
     </select>
        <update id="updatemnum">
-    		update    t_trolley set number=Number+#{num}  where product_id=#{product_id} and user_id=#{user_id}
+    		update    t_trolley set number=Number+#{num}  where product_id=#{product_id} and user_id=#{user_id}  and T_product_specification_id=#{Trolley_specifications_Id}
     
     </update>
       <select id="number"   resultType="Integer">

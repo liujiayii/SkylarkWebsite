@@ -129,12 +129,16 @@ public class T_wxpay_notifyServiceImpl extends ServiceImpl<T_wxpay_notifyMapper,
 					
 					Map<String, Object> columnMap=new HashMap<String,Object>(); 
 					columnMap.put("order_no",out_trade_no);
-					
+					Date order_paytime = new Date();
 					List<T_order> T_order=IT_orderService.selectByMap(columnMap);
-
-					int fig=IT_orderService.ordercancelled(T_order.get(0).getOrder_id().toString(),"1");
-
-					System.out.println("更新订单状态为未配送");
+                    for(int i=0;i<T_order.size();i++){
+                    	T_order.get(i).setOrder_payment("3");
+                    	T_order.get(i).setOrder_state("1");
+                    	T_order.get(i).setOrder_paytime(order_paytime);
+                    	IT_orderService.updateById(T_order.get(i));
+                    }
+					
+//					System.out.println("更新订单状态为未配送");
 
 					// // 修改库存
 					// repertoryService.reduceRepertory(Long.valueOf(out_trade_no));

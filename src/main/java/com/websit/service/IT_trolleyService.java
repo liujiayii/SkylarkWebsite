@@ -22,7 +22,7 @@ public interface IT_trolleyService extends IService<T_trolley> {
 	List <lt_trolleylst> lt_trolleylst(String user_id,RowBounds RowBounds);
 
 	boolean shppingnum(String product_id,String user_id,String getTrolley_specifications);
-	boolean updatemnum(int num,String product_id,String user_id);
+	boolean updatemnum(int num,String product_id,String user_id , String T_product_specification_id);
 	int number(String product_id);
 	
 	boolean updatemnum2(Integer  num,Integer id,String user_id,String T_trolley_id);

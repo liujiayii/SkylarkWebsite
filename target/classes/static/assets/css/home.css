@@ -306,14 +306,12 @@
 
 .home .DynamicContList {
     width: 340px;
-    height: 340px;
     position: relative;
     margin: 40px 0;
 }
 
 .home .DynamicContList img {
     width: 100%;
-    height: 100%;
 }
 
 .home .DynamicContList .date {

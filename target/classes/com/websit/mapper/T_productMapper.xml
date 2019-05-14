@@ -66,11 +66,10 @@
 	</resultMap>
 
 	<!-- 通过大分类id查询当前商品种类及各个种类下商品集合 -->
-	<select id="listProductByClassTypeId" resultMap="productsAndType">
+	<select id="listProductByClassTypeId" resultType="com.websit.entityvo.ProductsVo">
 		SELECT DISTINCT
 		p.id id,
-		pt. name productTypeName,
-		pt. id productTypeId,
+		pt. id product_type_id,
 		p.name name,
 		p.image image,
 		p.describes describion,
@@ -85,7 +84,7 @@
 			tps.product_id = p.id and
 			p.product_type_id = pt.id
 			and p.state = 1
-			and pt.classification_id = #{classification_id}
+			and pt.classification_id = #{classificationIds}
 		</where>
 		GROUP BY p.name
 		<if test="page != null and limit != null">
@@ -113,13 +112,13 @@
 		t_product_type pt
 		WHERE
 		p.product_type_id = pt.id
-		group by p.id
+		 ORDER BY  p.id
 		DESC
 		limit #{page},#{limit}
 
 	</select>
 	<!-- 增加商品 -->
-	<insert id="insertSpecificationService" parameterType="com.websit.entityvo.ProductVo"
+	<insert id="saveProduct" parameterType="com.websit.entityvo.ProductVo"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into
 		t_product(name,product_type_id,image,state,create_time,brand,describes,zone_id,after_information)
@@ -162,9 +161,9 @@
 			<if test="describion != null and describion != ''">
 				describes = #{describion},
 			</if>
-			<if test="zoneid != null and zoneid != ''">
+			
 				zone_id = #{zoneid},
-			</if>
+			
 			<!-- zone_id = #{zoneid} -->
 			<if test="after_information != null and after_information != ''">
 				after_information = #{after_information}
@@ -200,7 +199,7 @@
 			</if> </where> -->
 		)as tb
 	</select>
-	<!-- 根据商品id查询商品详情 -->
+	<!-- 根据商品id查询商品详情(前台) -->
 	<select id="listProductByProductId" resultMap="productAndImage">
 		SELECT DISTINCT
 		p.id productId,
@@ -235,7 +234,7 @@
 		and p.state = 1
 		and p.id = #{productId}
 		<!-- GROUP BY p.id -->
-		GROUP BY p.name
+		
 	</select>
 	<!-- 根据商品id查询商品详情(后台) -->
 	<select id="listProductByProductIds" resultMap="productAndImage">
@@ -261,7 +260,7 @@
 		p.product_type_id = pt.id
 		and pt.classification_id = tc.id
 		and p.id = #{productId}
-		GROUP BY p.name
+	<!-- 	GROUP BY p.name -->
 	</select>
 	<resultMap type="com.websit.entityvo.ProductDetails" id="productAndImage">
 		<id column="productId" property="productId" />
@@ -292,7 +291,7 @@
 			property="price"/> <result column="money" property="money"/> </collection> -->
 	</resultMap>
 
-	<!-- 首页模糊查询 -->
+	<!-- 首页模糊查询(前台) -->
 	<select id="listProductByProductTypeId" resultType="com.websit.entityvo.ProductVo">
 		SELECT DISTINCT
 		p.id id,
@@ -373,7 +372,7 @@
 		FROM
 		t_product p, t_product_specification tps 
 		where
-		 p.product_type_id=#{id} 
+		 p.zone_id=#{id} 
 		 and p.state=1
 		 and tps.product_id = p.id
 		 group by p.name
@@ -419,13 +418,42 @@
 		FROM
 		t_product p where p.zone_id=#{id}
 	</select>
-
+<!-- 查询较新商品(前台) -->
 	<select id="selectbyDESC" resultType="com.websit.entity.T_product">
-
-		SELECT * from t_product p where p.state=1 order by p.create_time DESC limit
+		SELECT 
+		p.id id,
+		p.name name,
+		p.image image,
+		p.brand brand,
+		tps.discount_price discount_price,
+		tps.cost_price cost_price,
+		tps.price price
+		from
+		 t_product p, 
+		 t_product_type pt,
+		 t_product_specification tps
+		 where p.state=1 
+		  and tps.product_id = p.id
+		  AND pt.id = p.product_type_id
+		   group by p.name
+		 order by 
+		 p.create_time 
+		 DESC limit
 		#{page},#{limit}
 	</select>
-
+<!-- 查询商品数量(较新商品) -->
+	<select id="listProductByCounts" resultType="com.websit.entity.T_product">
+		SELECT COUNT(DISTINCT
+		tb.id) count
+		FROM
+		(
+		select
+		p.id
+		from
+		t_product p
+		where p.state=1 
+		)as tb
+	</select>
 	<!--根据商品名称查询商品规格及选项 -->
 	<select id="findSpecificationsByProduct" resultMap="productsAndSpecifications">
 		SELECT DISTINCT
@@ -484,5 +512,46 @@
 		p.name like CONCAT('%',#{productName},'%')
 		limit #{page},#{limit}
 		)as tb
+	</select>
+	
+	<!-- 通过商品类型id查询商品 -->
+	<select id="findProductByProductTypeList" resultType="com.websit.entityvo.ProductVo">
+		SELECT DISTINCT
+		p.id id,
+		pt.name producttypename,
+		pt.id producttypeid,
+		p.name productName,
+		p.image image,
+		p.describes describion,
+		p.after_information after_information,
+		tps.discount_price discount_price,
+		tps.cost_price cost_price,
+		tps.price price
+		FROM
+		t_product p,
+		t_product_type pt,
+		t_product_specification tps
+		where
+		p.product_type_id = pt.id
+		and tps.product_id = p.id
+		and p.state = 1
+		and pt.id =#{producttypeid}
+		GROUP BY p.name
+		limit #{page},#{limit}
+	</select>
+	<!-- 查询商品数量 -->
+	<select id="findProductByProductTypeListCount" resultType="com.websit.entityvo.ProductVo">
+		SELECT COUNT(DISTINCT
+		tb.id) count
+		FROM
+		(
+		select
+		p.id
+		from
+		t_product p
+		where p.state = 1
+		and p.product_type_id =#{producttypeid}
+		)as tb
+		limit #{page},#{limit}
 	</select>
 </mapper>

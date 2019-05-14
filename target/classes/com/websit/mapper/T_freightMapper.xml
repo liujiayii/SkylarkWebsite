@@ -11,6 +11,6 @@
         
     </resultMap>
     <select id="T_freight"  resultType="com.websit.entity.T_freight">
-    select   *   from   t_freight
+    select   *   from   t_freight 
     </select>
     </mapper>

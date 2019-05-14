@@ -39,7 +39,7 @@ public class JYSMSUtil {
 	 * */
 	public static boolean sendMessage (String phone, String tpl_id, Map<String,String> tpl_value) {
 		if (phone == null || tpl_id == null) {
-			System.out.println("无手机号，和模板id，不能发送短息");
+//			System.out.println("无手机号，和模板id，不能发送短息");
 			return false;
 		}
 		HashMap<String,Object> map = new HashMap<String, Object>();
@@ -49,7 +49,7 @@ public class JYSMSUtil {
 		map.put("tpl_value", JYSMSUtil.createTpl_value(tpl_value));
 		
 		String result = JYSMSUtil.sendPost(map, "http://121.201.72.14:8881/sms.php");
-		System.out.println(result);
+//		System.out.println(result);
 		JSONObject jsonStr = JSONObject.fromObject(result);
 		String code = jsonStr.getString("code");
 		if (code.equals("100")) {
@@ -172,7 +172,7 @@ public class JYSMSUtil {
 	 * */
 	public static String getMessageVaule (String phone, String tpl_id, Map<String,String> tpl_value) {
 		if (phone == null || tpl_id == null) {
-			System.out.println("无手机号，和模板id，不能发送短息");
+//			System.out.println("无手机号，和模板id，不能发送短息");
 			return null;
 		}
 		Map<String,String> map = new HashMap<String, String>();
@@ -186,7 +186,7 @@ public class JYSMSUtil {
 	
 	public static String getMessageVauleJson (String phone, String tpl_id, Map<String,String> tpl_value) {
 		if (phone == null || tpl_id == null) {
-			System.out.println("无手机号，和模板id，不能发送短息");
+//			System.out.println("无手机号，和模板id，不能发送短息");
 			return null;
 		}
 		Map<String,String> map = new HashMap<String, String>();

@@ -93,6 +93,41 @@ public interface IT_adminService extends IService<T_admin> {
 	 */
 	public String updateAdminById(T_admin admin);
 	
+	/**
+	 * 通过自定义条件查询
+	 *
+	 * @Title: selectListSelective
+	 * @description 
+	 * @return  
+	 * List<T_admin>    
+	 * @author lujinpeng
+	 * @createDate 2019年5月7日-上午10:15:37
+	 */
+	public List<T_admin> selectListSelective (T_admin admin);
 	
+	/**
+	 * 通过自定义条件修改
+	 *
+	 * @Title: updateByIdSelective
+	 * @description 
+	 * @param admin
+	 * @return  
+	 * int    
+	 * @author lujinpeng
+	 * @createDate 2019年5月7日-上午10:35:58
+	 */
+	public int updateByIdSelective(T_admin admin);
+	
+	/**
+	 * 通过登录名称获取管理员信息
+	 *
+	 * @Title: findByUserName
+	 * @description 
+	 * @param username
+	 * @return T_admin    
+	 * @author lujinpeng
+	 * @createDate 2019年4月11日-上午9:30:53
+	 */
+	public T_admin findByUserName (String username);
 	
 }

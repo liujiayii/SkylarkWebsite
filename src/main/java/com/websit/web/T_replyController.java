@@ -122,7 +122,7 @@ public class T_replyController {
 	
 		try {
 	    int  num=T_replyService.querlist(id);
-		System.out.println(RowBounds.getLimit());
+		//System.out.println(RowBounds.getLimit());
              int  upnumber=T_replyService.upnumber(id);//更新帖子的访问量
 			// List<T_replylist> T_plateputing=T_replyService.T_replylist(id);
            /**

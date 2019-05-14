@@ -16,6 +16,7 @@ import com.websit.entityvo.ProductDetails;
 import com.websit.entityvo.ProductSpecificationsVo;
 import com.websit.entityvo.ProductTypeVo;
 import com.websit.entityvo.ProductVo;
+import com.websit.entityvo.ProductsVo;
 import com.websit.mapper.T_productMapper;
 import com.websit.service.IT_productService;
 import com.websit.until.JsonUtil;
@@ -48,9 +49,9 @@ public class T_productServiceImpl extends ServiceImpl<T_productMapper, T_product
 	Integer	star = (page - 1) * limit;
 		try {
 			 result = productMapper.listProductByTypeId(productTypeId,star,limit);
-			System.out.println(result);
+//			System.out.println(result);
 			 count =   productMapper.findBpiList(productTypeId);
-			 System.out.println("count"+count);
+//			 System.out.println("count"+count);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, ReturnCode.EXCEPTION_MSG, null, null);
@@ -205,9 +206,9 @@ public class T_productServiceImpl extends ServiceImpl<T_productMapper, T_product
 	 * 通过大分类id查询所有二级分类下商品信息
 	 */
 	@Override
-	public List<ProductTypeVo> listProductByClassTypeId(Long classification_id, Integer page, Integer limit) {
+	public List<ProductsVo> listProductByClassTypeId(Long classificationIds, Integer page, Integer limit) {
 		
-		return productMapper.listProductByClassTypeId(classification_id, page, limit);
+		return productMapper.listProductByClassTypeId(classificationIds, page, limit);
 	}
 	@Override
 	public Integer insertSpecificationService(ProductVo product) {
@@ -255,6 +256,60 @@ public class T_productServiceImpl extends ServiceImpl<T_productMapper, T_product
 		
 		return productMapper.findproductCountAll(productName, page, limit);
 	}
-
-
+	/**
+	 * @description 首页模糊查询(app)
+	 * @param
+	 * @author pangchong
+	 * @createDate 2019年3月24日
+	 */
+	@Override
+	public String listProductByProductTypeIdsApp(String productName, Integer page, Integer limit) {
+		
+		List<ProductVo> result = null;
+		List<ProductVo> count  = null;
+	Integer	star = (page - 1) * limit;
+		try {
+			 result = productMapper.listProductByProductTypeId(productName,star,limit);
+//			System.out.println(result);
+			 count =   productMapper.listProductByCount(productName, star, limit);
+//			 System.out.println("count"+count);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.getResponseJson(ReturnCode.EXCEPTION_CODE, ReturnCode.EXCEPTION_MSG, null, null);
+		}
+		
+		    return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, count.size(), result);
+	}
+	/**
+	 * 根据商品类型查询商品(pc端)
+	 * 
+	 * @param product
+	 * @return
+	 */
+	@Override
+	public List<ProductVo> findProductByProductTypeList(Integer page,Integer limit,Long producttypeid) {
+		
+		return productMapper.findProductByProductTypeList(page,limit,producttypeid);
+	}
+	/**
+	 * 根据商品类型查询商品数量
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	@Override
+	public  List<ProductVo> findProductByProductTypeListCount(Long producttypeid,Integer page,Integer limit) {
+		
+		return productMapper.findProductByProductTypeListCount(producttypeid, page, limit);
+	}
+	/**
+	 * @description 首页模糊查询商品条数(上架)
+	 * @param
+	 * @author pangchong
+	 * @createDate 2019年3月24日
+	 */
+	@Override
+	public List<T_product> listProductByCounts(T_product T_product) {
+		
+		return productMapper.listProductByCounts(T_product);
+	}
 }

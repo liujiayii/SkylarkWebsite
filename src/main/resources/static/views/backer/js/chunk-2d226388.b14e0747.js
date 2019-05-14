@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d226388"],{e876:function(e,n,c){"use strict";c.r(n);var t=function(){var e=this,n=e.$createElement,c=e._self._c||n;return c("div",[e._v("\n  权限\n")])},s=[],a={name:"access"},u=a,r=c("2877"),i=Object(r["a"])(u,t,s,!1,null,"2ec00f18",null);n["default"]=i.exports}}]);

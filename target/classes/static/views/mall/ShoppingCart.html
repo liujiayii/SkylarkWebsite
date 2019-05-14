@@ -170,7 +170,7 @@
         $.ajax({
           type: "post",
           url: "t_trolley/lt_trolleylst",
-          data: {user_id: window.sessionStorage.getItem("SkyUserId"), page: 0, limit: 100},
+          data: {user_id: window.localStorage.getItem("SkyUserId"), page: 0, limit: 100},
           dataType: "json",
           success: (res) => {
             if (res.code === 1) {
@@ -192,7 +192,7 @@
             type: "post",
             url: "t_trolley/uptate",
             data: {
-              user_id: window.sessionStorage.getItem("SkyUserId"),
+              user_id: window.localStorage.getItem("SkyUserId"),
               num: this.goodsLists[index].number * 1 + count * 1,
               id: ids,
               T_trolley_id

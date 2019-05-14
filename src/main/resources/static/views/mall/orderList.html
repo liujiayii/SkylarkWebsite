@@ -11,7 +11,120 @@
     .nav-big-box {
       display: none !important;
     }
-    .listli{line-height: 2}
+
+    .listli {
+      line-height: 2
+    }
+
+    .demo-upload-list {
+      display: inline-block;
+      width: 60px;
+      height: 60px;
+      text-align: center;
+      line-height: 60px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+      box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+      margin-right: 4px;
+    }
+
+    .demo-upload-list img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .demo-upload-list-cover {
+      display: none;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, .6);
+    }
+
+    .demo-upload-list:hover .demo-upload-list-cover {
+      display: block;
+    }
+
+    .demo-upload-list-cover i {
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      margin: 0 2px;
+    }
+
+    .ivu-upload-list-file {
+      display: inline-block !important;
+      margin-right: 10px
+    }
+
+    .tit {
+      font-size: 16px
+    }
+
+    .right {
+      width: 61%;
+      margin-left: 20px;
+    }
+
+    .productcont {
+      width: 35%;
+      text-align: center;
+      box-shadow: 0px 0px 30px 0 rgba(81, 91, 96, 0.3);
+    }
+
+    .productcont img {
+      display: block;
+      width: 80%;
+      margin: 0 auto
+    }
+
+    .productcont .tit {
+      font-size: 18px;
+      margin: 8px;
+    }
+
+    .productcont .Specifications {
+      font-size: 14px
+    }
+
+    .productcont .mony {
+      font-size: 18px;
+      color: tomato;
+      margin-top: 10px;
+      font-weight: bold
+    }
+
+    .textareas {
+      margin-top: 8px
+    }
+
+    .Rate {
+      margin-bottom: 5px
+    }
+
+    .picture {
+      margin-top: 15px
+    }
+
+    .buttonbox {
+      text-align: center;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .buttons {
+      width: 120px
+    }
+
+    .flexlist {
+      display: inline-block;
+      margin-right: 10px
+    }
   </style>
 </head>
 <body>
@@ -48,10 +161,48 @@
         </Upload>
       </form-item>
     </i-form>
-    <div style="width: 100%;position: absolute;bottom: 0;left: 0;border-top: 1px solid #e8e8e8; padding: 10px 16px;text-align: right;background: #fff;">
+    <div
+      style="width: 100%;position: absolute;bottom: 0;left: 0;border-top: 1px solid #e8e8e8; padding: 10px 16px;text-align: right;background: #fff;">
       <i-button type="primary" @click="submitReturn">提交</i-button>
     </div>
   </Drawer>
+  <Modal title="评价" v-model="evaluates" width="600">
+    <div style="display: flex">
+      <div class="productcont" v-for="(goods,index) in goodsData">
+        <img :src="goods.image" alt="">
+        <p class="tit">{{goods.productName}}</p>
+        <p class="Specifications">规格：{{goods.specifications}}</p>
+        <p class="mony">¥{{goods.price}}</p>
+      </div>
+      <div class="right">
+        <div class="Rate">
+          <span class="tit">商品评价：</span>
+          <Rate show-text v-model="valueText"/>
+        </div>
+        <div class="textareasbox">
+          <span class="tit">评价晒单：</span>
+          <i-input class="textareas" v-model="value6" type="textarea"
+                   :rows="6" placeholder="分享体验心得..."/>
+        </div>
+        <div class="picture">
+          <div>
+            <Upload ref="upload" :before-upload="handleUpload"
+                    :format="['jpg','jpeg','png']"
+                    action="localhost:8080/t_review/insertReview">
+              <i-button
+                icon="ios-cloud-upload-outline">上传图片
+              </i-button>
+            </Upload>
+            <div v-if="file !== null" v-for="item in file" class="flexlist">{{item.name}}</div>
+          </div>
+          <div class="buttonbox">
+            <i-button type="error" @click="uploads" class="buttons">发表</i-button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div slot="footer"></div>
+  </Modal>
   <div th:replace="/mall/common :: commonNav"></div>
   <div class="wrap main-wrap">
     <div class="cont-nav">
@@ -84,7 +235,7 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-                 <div class="li">品名</div>
+                <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">单价</div>
@@ -98,11 +249,11 @@
               <div class="rg-p2-list" v-for="(item_c,index_c) in item.shping">
                 <div class="spxx-conttop flex">
                   <p class="lis">订单编号：{{item.order_no}}</p>
-                  
+
                   <div class="li">
                     <button @click=clear(item.order_id)>取消订单</button>
                     <a class="detail" :href="'/orderDetails?id='+item.order_id">订单详情</a>
-                    <dropdown @on-click="payment(item.order_no,item_c.price,$event)">
+                    <dropdown @on-click="payment(item.order_no,item.order_payable,$event)">
                       <a href="javascript:void(0)" class="pay_btn">
                         立即付款
                         <icon type="ios-arrow-down"></icon>
@@ -119,20 +270,21 @@
                     <p>{{item_c.productName}}</p></div>
                   <div class="li">
                     <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
-<!--                      {{item_s}}-->
-                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                      <!--                      {{item_s}}-->
+                      <!--  {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}} -->
+                      {{key_s.split('"/"')[0]}}:{{item_s.split('"/""')[0]}}
                     </p>
-<!--                    <p>{{item_c.shoping_specifications}}</p>-->
+                    <!--                    <p>{{item_c.shoping_specifications}}</p>-->
                   </div>
-            <div class="li"><p>{{item.order_number}}</p></div>
+                  <div class="li"><p>{{item.order_number}}</p></div>
                   <div class="li">¥{{item_c.price}}</div>
-              
+
                   <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.zongjia}}</div>
                 </div>
               </div>
             </div>
-        <!--     <Page :total="dfk" size="small" @on-change="pageChange" /> -->
+            <!--     <Page :total="dfk" size="small" @on-change="pageChange" /> -->
           </div>
         </div>
         <div v-if="active==1" class="rg-p2list">
@@ -145,7 +297,7 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-                  <div class="li">品名</div>
+                <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">单价</div>
@@ -159,7 +311,7 @@
                 <div class="spxx-conttop flex">
                   <p class="lis">订单编号：{{item.order_no}}</p>
                   <div class="li">
-                  <a class="detail" :href="'/orderDetails?id='+item.order_id">订单详情</a>
+                    <a class="detail" :href="'/orderDetails?id='+item.order_id">订单详情</a>
                     <button class="pay_btn" @click="shipment()">提醒发货</button>
                   </div>
                 </div>
@@ -169,16 +321,15 @@
                   <div class="li">
                     <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
                       <!--                      {{item_s}}-->
-                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                      <!--  {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}} -->
+                      {{key_s.split('"/"')[0]}}:{{item_s.split('"/""')[0]}}
                     </p>
-<!--                    <p>{{item_c.specifications}}</p>-->
+                    <!--                    <p>{{item_c.specifications}}</p>-->
                   </div>
-                       <div class="li"><p>{{item.order_number}}</p></div>
+                  <div class="li"><p>{{item.order_number}}</p></div>
                   <div class="li">¥{{item_c.price}}</div>
-                  
-                  <div class="li">{{formatData(item.order_time)}}</div>
 
-                  
+                  <div class="li">{{formatData(item.order_time)}}</div>
 
 
                   <div class="li">¥{{item_c.zongjia}}</div>
@@ -200,7 +351,7 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-          <div class="li">品名</div>
+                <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">单价</div>
@@ -214,7 +365,7 @@
                 <div class="spxx-conttop flex">
                   <p class="lis">订单编号：{{item.order_no}}</p>
                   <div class="li">
-                  <a class="detail" :href="'/orderDetails?id='+item.order_id">订单详情</a>
+                    <a class="detail" :href="'/orderDetails?id='+item.order_id">订单详情</a>
                     <button @click="logistics(item.order_shouhuo_id)">查看物流</button>
                     <button class="pay_btn" @click="okOrder(item.order_id)">确认收货</button>
                   </div>
@@ -225,13 +376,14 @@
                   <div class="li">
                     <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
                       <!--                      {{item_s}}-->
-                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                      <!--  {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}} -->
+                      {{key_s.split('"/"')[0]}}:{{item_s.split('"/""')[0]}}
                     </p>
-<!--                    <p>{{item_c.specifications}}</p>-->
+                    <!--                    <p>{{item_c.specifications}}</p>-->
                   </div>
-                       <div class="li"><p>{{item.order_number}}</p></div>
+                  <div class="li"><p>{{item.order_number}}</p></div>
                   <div class="li">¥{{item_c.price}}</div>
-               
+
                   <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.zongjia}}</div>
                 </div>
@@ -249,7 +401,7 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-                    <div class="li">品名</div>
+                <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">单价</div>
@@ -263,7 +415,7 @@
                 <div class="spxx-conttop flex">
                   <p class="lis">订单编号：{{item.order_no}}</p>
                   <div class="li">
-                    <button @click="evaluate(item_c.productId,item.order_no)">评价</button>
+                    <button @click="evaluate(item_c.productId,item_c.shoping_id,item.order_no)">评价</button>
                     <button class="pay_btn" @click="returnGoods(item.order_id)">申请退款</button>
                   </div>
                 </div>
@@ -272,8 +424,7 @@
                     <p>{{item_c.brand}}</p></div>
                   <div class="li">
                     <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
-                      <!--                      {{item_s}}-->
-                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                      {{key_s.split('"/"')[0]}}:{{item_s.split('"/""')[0]}}
                     </p>
                     <p>{{item_c.specifications}}</p>
                   </div>
@@ -314,13 +465,14 @@
                   <div class="li">
                     <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
                       <!--                      {{item_s}}-->
-                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                      <!-- {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}} -->
+                      {{key_s.split('"/"')[0]}}:{{item_s.split('"/""')[0]}}
                     </p>
-<!--                    <p>{{item_c.specifications}}</p>-->
+                    <!--                    <p>{{item_c.specifications}}</p>-->
                   </div>
-               <div class="li"><p>{{item.order_number}}</p></div>
+                  <div class="li"><p>{{item.order_number}}</p></div>
                   <div class="li">¥{{item_c.price}}</div>
-               
+
                   <div class="li">{{formatData(item.order_time)}}</div>
                   <div class="li">¥{{item_c.zongjia}}</div>
                 </div>
@@ -338,7 +490,7 @@
             </div>
             <div class="rg-p2-title">
               <div class="flex spxx-title">
-       <div class="li">品名</div>
+                <div class="li">品名</div>
                 <div class="li">规格</div>
                 <div class="li">购买数量</div>
                 <div class="li">单价</div>
@@ -356,9 +508,10 @@
                   <div class="li">
                     <p class="listli" v-for="(item_s,key_s,index_s) in item_c.shoping_specifications">
                       <!--                      {{item_s}}-->
-                      {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}}
+                      <!--  {{key_s.split('"')[0]}}:{{item_s.split('"')[0]}} -->
+                      {{key_s.split('"/"')[0]}}:{{item_s.split('"/""')[0]}}
                     </p>
-<!--                    <p>{{item_c.specifications}}</p>-->
+                    <!--                    <p>{{item_c.specifications}}</p>-->
                   </div>
                   <div class="li"><p>{{item.order_number}}</p></div>
                   <div class="li">¥{{item_c.price}}</div>
@@ -370,7 +523,7 @@
                     <button v-if='item.order_state==1'>待发货</button>
                     <button v-if='item.order_state==2'>待收货</button>
                     <button v-if='item.order_state>=3'>已完成</button>
-                    
+
                   </div>
                 </div>
               </div>
@@ -380,8 +533,6 @@
       </div>
     </div>
   </div>
-  <input id="state1" v-model="goodsid">
-  <input id="state2" v-model="orderid">
   <div th:replace="/mall/common :: commonFooter"></div>
 </div>
 </body>
@@ -402,6 +553,7 @@
         quantum: null,
         goodsid: null,
         orderid: null,
+        shoping_id: null,
         qrcode: false,
         drawerShow: false,
         styles: {
@@ -410,12 +562,18 @@
           paddingBottom: '53px',
           position: 'static'
         },
-        formItem: {order_state: 5}
+        formItem: {order_state: 5},
+        goodsData: null,
+        evaluates: false,
+        valueText: 5,
+        value6: '',
+        file: [],
+        files: [],
+        loadingStatus: false,
       }
     },
     methods: {
-      pageChange(num,num1){
-
+      pageChange(num, num1) {
         return JSON.stringify(data)
       },
       submitReturn() {
@@ -468,23 +626,62 @@
           });
         }
       },
-      evaluate(goodsid, orderid) {
+      evaluate(goodsid, shoping_id, orderid) {
         this.goodsid = goodsid;
         this.orderid = orderid;
-        layui.use('layer', function () {
-          var layer = layui.layer;
-          layer.open({
-            title: '评价商品',
-            type: 2,
-            id: 2,
-            scrollbar: false,
-            area: ['800px', '450px'],
-            content: ['/evaluates', 'no'],
-            end: function () {
-              window.location.reload();
+        this.shoping_id = shoping_id
+        this.evaluates = true
+        $.ajax({
+          type: "post",
+          url: "/listProductByProductId",
+          dataType: "json",
+          data: {productId: goodsid},
+          success: (res) => {
+            console.log(res.data)
+            this.goodsData = res.data
+          }
+        });
+      },
+      handleUpload(file) {
+        if (this.file.length < 3) {
+          this.file.push(file)
+          return false;
+        } else {
+          this.$Message.info('最多传三张图片');
+          return false
+        }
+      },
+      uploads() {
+        if (this.value6 != "") {
+          var formData = new FormData()
+          for (let i = 0; i < this.file.length; i++) {
+            formData.append('pic', this.file[i])
+          }
+          formData.append('user_id', localStorage.getItem("SkyUserId"))
+          formData.append('review_content', this.value6)
+          formData.append('appraise', this.valueText)
+          formData.append('product_id', this.goodsid)
+          formData.append('shopping_id', this.shoping_id)
+          formData.append('order_id', this.orderid)
+          formData.append('order_no', this.orderid)
+          $.ajax({
+            type: "post",
+            url: "/t_review/insertReview",
+            dataType: "json",
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: (res) => {
+              if (res.code === 1) {
+                this.$Message.info('评论成功！');
+                this.evaluates = false
+              }
             }
           });
-        });
+        } else {
+          this.$Message.info('评价内容不能为空！');
+        }
       },
       okOrder(ids) {
         $.ajax({
@@ -537,7 +734,7 @@
           type: "post",
           url: "/t_order/qercxjb",
           data: {
-            user_id: sessionStorage.getItem("SkyUserId"),
+            user_id: localStorage.getItem("SkyUserId"),
           },
           dataType: "json",
           success: (res) => {
@@ -555,7 +752,7 @@
           type: "post",
           url: "/t_order/orderlist",
           data: {
-            user_id: sessionStorage.getItem("SkyUserId"),
+            user_id: localStorage.getItem("SkyUserId"),
             order_state: num,
             page: 1,
             limit: 100
@@ -565,10 +762,10 @@
             this.userInfo.name
             if (res.code == 1) {
 
-              for(let j=0 ;j<res.data.length;j++){
-                for(let s=0;s<res.data[j].shping.length;s++){
+              for (let j = 0; j < res.data.length; j++) {
+                for (let s = 0; s < res.data[j].shping.length; s++) {
                   console.log(res.data[j].shping[s].shoping_specifications)
-                  res.data[j].shping[s].shoping_specifications=JSON.parse(res.data[j].shping[s].shoping_specifications)
+                  res.data[j].shping[s].shoping_specifications = JSON.parse(res.data[j].shping[s].shoping_specifications)
                 }
               }
               this.orderListPaid = res.data
@@ -582,7 +779,7 @@
           type: "post",
           url: "/t_order/orderlist",
           data: {
-            user_id: sessionStorage.getItem("SkyUserId"),
+            user_id: localStorage.getItem("SkyUserId"),
             order_state: nums,
             page: 1,
             limit: 10
@@ -603,14 +800,14 @@
                   }
                 }
               }
-              for(let j=0 ;j<res.data.length;j++){
-                for(let s=0;s<res.data[j].shping.length;s++){
+              for (let j = 0; j < res.data.length; j++) {
+                for (let s = 0; s < res.data[j].shping.length; s++) {
                   console.log(res.data[j].shping[s].shoping_specifications)
-                  res.data[j].shping[s].shoping_specifications=JSON.parse(res.data[j].shping[s].shoping_specifications)
+                  res.data[j].shping[s].shoping_specifications = JSON.parse(res.data[j].shping[s].shoping_specifications)
                 }
               }
               this.orderListPaid = res.data
-             // this.orderListPaid = res.data
+              // this.orderListPaid = res.data
             }
           }
         });

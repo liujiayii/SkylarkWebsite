@@ -49,5 +49,89 @@
         LEFT JOIN t_role r on ur.role_id=r.id
         where username= #{username}
     </select>
+    
+	<!-- 通过自定义属性查询 -->
+	<select id="selectListSelective" resultMap="findByUserName">
+	    select u.*
+        ,r.id as r_id, r.name as r_name, r.description, r.status r_status, r.role_key
+        from t_admin u
+        LEFT JOIN t_role_admin ur on u.id= ur.admin_id
+        LEFT JOIN t_role r on ur.role_id=r.id
+	    <where>
+	        <if test="id != null">
+	            u.id = #{id} 
+	        </if>
+	        <if test="name != null">
+	            and u.name = #{name} 
+	        </if>
+	        <if test="phone != null">
+	            and u.phone = #{phone} 
+	        </if>
+	        <if test="username != null">
+	            and u.username = #{username} 
+	        </if>
+	        <if test="password != null">
+	            and u.password = #{password} 
+	        </if>
+	        <if test="post != null">
+	            and u.post = #{post} 
+	        </if>
+	        <if test="status != null">
+	            and u.status = #{status} 
+	        </if>
+	        <if test="create_time != null">
+	            and u.create_time = #{create_time} 
+	        </if>
+	    </where>
+	</select>
+	
+	<!-- 修改指定字段 -->
+  <update id="updateByIdSelective" parameterType="com.websit.entity.T_admin">
+    update t_admin
+    <set>
+      <if test="name != null">
+          name = #{name}, 
+      </if>
+      <if test="phone != null">
+          phone = #{phone}, 
+      </if>
+      <if test="username != null">
+          username = #{username}, 
+      </if>
+      <if test="password != null">
+          password = #{password},
+      </if>
+      <if test="post != null">
+          post = #{post}, 
+      </if>
+      <if test="status != null">
+          status = #{status,jdbcType=INTEGER}, 
+      </if>
+      <if test="create_time != null">
+          create_time = #{create_time,jdbcType=DATE}, 
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 模糊查询 -->
+  <select id="findAdminListByNameOrPhone" parameterType="Map" resultMap="findByUserName">
+      select u.*
+        ,r.id as r_id, r.name as r_name, r.description, r.status r_status, r.role_key
+        from t_admin u
+        LEFT JOIN t_role_admin ur on u.id= ur.admin_id
+        LEFT JOIN t_role r on ur.role_id=r.id
+	    <where>
+	        <if test="name != null">
+	            u.name like concat('%',#{name},'%') 
+	        </if>
+	        <if test="phone != null">
+	            and u.phone like concat('%',#{phone},'%') 
+	        </if>
+	    </where>
+	    <if test="page != null and limit != null">
+	        limit #{page},#{limit}
+	    </if>
+  </select>
    
 </mapper>

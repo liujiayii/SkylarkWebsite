@@ -112,7 +112,7 @@ public String updateSpecificationsVo(String specificationsName,Long productTypeI
  */
 @RequestMapping(value = "/deleteSpecificationsVoById", produces = "application/json; charset=utf-8")
 @ResponseBody
-public String deleteSpecificationsVoById(BigInteger specificationsId) {
+public String deleteSpecificationsVoById(Long specificationsId) {
 	try{
 	int result = specificationsService.deleteSpecificationsVoById(specificationsId);
 	if (result >0) {

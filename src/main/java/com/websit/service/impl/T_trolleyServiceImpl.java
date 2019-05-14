@@ -32,21 +32,20 @@ public class T_trolleyServiceImpl extends ServiceImpl<T_trolleyMapper, T_trolley
 		
 	}
 	@Override
-	public boolean shppingnum(String product_id,String user_id,String getTrolley_specifications) {
-		List<T_trolley> T_trolley=T_trolleyMapper.shppingnum(product_id,user_id);
-		for(int i=0;i<T_trolley.size();i++) {
-			boolean fig=specificationsuntil.specification(T_trolley.get(i).getTrolley_specifications(),getTrolley_specifications);
-			if(!fig) {
-				return true;
-			}else
-				return false;
+	public boolean shppingnum(String product_id,String user_id,String getTrolley_specifications_Id) {
+		int T_trolley=T_trolleyMapper.shppingnum(product_id,user_id,getTrolley_specifications_Id);
+		if(T_trolley>0) {
+			return true;
+		}else {
+			return false;
 		}
+	
 		
-		return true;
+		
 	}
 	@Override
-	public boolean updatemnum(int num,String product_id,String user_id) {
-		int fig=T_trolleyMapper.updatemnum(num,product_id,user_id);
+	public boolean updatemnum(int num,String product_id,String user_id,String T_product_specification_id) {
+		int fig=T_trolleyMapper.updatemnum(num,product_id,user_id,T_product_specification_id);
 		if(fig>0) {
 			return true;
 		}

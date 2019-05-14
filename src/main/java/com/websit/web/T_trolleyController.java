@@ -38,8 +38,6 @@ public class T_trolleyController {
 	@Autowired
 	public com.websit.service.IT_orderService IT_orderService;
 	@Autowired
-	private IT_productService productService;
-	@Autowired
 	public  IT_shoppingService  T_shoppingService;
 
 	/**
@@ -47,7 +45,8 @@ public class T_trolleyController {
 	 * @param t_trolley
 	 * @return
 	 */
-	@RequestMapping("/addt_trolley")
+	
+	@RequestMapping(value = "/addt_trolley", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String  add(T_trolley t_trolley,Integer is_des) {
 		if(is_des!=null) {
@@ -55,21 +54,21 @@ public class T_trolleyController {
 		t_trolley.setProduct_id((((Security.decode(t_trolley.getProduct_id())))));
 		t_trolley.setTrolley_specifications((((Security.decode(t_trolley.getTrolley_specifications())))));
 		}
-		//DesUtil.decode("yunquekj", T_order.toString());
+	
 				String msg = "系统异常，请稍后再试";
 				Integer cood = -1;
 				// 获取当前库存
-				//try {
+				try {
 				if(t_trolley.getNumber()==null) {
 					t_trolley.setNumber(1);
 				}
-		System.out.println(t_trolley.getTrolley_specifications()+"666666666666666666666666666666666");
+		
 				    boolean fig=false;
 				    T_product_specification T_product_specification=IT_orderService.specification(t_trolley.getProduct_id().toString(),t_trolley.getTrolley_specifications());
 				    if(T_product_specification==null) {
 						return JsonUtil.getResponseJson(cood, "此商品无法购买", null, null);
 					}
-				    System.out.println(T_product_specification+"6666666666666666666666666");
+				   // System.out.println(T_product_specification+"6666666666666666666666666");
 					int number = IT_orderService.Queryinginventory(t_trolley.getProduct_id().toString(),T_product_specification.getId());
 					BigDecimal account=T_product_specification.getPrice();  //将类型转换为double
 				
@@ -86,7 +85,7 @@ public class T_trolleyController {
 						msg = "商品已下架";
 						return JsonUtil.getResponseJson(cood, msg, null, null);
 					}
-					else if(T_trolleyService.shppingnum(t_trolley.getProduct_id().toString(),t_trolley.getUser_id().toString(),t_trolley.getTrolley_specifications())) {
+					else if(!T_trolleyService.shppingnum(t_trolley.getProduct_id().toString(),t_trolley.getUser_id().toString(),t_trolley.getT_product_specification_id())) {
 						fig = T_trolleyService.insert(t_trolley);
 					}else if (number <numbers) {
 						
@@ -94,9 +93,9 @@ public class T_trolleyController {
 							msg = "库存数量不足，请修改购买数量";
 							return JsonUtil.getResponseJson(cood, msg, null, null);
 					}
-					else  if(!T_trolleyService.shppingnum(t_trolley.getProduct_id().toString(),t_trolley.getUser_id().toString(),t_trolley.getTrolley_specifications()))
+					else  
 					{
-						fig = T_trolleyService.updatemnum(numbers,t_trolley.getProduct_id().toString(),t_trolley.getUser_id().toString());
+						fig = T_trolleyService.updatemnum(numbers,t_trolley.getProduct_id().toString(),t_trolley.getUser_id().toString(),t_trolley.getT_product_specification_id());
 					}
 				   
 			
@@ -108,9 +107,9 @@ public class T_trolleyController {
 				     System.err.println(msg);
 
 					return JsonUtil.getResponseJson(cood, msg, null, null);
-//				} catch (Exception e) {
-//					return JsonUtil.getResponseJson(cood, msg, null, null);
-				//}
+				} catch (Exception e) {
+					return JsonUtil.getResponseJson(cood, msg, null, null);
+				}
 
 	}
     /**
@@ -163,7 +162,7 @@ public class T_trolleyController {
 		}
 	
 		
-		//try { 
+		try { 
 			List <lt_trolleylst> lt_trolleylst=T_trolleyService.lt_trolleylst(user_id,new RowBounds(page,limit));
 			        
 			for(int i=0;i<lt_trolleylst.size();i++) {
@@ -194,10 +193,10 @@ public class T_trolleyController {
 				}
 				
 				return JsonUtil.getResponseJson(cood, msg, num2, lt_trolleylst);
-		//} catch (Exception e) {
+		} catch (Exception e) {
 		
-			//return JsonUtil.getResponseJson(cood, msg, null, null);
-		//}
+			return JsonUtil.getResponseJson(cood, msg, null, null);
+		}
 	}
 	/**
 	 * 加减少物品数量
@@ -212,14 +211,14 @@ public class T_trolleyController {
 		String msg = "系统异常，请稍后再试";
 		Integer cood = -1;
 		boolean fig=false;
-	//try {
+	try {
 		    if(num==0) {
 		    	msg = "购物车数量不能为0";
 				 cood = -1;
 		    }else {
 		    	
 		    	T_trolley t_trolley=T_trolleyService.selectById(T_trolley_id);
-		    	System.out.println(t_trolley);
+		    	//System.out.println(t_trolley);
 		    	int number = IT_orderService.Queryinginventory(t_trolley.getProduct_id().toString(),Long.valueOf(t_trolley.getT_product_specification_id()));
 			if(number<num) {
 				cood = -1;
@@ -244,189 +243,12 @@ public class T_trolleyController {
 		    }
 		    
 			return JsonUtil.getResponseJson(cood, msg, null, null);
-//		} catch (Exception e) {
-//			return JsonUtil.getResponseJson(cood, msg, null, null);
-//		}
+		} catch (Exception e) {
+			return JsonUtil.getResponseJson(cood, msg, null, null);
+		}
 	
 	}
 	
-//	/**
-//	 * 购物车购买
-//	 */
-//	@RequestMapping("/gouwuchegoumai")
-//	@ResponseBody
-//	public  String  gouwuchegoumai(String []str,String order_mode,String user_id) {
-//		String [] str1= str;
-//
-//		String msg = "系统异常，请稍后再试";
-//		Integer cood = -1;
-//		boolean fig=false;
-//		T_trolley T_trolley=new T_trolley();
-//		//订单编号
-//	    String  order_no=OrderCodeFactory.getOrderCode(8L);
-//	    double zongjia=0; Integer number=0;//总价，数量
-//	    double ddzongjia=0;
-//		for(int i=0;i<str1.length;i++) {
-//			T_trolley=T_trolleyService.selectById(str1[i]);
-//	
-//			T_product T_product=new T_product();
-//			T_product=T_trolleyService.T_produc(T_trolley.getProduct_id().toString());
-//			T_shopping T_shopping=new T_shopping();
-//			T_shopping.setDanjia(T_product.getPrice().doubleValue());
-//			T_shopping.setNumber(T_trolley.getNumber());//商品数量
-//			T_shopping.setProduct_id(T_trolley.getProduct_id().toString());
-//			T_shopping.setOrder_id(order_no);
-//			
-//			zongjia= T_product.getPrice().doubleValue()*T_trolley.getNumber();
-//			int mum=IT_orderService.selectpase(T_trolley.getProduct_id().toString().toString(),zongjia);//查询优惠价格		
-//			T_shopping.setZongjia(zongjia-mum);
-//			T_shopping.setYouhuijine(mum);
-//			fig=T_shoppingService.insert(T_shopping);
-//			number=T_trolley.getNumber()+number;
-//			ddzongjia=ddzongjia+zongjia-mum;
-//			 fig=T_trolleyService.deleteById(T_trolley.getTrolley_id());
-//				/*
-//				 *  减去库存
-//				 */
-//			
-////			int ter=IT_orderService.updatenumbergoumai(T_trolley.getNumber(), T_trolley.getProduct_id().toString());
-//				
-//		}   
-//		Date order_time = new Date();
-//		T_order  T_order=new T_order();
-//	
-//		T_order.setUser_id(user_id);
-//		T_order.setOrder_no(order_no);
-//		T_order.setOrder_state("0");
-//		T_order.setOrder_mode(order_mode);
-//		T_order.setOrder_number(number.toString());
-//		T_order.setOrder_money(ddzongjia);
-//		T_order.setOrder_time(order_time);
-//		/**
-//		 * 查询运费
-//		 */
-//		Integer  yongfei=IT_orderService.yunfei(zongjia);
-//		
-//		T_order.setYunfei(yongfei.toString());
-//		 fig=IT_orderService.insert(T_order);		
-//		if(fig) {
-//			cood = 1;
-//			msg = "商品购买成功";
-//		}else {
-//			cood = -1;
-//			msg = "购买失败";
-//		}
-//	     
-//		
-//		
-//		return JsonUtil.getResponseJson(cood, msg, null, null);
-//	}
-//	/**
-//	 * 购物车购买
-//	 */
-//	@RequestMapping("/chakucun")
-//	@ResponseBody
-//	public  String  gouwuchegoumai(String trolley_id) {
-//		String[] str = trolley_id.split(","); 
-//		
-//		String msg = "系统异常，请稍后再试";
-//		Integer cood = -1;
-//		boolean fig=true;
-//		try {
-//			
-//		
-//		for(int i=0;i<str.length;i++) {
-//			T_trolley T_trolley=new T_trolley();
-//			T_trolley=T_trolleyService.selectById(str[i]);
-//			Integer numbers=0;
-////			Integer numbers = IT_orderService.Queryinginventory(T_trolley.getProduct_id().toString());
-//			
-//			
-//			if(numbers<T_trolley.getNumber()) {
-//				String  name=T_trolleyService.querproductname(T_trolley.getProduct_id().toString());
-//				
-//				fig=false;
-//				cood = -1;
-//			
-//				msg = "商品"+name+"库存不足，请联系客服";
-//				
-//				break;
-//				
-//				
-//			}else{
-//				cood = 1;
-//				msg = "库存足够";
-//				
-//			}
-//			
-//			return JsonUtil.getResponseJson(cood, msg, null, trolley_id);
-//		}   
-//		
-//	
-//		
-//		
-//		
-//			
-//		
-//	     
-//		} catch (Exception e) {
-//			fig=false;
-//			msg = "库存不足";
-//			return JsonUtil.getResponseJson(cood, msg, null, trolley_id);
-//		}
-//		
-//		return JsonUtil.getResponseJson(cood, msg, null, trolley_id);
-//	}
-//	/**
-//	 * 查询库存
-//	 */
-//	@RequestMapping("/quernumber")
-//	@ResponseBody
-//	public  String  quernumnemre(String trolley_id) {
-//		String[] str = trolley_id.split(","); 
-//		T_trolley T_trolley=new T_trolley();
-//
-//		String msg = "系统异常，请稍后再试";
-//		Integer cood = -1;
-//		boolean fig=true;
-//	try {
-//			
-//		List<T_trolley> trolley=new ArrayList();
-//		for(int i=0;i<str.length;i++) {
-//			
-//			T_trolley=T_trolleyService.selectById(str[i]);
-//	
-//			trolley.add(T_trolley);
-//	
-//				
-//		}
-//			if(fig)	{
-//				cood = 1;
-//				msg = "查询成功";
-//				
-//			}else{
-//				cood = 1;
-//				msg = "库存足够";
-//				
-//			}
-//		
-//			return JsonUtil.getResponseJson(cood, msg, null, T_trolley);
-//		  
-//		
-//	
-//		
-//		
-//		
-//			
-//		
-//	     
-//		} catch (Exception e) {
-//			fig=false;
-//			msg = "库存不足";
-//			return JsonUtil.getResponseJson(cood, msg, null, trolley_id);
-//		}
-//		
-//		
-//	}
+
 	
 }

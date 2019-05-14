@@ -25,7 +25,7 @@ public interface IT_userService extends IService<T_user> {
 	 * @author pangchong
 	 * @createDate 2019年3月13日 下午2:00
 	 */
-	public List<Personal> selectUserById(Personal personal);
+	public List<Personal> selectUserById(BigInteger id);
 	
 	/**
 	 * 根据用户id查询会员天数

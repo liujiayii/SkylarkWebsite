@@ -77,7 +77,7 @@ public class T_couponController {
 
 			boolean insert = couponService.insert(coupon);
 			Long id = coupon.getId();
-			System.out.println(id);
+			//System.out.println(id);
 			if (insert) {
 				return JsonUtil.getResponseJson(1, "添加成功", null, null);
 			}

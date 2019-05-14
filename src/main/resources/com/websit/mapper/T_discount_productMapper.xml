@@ -35,14 +35,14 @@
     </resultMap> 
     
 	  <!-- 增加商品专区 -->
-	<insert id="saveDiscountById" parameterType="com.websit.entityvo.Discount">
+	<insert id="saveDiscountById" parameterType="com.websit.entity.T_discount_product">
 		insert into
 		 t_discount_product(product_id,discount_id)
 		values
-		(#{productid},#{discountId})
+		(#{product_id},#{discount_id})
 	</insert>
 	
-	<!-- 修改商品专区 -->
+	<!-- 修改商品满减优惠-->
 	<update id="updateDiscount" parameterType="com.websit.entityvo.Discount">
 		update  t_discount
 		<set>
@@ -53,7 +53,7 @@
 				money = #{money}
 			</if>
 		</set>
-		where id= #{id}
+		where id= #{discountid}
 	</update>
 	 <!-- 根据专区id删除商品专区 -->
     <delete id="deleteZoneById" parameterType="BigInteger">
@@ -77,4 +77,13 @@
                  tdp.discount_id = td.id
                 and  tdp.product_id = #{productId}
     </select>
+    
+    <!-- 修改满减优惠(商品表) -->
+	<update id="updateDiscount_product" parameterType="com.websit.entity.T_discount_product">
+		update  t_discount_product
+		set
+				discount_id = #{discount_id}
+		
+		where product_id= #{product_id}
+	</update>
 </mapper>

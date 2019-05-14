@@ -103,7 +103,7 @@
           type: "post",
           url: "/t_order/orderlist",
           data: {
-            user_id: sessionStorage.getItem("SkyUserId"),
+            user_id: localStorage.getItem("SkyUserId"),
             id: this.getHrefParam("id"),
             page: 1,
             limit: 10

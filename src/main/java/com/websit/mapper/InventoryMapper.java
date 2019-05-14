@@ -42,12 +42,12 @@ public interface InventoryMapper {
 	public Integer findInventoryCount(@Param("productName")String productName);
 
 	/**
-	 * description 根据id删除库存
+	 * description 根据商品规格id删除库存
 	 *
 	 * @author pangchong
 	 * @createDate 2019年3月23日 下午2:00
 	 */
-	public int deleteInventoryById(@Param("id") BigInteger id);
+	public int deleteInventoryByProductSpecificationId(@Param("attribute") Long attribute);
 	/**
 	 * description 根据规格id查询库存
 	 *

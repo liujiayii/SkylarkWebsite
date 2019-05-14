@@ -116,22 +116,22 @@
 	<update id="updateUserVoById" parameterType="com.websit.entity.UserUpdateVo">
 		update t_user
 		<set>
-			<if test="nickname != null || nickname != '' " >
+			<if test="nickname != null and nickname != '' " >
 				nickname = #{nickname},
 			</if>
-			<if test="sex != null || sex != '' ">
+			<if test="sex != null and sex != '' ">
 				sex = #{sex},
 			</if>
-			<if test="email != null || email != ''">
+			<if test="email != null and email != ''">
 				email = #{email},
 			</if>
-			<if test="avatar != null || avatar != ''">
+			<if test="avatar != null and avatar != ''">
 				avatar = #{avatar},
 			</if>
-			<if test="birthday != null || birthday != ''">
+			<if test="birthday != null ">
 				birthday = #{birthday},
 			</if>
-			<if test="signature != null || signature != ''">
+			<if test="signature != null and signature != ''">
 				signature = #{signature},
 			</if>        
 		</set>

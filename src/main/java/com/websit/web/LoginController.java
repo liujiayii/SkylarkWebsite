@@ -322,7 +322,7 @@ public class LoginController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	@ResponseBody
 	public synchronized String register(@RequestBody UserRegister user, HttpSession session) {
-		System.out.println(user);
+		//System.out.println(user);
 		// 校验手机号码格式是否正确
 		String regularp = "^((13[0-9])|(14[0-9])|(19[0-9])|(16[0-9])|(15[^4,\\D])|(17[0-9])|(18[0-9]))(\\d{8})$";
 		String phone = user.getPhone();
@@ -837,7 +837,7 @@ public class LoginController {
 		resault.put("id", Security.encode(t_user.getId().toString()));// 加密userid
 		resault.put("phid", t_user.getPhid());
 		// 返回加密userid
-		System.out.println(Security.encode(JsonUtil.getResponseJson(1, "登陆成功", null, resault)));
+		//System.out.println(Security.encode(JsonUtil.getResponseJson(1, "登陆成功", null, resault)));
 
 		return JsonUtil.getResponseJson(1, "登陆成功", null, resault);
 

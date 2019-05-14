@@ -236,7 +236,7 @@
 		 t_product p
         WHERE 
         p.zone_id =  #{zoneId}
-      
+      and  p.state=1
 		)as tb
 	</select>
 	

@@ -30,7 +30,7 @@ public class T_discount_productServiceImpl extends ServiceImpl<T_discount_produc
 	 * @createDate 2019年3月27日 下午2:00
 	 */
 	@Override
-	public int saveDiscountById(Discount discount) {
+	public int saveDiscountById(T_discount_product discount) {
 		
 		return discount_productMapper.saveDiscountById(discount);
 	}
@@ -67,6 +67,17 @@ public class T_discount_productServiceImpl extends ServiceImpl<T_discount_produc
 	public int updateDiscount(Discount discount) {
 	
 		return discount_productMapper.updateDiscount(discount);
+	}
+	/**
+	 * 修改满减优惠(商品表)
+	 * 
+	 * @author pangchong
+	 * @createDate 2019年3月22日 下午2:00
+	 */
+	@Override
+	public int updateDiscount_product(T_discount_product discount_product) {
+		
+		return discount_productMapper.updateDiscount_product(discount_product);
 	}
 
 }

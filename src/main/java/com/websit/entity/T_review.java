@@ -76,6 +76,18 @@ public class T_review extends Model<T_review> {
      * 图片路径
      */
     private String picture;
+    public int getShopping_id() {
+		return shopping_id;
+	}
+
+	public void setShopping_id(int shopping_id) {
+		this.shopping_id = shopping_id;
+	}
+
+	/**
+     * 商品订单id
+     */
+    private int shopping_id;
 
     public Long getId() {
         return id;
@@ -154,18 +166,10 @@ public class T_review extends Model<T_review> {
     }
 
     @Override
-    public String toString() {
-        return "T_review{" +
-        "id=" + id +
-        ", product_id=" + product_id +
-        ", user_id=" + user_id +
-        ", review_content=" + review_content +
-        ", review_time=" + review_time +
-        ", reply=" + reply +
-        ", reply_time=" + reply_time +
-        ", browse_number=" + browse_number +
-        ", appraise=" + appraise +
-        ", picture=" + picture +
-        "}";
-    }
+	public String toString() {
+		return "T_review [id=" + id + ", product_id=" + product_id + ", user_id=" + user_id + ", review_content="
+				+ review_content + ", review_time=" + review_time + ", reply=" + reply + ", reply_time=" + reply_time
+				+ ", browse_number=" + browse_number + ", appraise=" + appraise + ", picture=" + picture
+				+ ", shopping_id=" + shopping_id + "]";
+	}
 }

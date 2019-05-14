@@ -86,8 +86,17 @@
     data() {
       return {
         tabActive: '个人资料',
-        form: {nickname: '', id: sessionStorage.getItem('SkyUserId'), avatar: '', birthday: '', signature: '', sex: '', email: ''},
+        form: {
+          nickname: '',
+          id: localStorage.getItem('SkyUserId'),
+          avatar: '',
+          birthday: '',
+          signature: '',
+          sex: '',
+          email: ''
+        },
         detail: {},
+        file: null,
         reply: {},
         date: {},
         postList: {
@@ -120,13 +129,7 @@
         } else if (!file.type.match('image')) {
           this.error('文件格式不正确')
         } else {
-          let reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onload = (e) => {
-            // 读取到的图片base64 数据编码 将此编码字符串传给后台即可
-            let imgCode = e.target.result;
-            this.form.avatar = imgCode
-          }
+          this.file = file
         }
         return false
       },
@@ -134,33 +137,47 @@
       submit(form) {
         this.$refs[form].validate((valid) => {
           if (valid) {
+            console.log('====')
+            let newForm = new FormData()
+            if (this.file != null) newForm.append('file', this.file)
+            newForm.append('nickname', this.form.nickname)
+            newForm.append('id', this.form.id)
+            newForm.append('birthday', this.form.birthday)
+            newForm.append('signature', this.form.signature)
+            newForm.append('sex', this.form.sex)
+            newForm.append('email', this.form.email)
+            console.log(newForm)
             $.ajax({
               type: "post",
               url: "/updateUser",
-              data: this.form,
-              dataType: "json",
+              data: newForm,
+              cache: false,
+              processData: false,
+              contentType: false,
               success: (res) => {
-                if (res.code == 1) {
+                res = JSON.parse(res)
+                if (res.code === 1) {
                   this.success(res.msg)
                   this.tabActive = '个人资料'
-                  sessionStorage.setItem("SkyUserName", res.data.nickname)
+                  localStorage.setItem("SkyUserName", res.data.nickname)
                   this.getUserInfo()
                 } else {
                   this.error(res.msg)
                 }
               }
             });
-          } else {
           }
         })
       },
       /*个人详情*/
       getDetail() {
         $.ajax({
-          type: "post",
-          url: "/selectUserById",
-          data: {id: this.getHrefParam('id')||sessionStorage.getItem("SkyUserId")},
+          type: "get",
+          url: "/selectUserById/" + this.getHrefParam('id') || localStorage.getItem("SkyUserId"),
           dataType: "json",
+          data: {
+            id: localStorage.getItem("SkyUserId")
+          },
           success: (res) => {
             if (res.code == 1) {
               res.data[0].userBirthday = this.dateFormat(res.data[0].userBirthday)
@@ -174,14 +191,13 @@
             }
           }
         });
-      }
-      ,
+      },
       /*回帖*/
       getReply() {
         $.ajax({
           type: "post",
           url: "/selectUserReplyCountByUserId",
-          data: {id: this.getHrefParam('id')||sessionStorage.getItem("SkyUserId")},
+          data: {id: this.getHrefParam('id') || localStorage.getItem("SkyUserId")},
           dataType: "json",
           success: (res) => {
             if (res.code == 1) {
@@ -189,14 +205,13 @@
             }
           }
         });
-      }
-      ,
+      },
       /*会员天数*/
       getDate() {
         $.ajax({
           type: "post",
           url: "/selectUserDayById",
-          data: {id: this.getHrefParam('id')||sessionStorage.getItem("SkyUserId")},
+          data: {id: this.getHrefParam('id') || localStorage.getItem("SkyUserId")},
           dataType: "json",
           success: (res) => {
             if (res.code == 1) {
@@ -204,14 +219,13 @@
             }
           }
         });
-      }
-      ,
+      },
       /*帖子列表*/
       getPostList(page) {
         $.ajax({
           type: "post",
           url: "/selectT_postingByUserId",
-          data: {id: this.getHrefParam('id')||sessionStorage.getItem("SkyUserId"), page, limit: 10},
+          data: {id: this.getHrefParam('id') || localStorage.getItem("SkyUserId"), page, limit: 10},
           dataType: "json",
           success: (res) => {
             if (res.code == 1) {
@@ -220,13 +234,11 @@
             }
           }
         });
-      }
-      ,
+      },
       /*分页*/
       pageChange(page) {
         this.getList(page)
-      }
-      ,
+      },
     },
     mounted() {
       this.getDetail()

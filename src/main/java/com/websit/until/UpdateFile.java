@@ -25,12 +25,22 @@ import com.sun.corba.se.spi.orbutil.fsm.State;
  *
  */
 public class UpdateFile {
+	
+	  private static String endpoint = "https://oss-cn-beijing.aliyuncs.com";
+	  private static String accessKeySecret = "MI2LRjW5RQqolPzUBdkjSaRDDPOLpG";
+	  private static String picLocation="shop/";
+	   private static String accessKeyId = "LTAIvnDBZYK3DLbL";
+		/*
+	 * private static String endpoint =
+	 * "http://oss-cn-beijing.aliyuncs.com bucketName=system-im"; private static
+	 * String accessKeySecret = "MI2LRjW5RQqolPzUBdkjSaRDDPOLpG"; private static
+	 * String picLocation="data/attachments/";
+	 * 
+	 * private static String accessKeyId = "LTAIvnDBZYK3DLbL";
+	 */
 	  
-	    private static String endpoint = "https://oss-cn-beijing.aliyuncs.com";
-	    private static String accessKeyId = "LTAIvnDBZYK3DLbL";
-	    private static String accessKeySecret = "MI2LRjW5RQqolPzUBdkjSaRDDPOLpG";
 	    private static String bucketName = "system-im";
-	    private static String picLocation="shop/";
+	  
 	    private static String Key = "key";
 	    private static String ruleId0 = "rule0";
 	    private static String matchPrefix0 = "A0/";
@@ -65,7 +75,7 @@ public class UpdateFile {
         try {  
         //    ossClient = new OSSClient(config.ENDPOINT, config.ACCESSKEYID, config.ACCESSKEYSECRET); 
              ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-             System.out.println("ossClient"+ossClient);
+//             System.out.println("ossClient"+ossClient);
 	         // 设置断点续传请求
 	         UploadFileRequest uploadFileRequest = new UploadFileRequest(bucketName, fileName);
 	         // 指定上传的本地文件
@@ -76,7 +86,7 @@ public class UpdateFile {
 	         uploadFileRequest.setPartSize(1 * 1024 * 1024);
 	         // 开启断点续传
 	         uploadFileRequest.setEnableCheckpoint(true);
-	         System.out.println("uploadFileRequest"+uploadFileRequest);
+//	         System.out.println("uploadFileRequest"+uploadFileRequest);
 	         // 断点续传上传
 	         try {
 				ossClient.uploadFile(uploadFileRequest);
@@ -87,11 +97,7 @@ public class UpdateFile {
 				e.printStackTrace();
 				return null; 
 			}
-
-            
-            
-            
-            /*InputStream input = new FileInputStream(file);    
+      /*InputStream input = new FileInputStream(file);    
             ObjectMetadata meta = new ObjectMetadata();             // 创建上传Object的Metadata  
             meta.setContentType(OSSUploadUtil.contentType(fileType));       // 设置上传内容类型  
             meta.setCacheControl("no-cache");                   // 被下载时网页的缓存行为    
@@ -143,7 +149,7 @@ public class UpdateFile {
     	//System.out.println("filename"+file.getOriginalFilename());   	
     
 		  OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-		  System.out.println("ossClient"+ossClient);
+//		  System.out.println("ossClient"+ossClient);
 		// 距最后修改时间3650天后文件删除。
 		  SetBucketLifecycleRequest request = new SetBucketLifecycleRequest(bucketName);
 		  request.AddLifecycleRule(new LifecycleRule(ruleId0, matchPrefix0, RuleStatus.Enabled, 36500));

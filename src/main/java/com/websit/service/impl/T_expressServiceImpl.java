@@ -44,33 +44,23 @@ public class T_expressServiceImpl extends ServiceImpl<T_expressMapper, T_express
 	 */
 	@Override
 	public String selectExpressDetails(Map<String, String> map) {
+		JSONObject expressInfo = null;
 		// 先从redis中查询，如果有信息则返回
 		if (redisUtil.hasKey(map.get("number"))) {
-			
 			return  JSONObject.toJSONString(redisUtil.get(map.get("number")));
 		}
 		// 先从数据库中查询，如果有信息则返回，没有信息则调用第三方查询快递接口
 		ExpressDetailsVo expressDetailsVo = t_expressMapper.selectExpressDetails(map);
 		
 		if (expressDetailsVo != null) {
-			return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, null, expressDetailsVo);
+			return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, expressDetailsVo.getId().intValue(), expressDetailsVo);
 		} else {
 			map.put("no", map.get("number"));
 		}
 		
 		// 获取查询订单返回的数据
-		JSONObject expressInfo = JSONObject.parseObject(ExpressUtil.fegine(map));
-		int status = expressInfo.getIntValue("status");
-		/** 判断状态，如果返回的不是查询成功状态，则将错误消息返回 */
-		if (status != ExpressReturnCodeEnum.SUCCESS.getIndex()) {
-			for (ExpressReturnCodeEnum erc : ExpressReturnCodeEnum.values()) {
-				
-				if (status == erc.getIndex()) {
-					
-					return JsonUtil.getResponseJson(status, erc.getName(), null, null);
-				}
-			}
-		}
+		expressInfo = JSONObject.parseObject(ExpressUtil.fegine(map));
+		
 		/** 将查到的结果存到redis中，有效时间2个小时 */
 		redisUtil.set(map.get("number"), expressInfo, 7200);
 		

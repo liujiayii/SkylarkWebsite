@@ -97,7 +97,7 @@ public class PayController {
 	@RequestMapping(value = "/wxNotify")
 	@ResponseBody
 	public String wxNotify(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("过来");
+//		System.out.println("过来");
 		String str;
 		try {
 			String wxpayNotify = wxpayNotifyService.wxNotify(request, response);
@@ -148,7 +148,7 @@ public class PayController {
 		if (wxpayNotify != null) {
 			transaction_id = wxpayNotify.getTransaction_id();
 		} else {
-			System.out.println("微信账单暂未回调");
+			//System.out.println("微信账单暂未回调");
 		}
 		Map<String, Object> maps = null;
 		try {
