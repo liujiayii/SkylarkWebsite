@@ -25,5 +25,19 @@ public class T_commentServiceImpl extends ServiceImpl<T_commentMapper, T_comment
 		// TODO Auto-generated method stub
 		return T_commentMapper.update(id);
 	}
+	
+	/**
+	 * @Title: deleteCommentByPostingId
+	 * @description 根据帖子id删除回复信息
+	 * @param t_comment
+	 * @return int    
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	@Override
+	public int deleteCommentByPostingId(T_comment t_comment) {
+		// TODO Auto-generated method stub
+		return T_commentMapper.deleteCommentByPostingId(t_comment);
+	}
 
 }

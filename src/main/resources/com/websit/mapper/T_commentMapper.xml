@@ -13,7 +13,14 @@
         <result column="banzhu"  property="banzhu"/>
     </resultMap>
  <update id="update">
- update t_posting set  new_time=now()  where id=#{id}
-    
-    </update>
+ 	update t_posting set  new_time=now()  where id=#{id}
+ </update>
+ 
+ <!-- 根据帖子id删除回复信息 -->
+    <delete id="deleteCommentByPostingId"  parameterType="com.websit.entity.T_comment">
+        DELETE FROM
+            t_comment t
+        WHERE
+            t.posting_id = #{posting_id}
+    </delete>
 </mapper>

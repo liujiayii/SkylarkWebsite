@@ -2,30 +2,24 @@ package com.websit.service.impl;
 
 import com.websit.constant.PostingType;
 import com.websit.constant.ReturnCode;
-import com.websit.entity.T_comment;
 import com.websit.entity.T_posting;
 import com.websit.entity.T_user;
+import com.websit.entityvo.PostingForUpdateVo;
 import com.websit.entityvo.PostingPlateVo;
 import com.websit.entityvo.T_postingVo;
 import com.websit.mapper.T_postingMapper;
 import com.websit.service.IT_postingService;
 import com.websit.until.JsonUtil;
-
 //import io.netty.util.internal.StringUtil;
-
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.toolkit.StringUtils;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * <p>
@@ -187,6 +181,24 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 	}
 	
 	/**
+	 * @Title: selectNewMember
+	 * @description 1.2 显示最新一个会员名称
+	 * @return String    
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	@Override
+	public String selectNewMember() {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<> ();
+		String nickName = t_postingMapper.selectNewMember();
+		map.put("nickName", nickName);  //新用户的名称
+		
+		return JsonUtil.getResponseJson(ReturnCode.SUCCSEE_CODE, ReturnCode.SUCCESS_SELECT_MSG, null, map);
+		
+	}
+	
+	/**
 	 * 重载发帖计数方法
 	 *
 	 * @Title: selectPostCount
@@ -223,5 +235,87 @@ public class T_postingServiceImpl extends ServiceImpl<T_postingMapper, T_posting
 	public List<T_postingVo> selecAllSomeTop(T_postingVo postingVo) {
 		return t_postingMapper.selecAllSomeTop(postingVo);
 	}
+
+	/**
+	 * @Title: updatePostingTopState
+	 * @description 修改帖子的置顶状态(是否置顶)
+	 * @return int 
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	@Override
+	public int updatePostingTopState(PostingForUpdateVo postingVo) {
+		// TODO Auto-generated method stub
+		return t_postingMapper.updatePostingTopState(postingVo);
+	}
+
+	/**
+	 * @Title: updatePostingDelState
+	 * @description 修改帖子的删除状态(是否删除)
+	 * @return int  
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	@Override
+	public int updatePostingDelState(PostingForUpdateVo postingVo) {
+		// TODO Auto-generated method stub
+		return t_postingMapper.updatePostingDelState(postingVo);
+	}
+
+	/**
+	 * @Title: updatePostingGoodState
+	 * @description 修改帖子的精华状态(是否为精华帖子)
+	 * @return int 
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	@Override
+	public int updatePostingGoodState(PostingForUpdateVo postingVo) {
+		// TODO Auto-generated method stub
+		return t_postingMapper.updatePostingGoodState(postingVo);
+	}
+
+	/**
+	 * @Title: countPostingByPlateId
+	 * @description 通过板块id查询当前板块下的帖子的数量
+	 * @return int 
+	 * @author dujiawei
+	 * @createDate 2019年6月4日
+	 */
+	@Override
+	public int countPostingByPlateId(Long plate_id) {
+		// TODO Auto-generated method stub
+		return t_postingMapper.countPostingByPlateId(plate_id);
+	}
+
+	/**
+	 * @Title: countTodayPosting
+	 * @description 通过板块id和日期查询当前板块下的今日帖子的数量
+	 * @return int 
+	 * @author dujiawei
+	 * @createDate 2019年6月4日
+	 */
+	@Override
+	public int countTodayPosting(T_postingVo postingVo) {
+		// TODO Auto-generated method stub
+		return t_postingMapper.countTodayPosting(postingVo);
+	}
+
+	
+	/**
+	 * @Title: deletePostingById
+	 * @description 删除一条帖子（硬删除）
+	 * @return int 
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	@Override
+	public int deletePostingById(PostingForUpdateVo postingVo) {
+		// TODO Auto-generated method stub
+		return t_postingMapper.deletePostingById(postingVo);
+	}
+
+	
+
 
 }

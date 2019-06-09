@@ -83,7 +83,7 @@ public class T_userServiceImpl extends ServiceImpl<T_userMapper, T_user> impleme
 		return userMapper.selectUserCreateTimeById(personal);
 	}
 	/**
-	 * 查询用户回帖数量
+	 * 1.1个人资料中，查询用户回帖数量
 	 * @author pangchong
 	 * @createDate 2019年3月18日 下午2:00
 	 */
@@ -92,6 +92,18 @@ public class T_userServiceImpl extends ServiceImpl<T_userMapper, T_user> impleme
 	
 		return userMapper.selectUserReplyCountByUserId(reply);
 	}
+	
+	/**
+	 * 1.2个人资料中，查询用户发过的主题数量
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	@Override
+	public Integer selectUserPostingCountByUserId(T_reply reply) {
+		// TODO Auto-generated method stub
+		return userMapper.selectUserPostingCountByUserId(reply);
+	}
+	
 	@Override
 	public Long slectCount() {
 		

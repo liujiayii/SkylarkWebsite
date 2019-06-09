@@ -48,11 +48,18 @@ public interface T_userMapper extends BaseMapper<T_user> {
 	public Date selectUserCreateTimeById(Personal personal);
 	
 	/**
-	 * 查询用户回帖数量
+	 * 1.1个人资料中，查询用户回帖数量
 	 * @author pangchong
 	 * @createDate 2019年3月18日 下午2:00
 	 */
 	public Integer selectUserReplyCountByUserId(T_reply reply);
+	
+	/**
+	 * 1.2个人资料中，查询用户发过的主题数量
+	 * @author dujiawei
+	 * @createDate 2019年6月5日 
+	 */
+	public Integer selectUserPostingCountByUserId(T_reply reply);
 
 	/**
 	 * 查询用户总数量

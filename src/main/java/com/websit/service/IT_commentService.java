@@ -17,4 +17,14 @@ public interface IT_commentService extends IService<T_comment> {
 	 */
 	public int  update(String id);
 
+	/**
+	 * @Title: deleteCommentByPostingId
+	 * @description 根据帖子id删除回复信息
+	 * @param t_comment
+	 * @return int    
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	public int deleteCommentByPostingId(T_comment t_comment);
+
 }

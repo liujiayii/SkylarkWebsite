@@ -43,4 +43,26 @@ public interface T_plateMapper extends BaseMapper<T_plate> {
 	int selectPlateCommentCount(Long plate_id);
 	
 	T_plate selectFindId(long id);
+	
+	/**
+	 * 
+	 * @Title: listCompanyPlate
+	 * @description 2.1查询当前公司的所有板块列表
+	 * @param @param company_id
+	 * @return List<PlateCompanyVo>    
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	List<PlateCompanyVo> listCompanyPlate(Long company_id);
+	
+	/**
+	 *
+	 * @Title: countCompanyPlate
+	 * @description 2.2查询当前公司的所有板块列表的数量
+	 * @param @param company_id
+	 * @return int    
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	int countCompanyPlate(Long company_id);
 }

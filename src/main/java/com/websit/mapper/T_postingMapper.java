@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.websit.entity.T_posting;
+import com.websit.entityvo.PostingForUpdateVo;
 import com.websit.entityvo.PostingPlateVo;
 import com.websit.entityvo.T_postingVo;
 
@@ -110,4 +111,78 @@ public interface T_postingMapper extends BaseMapper<T_posting> {
 	 * @createDate 2019年03月15日
 	 */
 	public Integer selectPostingCount();
+	/**
+	 * @Title: selectNewMember
+	 * @description 1.2 显示最新一个会员名称
+	 * @return String    
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	public String selectNewMember();
+	
+	/**
+	 *
+	 * @Title: updatePostingTopState
+	 * @description 修改帖子的置顶状态(是否置顶)
+	 * @param @param postingVo
+	 * @return int    
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	int updatePostingTopState(PostingForUpdateVo postingVo);
+	
+	/**
+	 *
+	 * @Title: updatePostingDelState
+	 * @description 修改帖子的删除状态(是否删除)
+	 * @param @param postingVo
+	 * @return int    
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	int updatePostingDelState(PostingForUpdateVo postingVo);
+	
+	/**
+	 *
+	 * @Title: updatePostingGoodState
+	 * @description 修改帖子的精华状态(是否为精华帖子)
+	 * @param @param postingVo
+	 * @return int    
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	int updatePostingGoodState(PostingForUpdateVo postingVo);
+	
+	/**
+	 *
+	 * @Title: countPostingByPlateId
+	 * @description 通过板块id查询当前板块下的帖子的数量
+	 * @param @param plate_id
+	 * @return int    
+	 * @author dujiawei
+	 * @createDate 2019年6月4日
+	 */
+	public int countPostingByPlateId(Long plate_id);
+	
+	/**
+	 *
+	 * @Title: countTodayPosting
+	 * @description 通过板块id和日期查询当前板块下的今日帖子的数量
+	 * @param @param postingVo
+	 * @return int    
+	 * @author dujiawei
+	 * @createDate 2019年6月4日
+	 */
+	public int countTodayPosting(T_postingVo postingVo);
+	
+	/**
+	 * @Title: deletePostingById
+	 * @description 删除一条帖子（硬删除）
+	 * @param postingVo
+	 * @return int    
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	public int deletePostingById(PostingForUpdateVo postingVo);
+	
 }

@@ -112,7 +112,6 @@
 
 .bbsIndex .module .moduleCont {
   display: flex;
-  justify-content: space-between;
   flex-wrap: wrap;
   background: #f1f1f1;
   width: 100%;
@@ -133,7 +132,7 @@
   padding: 10px;
   background: #fff;
   box-sizing: border-box;
-  margin-bottom: 5px;
+  margin:2px;
   border-left: 6px solid #91D5D6;
 }
 

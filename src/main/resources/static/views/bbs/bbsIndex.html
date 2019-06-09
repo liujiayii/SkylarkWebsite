@@ -37,7 +37,7 @@
                 <li>{{index+1}}.
                   <a class="module" :href="'/forum?id='+item.t_plate.id+'&page=1'">[{{item.t_plate.plate_name}}]</a>
                   <a class="title" :href="'/post?id='+item.id">{{item.title}}</a>
-                  <span class="date">2019-03-15</span>
+                  <span class="date">{{item.create_time}}</span>
                 </li>
               </template>
             </ul>
@@ -48,7 +48,7 @@
                 <li>{{index+1}}.
                   <a class="module" :href="'/forum?id='+item.t_plate.id+'&page=1'">[{{item.t_plate.plate_name}}]</a>
                   <a class="title" :href="'/post?id='+item.id">{{item.title}}</a>
-                  <span class="date">2019-03-15</span>
+                  <span class="date">{{item.create_time}}</span>
                 </li>
               </template>
             </ul>
@@ -59,7 +59,7 @@
                 <li>{{index+1}}.
                   <a class="module" :href="'/forum?id='+item.t_plate.id+'&page=1'">[{{item.t_plate.plate_name}}]</a>
                   <a class="title" :href="'/post?id='+item.id">{{item.title}}</a>
-                  <span class="date">2019-03-15</span>
+                  <span class="date">{{item.create_time}}</span>
                 </li>
               </template>
             </ul>
@@ -151,6 +151,9 @@
           dataType: "json",
           success: (res) => {
             if (res.code == 1) {
+            	for(let i=0;i<res.data.length;i++){
+            		res.data[i].create_time=this.dateFormat(res.data[i].create_time)
+            	}
               this.hotPost = res.data
             }
           }
@@ -165,6 +168,9 @@
           dataType: "json",
           success: (res) => {
             if (res.code == 1) {
+            	for(let i=0;i<res.data.length;i++){
+            		res.data[i].create_time=this.dateFormat(res.data[i].create_time)
+            	}
               this.newPost = res.data
             }
           }
@@ -179,6 +185,9 @@
           dataType: "json",
           success: (res) => {
             if (res.code == 1) {
+            	for(let i=0;i<res.data.length;i++){
+            		res.data[i].create_time=this.dateFormat(res.data[i].create_time)
+            	}
               this.goodPost = res.data
             }
           }

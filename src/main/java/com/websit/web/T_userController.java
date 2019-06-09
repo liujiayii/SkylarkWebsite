@@ -173,8 +173,11 @@ public class T_userController {
 
 	}
 
+	/**  ↓ ↓ ↓ ↓ ↓个人资料的两个方法  ↓ ↓ ↓ ↓ ↓ */
+	/** ----------------------------------------方法开始------------------------------------------------- */
+	
 	/**
-	 * 查询用户回帖数量
+	 * 1.1个人资料中，查询用户回帖数量
 	 * 
 	 * @author pangchong
 	 * @createDate 2019年3月18日 下午2:00
@@ -182,7 +185,8 @@ public class T_userController {
 	@RequestMapping(value = "/selectUserReplyCountByUserId", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String selectUserReplyCountByUserId(T_reply reply) {
-
+		/*Long lo = new Long(55);
+		reply.setUser_id(lo);*/
 		try {
 			Integer count = userService.selectUserReplyCountByUserId(reply);
 			System.out.println(count);
@@ -196,6 +200,35 @@ public class T_userController {
 			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
 		}
 	}
+	/**
+	 *
+	 * @Title: selectUserPostingCountByUserId
+	 * @description 1.2个人资料中，查询用户发过的主题数量
+	 * @param @param reply
+	 * @return String    
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	@RequestMapping(value = "/selectUserPostingCountByUserId", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String selectUserPostingCountByUserId(T_reply reply) {
+		/*Long lo = new Long(55);
+		reply.setUser_id(lo);*/
+		try {
+			Integer postCount = userService.selectUserPostingCountByUserId(reply);
+			System.out.println(postCount);
+			if (postCount != null) {
+				return JsonUtil.getResponseJson(1, "查看成功", null, postCount);
+			} else {
+				return JsonUtil.getResponseJson(1, "无数据", null, null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonUtil.getResponseJson(-1, "程序异常", null, null);
+		}
+	}
+	
+	/** ----------------------------------------方法结束------------------------------------------------- */
 
 	/**
 	 * 根据id查看用户发布过的贴子及数量

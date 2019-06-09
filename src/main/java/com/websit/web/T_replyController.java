@@ -202,5 +202,32 @@ public class T_replyController {
 			return JsonUtil.getResponseJson(cood, msg, null, null);
 		}
 	}
+	
+	/**
+	 *
+	 * @Title: deleteReplyById
+	 * @description 通过id删除评论下的违规回复（楼中楼回复）
+	 * @param @param id
+	 * @return String    
+	 * @author dujiawei
+	 * @createDate 2019年6月4日
+	 */
+	@RequestMapping("/deleteReplyById")
+	@ResponseBody
+	public String deleteReplyById(@RequestBody Long id) {
+		String msg = "系统异常，请稍后再试";
+		Integer code = -1;
+		boolean isDelReply = T_replyService.deleteById(id);// 调用T_replyService层
+		System.out.println("isDelReply::" + isDelReply);
+		if (isDelReply) {
+			msg = "删除回复成功";
+			code = 1;
+		} else {
+			msg = "删除回复失败";
+			code = -1;
+		}
+
+		return JsonUtil.getResponseJson(code, msg, null, null);
+	}
 
 }

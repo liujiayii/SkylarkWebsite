@@ -6,12 +6,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.websit.entityvo.PostingForUpdateVo;
 import com.websit.entityvo.T_postingVo;
+import com.websit.service.IT_commentService;
 import com.websit.service.IT_postingService;
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.websit.constant.ReturnCode;
+import com.websit.entity.T_comment;
+import com.websit.entity.T_plate;
 import com.websit.entity.T_posting;
 import com.websit.until.JsonUtil;
 import com.websit.until.fileuiil;
@@ -32,6 +39,8 @@ public class T_postingController {
 
 	@Autowired
 	public IT_postingService T_postingService;
+	@Autowired
+	public IT_commentService t_commentService;
     /**
      * 发帖接口
      * @author chengzhihao
@@ -231,6 +240,20 @@ public class T_postingController {
 		return T_postingService.selectPostCounts();
 	}
 	
+	/**
+	 * @Title: selectNewMember
+	 * @description 1.2 显示最新一个会员名称
+	 * @return String    
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	@RequestMapping("/selectNewMember")
+	@ResponseBody
+	public String selectNewMember() {
+		
+		return T_postingService.selectNewMember();
+	}
+	
 	
 	/**
 	 * 显示昨天、今天发帖数量以及总发帖数量
@@ -249,7 +272,141 @@ public class T_postingController {
 		return null;
 	}
 	
+	/**
+	 *
+	 * @Title: updatePostingTopState
+	 * @description 修改帖子的置顶状态(是否置顶)
+	 * @param @param postingVo
+	 * @return String    
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	@RequestMapping("/updatePostingTopState")
+	@ResponseBody
+	public String updatePostingTopState(@RequestBody PostingForUpdateVo postingVo) {
+		String msg = "系统异常，请稍后再试";
+		Integer code = -1;
+		try {
+			int fig = T_postingService.updatePostingTopState(postingVo);// 调用T_plate Service层
+			if (fig != 0) {
+				msg = "修改置顶状态成功";
+				code = 1;
+			} else {
+				msg = "修改置顶状态失败";
+				code = -1;
+			}
+
+			return JsonUtil.getResponseJson(code, msg, null, null);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return JsonUtil.getResponseJson(code, msg, null, null);
+		}
+	}
 	
+	/**
+	 *
+	 * @Title: updatePostingDelState
+	 * @description 修改帖子的删除状态(是否删除)
+	 * @param @param postingVo
+	 * @return String    
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	@RequestMapping("/updatePostingDelState")
+	@ResponseBody
+	public String updatePostingDelState(@RequestBody PostingForUpdateVo postingVo) {
+		String msg = "系统异常，请稍后再试";
+		Integer code = -1;
+		try {
+			int fig = T_postingService.updatePostingDelState(postingVo);// 调用T_plate Service层
+			if (fig != 0) {
+				msg = "修改删除状态成功";
+				code = 1;
+			} else {
+				msg = "修改删除状态失败";
+				code = -1;
+			}
+
+			return JsonUtil.getResponseJson(code, msg, null, null);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return JsonUtil.getResponseJson(code, msg, null, null);
+		}
+	}
+	
+	/**
+	 * @Title: deletePosting
+	 * @description （硬删除）删除一条帖子
+	 * @param postingVo(user_id、id)
+	 * @return String    
+	 * @author dujiawei
+	 * @createDate 2019年6月5日
+	 */
+	@RequestMapping("/deletePostingById")
+	@ResponseBody
+	public String deletePostingById(@RequestBody PostingForUpdateVo postingVo,HttpSession session) {
+		String msg = "系统异常，请稍后再试";
+		Integer code = -1;
+		T_comment t_comment = new T_comment();
+		t_comment.setPosting_id(postingVo.getId());  //前台传入帖子表的id
+		if(postingVo.getUser_id().equals(session.getId())){ //判断当前用户是否为帖主，若是，执行操作
+			try {
+				int fig = T_postingService.deletePostingById(postingVo);// 调用T_posting Service层
+				int num = t_commentService.deleteCommentByPostingId(t_comment);  //删除该帖子下的所有评论
+				if (fig != 0 && num !=0) {
+					msg = "删除该帖子成功";
+					code = 1;
+				} else {
+					msg = "删除该帖子失败";
+					code = -1;
+				}
+
+				return JsonUtil.getResponseJson(code, msg, null, null);
+
+			} catch (Exception e) {
+				// TODO: handle exception
+				return JsonUtil.getResponseJson(code, msg, null, null);
+			}
+		}else{
+			msg = "你没有权限删除该帖子";
+			code = -1;
+			return JsonUtil.getResponseJson(code, msg, null, null);
+		}
+	}
+	
+	/**
+	 *
+	 * @Title: updatePostingTopState
+	 * @description 修改帖子的精华状态(是否为精华帖)
+	 * @param @param postingVo
+	 * @return String    
+	 * @author dujiawei
+	 * @createDate 2019年6月3日
+	 */
+	@RequestMapping("/updatePostingGoodState")
+	@ResponseBody
+	public String updatePostingGoodState(@RequestBody PostingForUpdateVo postingVo) {
+		String msg = "系统异常，请稍后再试";
+		Integer code = -1;
+		try {
+			int fig = T_postingService.updatePostingGoodState(postingVo);// 调用T_plate Service层
+			if (fig != 0) {
+				msg = "修改精华状态成功";
+				code = 1;
+			} else {
+				msg = "修改精华状态失败";
+				code = -1;
+			}
+
+			return JsonUtil.getResponseJson(code, msg, null, null);
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			return JsonUtil.getResponseJson(code, msg, null, null);
+		}
+	}
 	
 	
 	

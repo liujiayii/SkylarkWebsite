@@ -68,7 +68,7 @@
       </div>
     </template>
     <div class="pageBox">
-      <Page :total="post.map.length" show-elevator size="small" prev-text="上一页" next-text="下一页"/>
+      <Page :total="count" show-elevator size="small" prev-text="上一页" next-text="下一页"/>
     </div>
     <div class="editor">
       <p class="info">发表回复</p>
@@ -86,6 +86,7 @@
       return {
         show: false,
         post: [],
+        count:0,
         editorContent: '',
         form: {}
       }
@@ -160,6 +161,7 @@
                 res.data[0].map[i].show_c = true
               }
               this.post = res.data[0];
+              this.count = res.count
             }
           }
         });
@@ -174,7 +176,7 @@
           data: JSON.stringify({
             comment: this.editorContent,
             posting_id: this.getHrefParam('id'),
-            user_id: 21
+            user_id: this.userInfo.id
           }),
           success: (res) => {
             if(res.code == 1){
