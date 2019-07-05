@@ -185,4 +185,82 @@
 		</where>
 		)as tb
 	</select>
+	
+	
+	<!-- 1.2 显示最新一个会员名称 -->
+	<select id="selectNewMember" parameterType="com.websit.entity.T_user">
+		SELECT
+			u.nickname nickname
+		FROM
+			t_user u
+		ORDER BY 
+			u.id DESC
+		LIMIT 0,1
+	</select>
+	
+	<!-- 修改帖子的置顶状态(是否置顶) -->
+	<update id="updatePostingTopState"  parameterType="com.websit.entityvo.PostingForUpdateVo">
+		UPDATE t_posting t
+		<set>
+            <if test="is_top != null">
+                t.is_top = #{is_top}
+            </if>
+        </set>	
+		WHERE
+		 	t.id = #{id}	
+	</update>
+	<!-- 修改帖子的删除状态(是否删除) -->
+	<update id="updatePostingDelState"  parameterType="com.websit.entityvo.PostingForUpdateVo">
+		UPDATE t_posting t
+		<set>
+            <if test="is_dele != null">
+                t.is_dele = #{is_dele}
+            </if>
+        </set>	
+		WHERE
+		 	t.id = #{id}	
+	</update>
+	<!-- 修改帖子的精华状态(是否为精华帖子) -->
+	<update id="updatePostingGoodState"  parameterType="com.websit.entityvo.PostingForUpdateVo">
+		UPDATE t_posting t
+		<set>
+            <if test="is_good != null">
+                t.is_good = #{is_good},
+            </if>
+            <if test="toGood_time != null and toGood_time != ''">
+                t.toGood_time = #{toGood_time}
+            </if>
+        </set>	
+		WHERE
+		 	t.id = #{id}	
+	</update>
+	<!-- 通过板块id查询当前板块下的帖子的数量  -->
+	<select id="countPostingByPlateId" resultType="com.websit.entityvo.T_postingVo">
+		SELECT
+			COUNT(p.id) count
+		FROM
+			t_posting p
+		WHERE
+			p.plate_id = #{plate_id}
+	</select>
+	<!-- 通过板块id和日期查询当前板块下的今日帖子的数量  -->
+	<select id="countTodayPosting" resultType="com.websit.entityvo.T_postingVo">
+		SELECT
+			COUNT(p.id) count
+		FROM
+			t_posting p
+		WHERE
+			p.plate_id = #{plate_id}
+		AND
+			p.create_time = #{create_time}
+	</select>
+	
+	<!-- 删除评论用：删除一条帖子（硬删除） -->
+    <delete id="deletePostingById"  parameterType="com.websit.entityvo.T_postingVo">
+        DELETE FROM
+            t_posting t
+        WHERE
+            t.id = #{id}
+    </delete>
+	
 </mapper>

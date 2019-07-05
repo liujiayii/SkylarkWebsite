@@ -34,6 +34,28 @@
 		RIGHT JOIN t_company c ON
 		p.company_id = c.id
 	</select>
+	<!-- 2.1查询当前公司的所有板块列表 -->
+	<select id="listCompanyPlate" resultMap="selectAllPlates">
+		SELECT
+			p.*, 
+			c.id AS c_id,
+			c. NAME AS c_name
+		FROM
+			t_plate p
+		RIGHT JOIN t_company c ON p.company_id = c.id
+		WHERE
+			p.company_id = #{company_id}
+	</select>
+	<!-- 2.2查询当前公司的所有板块列表的数量 -->
+	<select id="countCompanyPlate" resultMap="selectAllPlates">
+		SELECT
+			COUNT(p.id) count
+		FROM
+			t_plate p
+		RIGHT JOIN t_company c ON p.company_id = c.id
+		WHERE
+			p.company_id = #{company_id}
+	</select>
 
 	<!-- 查询每个模块的回帖总条数 -->
 	<select id="selectPlateCommentCount" resultType="int">

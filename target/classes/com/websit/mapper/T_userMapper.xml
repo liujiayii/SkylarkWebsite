@@ -65,9 +65,30 @@
 		WHERE
 		u.id =#{id}
 	</select>
+	
+	
+	<!-- 1.1个人资料中，查询用户回帖数量 -->
+	<select id="selectUserReplyCountByUserId" resultType="Integer">
+		SELECT
+			COUNT(c.user_id) count
+		FROM
+			t_comment c
+		WHERE
+		  c.user_id = #{user_id}
+	</select>
+	<!-- 1.2个人资料中，查询用户发过的主题数量 -->
+	<select id="selectUserPostingCountByUserId" resultType="Integer">
+		SELECT
+			COUNT(p.user_id) count
+		FROM
+			t_posting p
+		WHERE
+			p.user_id = #{user_id}
+	</select>
+	
 
 	<!-- 查询用户回帖数量 -->
-	<select id="selectUserReplyCountByUserId" resultType="Integer">
+	<!-- <select id="selectUserReplyCountByUserId" resultType="Integer">
 		SELECT COUNT(DISTINCT tb.id) count
 		FROM
 		(
@@ -81,7 +102,7 @@
 
 		</where>
 		)as tb
-	</select>
+	</select> -->
 
 
 	<!-- 查询用户量 -->
