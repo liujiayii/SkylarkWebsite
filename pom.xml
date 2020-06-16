@@ -211,7 +211,7 @@
 		<dependency>
 		    <groupId>commons-logging</groupId>
 		    <artifactId>commons-logging</artifactId>
-		    <version>1.1.1</version>
+		    <version>1.2</version>
 		</dependency>
 		<!-- 错误页面 -->
 		 <!-- <dependency>
