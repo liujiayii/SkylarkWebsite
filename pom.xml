@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.71</version>
+            <version>1.2.75</version>
         </dependency>
         <!-- 这里是引入了本地的jar包 这个jar包可以联系云客服索要 -->
      
